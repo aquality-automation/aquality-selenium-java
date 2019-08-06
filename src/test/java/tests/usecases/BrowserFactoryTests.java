@@ -3,16 +3,16 @@ package tests.usecases;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.IBrowserFactory;
-import aquality.selenium.configuration.driversettings.ChromeSettings;
-import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
+import aquality.selenium.configuration.driversettings.ChromeSettings;
+import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.utils.JsonFile;
 import aquality.selenium.waitings.ConditionalWait;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -22,7 +22,6 @@ import theinternet.forms.FileDownloaderForm;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +30,7 @@ import java.util.stream.Stream;
 
 public class BrowserFactoryTests {
 
-    private static final String downloadDirFactoryInitialized = "./target/downloads_custom/";
+    private final String downloadDirFactoryInitialized = "./target/downloads_custom/";
     private final JsonFile jsonProfile;
 
     public BrowserFactoryTests() {
@@ -43,13 +42,12 @@ public class BrowserFactoryTests {
     }
 
     @Test
-    public void testShouldBePossibleToUseCustomWebDriverFactory() throws IOException {
-
-        URL gridUrl = new URL(jsonProfile.getValue("/remoteConnectionUrl").toString());
+    public void testShouldBePossibleToUseCustomWebDriverFactory() {
 
         IBrowserFactory webDriverFactory = () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(jsonProfile);
-            RemoteWebDriver driver = new RemoteWebDriver(gridUrl, firefoxSettings.getCapabilities());
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities());
             return new Browser(driver, firefoxSettings, Configuration.getInstance().getTimeoutConfiguration());
         };
 
