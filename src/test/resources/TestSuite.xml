@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Demo Test Suite" verbose="1">
+    <test name="Integration tests" parallel="methods" thread-count="10">
+        <classes>
+            <class name="tests.integration.ActionTests"/>
+            <class name="tests.integration.AlertTests"/>
+            <class name="tests.integration.BrowserTests"/>
+            <class name="tests.integration.ElementTests"/>
+            <class name="tests.integration.HiddenElementsTests"/>
+            <class name="tests.integration.WaitTests"/>
+        </classes>
+    </test>
+    <test name="Use cases tests" parallel="methods" thread-count="10">
+        <classes>
+            <class name="tests.usecases.CustomElementTests"/>
+            <class name="tests.usecases.FileDownloadingTests"/>
+            <class name="tests.usecases.BrowserConcurrencyTests"/>
+            <class name="tests.usecases.ElementExistNotDisplayedTest"/>
+            <class name="tests.usecases.BrowserFactoryTests"/>
+            <class name="tests.usecases.ShoppingCartTest"/>
+        </classes>
+    </test>
+    <test name="Non-threadsafe tests">
+        <classes>
+            <class name="tests.usecases.ConditionalWaitTimeoutConfigurationChanged"/>
+            <class name="tests.integration.LocalizationManagerTests"/>
+        </classes>
+    </test>
+</suite>

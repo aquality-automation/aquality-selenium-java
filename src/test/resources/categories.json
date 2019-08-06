@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Ignored tests",
+    "matchedStatuses": ["skipped"]
+  },
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Elements issues",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*NoSuchElementException"
+  },
+  {
+    "name": "Test defects",
+    "matchedStatuses": ["broken"],
+    "messageRegex": "^((?!NoSuchElementException).)*$"
+  },
+  {
+    "name": "Passed",
+    "matchedStatuses": ["passed"]
+  }
+]
