@@ -63,7 +63,7 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     private enum CapabilityType {
-        CAPABILITIES("driversettings"),OPTIONS("options"),START_ARGS("startArguments");
+        CAPABILITIES("capabilities"),OPTIONS("options"),START_ARGS("startArguments");
 
         private String key;
         CapabilityType(String key){

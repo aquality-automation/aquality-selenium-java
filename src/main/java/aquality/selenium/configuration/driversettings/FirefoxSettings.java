@@ -55,10 +55,10 @@ public class FirefoxSettings extends DriverSettings {
         configOptions.forEach((key, value) -> {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 options.addPreference(key, getDownloadDir());
-            }else if(value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("false")){
+            }else if(value instanceof Boolean){
                 options.addPreference(key, (Boolean) value);
             }
-            else if (isNumeric(value.toString())) {
+            else if (value instanceof Integer) {
                 options.addPreference(key, Integer.valueOf(value.toString()));
             } else if (value instanceof String) {
                 options.addPreference(key, (String) value);
@@ -69,15 +69,6 @@ public class FirefoxSettings extends DriverSettings {
     private void setFirefoxArgs(FirefoxOptions options) {
         for (String arg : getBrowserStartArguments(getBrowserName())) {
             options.addArguments(arg);
-        }
-    }
-
-    private boolean isNumeric(String value){
-        try{
-            Integer.valueOf(value);
-            return true;
-        }catch (NumberFormatException | NullPointerException nfe){
-            return false;
         }
     }
 }
