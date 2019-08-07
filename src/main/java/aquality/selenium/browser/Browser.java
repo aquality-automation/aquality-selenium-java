@@ -33,7 +33,7 @@ public class Browser {
         this.timeouts = timeouts;
         this.timeoutImpl = timeouts.getImplicit();
         getDriver().manage().timeouts().implicitlyWait(timeoutImpl, TimeUnit.SECONDS);
-        setPageLoadTimeOuts(timeouts.getPageLoad());
+        setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
     }
 
@@ -87,14 +87,14 @@ public class Browser {
      * Set Page Load timeout (Will be ignored for Safari https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687)
      * @param timeout seconds to wait
      */
-    public void setPageLoadTimeOuts(Long timeout) {
+    public void setPageLoadTimeout(Long timeout) {
         if(!getBrowserName().equals(BrowserName.SAFARI)){
             getDriver().manage().timeouts().pageLoadTimeout(timeout, TimeUnit.SECONDS);
         }
     }
 
-    public void setImplicitWaitTimeOut(Long timeout) {
-        if(!timeout.equals(getTimeoutImpl())){
+    public void setImplicitlyWaitTimeout(Long timeout) {
+        if(!timeout.equals(getImplicitWaitTimeout())){
             getDriver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
             timeoutImpl = timeout;
         }
@@ -198,11 +198,11 @@ public class Browser {
         executeScript(JavaScript.SCROLL_WINDOW_BY.getScript(), x, y);
     }
 
-    public void setSize(int width, int height){
+    public void setWindowSize(int width, int height){
         getDriver().manage().window().setSize(new Dimension(width, height));
     }
 
-    public Long getTimeoutImpl() {
+    public Long getImplicitWaitTimeout() {
         return timeoutImpl;
     }
 

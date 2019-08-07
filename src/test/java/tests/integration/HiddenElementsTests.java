@@ -2,7 +2,7 @@ package tests.integration;
 
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.SliderForm;
@@ -30,14 +30,14 @@ public class HiddenElementsTests extends BaseTest {
 
     @Test
     public void testHiddenElementsExist() {
-        List<ILabel> listElements = new SliderForm().getListElements(ElementState.EXISTS_IN_ANY_STATE, ExpectedCount.MORE_THEN_ZERO);
+        List<ILabel> listElements = new SliderForm().getListElements(ElementState.EXISTS_IN_ANY_STATE, ElementsCount.MORE_THEN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
         Assert.assertTrue(listElements.stream().allMatch(IElement::waitForExist));
     }
 
     @Test
     public void testNotHiddenElementsNotDisplayed() {
-        List<ILabel> listElements = new SliderForm().getListElements(ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
+        List<ILabel> listElements = new SliderForm().getListElements(ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
         Assert.assertFalse(listElements.stream().anyMatch(label -> label.waitForDisplayed(1L)));
     }

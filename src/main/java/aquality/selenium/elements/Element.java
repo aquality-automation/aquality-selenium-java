@@ -95,7 +95,10 @@ public abstract class Element implements IElement {
         return locator;
     }
 
-    @Override
+    /**
+     * get element state that used for interactions
+     * @return state of element that used for interactions
+     */
     public ElementState getElementState() {
         return state;
     }
@@ -206,7 +209,7 @@ public abstract class Element implements IElement {
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement(timeout).getAttribute(attr), timeout + 5L));
+        return ConditionalWait.waitFor(y -> getElement(timeout).getAttribute(attr), timeout);
     }
 
     @Override
@@ -229,17 +232,6 @@ public abstract class Element implements IElement {
         click();
         getLogger().info(getLocManager().getValue("loc.send.text"), value);
         getBrowser().executeScript(JavaScript.SET_INNER_HTML.getScript(), getElement(), value);
-    }
-
-    @Override
-    public void clickRight() {
-        getLogger().info(getLocManager().getValue("loc.clicking.right"));
-        ConditionalWait.waitFor(y -> {
-            Actions actions = new Actions(getBrowser().getDriver());
-            actions.moveToElement(getElement());
-            actions.contextClick(getElement()).build().perform();
-            return true;
-        });
     }
 
     @Override
@@ -270,12 +262,12 @@ public abstract class Element implements IElement {
 
     @Override
     public JsActions getJsActions() {
-        return new JsActions(this, getElementType(), getName());
+        return new JsActions(this, getElementType());
     }
 
     @Override
     public MouseActions getMouseActions() {
-        return new MouseActions(this, getElementType(), getName());
+        return new MouseActions(this, getElementType());
     }
 
     @Override

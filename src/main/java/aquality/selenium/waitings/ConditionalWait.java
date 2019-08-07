@@ -44,7 +44,7 @@ public final class ConditionalWait {
      * @return Object from condition
      */
     public static <T> T waitFor(ExpectedCondition<T> condition, long timeOutInSeconds) {
-        getBrowser().setImplicitWaitTimeOut(0L);
+        getBrowser().setImplicitlyWaitTimeout(0L);
         Wait<WebDriver> wait = new FluentWait<>((WebDriver) getBrowser().getDriver())
                 .withTimeout(Duration.ofSeconds(timeOutInSeconds))
                 .pollingEvery(Duration.ofMillis(configuration.getTimeoutConfiguration().getPollingInterval()))
@@ -56,7 +56,7 @@ public final class ConditionalWait {
         } catch (Exception | AssertionError e) {
             logger.debug("java.ConditionalWait.waitFor", e);
         } finally {
-            getBrowser().setImplicitWaitTimeOut(configuration.getTimeoutConfiguration().getImplicit());
+            getBrowser().setImplicitlyWaitTimeout(configuration.getTimeoutConfiguration().getImplicit());
         }
         return null;
     }

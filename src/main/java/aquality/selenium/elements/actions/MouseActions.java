@@ -18,10 +18,10 @@ public class MouseActions {
     private String name;
 
 
-    public MouseActions(IElement element, String type, String name) {
+    public MouseActions(IElement element, String type) {
         this.element = element;
         this.type = type;
-        this.name = name;
+        this.name = element.getName();
     }
 
     /**
@@ -29,8 +29,21 @@ public class MouseActions {
      */
     public void click() {
         infoLoc("loc.clicking");
-        new JsActions(element, type, name).highlightElement();
+        new JsActions(element, type).highlightElement();
         ConditionalWait.waitFor(driver -> performAction(new Actions(driver).click(element.getElement())));
+    }
+
+    /**
+     * Right Click on the element
+     */
+    public void rightClick() {
+        infoLoc("loc.clicking.right");
+        ConditionalWait.waitFor(driver -> {
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element.getElement());
+            actions.contextClick(element.getElement()).build().perform();
+            return true;
+        });
     }
 
     /**

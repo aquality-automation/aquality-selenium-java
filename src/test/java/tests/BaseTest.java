@@ -21,7 +21,7 @@ public abstract class BaseTest {
     @BeforeMethod
     protected void beforeMethod() {
         BrowserManager.getBrowser().goTo(DEFAULT_URL);
-        BrowserManager.getBrowser().setSize(defaultSize.width, defaultSize.height);
+        BrowserManager.getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
     }
 
     @AfterMethod

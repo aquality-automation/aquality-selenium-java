@@ -47,14 +47,14 @@ class ElementFinder implements IElementFinder {
     public List<WebElement> findElements(By locator, long timeout, ElementState state) {
         List<WebElement> resultElements = new ArrayList<>();
         long zeroTimeout = 0L;
-        getBrowser().setImplicitWaitTimeOut(zeroTimeout);
+        getBrowser().setImplicitlyWaitTimeout(zeroTimeout);
         ConditionalWait.waitForTrue(y -> {
             List<WebElement> foundElements = getBrowser().getDriver().findElements(locator);
             List<WebElement> filteredElements = filterByState(foundElements, state);
             resultElements.addAll(filteredElements);
             return !filteredElements.isEmpty();
         }, timeout);
-        getBrowser().setImplicitWaitTimeOut(getTimeoutConfiguration().getImplicit());
+        getBrowser().setImplicitlyWaitTimeout(getTimeoutConfiguration().getImplicit());
         return resultElements;
     }
 

@@ -34,7 +34,7 @@ public class BrowserTests extends BaseTest {
         Dimension initialSize = BrowserManager.getBrowser().getDriver().manage().window().getSize();
         Dimension testedSize = new Dimension(600, 600);
 
-        BrowserManager.getBrowser().setSize(testedSize.width, testedSize.height);
+        BrowserManager.getBrowser().setWindowSize(testedSize.width, testedSize.height);
         Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height < initialSize.height);
         Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height >= testedSize.height);
         Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().width < initialSize.width);
@@ -45,7 +45,7 @@ public class BrowserTests extends BaseTest {
         Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height > testedSize.height);
         Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().width > testedSize.width);
 
-        BrowserManager.getBrowser().setSize(defaultSize.width, defaultSize.height);
+        BrowserManager.getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
         Assert.assertEquals(BrowserManager.getBrowser().getDriver().manage().window().getSize(), defaultSize);
     }
 
