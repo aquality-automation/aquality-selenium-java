@@ -46,9 +46,12 @@
       "webDriverVersion": "latest",
       "capabilities": {
         "ignoreProtectedModeSettings": true
-      },
-      "options": {},
-      "startArguments": []
+      }
+    },
+    "safari": {
+      "capabilities": {
+        "safari.options.dataDir": "/Users/username/Downloads"
+      }
     }
   },
   "timeouts": {

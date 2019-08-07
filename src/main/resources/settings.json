@@ -47,15 +47,12 @@
       "systemArchitecture": "X32",
       "capabilities": {
         "ignoreProtectedModeSettings": true
-      },
-      "options": {},
-      "startArguments": []
+      }
     },
     "safari": {
-      "options": {
+      "capabilities": {
         "safari.options.dataDir": "/Users/username/Downloads"
-      },
-      "startArguments": []
+      }
     }
   },
   "timeouts": {
