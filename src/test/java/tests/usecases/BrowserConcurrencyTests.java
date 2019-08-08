@@ -18,6 +18,9 @@ public class BrowserConcurrencyTests {
 
         thread01.join();
         thread02.join();
+
+        thread01.interrupt();
+        thread02.interrupt();
     }
 
     class BrowserThread implements Runnable
