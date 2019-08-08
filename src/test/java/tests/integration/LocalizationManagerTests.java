@@ -1,31 +1,38 @@
 package tests.integration;
 
-import aquality.selenium.configuration.PropertiesResourceManager;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.localization.SupportedLocale;
-import org.testng.Assert;
+import aquality.selenium.localization.SupportedLanguage;
+import aquality.selenium.utils.JsonFile;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class LocalizationManagerTests {
 
-    private static final String FIELD_LOCAL_MANAGER = "localManager";
-    private static final String FIELD_LOCAL_DICT_PATH = "LOC_DICT_PATH";
+    private final String fieldLocalManagerName = "localManager";
+    private final String tmpDicFilePath = "localization/%1$s.json";
+    private final String key = "loc.clicking";
+    private final String expectedMessageRu = "Клик";
+    private final String expectedMessageEn = "Clicking";
 
     @Test
-    public void testShouldGetPrintRussianKeys() throws IllegalAccessException, NoSuchFieldException {
-        String expectedMessage = "Клик";
-        String key = "loc.clicking";
-        Field fieldLocalManager = LocalizationManager.class.getDeclaredField(FIELD_LOCAL_MANAGER);
-        Field fieldLocalDictPath = LocalizationManager.class.getDeclaredField(FIELD_LOCAL_DICT_PATH);
+    public void testShouldGetPrintRussianKeys() throws IllegalAccessException, NoSuchFieldException, IOException {
+        Field fieldLocalManager = LocalizationManager.class.getDeclaredField(fieldLocalManagerName);
         fieldLocalManager.setAccessible(true);
-        fieldLocalDictPath.setAccessible(true);
-        String localDictPath = (String) fieldLocalDictPath.get(LocalizationManager.getInstance());
-        PropertiesResourceManager originalLocalManager = (PropertiesResourceManager) fieldLocalManager.get(LocalizationManager.getInstance());
-        fieldLocalManager.set(LocalizationManager.getInstance(), new PropertiesResourceManager(String.format(localDictPath, SupportedLocale.RU.name().toLowerCase())));
-        String actualMessage = LocalizationManager.getInstance().getValue(key);
-        fieldLocalManager.set(LocalizationManager.getInstance(), originalLocalManager);
-        Assert.assertEquals(actualMessage, expectedMessage, String.format("LocalizationManager got wrong Russian value for key '%s'.", key));
+        JsonFile langFile = (JsonFile) fieldLocalManager.get(LocalizationManager.getInstance());
+
+        SoftAssert softAssert = new SoftAssert();
+        JsonFile jsonFileRu = new JsonFile(String.format(tmpDicFilePath, SupportedLanguage.RU.name().toLowerCase()));
+        fieldLocalManager.set(LocalizationManager.getInstance(), jsonFileRu);
+        softAssert.assertEquals(LocalizationManager.getInstance().getValue(key), expectedMessageRu);
+
+        JsonFile jsonFileEn = new JsonFile(String.format(tmpDicFilePath, SupportedLanguage.EN.name().toLowerCase()));
+        fieldLocalManager.set(LocalizationManager.getInstance(), jsonFileEn);
+        softAssert.assertEquals(LocalizationManager.getInstance().getValue(key), expectedMessageEn);
+
+        fieldLocalManager.set(LocalizationManager.getInstance(), langFile);
+        softAssert.assertAll();
     }
 }

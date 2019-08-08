@@ -4,21 +4,19 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import theinternet.TheInternetPage;
 
 public class ConditionalWaitTimeoutConfigurationChanged {
     private static final String TIMEOUT_KEY = "timeouts.timeoutCondition";
     private static final String FALSE_URL_PART = "invalid";
 
-    @BeforeTest
+    @BeforeMethod
     private void before(){
         System.setProperty(TIMEOUT_KEY, "abcdef");
     }
 
-    @AfterTest
+    @AfterMethod
     private void after(){
         System.clearProperty(TIMEOUT_KEY);
     }
