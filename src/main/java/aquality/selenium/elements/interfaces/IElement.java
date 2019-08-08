@@ -26,21 +26,6 @@ public interface IElement extends IParent, IElementWithState {
     RemoteWebElement getElement(Long timeout);
 
     /**
-     * Check that the element is enabled (performed by a class member)
-     *
-     * @param timeout Timeout for waiting
-     * @return true if enabled
-     */
-    boolean isEnabled(long timeout);
-
-    /**
-     * Check that the element is enabled (performed by a class member)
-     *
-     * @return true if enabled
-     */
-    boolean isEnabled();
-
-    /**
      * Get element locator
      *
      * @return Element locator
@@ -68,17 +53,6 @@ public interface IElement extends IParent, IElementWithState {
      * Wait for the item and click on it
      */
     void waitAndClick();
-
-    /**
-     * Wait until element is clickable.
-     */
-    void waitForElementClickable();
-
-    /**
-     * Wait until element is clickable.
-     * @param timeout Timeout for waiting
-     */
-    void waitForElementClickable(Long timeout);
 
     /**
      * Click on the item.

@@ -13,24 +13,11 @@ public interface IElementStateProvider {
     boolean isDisplayed();
 
     /**
-     * Is an element exist in DOM (without visibility check)
-     * @return true if element exist, false otherwise
-     */
-    boolean isExist();
-
-    /**
      * Waits for is element displayed on the page.
      * @param timeout Timeout for waiting
      * @return true if element displayed after waiting, false otherwise
      */
     boolean waitForDisplayed(long timeout);
-
-    /**
-     * Waits until element is exist in DOM (without visibility check).
-     * @param timeout Timeout for waiting
-     * @return true if element exist after waiting, false otherwise
-     */
-    boolean waitForExist(long timeout);
 
     /**
      * Waits for is element displayed on the page.
@@ -40,9 +27,44 @@ public interface IElementStateProvider {
     boolean waitForNotDisplayed(long timeout);
 
     /**
+     * Is an element exist in DOM (without visibility check)
+     * @return true if element exist, false otherwise
+     */
+    boolean isExist();
+
+    /**
+     * Waits until element is exist in DOM (without visibility check).
+     * @param timeout Timeout for waiting
+     * @return true if element exist after waiting, false otherwise
+     */
+    boolean waitForExist(long timeout);
+
+    /**
      * Waits until element does not exist in DOM (without visibility check).
      *
      * @return true if element does not exist after waiting, false otherwise
      */
     boolean waitForNotExist(long timeout);
+
+    /**
+     * Check that the element is enabled (performed by a class member)
+     *
+     * @return true if enabled
+     */
+    boolean isEnabled();
+
+    /**
+     * Check that the element is enabled (performed by a class member)
+     *
+     * @param timeout Timeout for waiting
+     * @return true if enabled
+     */
+    boolean waitForEnabled(long timeout);
+
+    /**
+     * Waits until element does not enabled in DOM
+     *
+     * @return true if element does not enabled after waiting, false otherwise
+     */
+    boolean waitForNotEnabled(long timeout);
 }

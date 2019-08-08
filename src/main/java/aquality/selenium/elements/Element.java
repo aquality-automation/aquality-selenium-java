@@ -12,10 +12,12 @@ import aquality.selenium.elements.interfaces.IElementSupplier;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Abstract class, describing wrapper of WebElement.
@@ -80,17 +82,6 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public boolean isEnabled(long timeout) {
-        return ConditionalWait.waitForTrue(y -> getElement().isEnabled()
-                && !hasState(PopularClassNames.DISABLED), timeout);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isEnabled(timeoutCondition);
-    }
-
-    @Override
     public By getLocator() {
         return locator;
     }
@@ -122,20 +113,11 @@ public abstract class Element implements IElement {
 
     @Override
     public void waitAndClick() {
-        waitForElementClickable();
+        waitForEnabled(getDefaultTimeout());
         info(getLocManager().getValue(LOG_CLICKING));
         click();
     }
 
-    @Override
-    public void waitForElementClickable() {
-        waitForElementClickable(timeoutCondition);
-    }
-
-    @Override
-    public void waitForElementClickable(Long timeout) {
-        ConditionalWait.waitFor(ExpectedConditions.elementToBeClickable(getLocator()), timeout);
-    }
 
     @Override
     public void click() {
@@ -276,11 +258,6 @@ public abstract class Element implements IElement {
     @Override
     public MouseActions getMouseActions() {
         return new MouseActions(this, getElementType(), getName());
-    }
-
-    @Override
-    public boolean hasState(String className) {
-        return getAttribute(Attributes.CLASS.toString()).toLowerCase().contains(className.toLowerCase());
     }
 
     @Override

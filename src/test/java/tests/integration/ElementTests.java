@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
-import theinternet.forms.DynamicControlsForm;
 import theinternet.forms.LoginForm;
 
 import java.util.List;
@@ -145,20 +144,6 @@ public class ElementTests extends BaseTest {
     }
 
     @Test
-    public void testTextBoxNotEnabled() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        Assert.assertFalse(new DynamicControlsForm().getTxbInput().isEnabled(1L));
-    }
-
-    @Test
-    public void testTextBoxEnabled() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        DynamicControlsForm controlsForm = new DynamicControlsForm();
-        controlsForm.getBtnEnable().click();
-        Assert.assertTrue(controlsForm.getTxbInput().isEnabled());
-    }
-
-    @Test
     public void testSetInnerHtml() {
         navigate(TheInternetPage.LOGIN);
         LoginForm loginForm = new LoginForm();
@@ -180,9 +165,5 @@ public class ElementTests extends BaseTest {
         label.clickRight();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).waitForDisplayed();
         Assert.assertTrue(present, "");
-    }
-
-    private void navigate(TheInternetPage page) {
-        BrowserManager.getBrowser().navigate().to(page.getAddress());
     }
 }
