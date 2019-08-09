@@ -9,7 +9,8 @@ public enum TheInternetPage {
     JAVASCRIPT_ALERTS,
     LOGIN,
     REDIRECTOR,
-    STATUS_CODES;
+    STATUS_CODES,
+    TABLES;
 
     private static final String BASE_URL = "http://the-internet.herokuapp.com/";
 
