@@ -161,7 +161,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getText(HighlightState highlightState) {
-        Logger.getInstance().debug(getLocManager().getValue("loc.get.text"));
+        Logger.getInstance().info(getLocManager().getValue("loc.get.text"));
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
         }
@@ -202,7 +202,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getAttribute(final String attr, HighlightState highlightState) {
-        getLogger().debug(getLocManager().getValue("loc.el.getattr"), attr);
+        getLogger().info(getLocManager().getValue("loc.el.getattr"), attr);
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
@@ -216,7 +216,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getCssValue(final String propertyName, HighlightState highlightState) {
-        getLogger().debug(getLocManager().getValue("loc.el.cssvalue"), propertyName);
+        getLogger().info(getLocManager().getValue("loc.el.cssvalue"), propertyName);
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
