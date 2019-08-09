@@ -25,20 +25,20 @@ public class HiddenElementsTests extends BaseTest {
 
     @Test
     public void testHiddenElementExist() {
-        Assert.assertTrue(new SliderForm().getBtnAddToCart(ElementState.EXISTS_IN_ANY_STATE).isExist());
+        Assert.assertTrue(new SliderForm().getBtnAddToCart(ElementState.EXISTS_IN_ANY_STATE).state().isExist());
     }
 
     @Test
     public void testHiddenElementsExist() {
         List<ILabel> listElements = new SliderForm().getListElements(ElementState.EXISTS_IN_ANY_STATE, ExpectedCount.MORE_THEN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
-        Assert.assertTrue(listElements.stream().allMatch(IElement::waitForExist));
+        Assert.assertTrue(listElements.stream().allMatch(el -> el.state().waitForExist()));
     }
 
     @Test
     public void testNotHiddenElementsNotDisplayed() {
         List<ILabel> listElements = new SliderForm().getListElements(ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
-        Assert.assertFalse(listElements.stream().anyMatch(label -> label.waitForDisplayed(1L)));
+        Assert.assertFalse(listElements.stream().anyMatch(label -> label.state().waitForDisplayed(1L)));
     }
 }

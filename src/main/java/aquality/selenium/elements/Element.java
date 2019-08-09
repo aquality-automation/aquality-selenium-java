@@ -26,9 +26,6 @@ public abstract class Element implements IElement {
     private static final String LOG_DELIMITER = "::";
     private static final String LOG_CLICKING = "loc.clicking";
 
-    private final Configuration configuration = Configuration.getInstance();
-    private final long timeoutCondition =  configuration.getTimeoutConfiguration().getCondition();
-
     /**
      * Name of element
      */
@@ -65,7 +62,7 @@ public abstract class Element implements IElement {
 
     @Override
     public RemoteWebElement getElement() {
-        return getElement(timeoutCondition);
+        return getElement(getDefaultTimeout());
     }
 
     @Override
@@ -113,7 +110,7 @@ public abstract class Element implements IElement {
 
     @Override
     public void waitAndClick() {
-        waitForEnabled(getDefaultTimeout());
+        state().waitForEnabled(getDefaultTimeout());
         info(getLocManager().getValue(LOG_CLICKING));
         click();
     }
@@ -147,34 +144,10 @@ public abstract class Element implements IElement {
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
         }
-        if(ElementFinder.getInstance().findElements(locator, timeoutCondition, state).isEmpty()){
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), state, timeoutCondition));
+        if(ElementFinder.getInstance().findElements(locator, getDefaultTimeout(), state).isEmpty()){
+            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), state, getDefaultTimeout()));
         }
         return ConditionalWait.waitFor(y -> getElement().getText());
-    }
-
-    @Override
-    public boolean waitForDisplayed(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitinstate"), ElementState.DISPLAYED, getLocator());
-        return IElement.super.waitForDisplayed(timeout);
-    }
-
-    @Override
-    public boolean waitForExist(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitexists"));
-        return IElement.super.waitForExist(timeout);
-    }
-
-    @Override
-    public boolean waitForNotDisplayed(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitinvisible"));
-        return IElement.super.waitForNotDisplayed(timeout);
-    }
-
-    @Override
-    public boolean waitForNotExist(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
-        return IElement.super.waitForNotExist(timeout);
     }
 
     @Override
@@ -198,12 +171,12 @@ public abstract class Element implements IElement {
 
     @Override
     public String getAttribute(final String attr) {
-        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, timeoutCondition);
+        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, getDefaultTimeout());
     }
 
     @Override
     public String getAttribute(final String attr, HighlightState highlightState) {
-        return getAttribute(attr, highlightState, timeoutCondition);
+        return getAttribute(attr, highlightState, getDefaultTimeout());
     }
 
     @Override
@@ -281,5 +254,9 @@ public abstract class Element implements IElement {
 
     protected LocalizationManager getLocManager(){
         return LocalizationManager.getInstance();
+    }
+
+    long getDefaultTimeout(){
+        return Configuration.getInstance().getTimeoutConfiguration().getCondition();
     }
 }

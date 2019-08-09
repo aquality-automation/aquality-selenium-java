@@ -21,10 +21,25 @@ public interface IElementStateProvider {
 
     /**
      * Waits for is element displayed on the page.
+     * Uses condition timeout from settings file for waiting
+     * @return true if element displayed after waiting, false otherwise
+     */
+    boolean waitForDisplayed();
+
+    /**
+     * Waits for is element displayed on the page.
      * @param timeout Timeout for waiting
      * @return true if element displayed after waiting, false otherwise
      */
     boolean waitForNotDisplayed(long timeout);
+
+
+    /**
+     * Waits for is element displayed on the page.
+     * Uses condition timeout from settings file for waiting
+     * @return true if element displayed after waiting, false otherwise
+     */
+    boolean waitForNotDisplayed();
 
     /**
      * Is an element exist in DOM (without visibility check)
@@ -39,12 +54,27 @@ public interface IElementStateProvider {
      */
     boolean waitForExist(long timeout);
 
+
+    /**
+     * Waits until element is exist in DOM (without visibility check).
+     * Uses condition timeout from settings file for waiting
+     * @return true if element exist after waiting, false otherwise
+     */
+    boolean waitForExist();
+
     /**
      * Waits until element does not exist in DOM (without visibility check).
      *
      * @return true if element does not exist after waiting, false otherwise
      */
     boolean waitForNotExist(long timeout);
+
+    /**
+     * Waits until element does not exist in DOM (without visibility check).
+     * Uses condition timeout from settings file for waiting
+     * @return true if element does not exist after waiting, false otherwise
+     */
+    boolean waitForNotExist();
 
     /**
      * Check that the element is enabled (performed by a class member)
@@ -61,10 +91,25 @@ public interface IElementStateProvider {
      */
     boolean waitForEnabled(long timeout);
 
+
+    /**
+     * Check that the element is enabled (performed by a class member)
+     * Uses condition timeout from settings file for waiting
+     * @return true if enabled
+     */
+    boolean waitForEnabled();
+
     /**
      * Waits until element does not enabled in DOM
      *
      * @return true if element does not enabled after waiting, false otherwise
      */
     boolean waitForNotEnabled(long timeout);
+
+    /**
+     * Waits until element does not enabled in DOM
+     * Uses condition timeout from settings file for waiting
+     * @return true if element does not enabled after waiting, false otherwise
+     */
+    boolean waitForNotEnabled();
 }

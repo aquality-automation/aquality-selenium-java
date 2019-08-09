@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-public interface IElement extends IParent, IElementWithState {
+public interface IElement extends IParent {
 
     /**
      * Get clear WebElement
@@ -140,4 +140,10 @@ public interface IElement extends IParent, IElementWithState {
      * @return MouseActions class
      */
     MouseActions getMouseActions();
+
+    /**
+     * Provides ability to define of element's state (whether it is displayed, exists or not) and respective waiting functions
+     * @return provider to define element's state
+     */
+    IElementStateProvider state();
 }

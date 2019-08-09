@@ -42,7 +42,7 @@ public class ElementTests extends BaseTest {
     public void testSelectOptionThatContainsValue() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = elementFactory.getComboBox(By.id("dropdown"), "Dropdown");
-        comboBox.waitForDisplayed();
+        comboBox.state().waitForDisplayed();
         List<String> values = comboBox.getValuesList();
 
         comboBox.selectOptionThatContainsValue("2");
@@ -148,14 +148,14 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.LOGIN);
         LoginForm loginForm = new LoginForm();
         ITextBox txbUsername = loginForm.getTxbUsername();
-        Assert.assertTrue(txbUsername.waitForDisplayed());
+        Assert.assertTrue(txbUsername.state().waitForDisplayed());
 
         ILabel lblLogin = loginForm.getLblLogin();
         lblLogin.setInnerHtml("<p>123123</p>");
 
-        Assert.assertTrue(txbUsername.waitForNotExist(loginForm.getTimeout()));
+        Assert.assertTrue(txbUsername.state().waitForNotExist(loginForm.getTimeout()));
 
-        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").waitForDisplayed());
+        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class ElementTests extends BaseTest {
         BrowserManager.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
         ILabel label = elementFactory.getLabel(By.xpath("//span[contains(@class, 'context')]"), "Right click");
         label.clickRight();
-        boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).waitForDisplayed();
+        boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();
         Assert.assertTrue(present, "");
     }
 }
