@@ -10,13 +10,13 @@ import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
-import theinternet.forms.DynamicControlsForm;
 import theinternet.forms.LoginForm;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ElementTests extends BaseTest {
     public void testSelectOptionThatContainsValue() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = elementFactory.getComboBox(By.id("dropdown"), "Dropdown");
-        comboBox.waitForDisplayed();
+        comboBox.state().waitForDisplayed();
         List<String> values = comboBox.getValuesList();
 
         comboBox.selectOptionThatContainsValue("2");
@@ -146,32 +146,18 @@ public class ElementTests extends BaseTest {
     }
 
     @Test
-    public void testTextBoxNotEnabled() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        Assert.assertFalse(new DynamicControlsForm().getTxbInput().isEnabled(1L));
-    }
-
-    @Test
-    public void testTextBoxEnabled() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        DynamicControlsForm controlsForm = new DynamicControlsForm();
-        controlsForm.getBtnEnable().click();
-        Assert.assertTrue(controlsForm.getTxbInput().isEnabled());
-    }
-
-    @Test
     public void testSetInnerHtml() {
         navigate(TheInternetPage.LOGIN);
         LoginForm loginForm = new LoginForm();
         ITextBox txbUsername = loginForm.getTxbUsername();
-        Assert.assertTrue(txbUsername.waitForDisplayed());
+        Assert.assertTrue(txbUsername.state().waitForDisplayed());
 
         ILabel lblLogin = loginForm.getLblLogin();
         lblLogin.setInnerHtml("<p>123123</p>");
 
-        Assert.assertTrue(txbUsername.waitForNotExist(loginForm.getTimeout()));
+        Assert.assertTrue(txbUsername.state().waitForNotExist(loginForm.getTimeout()));
 
-        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").waitForDisplayed());
+        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
     }
 
     @Test
@@ -179,7 +165,7 @@ public class ElementTests extends BaseTest {
         BrowserManager.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
         ILabel label = elementFactory.getLabel(By.xpath("//span[contains(@class, 'context')]"), "Right click");
         label.clickRight();
-        boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).waitForDisplayed();
+        boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();
         Assert.assertTrue(present, "");
     }
 
@@ -196,7 +182,9 @@ public class ElementTests extends BaseTest {
         Assert.assertEquals(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT), expectedCssValue);
     }
 
-    private void navigate(TheInternetPage page) {
-        BrowserManager.getBrowser().navigate().to(page.getAddress());
+    @Test(expectedExceptions = NoSuchElementException.class)
+    public void testNoSuchShouldBeThrownIfNoELementsExistForSendKeys(){
+        ITextBox textBox = elementFactory.getTextBox(By.xpath("//div[@class='not exist element']"), "not exist element");
+        textBox.sendKeys(Keys.BACK_SPACE);
     }
 }

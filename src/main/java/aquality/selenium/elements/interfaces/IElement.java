@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-public interface IElement extends IParent, IElementWithState {
+public interface IElement extends IParent {
 
     /**
      * Get clear WebElement
@@ -24,21 +24,6 @@ public interface IElement extends IParent, IElementWithState {
      * @return WebElement
      */
     RemoteWebElement getElement(Long timeout);
-
-    /**
-     * Check that the element is enabled (performed by a class member)
-     *
-     * @param timeout Timeout for waiting
-     * @return true if enabled
-     */
-    boolean isEnabled(long timeout);
-
-    /**
-     * Check that the element is enabled (performed by a class member)
-     *
-     * @return true if enabled
-     */
-    boolean isEnabled();
 
     /**
      * Get element locator
@@ -68,17 +53,6 @@ public interface IElement extends IParent, IElementWithState {
      * Wait for the item and click on it
      */
     void waitAndClick();
-
-    /**
-     * Wait until element is clickable.
-     */
-    void waitForElementClickable();
-
-    /**
-     * Wait until element is clickable.
-     * @param timeout Timeout for waiting
-     */
-    void waitForElementClickable(Long timeout);
 
     /**
      * Click on the item.
@@ -164,4 +138,10 @@ public interface IElement extends IParent, IElementWithState {
      * @return MouseActions class
      */
     MouseActions getMouseActions();
+
+    /**
+     * Provides ability to define of element's state (whether it is displayed, exists or not) and respective waiting functions
+     * @return provider to define element's state
+     */
+    IElementStateProvider state();
 }

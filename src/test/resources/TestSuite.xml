@@ -7,8 +7,8 @@
             <class name="tests.integration.AlertTests"/>
             <class name="tests.integration.BrowserTests"/>
             <class name="tests.integration.ElementTests"/>
+            <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.HiddenElementsTests"/>
-            <class name="tests.integration.WaitTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
