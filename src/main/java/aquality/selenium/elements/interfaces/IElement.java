@@ -107,25 +107,6 @@ public interface IElement extends IParent, IElementWithState {
      * Gets attribute value of the element.
      *
      * @param attr Attribute name
-     * @param highlightState if HIGHLIGHT: create red border around element that we interact while getting text
-     * @param timeout wait element timeout
-     * @return Attribute value
-     */
-    String getAttribute(String attr, HighlightState highlightState, long timeout);
-
-    /**
-     * Gets attribute value of the element.
-     *
-     * @param attr Attribute name
-     * @param timeout wait element timeout
-     * @return Attribute value
-     */
-    String getAttribute(String attr, long timeout);
-
-    /**
-     * Gets attribute value of the element.
-     *
-     * @param attr Attribute name
      * @return Attribute value
      */
     String getAttribute(String attr);
@@ -137,6 +118,23 @@ public interface IElement extends IParent, IElementWithState {
      * @return Attribute value
      */
     String getAttribute(String attr, HighlightState highlightState);
+
+    /**
+     * Gets css value of the element.
+     *
+     * @param propertyName css value name
+     * @return css value
+     */
+    String getCssValue(String propertyName);
+
+    /**
+     * Gets css value of the element.
+     *
+     * @param propertyName css value name
+     * @param highlightState if HIGHLIGHT: create red border around element that we interact while getting css value
+     * @return css value
+     */
+    String getCssValue(String propertyName, HighlightState highlightState);
 
     /**
      * set innerHtml via javascript <b>arguments[0].innerHTML='%1$s' </b>.

@@ -161,7 +161,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getText(HighlightState highlightState) {
-        Logger.getInstance().debug(getLocManager().getValue("loc.get.text"));
+        Logger.getInstance().info(getLocManager().getValue("loc.get.text"));
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
         }
@@ -201,27 +201,31 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public String getAttribute(final String attr, HighlightState highlightState, long timeout) {
-        getLogger().debug(getLocManager().getValue("loc.el.getattr"), attr);
+    public String getAttribute(final String attr, HighlightState highlightState) {
+        getLogger().info(getLocManager().getValue("loc.el.getattr"), attr);
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement(timeout).getAttribute(attr), timeout + 5L));
-    }
-
-    @Override
-    public String getAttribute(final String attr, long timeout) {
-        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, timeout);
+        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getAttribute(attr)));
     }
 
     @Override
     public String getAttribute(final String attr) {
-        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, timeoutCondition);
+        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT);
     }
 
     @Override
-    public String getAttribute(final String attr, HighlightState highlightState) {
-        return getAttribute(attr, highlightState, timeoutCondition);
+    public String getCssValue(final String propertyName, HighlightState highlightState) {
+        getLogger().info(getLocManager().getValue("loc.el.cssvalue"), propertyName);
+        if (highlightState.equals(HighlightState.HIGHLIGHT)) {
+            getJsActions().highlightElement();
+        }
+        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getCssValue(propertyName)));
+    }
+
+    @Override
+    public String getCssValue(final String propertyName) {
+        return getCssValue(propertyName, HighlightState.NOT_HIGHLIGHT);
     }
 
     @Override
