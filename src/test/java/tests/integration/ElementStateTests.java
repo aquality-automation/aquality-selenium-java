@@ -128,11 +128,31 @@ public class ElementStateTests extends BaseTest {
     }
 
     @Test
-    public void testWaitDoesNotExists(){
-        navigate(TheInternetPage.DYNAMIC_LOADING);
-        DynamicLoadingForm loadingForm = new DynamicLoadingForm();
+    public void testShouldBePossibleToWaitElementNotExistsCustom(){
+        navigate(TheInternetPage.DYNAMIC_CONTROLS);
+        DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
+        long waitTime = customWaitTime;
+        dynamicControlsForm.getBtnRemove().click();
+        long startTime = System.nanoTime();
+        boolean isMissed = dynamicControlsForm.getChbACheckbox().waitForNotExist(waitTime);
+        double duration = calculateDuration(startTime);
 
-        Assert.assertFalse(loadingForm.getBtnStart().waitForNotExist(loadingForm.getTimeout()));
-        Assert.assertTrue(loadingForm.getLblLoading().waitForNotExist());
+        Assert.assertFalse(isMissed);
+        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+    }
+
+    @Test
+    public void testShouldBePossibleToWaitElementNotExists(){
+        navigate(TheInternetPage.DYNAMIC_CONTROLS);
+        DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
+        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        dynamicControlsForm.getBtnRemove().click();
+
+        long startTime = System.nanoTime();
+        boolean isMissed = dynamicControlsForm.getChbACheckbox().waitForNotExist();
+        double duration = calculateDuration(startTime);
+
+        Assert.assertTrue(isMissed);
+        Assert.assertTrue(duration < waitTime);
     }
 }
