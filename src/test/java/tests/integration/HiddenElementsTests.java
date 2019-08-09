@@ -3,7 +3,6 @@ package tests.integration;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ExpectedCount;
-import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.SliderForm;
 import org.testng.Assert;

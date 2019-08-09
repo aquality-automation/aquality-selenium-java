@@ -29,6 +29,7 @@
   "loc.combobox.select.by.text" : "Selecting value by text '%s'",
   "loc.combobox.get.values" : "Getting values array",
   "loc.el.getattr" : "Getting attribute '%1$s'",
+  "loc.el.cssvalue" : "Getting css value '%1$s'",
   "loc.file.reading_exception" : "Exception while reading file: '%s'",
   "loc.focusing" : "Focusing",
   "loc.get.text" : "Getting text from element",
@@ -52,5 +53,8 @@
   "loc.waitexists" : "Wait until element exists in DOM",
   "loc.waitinstate" : "Wait until is present in state %1$s using \"locator\": %2$s",
   "loc.waitinvisible" : "Wait until element is not visible",
-  "loc.waitnotexists" : "Wait until element does not exist in DOM during %1$s seconds"
+  "loc.waitnotexists" : "Wait until element does not exist in DOM during %1$s seconds",
+  "loc.no.elements.found.in.state" : "no elements with locator '%1$s' found in state '%2$s' during %3$s seconds",
+  "loc.no.elements.found.by.locator" : "No elements were found by locator '%1$s'",
+  "loc.elements.were.found.but.not.in.state" :  "Elements were found by locator '%1$s'. But %2$s"
 }

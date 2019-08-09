@@ -7,6 +7,26 @@ package aquality.selenium.elements.interfaces;
 public interface IElementStateProvider {
 
     /**
+     * Is an element clickable on the page.
+     * @return true if element clickable, false otherwise
+     */
+    boolean isClickable();
+
+    /**
+     * Waits for is element clickable on the page.
+     * @param timeout Timeout for waiting
+     * @return true if element clickable after waiting, false otherwise
+     */
+    boolean waitForClickable(long timeout);
+
+    /**
+     * Waits for is element clickable on the page.
+     * Uses condition timeout from settings file for waiting
+     * @return true if element clickable after waiting, false otherwise
+     */
+    boolean waitForClickable();
+
+    /**
      * Is an element displayed on the page.
      * @return true if element displayed, false otherwise
      */

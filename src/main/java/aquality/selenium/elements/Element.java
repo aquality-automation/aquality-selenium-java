@@ -15,7 +15,6 @@ import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -110,19 +109,16 @@ public abstract class Element implements IElement {
 
     @Override
     public void waitAndClick() {
-        state().waitForEnabled(getDefaultTimeout());
+        state().waitForClickable();
         info(getLocManager().getValue(LOG_CLICKING));
         click();
     }
-
 
     @Override
     public void click() {
         getJsActions().highlightElement();
         ConditionalWait.waitFor(y -> {
-            WebElement el = getElement();
-            info(getLocManager().getValue(LOG_CLICKING));
-            el.click();
+            getElement().click();
             return true;
         });
     }
@@ -140,12 +136,9 @@ public abstract class Element implements IElement {
 
     @Override
     public String getText(HighlightState highlightState) {
-        Logger.getInstance().debug(getLocManager().getValue("loc.get.text"));
+        info(getLocManager().getValue("loc.get.text"));
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
-        }
-        if(ElementFinder.getInstance().findElements(locator, getDefaultTimeout(), state).isEmpty()){
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), state, getDefaultTimeout()));
         }
         return ConditionalWait.waitFor(y -> getElement().getText());
     }
@@ -156,39 +149,43 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public String getAttribute(final String attr, HighlightState highlightState, long timeout) {
-        getLogger().debug(getLocManager().getValue("loc.el.getattr"), attr);
+    public String getAttribute(final String attr, HighlightState highlightState) {
+        info(String.format(getLocManager().getValue("loc.el.getattr"), attr));
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement(timeout).getAttribute(attr), timeout + 5L));
-    }
-
-    @Override
-    public String getAttribute(final String attr, long timeout) {
-        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, timeout);
+        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getAttribute(attr)));
     }
 
     @Override
     public String getAttribute(final String attr) {
-        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT, getDefaultTimeout());
+        return getAttribute(attr, HighlightState.NOT_HIGHLIGHT);
     }
 
     @Override
-    public String getAttribute(final String attr, HighlightState highlightState) {
-        return getAttribute(attr, highlightState, getDefaultTimeout());
+    public String getCssValue(final String propertyName, HighlightState highlightState) {
+        info(String.format(getLocManager().getValue("loc.el.cssvalue"), propertyName));
+        if (highlightState.equals(HighlightState.HIGHLIGHT)) {
+            getJsActions().highlightElement();
+        }
+        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getCssValue(propertyName)));
+    }
+
+    @Override
+    public String getCssValue(final String propertyName) {
+        return getCssValue(propertyName, HighlightState.NOT_HIGHLIGHT);
     }
 
     @Override
     public void setInnerHtml(final String value) {
         click();
-        getLogger().info(getLocManager().getValue("loc.send.text"), value);
+        info(String.format(getLocManager().getValue("loc.send.text"), value));
         getBrowser().executeScript(JavaScript.SET_INNER_HTML.getScript(), getElement(), value);
     }
 
     @Override
     public void clickRight() {
-        getLogger().info(getLocManager().getValue("loc.clicking.right"));
+        info(String.format(getLocManager().getValue("loc.clicking.right")));
         ConditionalWait.waitFor(y -> {
             Actions actions = new Actions(getBrowser().getDriver());
             actions.moveToElement(getElement());

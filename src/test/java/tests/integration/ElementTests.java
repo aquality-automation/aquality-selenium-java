@@ -4,11 +4,13 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -165,5 +167,24 @@ public class ElementTests extends BaseTest {
         label.clickRight();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();
         Assert.assertTrue(present, "");
+    }
+
+    @Test
+    public void testShouldBePossibleToGetCssValue(){
+        navigate(TheInternetPage.LOGIN);
+        ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "username");
+
+        String propertyName = "font-family";
+        String expectedCssValue = "\"Helvetica Neue\", Helvetica, Helvetica, Arial, sans-serif";
+
+        Assert.assertEquals(txbUsername.getCssValue(propertyName), expectedCssValue);
+
+        Assert.assertEquals(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT), expectedCssValue);
+    }
+
+    @Test(expectedExceptions = NoSuchElementException.class)
+    public void testNoSuchShouldBeThrownIfNoELementsExistForSendKeys(){
+        ITextBox textBox = elementFactory.getTextBox(By.xpath("//div[@class='not exist element']"), "not exist element");
+        textBox.sendKeys(Keys.BACK_SPACE);
     }
 }

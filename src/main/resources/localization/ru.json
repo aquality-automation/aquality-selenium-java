@@ -29,6 +29,7 @@
   "loc.combobox.select.by.text" : "Выбор значения с текстом '%s'",
   "loc.combobox.get.values" : "Получение списка значений",
   "loc.el.getattr" : "Получение аттрибута '%1$s'",
+  "loc.el.cssvalue" : "Получение значения css '%1$s'",
   "loc.file.reading_exception" : "Исключение при чтении файла: '%s'%n",
   "loc.focusing" : "Взятие элемента в фокус",
   "loc.get.text" : "Получение текста элемента",
@@ -52,5 +53,8 @@
   "loc.waitexists" : "Ожидаем появления элемента в DOM",
   "loc.waitinstate" : "Ожидание присутствия элемента в состоянии %1$s используя локатор: %2$s",
   "loc.waitinvisible" : "Ожидаем пока элемент исчезнет",
-  "loc.waitnotexists" : "Ожидаем исчезновения элемента из DOM в течении %1$s"
+  "loc.waitnotexists" : "Ожидаем исчезновения элемента из DOM в течении %1$s",
+  "loc.no.elements.found.in.state" : "не удалось найти элементов по локатору '%1$s' в состоянии '%2$s' на протяжении %3$s секунд",
+  "loc.no.elements.found.by.locator" : "Не удалось найти элементов по локатору '%1$s'",
+  "loc.elements.were.found.but.not.in.state" :  "Удалось найти элементы по локатору '%1$s'. Но %2$s"
 }

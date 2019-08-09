@@ -6,9 +6,12 @@ import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.Objects;
 
 class ElementStateProvider implements IElementStateProvider {
 
@@ -20,14 +23,33 @@ class ElementStateProvider implements IElementStateProvider {
     }
 
     @Override
+    public boolean isClickable() {
+        return waitForClickable(ZERO_TIMEOUT);
+    }
+
+    @Override
+    public boolean waitForClickable(long timeout) {
+        String stateName = "CLICKABLE";
+        getLogger().info(String.format(getLocManager().getValue("loc.waitinstate"), stateName, getLocator()));
+        DesiredState desiredState = new DesiredState(element -> element.isDisplayed() && element.isEnabled(), getDesiredStateMessage(stateName, timeout), false, true);
+        return isElementInDesiredCondition(timeout, desiredState);
+    }
+
+    @Override
+    public boolean waitForClickable() {
+        return waitForClickable(getDefaultTimeout());
+    }
+
+    @Override
     public boolean isDisplayed() {
         return waitForDisplayed(ZERO_TIMEOUT);
     }
 
     @Override
     public boolean waitForDisplayed(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitinstate"), ElementState.DISPLAYED, getLocator());
-        return !findElements(timeout, ElementState.DISPLAYED).isEmpty();
+        getLogger().info(String.format(getLocManager().getValue("loc.waitinstate"), ElementState.DISPLAYED, getLocator()));
+        DesiredState desiredState = new DesiredState(WebElement::isDisplayed, getDesiredStateMessage("DISPLAYED", timeout), true, false);
+        return isElementInDesiredCondition(timeout, desiredState);
     }
 
     @Override
@@ -38,7 +60,8 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForNotDisplayed(long timeout) {
         getLogger().info(getLocManager().getValue("loc.waitinvisible"));
-        return ConditionalWait.waitForTrue(driver -> !isDisplayed(), timeout);
+        DesiredState desiredState = new DesiredState(element -> !element.isDisplayed(), getDesiredStateMessage("NOT DISPLAYED", timeout), true, false);
+        return isElementInDesiredCondition(timeout, desiredState);
     }
 
     @Override
@@ -54,7 +77,8 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForExist(long timeout) {
         getLogger().info(getLocManager().getValue("loc.waitexists"));
-        return !findElements(timeout, ElementState.EXISTS_IN_ANY_STATE).isEmpty();
+        DesiredState desiredState = new DesiredState(Objects::nonNull, getDesiredStateMessage("EXIST", timeout), true, false);
+        return isElementInDesiredCondition(timeout, desiredState);
     }
 
     @Override
@@ -65,7 +89,15 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForNotExist(long timeout) {
         getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
-        return ConditionalWait.waitForTrue(driver -> !isExist(), timeout);
+        try{
+            long zeroTimeout = 0L;
+            return ConditionalWait.waitForTrue(y -> findElements(zeroTimeout).isEmpty(), timeout);
+        }catch (TimeoutException e){
+            getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
+            return false;
+        }catch (NoSuchElementException e){
+            return true;
+        }
     }
 
     @Override
@@ -80,14 +112,13 @@ class ElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForEnabled(long timeout) {
-        return ConditionalWait.waitForTrue(y -> {
-            List<WebElement> webElements = findElements(timeout, ElementState.EXISTS_IN_ANY_STATE);
-            if(!webElements.isEmpty()){
-                WebElement webElement = webElements.get(0);
-                return webElement.isEnabled() && !webElement.getAttribute(Attributes.CLASS.toString()).contains(PopularClassNames.DISABLED);
-            }
-            return false;
-        }, timeout);
+        DesiredState desiredState = new DesiredState(y ->
+                findElements(timeout).
+                        stream().anyMatch(element ->
+                        element.isEnabled() &&
+                                !element.getAttribute(Attributes.CLASS.toString()).contains(PopularClassNames.DISABLED)
+                ), getDesiredStateMessage("ENABLED", timeout));
+        return isElementInDesiredCondition(timeout, desiredState);
     }
 
     @Override
@@ -97,7 +128,8 @@ class ElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotEnabled(long timeout) {
-        return ConditionalWait.waitForTrue(driver -> !isEnabled(), timeout);
+        DesiredState desiredState = new DesiredState(driver -> !isEnabled(), getDesiredStateMessage("NOT ENABLED", timeout));
+        return isElementInDesiredCondition(timeout, desiredState);
     }
 
     @Override
@@ -105,12 +137,16 @@ class ElementStateProvider implements IElementStateProvider {
         return waitForNotEnabled(getDefaultTimeout());
     }
 
-    private List<WebElement> findElements(long timeout, ElementState state) {
-        return ElementFinder.getInstance().findElements(getLocator(), timeout, state);
+    private List<WebElement> findElements(long timeout) {
+        return ElementFinder.getInstance().findElements(getLocator(), timeout, ElementState.EXISTS_IN_ANY_STATE);
     }
 
     private By getLocator() {
         return locator;
+    }
+
+    private boolean isElementInDesiredCondition(long timeout, DesiredState desiredState){
+        return !ElementFinder.getInstance().findElements(locator, timeout, desiredState).isEmpty();
     }
 
     private Logger getLogger(){
@@ -123,5 +159,9 @@ class ElementStateProvider implements IElementStateProvider {
 
     private long getDefaultTimeout(){
         return Configuration.getInstance().getTimeoutConfiguration().getCondition();
+    }
+
+    private String getDesiredStateMessage(String desiredStateName, long timeout){
+        return String.format(getLocManager().getValue("loc.no.elements.found.in.state"), locator, desiredStateName, timeout);
     }
 }

@@ -1,8 +1,11 @@
 package tests.integration;
 
 import aquality.selenium.configuration.Configuration;
+import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.ILabel;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -14,6 +17,8 @@ public class ElementStateTests extends BaseTest {
 
     private final double operationTime = 2;
     private final long customWaitTime = 2L;
+    private final ElementFactory elementFactory = new ElementFactory();
+    private final ILabel lblNotExists = elementFactory.getLabel(By.xpath("//div[@class='not exist element']"), "not exist element");
 
     @Test
     public void testElementShouldWaitForEnabledWithCustomTimeout() {
@@ -58,6 +63,16 @@ public class ElementStateTests extends BaseTest {
         Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
     }
 
+    @Test(expectedExceptions = NoSuchElementException.class)
+    public void testNoSuchShouldBeThrownForWaitEnabledIfElementNotFound(){
+        lblNotExists.state().waitForEnabled(customWaitTime);
+    }
+
+    @Test(expectedExceptions = NoSuchElementException.class)
+    public void testNoSuchShouldBeThrownForWaitNotEnabledIfElementNotFound(){
+        lblNotExists.state().waitForNotEnabled(customWaitTime);
+    }
+
     @Test
     public void testElementShouldWaitForNotEnabledWithDefaultTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
@@ -97,12 +112,11 @@ public class ElementStateTests extends BaseTest {
 
         ILabel lblLoading = loadingForm.getLblLoading();
         String id = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT);
-        String id2 = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT, loadingForm.getTimeout());
-        String id3 = lblLoading.getAttribute("id", loadingForm.getTimeout());
+        String id2 = lblLoading.getAttribute("id");
         String loadingText = "loading";
+
         Assert.assertEquals(id,loadingText);
         Assert.assertEquals(id2,loadingText);
-        Assert.assertEquals(id3,loadingText);
 
         lblLoading.state().waitForDisplayed(2L);
 
