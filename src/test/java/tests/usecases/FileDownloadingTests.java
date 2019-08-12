@@ -1,9 +1,11 @@
 package tests.usecases;
 
+import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WindowType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -29,6 +31,7 @@ public class FileDownloadingTests extends BaseTest {
 
         BrowserManager.getBrowser().goTo(TheInternetPage.DOWNLOAD.getAddress());
         downloaderForm.getLnkDownload(fileName).clickAndWait();
+        BrowserManager.getBrowser().getDriver().switchTo().newWindow(WindowType.TAB);
 
         boolean isContentDisplayed = ConditionalWait.waitForTrue(webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent));
 
