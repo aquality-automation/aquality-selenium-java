@@ -50,11 +50,6 @@ public interface IElement extends IParent {
     void sendKeys(Keys key);
 
     /**
-     * Wait for the item and click on it
-     */
-    void waitAndClick();
-
-    /**
      * Click on the item.
      */
     void click();

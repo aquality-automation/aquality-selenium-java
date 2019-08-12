@@ -108,14 +108,8 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public void waitAndClick() {
-        state().waitForClickable();
-        info(getLocManager().getValue(LOG_CLICKING));
-        click();
-    }
-
-    @Override
     public void click() {
+        info(getLocManager().getValue(LOG_CLICKING));
         getJsActions().highlightElement();
         ConditionalWait.waitFor(y -> {
             getElement().click();

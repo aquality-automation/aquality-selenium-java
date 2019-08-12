@@ -53,9 +53,9 @@ class ElementFinder implements IElementFinder {
     public List<WebElement> findElements(By locator, long timeout, ElementState state) {
         switch (state) {
             case DISPLAYED:
-                return findElements(locator, timeout, new DesiredState(WebElement::isDisplayed, String.format(getLocManager().getValue("loc.no.elements.found.in.state"), locator, "DISPLAYED", timeout)));
+                return findElements(locator, timeout, new DesiredState(WebElement::isDisplayed, String.format(getLocManager().getValue("loc.no.elements.found.in.state"), locator, "DISPLAYED", timeout)).withCatchingTimeoutException());
             case EXISTS_IN_ANY_STATE:
-                return findElements(locator, timeout, new DesiredState(Objects::nonNull, String.format(getLocManager().getValue("loc.no.elements.found.in.state"), locator, "EXIST", timeout)));
+                return findElements(locator, timeout, new DesiredState(Objects::nonNull, String.format(getLocManager().getValue("loc.no.elements.found.in.state"), locator, "EXIST", timeout)).withCatchingTimeoutException());
             default:
                 String errorMessage = String.format("'%s' state is not recognized", state.toString());
                 throw new IllegalArgumentException(errorMessage);
@@ -69,7 +69,7 @@ class ElementFinder implements IElementFinder {
         long zeroTimeout = 0L;
         getBrowser().setImplicitWaitTimeOut(zeroTimeout);
         try{
-            ConditionalWait.waitForTrue(driver ->
+            ConditionalWait.waitFor(driver ->
             {
                 List<WebElement> allFoundElements = getBrowser().getDriver().findElements(locator);
                 foundElements.addAll(allFoundElements);
@@ -91,10 +91,10 @@ class ElementFinder implements IElementFinder {
      * @param foundElements list of all found elements by locator.
      */
     private void applyResult(By locator, DesiredState desiredState, List<WebElement> foundElements){
-        if (desiredState.isCatchableInTimeoutException()){
+        if (desiredState.isCatchingInTimeoutException()){
             if(foundElements.isEmpty()){
                 String message = String.format(getLocManager().getValue("loc.no.elements.found.by.locator"), locator);
-                if(desiredState.isThrowableNoSuchException()){
+                if(desiredState.isThrowingNoSuchElementException()){
                     throw new NoSuchElementException(message);
                 }
                 getLogger().debug(message);

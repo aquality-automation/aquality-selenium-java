@@ -109,7 +109,7 @@ public class Browser {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
         };
-        boolean isLoaded = ConditionalWait.waitForTrue(condition, timeouts.getImplicit());
+        boolean isLoaded = ConditionalWait.waitFor(condition, timeouts.getImplicit());
         if (!isLoaded) {
             logger.warn(getLocManager().getValue("loc.browser.page.timeout"));
         }

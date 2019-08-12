@@ -31,7 +31,7 @@ class ElementStateProvider implements IElementStateProvider {
     public boolean waitForClickable(long timeout) {
         String stateName = "CLICKABLE";
         getLogger().info(String.format(getLocManager().getValue("loc.waitinstate"), stateName, getLocator()));
-        DesiredState desiredState = new DesiredState(element -> element.isDisplayed() && element.isEnabled(), getDesiredStateMessage(stateName, timeout), false, true);
+        DesiredState desiredState = new DesiredState(element -> element.isDisplayed() && element.isEnabled(), getDesiredStateMessage(stateName, timeout)).withCatchingTimeoutException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 
@@ -48,7 +48,7 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForDisplayed(long timeout) {
         getLogger().info(String.format(getLocManager().getValue("loc.waitinstate"), ElementState.DISPLAYED, getLocator()));
-        DesiredState desiredState = new DesiredState(WebElement::isDisplayed, getDesiredStateMessage("DISPLAYED", timeout), true, false);
+        DesiredState desiredState = new DesiredState(WebElement::isDisplayed, getDesiredStateMessage("DISPLAYED", timeout)).withCatchingTimeoutException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 
@@ -60,7 +60,7 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForNotDisplayed(long timeout) {
         getLogger().info(getLocManager().getValue("loc.waitinvisible"));
-        DesiredState desiredState = new DesiredState(element -> !element.isDisplayed(), getDesiredStateMessage("NOT DISPLAYED", timeout), true, false);
+        DesiredState desiredState = new DesiredState(element -> !element.isDisplayed(), getDesiredStateMessage("NOT DISPLAYED", timeout)).withCatchingTimeoutException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 
@@ -77,7 +77,7 @@ class ElementStateProvider implements IElementStateProvider {
     @Override
     public boolean waitForExist(long timeout) {
         getLogger().info(getLocManager().getValue("loc.waitexists"));
-        DesiredState desiredState = new DesiredState(Objects::nonNull, getDesiredStateMessage("EXIST", timeout), true, false);
+        DesiredState desiredState = new DesiredState(Objects::nonNull, getDesiredStateMessage("EXIST", timeout)).withCatchingTimeoutException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 
@@ -91,7 +91,7 @@ class ElementStateProvider implements IElementStateProvider {
         getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
         try{
             long zeroTimeout = 0L;
-            return ConditionalWait.waitForTrue(y -> findElements(zeroTimeout).isEmpty(), timeout);
+            return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(), timeout);
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
             return false;
@@ -117,7 +117,7 @@ class ElementStateProvider implements IElementStateProvider {
                         stream().anyMatch(element ->
                         element.isEnabled() &&
                                 !element.getAttribute(Attributes.CLASS.toString()).contains(PopularClassNames.DISABLED)
-                ), getDesiredStateMessage("ENABLED", timeout));
+                ), getDesiredStateMessage("ENABLED", timeout)).withCatchingTimeoutException().withThrowingNoSuchElementException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 
@@ -128,7 +128,7 @@ class ElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotEnabled(long timeout) {
-        DesiredState desiredState = new DesiredState(driver -> !isEnabled(), getDesiredStateMessage("NOT ENABLED", timeout));
+        DesiredState desiredState = new DesiredState(driver -> !isEnabled(), getDesiredStateMessage("NOT ENABLED", timeout)).withCatchingTimeoutException().withThrowingNoSuchElementException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
 

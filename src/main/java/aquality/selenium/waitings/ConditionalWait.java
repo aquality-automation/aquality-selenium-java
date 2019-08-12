@@ -78,29 +78,6 @@ public final class ConditionalWait {
         }
     }
 
-    /**
-     * Waits for condition and return true if waiting successful or false - otherwise.
-     * Default timeout condition from settings is using.
-     *
-     * @param condition Condition for waiting {@link ExpectedCondition}
-     * @return True if waiting successful or false - otherwise.
-     */
-    public static boolean waitForTrue(ExpectedCondition<Boolean> condition) {
-        return waitFor(condition);
-    }
-
-
-    /**
-     * Wait for condition and return true if waiting successful or false - otherwise.
-     *
-     * @param condition        Condition for waiting {@link ExpectedCondition}
-     * @param timeOutInSeconds Time out in seconds for waiting
-     * @return True if waiting successful or false - otherwise.
-     */
-    public static boolean waitForTrue(ExpectedCondition<Boolean> condition, long timeOutInSeconds) {
-        return waitFor(condition, timeOutInSeconds);
-    }
-
     private static Browser getBrowser(){
         return BrowserManager.getBrowser();
     }
