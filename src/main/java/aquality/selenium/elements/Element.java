@@ -209,7 +209,7 @@ public abstract class Element implements IElement {
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return ConditionalWait.waitFor(y -> getElement(timeout).getAttribute(attr), timeout);
+        return ConditionalWait.waitFor(y -> getElement().getAttribute(attr));
     }
 
     @Override
