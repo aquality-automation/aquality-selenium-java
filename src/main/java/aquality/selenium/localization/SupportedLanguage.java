@@ -1,5 +1,5 @@
 package aquality.selenium.localization;
 
-public enum SupportedLocale {
+public enum SupportedLanguage {
     EN,RU
 }

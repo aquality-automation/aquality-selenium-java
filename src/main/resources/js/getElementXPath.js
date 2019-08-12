@@ -1,5 +1,5 @@
 function WebElement_XPath(element) {
-    if (element.tagName == 'HTML') {
+    if (element.tagName === 'HTML') {
         return '/html';
     }
     if (element===document.body) {
@@ -21,5 +21,5 @@ function WebElement_XPath(element) {
             position++;
         }
     }
-};
+}
 return WebElement_XPath(arguments[0]);

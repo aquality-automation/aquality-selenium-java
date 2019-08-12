@@ -4,6 +4,7 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.ElementsCount;
+import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
@@ -180,6 +181,19 @@ public class ElementTests extends BaseTest {
         label.getMouseActions().rightClick();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).waitForDisplayed();
         Assert.assertTrue(present, "");
+    }
+
+    @Test
+    public void testShouldBePossibleToGetCssValue(){
+        navigate(TheInternetPage.LOGIN);
+        ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "username");
+
+        String propertyName = "font-family";
+        String expectedCssValue = "\"Helvetica Neue\", Helvetica, Helvetica, Arial, sans-serif";
+
+        Assert.assertEquals(txbUsername.getCssValue(propertyName), expectedCssValue);
+
+        Assert.assertEquals(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT), expectedCssValue);
     }
 
     private void navigate(TheInternetPage page) {

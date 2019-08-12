@@ -1,1 +1,1 @@
-return document['readyState'] ? 'complete' == document.readyState : true
+return document['readyState'] ? 'complete' === document.readyState : true

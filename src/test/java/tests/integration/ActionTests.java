@@ -70,6 +70,7 @@ public class ActionTests extends BaseTest {
         ITextBox txbQuantity = new ProductForm().getTxbQuantity();
         txbQuantity.getJsActions().setFocus();
         txbQuantity.sendKeys(Keys.DELETE);
+        txbQuantity.sendKeys(Keys.BACK_SPACE);
         Assert.assertEquals(txbQuantity.getValue(), "",
                 "value is not empty after sending Delete keys, probably setFocus() didn't worked");
     }
