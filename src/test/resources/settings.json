@@ -61,5 +61,8 @@
     "timeoutScript" : 10,
     "timeoutPageload" : 15,
     "timeoutPollingInterval": 300
+  },
+  "logger": {
+    "language": "en"
   }
 }

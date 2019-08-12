@@ -26,12 +26,9 @@ public class WaitTests extends BaseTest {
 
         ILabel lblLoading = loadingForm.getLblLoading();
         String id = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT);
-        String id2 = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT, loadingForm.getTimeout());
-        String id3 = lblLoading.getAttribute("id", loadingForm.getTimeout());
+
         String loadingText = "loading";
         Assert.assertEquals(id,loadingText);
-        Assert.assertEquals(id2,loadingText);
-        Assert.assertEquals(id3,loadingText);
 
         lblLoading.waitForDisplayed(2L);
 

@@ -10,11 +10,13 @@ public class Configuration implements IConfiguration{
     private static ThreadLocal<Configuration> instance = ThreadLocal.withInitial(Configuration::new);
     private final ITimeoutConfiguration timeoutConfiguration;
     private final IBrowserProfile browserProfile;
+    private final ILoggerConfiguration loggerConfiguration;
 
     private Configuration() {
         JsonFile settings = getSettings();
         timeoutConfiguration = new TimeoutConfiguration(settings);
         browserProfile = new BrowserProfile(settings);
+        loggerConfiguration = new LoggerConfiguration(settings);
     }
 
     public static Configuration getInstance() {
@@ -29,6 +31,11 @@ public class Configuration implements IConfiguration{
     @Override
     public ITimeoutConfiguration getTimeoutConfiguration() {
         return timeoutConfiguration;
+    }
+
+    @Override
+    public ILoggerConfiguration getLoggerConfiguration() {
+        return loggerConfiguration;
     }
 
     private JsonFile getSettings() {
