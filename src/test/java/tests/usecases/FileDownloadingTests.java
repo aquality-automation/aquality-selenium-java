@@ -46,6 +46,4 @@ public class FileDownloadingTests extends BaseTest {
             ConditionalWait.waitFor(fileDownloadedExpectedCondition);
         }
     }
-
-
 }
