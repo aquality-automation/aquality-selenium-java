@@ -12,10 +12,11 @@ import aquality.selenium.elements.interfaces.IElementSupplier;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Abstract class, describing wrapper of WebElement.
@@ -23,9 +24,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public abstract class Element implements IElement {
     private static final String LOG_DELIMITER = "::";
     private static final String LOG_CLICKING = "loc.clicking";
-
-    private final Configuration configuration = Configuration.getInstance();
-    private final long timeoutCondition =  configuration.getTimeoutConfiguration().getCondition();
 
     /**
      * Name of element
@@ -63,7 +61,7 @@ public abstract class Element implements IElement {
 
     @Override
     public RemoteWebElement getElement() {
-        return getElement(timeoutCondition);
+        return getElement(getDefaultTimeout());
     }
 
     @Override
@@ -77,17 +75,6 @@ public abstract class Element implements IElement {
                     String.format("element %s was not found in %d seconds in state %s by locator %s",
                             getName(), timeout, getElementState(), getLocator()));
         }
-    }
-
-    @Override
-    public boolean isEnabled(long timeout) {
-        return ConditionalWait.waitForTrue(y -> getElement().isEnabled()
-                && !hasState(PopularClassNames.DISABLED), timeout);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isEnabled(timeoutCondition);
     }
 
     @Override
@@ -121,29 +108,11 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public void waitAndClick() {
-        waitForElementClickable();
-        info(getLocManager().getValue(LOG_CLICKING));
-        click();
-    }
-
-    @Override
-    public void waitForElementClickable() {
-        waitForElementClickable(timeoutCondition);
-    }
-
-    @Override
-    public void waitForElementClickable(Long timeout) {
-        ConditionalWait.waitFor(ExpectedConditions.elementToBeClickable(getLocator()), timeout);
-    }
-
-    @Override
     public void click() {
+        info(getLocManager().getValue(LOG_CLICKING));
         getJsActions().highlightElement();
         ConditionalWait.waitFor(y -> {
-            WebElement el = getElement();
-            info(getLocManager().getValue(LOG_CLICKING));
-            el.click();
+            getElement().click();
             return true;
         });
     }
@@ -161,38 +130,11 @@ public abstract class Element implements IElement {
 
     @Override
     public String getText(HighlightState highlightState) {
-        Logger.getInstance().info(getLocManager().getValue("loc.get.text"));
+        info(getLocManager().getValue("loc.get.text"));
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
         }
-        if(ElementFinder.getInstance().findElements(locator, timeoutCondition, state).isEmpty()){
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), state, timeoutCondition));
-        }
         return ConditionalWait.waitFor(y -> getElement().getText());
-    }
-
-    @Override
-    public boolean waitForDisplayed(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitinstate"), ElementState.DISPLAYED, getLocator());
-        return IElement.super.waitForDisplayed(timeout);
-    }
-
-    @Override
-    public boolean waitForExist(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitexists"));
-        return IElement.super.waitForExist(timeout);
-    }
-
-    @Override
-    public boolean waitForNotDisplayed(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitinvisible"));
-        return IElement.super.waitForNotDisplayed(timeout);
-    }
-
-    @Override
-    public boolean waitForNotExist(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
-        return IElement.super.waitForNotExist(timeout);
     }
 
     @Override
@@ -202,7 +144,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getAttribute(final String attr, HighlightState highlightState) {
-        getLogger().info(getLocManager().getValue("loc.el.getattr"), attr);
+        info(String.format(getLocManager().getValue("loc.el.getattr"), attr));
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
@@ -216,7 +158,7 @@ public abstract class Element implements IElement {
 
     @Override
     public String getCssValue(final String propertyName, HighlightState highlightState) {
-        getLogger().info(getLocManager().getValue("loc.el.cssvalue"), propertyName);
+        info(String.format(getLocManager().getValue("loc.el.cssvalue"), propertyName));
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
@@ -231,13 +173,13 @@ public abstract class Element implements IElement {
     @Override
     public void setInnerHtml(final String value) {
         click();
-        getLogger().info(getLocManager().getValue("loc.send.text"), value);
+        info(String.format(getLocManager().getValue("loc.send.text"), value));
         getBrowser().executeScript(JavaScript.SET_INNER_HTML.getScript(), getElement(), value);
     }
 
     @Override
     public void clickRight() {
-        getLogger().info(getLocManager().getValue("loc.clicking.right"));
+        info(String.format(getLocManager().getValue("loc.clicking.right")));
         ConditionalWait.waitFor(y -> {
             Actions actions = new Actions(getBrowser().getDriver());
             actions.moveToElement(getElement());
@@ -283,11 +225,6 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public boolean hasState(String className) {
-        return getAttribute(Attributes.CLASS.toString()).toLowerCase().contains(className.toLowerCase());
-    }
-
-    @Override
     public <T extends IElement> T findChildElement(By childLoc, ElementType type, ElementState state) {
         return new ElementFactory().findChildElement(this, childLoc, type, state);
     }
@@ -308,5 +245,9 @@ public abstract class Element implements IElement {
 
     protected LocalizationManager getLocManager(){
         return LocalizationManager.getInstance();
+    }
+
+    long getDefaultTimeout(){
+        return Configuration.getInstance().getTimeoutConfiguration().getCondition();
     }
 }
