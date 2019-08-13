@@ -6,5 +6,7 @@ public interface IConfiguration {
 
     ITimeoutConfiguration getTimeoutConfiguration();
 
+    IRetryConfiguration getRetryConfiguration();
+
     ILoggerConfiguration getLoggerConfiguration();
 }

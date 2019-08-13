@@ -8,21 +8,12 @@ class DesiredState {
 
     private final Predicate<WebElement> desiredStatePredicate;
     private final String message;
-    private final boolean isCatchableInTimeoutException;
-    private final boolean isThrowableNoSuchException;
-
-    DesiredState(Predicate<WebElement> desiredStatePredicate, String message, boolean isCatchableInTimeoutException, boolean isThrowableNoSuchException){
-        this.desiredStatePredicate = desiredStatePredicate;
-        this.message = message;
-        this.isCatchableInTimeoutException = isCatchableInTimeoutException;
-        this.isThrowableNoSuchException = isThrowableNoSuchException;
-    }
+    private boolean isCatchingTimeoutException;
+    private boolean isThrowingNoSuchElementException;
 
     DesiredState(Predicate<WebElement> desiredStatePredicate, String message){
         this.desiredStatePredicate = desiredStatePredicate;
         this.message = message;
-        this.isCatchableInTimeoutException = true;
-        this.isThrowableNoSuchException = true;
     }
 
     public Predicate<WebElement> getDesiredStatePredicate() {
@@ -33,11 +24,21 @@ class DesiredState {
         return message;
     }
 
-    public boolean isCatchableInTimeoutException() {
-        return isCatchableInTimeoutException;
+    public DesiredState withCatchingTimeoutException(){
+        this.isCatchingTimeoutException = true;
+        return this;
     }
 
-    public boolean isThrowableNoSuchException() {
-        return isThrowableNoSuchException;
+    public DesiredState withThrowingNoSuchElementException(){
+        this.isThrowingNoSuchElementException = true;
+        return this;
+    }
+
+    public boolean isCatchingInTimeoutException() {
+        return isCatchingTimeoutException;
+    }
+
+    public boolean isThrowingNoSuchElementException() {
+        return isThrowingNoSuchElementException;
     }
 }

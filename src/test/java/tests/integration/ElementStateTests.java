@@ -108,7 +108,8 @@ public class ElementStateTests extends BaseTest {
         navigate(TheInternetPage.DYNAMIC_LOADING);
         DynamicLoadingForm loadingForm = new DynamicLoadingForm();
 
-        loadingForm.getBtnStart().waitAndClick();
+        loadingForm.getBtnStart().state().waitForClickable();
+        loadingForm.getBtnStart().click();
 
         ILabel lblLoading = loadingForm.getLblLoading();
         String id = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT);

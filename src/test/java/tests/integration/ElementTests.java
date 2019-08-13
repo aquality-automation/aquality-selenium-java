@@ -36,7 +36,7 @@ public class ElementTests extends BaseTest {
 
         String selectedText = comboBox.getSelectedText();
         comboBox.selectByText("Option 2");
-        ConditionalWait.waitForTrue(y -> !selectedText.equals(comboBox.getSelectedText()));
+        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()));
         Assert.assertEquals(comboBox.getSelectedTextByJs(), values.get(2));
     }
 
@@ -110,17 +110,17 @@ public class ElementTests extends BaseTest {
         String href = link.getHref();
         link.click();
         ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(TheInternetPage.STATUS_CODES.getAddress());
-        ConditionalWait.waitForTrue(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().goBack();
         link = elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
         link.click();
-        ConditionalWait.waitForTrue(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().getDriver().navigate().to(href);
-        ConditionalWait.waitForTrue(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
     }
 
@@ -140,7 +140,7 @@ public class ElementTests extends BaseTest {
         softAssert.assertEquals(txbPass.getValue(), "0");
 
         txbPass.submit();
-        boolean result = ConditionalWait.waitForTrue(webDriver -> txbPass.getValue().equalsIgnoreCase(""));
+        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(""));
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }
