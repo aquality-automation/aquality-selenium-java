@@ -128,9 +128,9 @@ public class Browser {
      */
     public Object executeScript(final String script, Object... arguments) {
         AtomicBoolean isBooleanResult = new AtomicBoolean(false);
-        Object scriptResult = ConditionalWait.waitFor(d ->
+        Object scriptResult = ConditionalWait.waitFor(driver ->
                 {
-                    JavascriptExecutor executor = ((JavascriptExecutor) d);
+                    JavascriptExecutor executor = ((JavascriptExecutor) driver);
                     Object result = executor != null ? executor.executeScript(script, arguments) : null;
                     if(result != null && Boolean.class == result.getClass()){
                         isBooleanResult.set(true);

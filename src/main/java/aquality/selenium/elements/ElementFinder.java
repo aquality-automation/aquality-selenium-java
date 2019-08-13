@@ -71,7 +71,7 @@ class ElementFinder implements IElementFinder {
         try{
             ConditionalWait.waitFor(driver ->
             {
-                List<WebElement> allFoundElements = getBrowser().getDriver().findElements(locator);
+                List<WebElement> allFoundElements = driver.findElements(locator);
                 foundElements.addAll(allFoundElements);
                 List<WebElement> filteredElements = filterByState(allFoundElements, desiredState.getDesiredStatePredicate());
                 resultElements.addAll(filteredElements);

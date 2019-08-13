@@ -101,7 +101,7 @@ public class ElementFactory implements IElementFactory {
             case ZERO:
                 break;
             case MORE_THEN_ZERO:
-                ConditionalWait.waitFor(y -> !getBrowser().getDriver().findElements(locator).isEmpty());
+                ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty());
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));
