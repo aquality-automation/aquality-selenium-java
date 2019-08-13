@@ -26,7 +26,7 @@ public class FileUtil {
     public static boolean isFileDownloaded(String fileAddress, ILabel lblFileContent) {
         try {
             BrowserManager.getBrowser().goTo(fileAddress);
-            return lblFileContent.isDisplayed();
+            return lblFileContent.state().isDisplayed();
         } catch (WebDriverException e) {
             Logger.getInstance().warn(e.getMessage());
             return false;
