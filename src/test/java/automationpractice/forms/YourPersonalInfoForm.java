@@ -54,6 +54,6 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public void setNewsChb(){
-        chbNews.check();
+        chbNews.getJsActions().check();
     }
 }

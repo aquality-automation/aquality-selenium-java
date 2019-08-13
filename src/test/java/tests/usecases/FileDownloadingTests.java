@@ -4,7 +4,7 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -28,16 +28,22 @@ public class FileDownloadingTests extends BaseTest {
         String fileAddress = "file://".concat(filePath);
         ILabel lblFileContent = elementFactory.getLabel(By.xpath("//pre"), "text file content");
         Assert.assertFalse(FileUtil.isFileDownloaded(fileAddress, lblFileContent), "file should not exist before downloading");
-        ((JavascriptExecutor) BrowserManager.getBrowser().getDriver()).executeScript("window.open()");
+
+        BrowserManager.getBrowser().executeScript(String.format("window.open('%s', '_blank')", TheInternetPage.DOWNLOAD.getAddress()));
         ArrayList<String> tabs = new ArrayList<>(BrowserManager.getBrowser().getDriver().getWindowHandles());
-        BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
-        BrowserManager.getBrowser().goTo(TheInternetPage.DOWNLOAD.getAddress());
-        downloaderForm.getLnkDownload(fileName).clickAndWait();
 
         BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(1));
+        BrowserManager.getBrowser().goTo(TheInternetPage.DOWNLOAD.getAddress());
+        downloaderForm.getLnkDownload(fileName).getJsActions().clickAndWait();
 
-        boolean isContentDisplayed = ConditionalWait.waitForTrue(webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent));
+        BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
+        ExpectedCondition<Boolean> fileDownloadedExpectedCondition = webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent);
+        boolean isContentDisplayed = ConditionalWait.waitForTrue(fileDownloadedExpectedCondition);
 
+        if (!isContentDisplayed) {
+            BrowserManager.getBrowser().quit();
+            isContentDisplayed = ConditionalWait.waitForTrue(fileDownloadedExpectedCondition);
+        }
         Assert.assertTrue(isContentDisplayed, "file was not downloaded to correct directory. Element '" + lblFileContent.getLocator() + "' was not displayed");
     }
 
