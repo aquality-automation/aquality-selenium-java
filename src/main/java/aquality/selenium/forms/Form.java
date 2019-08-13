@@ -68,7 +68,7 @@ public abstract class Form {
      * False - form is not opened
      */
     public boolean isFormDisplayed() {
-        return getElementFactory().getLabel(locator, name).waitForDisplayed();
+        return getElementFactory().getLabel(locator, name).state().waitForDisplayed();
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class Form {
      * False - form is not opened
      */
     public boolean isFormDisplayed(Long timeout) {
-        return getElementFactory().getLabel(locator, name).waitForDisplayed(timeout);
+        return getElementFactory().getLabel(locator, name).state().waitForDisplayed(timeout);
     }
 
     /**

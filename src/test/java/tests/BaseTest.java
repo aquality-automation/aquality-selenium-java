@@ -28,4 +28,8 @@ public abstract class BaseTest {
     public void afterTest(){
         BrowserManager.getBrowser().quit();
     }
+
+    protected void navigate(TheInternetPage page) {
+        BrowserManager.getBrowser().navigate().to(page.getAddress());
+    }
 }
