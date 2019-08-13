@@ -4,6 +4,7 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,13 +39,12 @@ public class FileDownloadingTests extends BaseTest {
 
         BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
         ExpectedCondition<Boolean> fileDownloadedExpectedCondition = webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent);
-        boolean isContentDisplayed = ConditionalWait.waitFor(webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent));
-
-        if (!isContentDisplayed) {
+        try {
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition);
+        } catch (TimeoutException e) {
             BrowserManager.getBrowser().quit();
-            isContentDisplayed = ConditionalWait.waitFor(webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent));
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition);
         }
-        Assert.assertTrue(isContentDisplayed, "file was not downloaded to correct directory. Element '" + lblFileContent.getLocator() + "' was not displayed");
     }
 
 
