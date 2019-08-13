@@ -23,6 +23,6 @@ public class ElementExistNotDisplayedTest extends BaseTest {
     @Test
     public void testElementExistNotDisplayed() {
         IButton button = new SliderForm().getBtnAddToCart(ElementState.EXISTS_IN_ANY_STATE);
-        Assert.assertTrue(ConditionalWait.waitForTrue(driver -> button.isExist() && !button.isDisplayed()));
+        Assert.assertTrue(ConditionalWait.waitFor(driver -> button.state().isExist() && !button.state().isDisplayed()));
     }
 }

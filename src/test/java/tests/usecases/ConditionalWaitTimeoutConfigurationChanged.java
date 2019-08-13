@@ -37,7 +37,7 @@ public class ConditionalWaitTimeoutConfigurationChanged {
         Assert.assertThrows(NumberFormatException.class, () ->
         {
             BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-            Assert.assertTrue(ConditionalWait.waitForTrue(ExpectedConditions.urlContains(FALSE_URL_PART)));
+            Assert.assertTrue(ConditionalWait.waitFor(ExpectedConditions.urlContains(FALSE_URL_PART)));
         });
     }
 }
