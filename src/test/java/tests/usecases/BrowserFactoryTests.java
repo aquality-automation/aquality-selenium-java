@@ -89,7 +89,7 @@ public class BrowserFactoryTests {
 
         BrowserManager.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
-        boolean isFileDownloaded = ConditionalWait.waitForTrue(driver -> fileDownloaded.exists());
+        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists());
 
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }

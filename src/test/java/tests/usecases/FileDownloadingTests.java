@@ -38,11 +38,11 @@ public class FileDownloadingTests extends BaseTest {
 
         BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
         ExpectedCondition<Boolean> fileDownloadedExpectedCondition = webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent);
-        boolean isContentDisplayed = ConditionalWait.waitForTrue(fileDownloadedExpectedCondition);
+        boolean isContentDisplayed = ConditionalWait.waitFor(webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent));
 
         if (!isContentDisplayed) {
             BrowserManager.getBrowser().quit();
-            isContentDisplayed = ConditionalWait.waitForTrue(fileDownloadedExpectedCondition);
+            isContentDisplayed = ConditionalWait.waitFor(fileDownloadedExpectedCondition);
         }
         Assert.assertTrue(isContentDisplayed, "file was not downloaded to correct directory. Element '" + lblFileContent.getLocator() + "' was not displayed");
     }
