@@ -39,12 +39,12 @@ public class CheckBoxJsActions extends JsActions {
      * @param state value (true/false)
      */
     private void setState(boolean state) {
-        logger.info(String.format("%1$s '%2$s'", localizationManager.getValue("loc.setting.value"), state));
+        infoLoc(String.format("%1$s '%2$s'", localizationManager.getValue("loc.setting.value"), state));
         if (state && !getState()) {
-            logger.info(localizationManager.getValue("loc.checkbox.check"), name, type, true);
+            infoLoc(String.format(localizationManager.getValue("loc.checkbox.check"), name, type, true));
             click();
         } else if (!state && getState()) {
-            logger.info(localizationManager.getValue("loc.checkbox.uncheck"), name, type, false);
+            infoLoc(String.format(localizationManager.getValue("loc.checkbox.uncheck"), name, type, false));
             click();
         }
     }
