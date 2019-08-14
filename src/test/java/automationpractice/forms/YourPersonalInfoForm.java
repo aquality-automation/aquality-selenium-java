@@ -38,11 +38,11 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public void selectState(String state){
-        cmbState.selectByText(state);
+        cmbState.clickAndSelectByText(state);
     }
 
     public void selectDay(Integer day){
-        cmbSelectDay.selectByValue(String.valueOf(day));
+        cmbSelectDay.clickAndSelectByValue(String.valueOf(day));
     }
 
     public boolean getNewsCheckBoxState(){
