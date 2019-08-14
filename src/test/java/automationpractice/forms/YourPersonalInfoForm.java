@@ -38,7 +38,7 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public void selectState(String state){
-        cmbState.clickAndSelectByText(state);
+        cmbState.selectByText(state);
     }
 
     public void selectDay(Integer day){
