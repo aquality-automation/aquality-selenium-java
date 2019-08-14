@@ -49,11 +49,7 @@ public class CheckBox extends Element implements ICheckBox {
      */
     private void setState(boolean state) {
         getLogger().info(String.format("%1$s '%2$s'", getLocManager().getValue("loc.setting.value"), state));
-        if (state && !getState()) {
-            getLogger().info(getLocManager().getValue("loc.checkbox.check"), getName(), getElementType(), true);
-            click();
-        } else if (!state && getState()) {
-            getLogger().info(getLocManager().getValue("loc.checkbox.uncheck"), getName(), getElementType(), false);
+        if (state != getState()) {
             click();
         }
     }

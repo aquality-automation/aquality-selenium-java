@@ -40,11 +40,7 @@ public class CheckBoxJsActions extends JsActions {
      */
     private void setState(boolean state) {
         infoLoc(String.format("%1$s '%2$s'", localizationManager.getValue("loc.setting.value"), state));
-        if (state && !getState()) {
-            infoLoc(String.format(localizationManager.getValue("loc.checkbox.check"), name, type, true));
-            click();
-        } else if (!state && getState()) {
-            infoLoc(String.format(localizationManager.getValue("loc.checkbox.uncheck"), name, type, false));
+        if (state != getState()) {
             click();
         }
     }
