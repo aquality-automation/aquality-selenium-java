@@ -30,6 +30,7 @@ public class ComboBox extends Element implements IComboBox {
     public void selectByIndex(int index) {
         info(LOG_SELECTING_VALUE);
         ConditionalWait.waitFor(y -> {
+            click();
             new Select(getElement()).selectByIndex(index);
             return true;
         });
@@ -39,6 +40,7 @@ public class ComboBox extends Element implements IComboBox {
     public void selectByText(String value) {
         getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), value);
         ConditionalWait.waitFor(y -> {
+            click();
             new Select(getElement()).selectByVisibleText(value);
             return true;
         });
@@ -54,6 +56,7 @@ public class ComboBox extends Element implements IComboBox {
                 String currentText = el.getText();
                 getLogger().debug(currentText);
                 if(currentText.toLowerCase().contains(text.toLowerCase())){
+                    click();
                     select.selectByVisibleText(currentText);
                     return true;
                 }
@@ -72,6 +75,7 @@ public class ComboBox extends Element implements IComboBox {
                 String currentValue = el.getAttribute(Attributes.VALUE.toString());
                 getLogger().debug(currentValue);
                 if(currentValue.toLowerCase().contains(value.toLowerCase())){
+                    click();
                     select.selectByValue(currentValue);
                     return true;
                 }
@@ -84,6 +88,7 @@ public class ComboBox extends Element implements IComboBox {
     public void selectByValue(String value) {
         info(LOG_SELECTING_VALUE);
         ConditionalWait.waitFor(y -> {
+            click();
             new Select(getElement()).selectByValue(value);
             return true;
         });
