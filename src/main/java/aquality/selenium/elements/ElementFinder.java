@@ -7,11 +7,11 @@ import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.elements.interfaces.IElementFinder;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +69,15 @@ class ElementFinder implements IElementFinder {
         long zeroTimeout = 0L;
         getBrowser().setImplicitWaitTimeOut(zeroTimeout);
         try{
-            ConditionalWait.waitFor(driver ->
+            WebDriverWait webDriverWait = new WebDriverWait(getBrowser().getDriver(), timeout);
+            webDriverWait.until(driver ->
             {
                 List<WebElement> allFoundElements = driver.findElements(locator);
                 foundElements.addAll(allFoundElements);
                 List<WebElement> filteredElements = filterByState(allFoundElements, desiredState.getDesiredStatePredicate());
                 resultElements.addAll(filteredElements);
                 return !filteredElements.isEmpty();
-            }, timeout);
+            });
         }catch (TimeoutException e){
             applyResult(locator, desiredState, foundElements);
         }

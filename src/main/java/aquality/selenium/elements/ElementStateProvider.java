@@ -1,14 +1,15 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.IElementStateProvider;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +92,9 @@ class ElementStateProvider implements IElementStateProvider {
         getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
         try{
             long zeroTimeout = 0L;
-            return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(), timeout);
+            WebDriverWait webDriverWait = new WebDriverWait(BrowserManager.getBrowser().getDriver(),
+                    timeout);
+            return webDriverWait.until(y -> findElements(zeroTimeout).isEmpty());
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
             return false;

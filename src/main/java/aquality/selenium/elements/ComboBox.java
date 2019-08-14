@@ -3,7 +3,7 @@ package aquality.selenium.elements;
 import aquality.selenium.elements.actions.ComboBoxJsActions;
 import aquality.selenium.elements.interfaces.IComboBox;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.waitings.ConditionalWait;
+import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -29,25 +29,19 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByIndex(int index) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByIndex(index);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByIndex(index));
     }
 
     @Override
     public void selectByText(String value) {
         getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), value);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByVisibleText(value);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByVisibleText(value));
     }
 
     @Override
     public void selectOptionThatContainsText(String text) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
+        ElementActionRetrier.doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
             for (WebElement el: elements) {
@@ -55,17 +49,15 @@ public class ComboBox extends Element implements IComboBox {
                 getLogger().debug(currentText);
                 if(currentText.toLowerCase().contains(text.toLowerCase())){
                     select.selectByVisibleText(currentText);
-                    return true;
                 }
             }
-            return false;
         });
     }
 
     @Override
     public void selectOptionThatContainsValue(String value) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
+        ElementActionRetrier.doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
             for (WebElement el: elements) {
@@ -73,20 +65,15 @@ public class ComboBox extends Element implements IComboBox {
                 getLogger().debug(currentValue);
                 if(currentValue.toLowerCase().contains(value.toLowerCase())){
                     select.selectByValue(currentValue);
-                    return true;
                 }
             }
-            return false;
         });
     }
 
     @Override
     public void selectByValue(String value) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByValue(value);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByValue(value));
     }
 
     @Override
@@ -94,7 +81,7 @@ public class ComboBox extends Element implements IComboBox {
         if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()) {
             throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
         }
-        return ConditionalWait.waitFor(y -> new Select(getElement()).getFirstSelectedOption().getText());
+        return ElementActionRetrier.doWithRetry(() -> new Select(getElement()).getFirstSelectedOption().getText());
     }
 
     @Override
@@ -103,7 +90,7 @@ public class ComboBox extends Element implements IComboBox {
         if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()){
             throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
         }
-        return ConditionalWait.waitFor(y ->
+        return ElementActionRetrier.doWithRetry(() ->
                 new Select(getElement()).getOptions()
                         .stream()
                         .map(option -> option.getText().isEmpty() ?

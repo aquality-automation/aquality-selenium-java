@@ -2,7 +2,7 @@ package aquality.selenium.elements;
 
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.waitings.ConditionalWait;
+import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
@@ -53,13 +53,11 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void submit() {
-        ConditionalWait.waitFor(y -> {
+        ElementActionRetrier.doWithRetry(() -> {
             try {
                 getElement().submit();
-                return true;
             } catch (WebDriverException e) {
                 getLogger().debug(e.getMessage());
-                return false;
             }
         });
     }
@@ -71,23 +69,18 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void focus() {
-        ConditionalWait.waitFor(y -> {
-            getElement().sendKeys("");
-            return new Object();
-        });
+        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(""));
     }
 
     private void type(final String value, final boolean maskValueInLog) {
         info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
         getJsActions().highlightElement();
-        ConditionalWait.waitFor(y -> {
+        ElementActionRetrier.doWithRetry(() -> {
             try {
                 getElement().sendKeys(value);
-                return true;
             } catch (WebDriverException e) {
                 getLogger().debug(e.getMessage());
                 getElement().clear();
-                return false;
             }
         });
     }
@@ -97,14 +90,12 @@ public class TextBox extends Element implements ITextBox {
         info(logClearing);
         info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
         getJsActions().highlightElement();
-        ConditionalWait.waitFor(y -> {
+        ElementActionRetrier.doWithRetry(() -> {
             try {
                 getElement().clear();
                 getElement().sendKeys(value);
-                return true;
             } catch (WebDriverException e) {
                 getLogger().debug(e.getMessage());
-                return false;
             }
         });
     }

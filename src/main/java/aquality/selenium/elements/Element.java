@@ -11,7 +11,7 @@ import aquality.selenium.elements.interfaces.IElementStateProvider;
 import aquality.selenium.elements.interfaces.IElementSupplier;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
+import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -101,20 +101,14 @@ public abstract class Element implements IElement {
 
     @Override
     public void sendKeys(Keys key) {
-        ConditionalWait.waitFor(y -> {
-            getElement().sendKeys(key);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(key));
     }
 
     @Override
     public void click() {
         info(getLocManager().getValue(LOG_CLICKING));
         getJsActions().highlightElement();
-        ConditionalWait.waitFor(y -> {
-            getElement().click();
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> getElement().click());
     }
 
     @Override
@@ -134,7 +128,7 @@ public abstract class Element implements IElement {
         if(highlightState.equals(HighlightState.HIGHLIGHT)){
             getJsActions().highlightElement();
         }
-        return ConditionalWait.waitFor(y -> getElement().getText());
+        return ElementActionRetrier.doWithRetry(() -> getElement().getText());
     }
 
     @Override
@@ -148,7 +142,7 @@ public abstract class Element implements IElement {
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getAttribute(attr)));
+        return ElementActionRetrier.doWithRetry(() -> getElement().getAttribute(attr));
     }
 
     @Override
@@ -162,7 +156,7 @@ public abstract class Element implements IElement {
         if (highlightState.equals(HighlightState.HIGHLIGHT)) {
             getJsActions().highlightElement();
         }
-        return String.valueOf(ConditionalWait.<String>waitFor(y -> getElement().getCssValue(propertyName)));
+        return ElementActionRetrier.doWithRetry(() -> getElement().getCssValue(propertyName));
     }
 
     @Override
@@ -179,21 +173,17 @@ public abstract class Element implements IElement {
 
     @Override
     public void clickRight() {
-        info(String.format(getLocManager().getValue("loc.clicking.right")));
-        ConditionalWait.waitFor(y -> {
+        info(getLocManager().getValue("loc.clicking.right"));
+        ElementActionRetrier.doWithRetry(() -> {
             Actions actions = new Actions(getBrowser().getDriver());
             actions.moveToElement(getElement());
             actions.contextClick(getElement()).build().perform();
-            return true;
         });
     }
 
     @Override
     public void focus() {
-        ConditionalWait.waitFor(y -> {
-            getBrowser().getDriver().getMouse().mouseMove(getElement().getCoordinates());
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> getBrowser().getDriver().getMouse().mouseMove(getElement().getCoordinates()));
     }
 
     private Browser getBrowser(){

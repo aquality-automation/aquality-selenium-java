@@ -6,7 +6,7 @@ import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.ExpectedCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

@@ -8,7 +8,7 @@ import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.configuration.driversettings.ChromeSettings;
 import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.utils.JsonFile;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.chrome.ChromeDriver;

@@ -1,15 +1,15 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.configuration.ITimeoutConfiguration;
+import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +109,7 @@ public class Browser {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
         };
-        boolean isLoaded = ConditionalWait.waitFor(condition, timeouts.getImplicit());
+        boolean isLoaded = getWebDriverWait(timeouts.getPageLoad()).until(condition);
         if (!isLoaded) {
             logger.warn(getLocManager().getValue("loc.browser.page.timeout"));
         }
@@ -128,7 +128,7 @@ public class Browser {
      */
     public Object executeScript(final String script, Object... arguments) {
         AtomicBoolean isBooleanResult = new AtomicBoolean(false);
-        Object scriptResult = ConditionalWait.waitFor(driver ->
+        Object scriptResult = getWebDriverWait(timeouts.getCondition()).until(driver ->
                 {
                     JavascriptExecutor executor = ((JavascriptExecutor) driver);
                     Object result = executor != null ? executor.executeScript(script, arguments) : null;
@@ -216,6 +216,10 @@ public class Browser {
 
     private LocalizationManager getLocManager(){
         return LocalizationManager.getInstance();
+    }
+
+    private WebDriverWait getWebDriverWait(long timeout){
+        return new WebDriverWait(getDriver(), timeout);
     }
 }
 

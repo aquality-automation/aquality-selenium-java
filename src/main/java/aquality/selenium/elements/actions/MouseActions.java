@@ -1,13 +1,14 @@
 package aquality.selenium.elements.actions;
 
 
+import aquality.selenium.browser.Browser;
+import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.waitings.ConditionalWait;
 import aquality.selenium.logger.Logger;
-import org.openqa.selenium.*;
+import aquality.selenium.utils.ElementActionRetrier;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MouseActions {
 
@@ -30,7 +31,7 @@ public class MouseActions {
     public void click() {
         infoLoc("loc.clicking");
         new JsActions(element, type, name).highlightElement();
-        ConditionalWait.waitFor(driver -> performAction(new Actions(driver).click(element.getElement())));
+        ElementActionRetrier.doWithRetry(() -> performAction(new Actions(getBrowser().getDriver()).click(element.getElement())));
     }
 
     /**
@@ -39,7 +40,7 @@ public class MouseActions {
     public void moveMouseToElement() {
         infoLoc("loc.moving");
         element.getElement().getCoordinates().inViewPort();
-        ConditionalWait.waitFor(driver -> performAction(new Actions(driver).moveToElement(element.getElement())));
+        ElementActionRetrier.doWithRetry(() -> performAction(new Actions(getBrowser().getDriver()).moveToElement(element.getElement())));
     }
 
     /**
@@ -47,9 +48,9 @@ public class MouseActions {
      */
     public void doubleClick() {
         infoLoc("loc.clicking.double");
-        ConditionalWait.waitFor(driver -> {
-            ((RemoteWebDriver) driver).getMouse().mouseMove(element.getElement().getCoordinates());
-            return performAction(new Actions(driver).doubleClick(element.getElement()));
+        ElementActionRetrier.doWithRetry(() -> {
+            (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates());
+            performAction(new Actions(getBrowser().getDriver()).doubleClick(element.getElement()));
         });
     }
 
@@ -75,5 +76,9 @@ public class MouseActions {
 
     private void infoLoc(String key) {
         logger.info(formatActionMessage(LocalizationManager.getInstance().getValue(key)));
+    }
+
+    private Browser getBrowser(){
+        return BrowserManager.getBrowser();
     }
 }

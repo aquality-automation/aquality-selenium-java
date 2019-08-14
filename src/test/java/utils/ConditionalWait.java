@@ -1,4 +1,4 @@
-package aquality.selenium.waitings;
+package utils;
 
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
