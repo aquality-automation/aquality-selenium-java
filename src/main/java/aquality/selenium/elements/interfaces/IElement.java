@@ -33,12 +33,6 @@ public interface IElement extends IParent {
     By getLocator();
 
     /**
-     * get element state that used for interactions
-     * @return state of element that used for interactions
-     */
-    ElementState getElementState();
-
-    /**
      * get element name
      * @return name
      */
@@ -111,11 +105,6 @@ public interface IElement extends IParent {
      * @param value value
      */
     void setInnerHtml(String value);
-
-    /**
-     * Right Click on the element
-     */
-    void clickRight();
 
     /**
      * Focuses the element

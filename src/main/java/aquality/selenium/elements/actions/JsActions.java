@@ -22,10 +22,10 @@ public class JsActions {
     protected String name;
 
 
-    public JsActions(IElement element, String type, String name) {
+    public JsActions(IElement element, String type) {
         this.element = element;
         this.type = type;
-        this.name = name;
+        this.name = element.getName();
     }
 
     /**
@@ -57,7 +57,7 @@ public class JsActions {
     /**
      * Scrolling to element
      */
-    public void scrollToView() {
+    public void scrollIntoView() {
         infoLoc("loc.scrolling.js");
         executeScript(JavaScript.SCROLL_TO_ELEMENT, element, true);
     }

@@ -5,8 +5,8 @@ import aquality.selenium.elements.interfaces.ICheckBox;
 
 public class CheckBoxJsActions extends JsActions {
 
-    public CheckBoxJsActions(ICheckBox checkBox, String elementType, String name) {
-        super(checkBox, elementType, name);
+    public CheckBoxJsActions(ICheckBox checkBox, String elementType) {
+        super(checkBox, elementType);
     }
 
     /**

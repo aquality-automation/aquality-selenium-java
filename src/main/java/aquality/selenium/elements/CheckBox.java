@@ -39,7 +39,7 @@ public class CheckBox extends Element implements ICheckBox {
 
     @Override
     public CheckBoxJsActions getJsActions() {
-        return new CheckBoxJsActions(this, getElementType(), getName());
+        return new CheckBoxJsActions(this, getElementType());
     }
 
     /**

@@ -36,10 +36,10 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public void selectByText(String value) {
-        getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), value);
+    public void selectByText(String text) {
+        getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), text);
         ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByVisibleText(value);
+            new Select(getElement()).selectByVisibleText(text);
             return true;
         });
     }
@@ -51,7 +51,7 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public void selectOptionThatContainsText(String text) {
+    public void selectByContainingText(String text) {
         info(LOG_SELECTING_VALUE);
         ConditionalWait.waitFor(y -> {
             Select select = new Select(getElement());
@@ -69,7 +69,7 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public void selectOptionThatContainsValue(String value) {
+    public void selectByContainingValue(String value) {
         info(LOG_SELECTING_VALUE);
         ConditionalWait.waitFor(y -> {
             Select select = new Select(getElement());
@@ -110,7 +110,7 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public List<String> getValuesList() {
+    public List<String> getValues() {
         getLogger().info(getLocManager().getValue("loc.combobox.get.values"));
         if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()){
             throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
@@ -131,7 +131,7 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public ComboBoxJsActions getJsActions() {
-        return new ComboBoxJsActions(this, getElementType(), getName());
+        return new ComboBoxJsActions(this, getElementType());
     }
 
 }
