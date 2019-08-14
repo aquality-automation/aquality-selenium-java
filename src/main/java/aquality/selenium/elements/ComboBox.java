@@ -5,10 +5,12 @@ import aquality.selenium.elements.interfaces.IComboBox;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,31 +43,34 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectOptionThatContainsText(String text) {
         info(LOG_SELECTING_VALUE);
-        ElementActionRetrier.doWithRetry(() -> {
-            Select select = new Select(getElement());
-            List<WebElement> elements = select.getOptions();
-            for (WebElement el: elements) {
-                String currentText = el.getText();
-                getLogger().debug(currentText);
-                if(currentText.toLowerCase().contains(text.toLowerCase())){
-                    select.selectByVisibleText(currentText);
-                }
-            }
-        });
+        selectOptionThatContains(WebElement::getText,
+                Select::selectByVisibleText,
+                text);
     }
 
     @Override
     public void selectOptionThatContainsValue(String value) {
         info(LOG_SELECTING_VALUE);
+        selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
+                Select::selectByValue,
+                value);
+    }
+
+    private void selectOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
         ElementActionRetrier.doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
+            boolean isSelected = false;
             for (WebElement el: elements) {
-                String currentValue = el.getAttribute(Attributes.VALUE.toString());
+                String currentValue = getValueFunc.apply(el);
                 getLogger().debug(currentValue);
                 if(currentValue.toLowerCase().contains(value.toLowerCase())){
-                    select.selectByValue(currentValue);
+                    selectFunc.accept(select, currentValue);
+                    isSelected = true;
                 }
+            }
+            if (!isSelected){
+                throw new StaleElementReferenceException(String.format(getLocManager().getValue("loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
             }
         });
     }

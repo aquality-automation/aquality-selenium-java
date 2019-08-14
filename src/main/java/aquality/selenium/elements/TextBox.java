@@ -54,11 +54,7 @@ public class TextBox extends Element implements ITextBox {
     @Override
     public void submit() {
         ElementActionRetrier.doWithRetry(() -> {
-            try {
-                getElement().submit();
-            } catch (WebDriverException e) {
-                getLogger().debug(e.getMessage());
-            }
+            getElement().submit();
         });
     }
 

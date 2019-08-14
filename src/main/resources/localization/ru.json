@@ -28,6 +28,7 @@
   "loc.combobox" : "Комбобокс",
   "loc.combobox.select.by.text" : "Выбор значения с текстом '%s'",
   "loc.combobox.get.values" : "Получение списка значений",
+  "loc.combobox.impossible.to.select.contain.value.or.text" : "Не удаётся выбрать значение которое содержит значение/текст '%1$s' в выпадающем списке '%2$s'",
   "loc.el.getattr" : "Получение аттрибута '%1$s'",
   "loc.el.cssvalue" : "Получение значения css '%1$s'",
   "loc.file.reading_exception" : "Исключение при чтении файла: '%s'%n",
