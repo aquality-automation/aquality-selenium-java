@@ -202,7 +202,7 @@ public class Browser {
         getDriver().manage().window().setSize(new Dimension(width, height));
     }
 
-    public Long getImplicitWaitTimeout() {
+    private Long getImplicitWaitTimeout() {
         return timeoutImpl;
     }
 
