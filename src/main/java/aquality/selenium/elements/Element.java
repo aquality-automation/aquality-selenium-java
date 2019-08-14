@@ -188,14 +188,6 @@ public abstract class Element implements IElement {
         });
     }
 
-    @Override
-    public void focus() {
-        ConditionalWait.waitFor(y -> {
-            getBrowser().getDriver().getMouse().mouseMove(getElement().getCoordinates());
-            return true;
-        });
-    }
-
     private Browser getBrowser(){
         return BrowserManager.getBrowser();
     }

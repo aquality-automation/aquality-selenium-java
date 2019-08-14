@@ -8,6 +8,7 @@ import aquality.selenium.logger.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 public class MouseActions {
 
@@ -40,6 +41,16 @@ public class MouseActions {
         infoLoc("loc.moving");
         element.getElement().getCoordinates().inViewPort();
         ConditionalWait.waitFor(driver -> performAction(new Actions(driver).moveToElement(element.getElement())));
+    }
+
+    /**
+     * Move mouse from this element.
+     */
+    public void moveMouseFromElement() {
+        infoLoc("loc.movingFrom");
+        RemoteWebElement remoteWebElement = element.getElement();
+        ConditionalWait.waitFor(driver -> performAction(new Actions(driver).moveToElement(remoteWebElement,
+                -remoteWebElement.getSize().width / 2, -remoteWebElement.getSize().height / 2)));
     }
 
     /**

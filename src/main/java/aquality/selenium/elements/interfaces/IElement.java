@@ -118,11 +118,6 @@ public interface IElement extends IParent {
     void clickRight();
 
     /**
-     * Focuses the element
-     */
-    void focus();
-
-    /**
      * Gets object for class designed to perform javascript actions
      * @return JsActions object
      */

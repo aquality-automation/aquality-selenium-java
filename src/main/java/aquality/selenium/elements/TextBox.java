@@ -73,7 +73,15 @@ public class TextBox extends Element implements ITextBox {
     public void focus() {
         ConditionalWait.waitFor(y -> {
             getElement().sendKeys("");
-            return new Object();
+            return true;
+        });
+    }
+
+    @Override
+    public void unfocus() {
+        ConditionalWait.waitFor(y -> {
+            getElement().sendKeys(Keys.TAB);
+            return true;
         });
     }
 
