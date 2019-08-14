@@ -20,6 +20,13 @@ public interface IComboBox extends IElement {
     void selectByText(String text);
 
     /**
+     * Open Dropdown and select by visible text
+     *
+     * @param value text to be selected
+     */
+    void clickAndSelectByText(String value);
+
+    /**
      * Select by containing visible text
      *
      * @param text visible text
@@ -39,6 +46,13 @@ public interface IComboBox extends IElement {
      * @param value argument value
      */
     void selectByValue(String value);
+
+    /**
+     * Open Dropdown and select by value
+     *
+     * @param value argument value
+     */
+    void clickAndSelectByValue(String value);
 
     /**
      * Get selected value

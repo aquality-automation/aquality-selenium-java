@@ -45,6 +45,12 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
+    public void clickAndSelectByText(String value) {
+        click();
+        selectByText(value);
+    }
+
+    @Override
     public void selectByContainingText(String text) {
         info(LOG_SELECTING_VALUE);
         ConditionalWait.waitFor(y -> {
@@ -87,6 +93,12 @@ public class ComboBox extends Element implements IComboBox {
             new Select(getElement()).selectByValue(value);
             return true;
         });
+    }
+
+    @Override
+    public void clickAndSelectByValue(String value) {
+        click();
+        selectByValue(value);
     }
 
     @Override

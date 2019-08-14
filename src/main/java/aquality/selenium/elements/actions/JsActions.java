@@ -15,10 +15,11 @@ public class JsActions {
 
     private static final Configuration configuration = Configuration.getInstance();
     private static final String LOG_DELIMITER = "::";
-    private final Logger logger = Logger.getInstance();
+    protected final Logger logger = Logger.getInstance();
+    protected final LocalizationManager localizationManager = LocalizationManager.getInstance();
     protected IElement element;
-    private String type;
-    private String name;
+    protected String type;
+    protected String name;
 
 
     public JsActions(IElement element, String type) {
@@ -160,7 +161,7 @@ public class JsActions {
     }
 
     protected void infoLoc(String key) {
-        logger.info(formatJsActionMessage(LocalizationManager.getInstance().getValue(key)));
+        logger.info(formatJsActionMessage(localizationManager.getValue(key)));
     }
 
     private Browser getBrowser(){

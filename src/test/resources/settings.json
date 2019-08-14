@@ -52,10 +52,7 @@
       "startArguments": []
     },
     "safari": {
-      "options": {
-        "safari.options.dataDir": "/Users/username/Downloads"
-      },
-      "startArguments": []
+      "downloadDir": "/Users/username/Downloads"
     }
   },
   "timeouts": {

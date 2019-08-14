@@ -49,6 +49,9 @@
       },
       "options": {},
       "startArguments": []
+    },
+    "safari": {
+      "downloadDir": "/Users/username/Downloads"
     }
   },
   "timeouts": {
