@@ -5,12 +5,13 @@ import aquality.selenium.elements.interfaces.IComboBox;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -41,7 +42,13 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public void selectOptionThatContainsText(String text) {
+    public void clickAndSelectByText(String value) {
+        click();
+        selectByText(value);
+    }
+
+    @Override
+    public void selectByContainingText(String text) {
         info(LOG_SELECTING_VALUE);
         selectOptionThatContains(WebElement::getText,
                 Select::selectByVisibleText,
@@ -49,7 +56,7 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public void selectOptionThatContainsValue(String value) {
+    public void selectByContainingValue(String value) {
         info(LOG_SELECTING_VALUE);
         selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
                 Select::selectByValue,
@@ -70,7 +77,7 @@ public class ComboBox extends Element implements IComboBox {
                 }
             }
             if (!isSelected){
-                throw new StaleElementReferenceException(String.format(getLocManager().getValue("loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
+                throw new InvalidElementStateException(String.format(getLocManager().getValue("loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
             }
         });
     }
@@ -82,6 +89,12 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
+    public void clickAndSelectByValue(String value) {
+        click();
+        selectByValue(value);
+    }
+
+    @Override
     public String getSelectedText() {
         if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()) {
             throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
@@ -90,7 +103,7 @@ public class ComboBox extends Element implements IComboBox {
     }
 
     @Override
-    public List<String> getValuesList() {
+    public List<String> getValues() {
         getLogger().info(getLocManager().getValue("loc.combobox.get.values"));
         if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()){
             throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
@@ -111,7 +124,7 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public ComboBoxJsActions getJsActions() {
-        return new ComboBoxJsActions(this, getElementType(), getName());
+        return new ComboBoxJsActions(this, getElementType());
     }
 
 }

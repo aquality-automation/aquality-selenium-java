@@ -15,7 +15,6 @@ import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 /**
@@ -82,8 +81,7 @@ public abstract class Element implements IElement {
         return locator;
     }
 
-    @Override
-    public ElementState getElementState() {
+    ElementState getElementState() {
         return state;
     }
 
@@ -172,16 +170,6 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public void clickRight() {
-        info(getLocManager().getValue("loc.clicking.right"));
-        ElementActionRetrier.doWithRetry(() -> {
-            Actions actions = new Actions(getBrowser().getDriver());
-            actions.moveToElement(getElement());
-            actions.contextClick(getElement()).build().perform();
-        });
-    }
-
-    @Override
     public void focus() {
         ElementActionRetrier.doWithRetry(() -> getBrowser().getDriver().getMouse().mouseMove(getElement().getCoordinates()));
     }
@@ -206,12 +194,12 @@ public abstract class Element implements IElement {
 
     @Override
     public JsActions getJsActions() {
-        return new JsActions(this, getElementType(), getName());
+        return new JsActions(this, getElementType());
     }
 
     @Override
     public MouseActions getMouseActions() {
-        return new MouseActions(this, getElementType(), getName());
+        return new MouseActions(this, getElementType());
     }
 
     @Override

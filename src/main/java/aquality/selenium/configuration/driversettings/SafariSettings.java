@@ -21,7 +21,12 @@ public class SafariSettings extends DriverSettings {
 
     @Override
     public String getDownloadDirCapabilityKey() {
-        return "safari.options.dataDir";
+        throw new IllegalArgumentException("Download directory for Safari profiles is not supported in capabilities. Please, use separate 'downloadDir' property");
+    }
+
+    @Override
+    String getDownloadDirectory(BrowserName browserName) {
+        return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath(getBrowserName()) + "/downloadDir"));
     }
 
     @Override

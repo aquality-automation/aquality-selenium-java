@@ -5,7 +5,6 @@ import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriverException;
 
 /**
  * The class that describes an input field
@@ -53,9 +52,7 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void submit() {
-        ElementActionRetrier.doWithRetry(() -> {
-            getElement().submit();
-        });
+        ElementActionRetrier.doWithRetry(() -> getElement().submit());
     }
 
     @Override
@@ -71,14 +68,7 @@ public class TextBox extends Element implements ITextBox {
     private void type(final String value, final boolean maskValueInLog) {
         info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
         getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> {
-            try {
-                getElement().sendKeys(value);
-            } catch (WebDriverException e) {
-                getLogger().debug(e.getMessage());
-                getElement().clear();
-            }
-        });
+        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(value));
     }
 
     private void clearAndType(final String value, final boolean maskValueInLog) {
@@ -87,12 +77,8 @@ public class TextBox extends Element implements ITextBox {
         info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
         getJsActions().highlightElement();
         ElementActionRetrier.doWithRetry(() -> {
-            try {
-                getElement().clear();
-                getElement().sendKeys(value);
-            } catch (WebDriverException e) {
-                getLogger().debug(e.getMessage());
-            }
+            getElement().clear();
+            getElement().sendKeys(value);
         });
     }
 }

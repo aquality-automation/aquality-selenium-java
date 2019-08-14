@@ -80,23 +80,23 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ExpectedCount count,
+    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
                                                      ElementState state) {
         return findElementsCore(locator, supplier, state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ElementsCount count) {
         return findElementsCore(locator, getDefaultElementSupplier(clazz), state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ElementsCount count) {
         return findElements(locator, type.getClazz(), state, count);
     }
 
     private  <T extends IElement> List<T> findElementsCore(By locator, IElementSupplier<T> supplier,
-                                                           ElementState state, ExpectedCount count) {
+                                                           ElementState state, ElementsCount count) {
         List<T> elements = new ArrayList<>();
         switch (count) {
             case ZERO:

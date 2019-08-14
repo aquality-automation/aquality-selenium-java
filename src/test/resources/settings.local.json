@@ -49,13 +49,16 @@
       },
       "options": {},
       "startArguments": []
+    },
+    "safari": {
+      "downloadDir": "/Users/username/Downloads"
     }
   },
   "timeouts": {
     "timeoutImplicit" : 0,
     "timeoutCondition" : 30,
     "timeoutScript" : 10,
-    "timeoutPageload" : 15,
+    "timeoutPageLoad" : 15,
     "timeoutPollingInterval": 300
   },
   "retry": {

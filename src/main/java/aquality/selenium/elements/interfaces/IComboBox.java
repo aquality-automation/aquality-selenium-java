@@ -15,23 +15,30 @@ public interface IComboBox extends IElement {
     /**
      * Select by visible text
      *
+     * @param text text to be selected
+     */
+    void selectByText(String text);
+
+    /**
+     * Open Dropdown and select by visible text
+     *
      * @param value text to be selected
      */
-    void selectByText(String value);
+    void clickAndSelectByText(String value);
 
     /**
      * Select by containing visible text
      *
      * @param text visible text
      */
-    void selectOptionThatContainsText(String text);
+    void selectByContainingText(String text);
 
     /**
      * Select by containing value
      *
      * @param value partial option's value
      */
-    void selectOptionThatContainsValue(String value);
+    void selectByContainingValue(String value);
 
     /**
      * Select by value
@@ -39,6 +46,13 @@ public interface IComboBox extends IElement {
      * @param value argument value
      */
     void selectByValue(String value);
+
+    /**
+     * Open Dropdown and select by value
+     *
+     * @param value argument value
+     */
+    void clickAndSelectByValue(String value);
 
     /**
      * Get selected value
@@ -52,7 +66,7 @@ public interface IComboBox extends IElement {
      * Get values list
      * @return list of values
      */
-    List<String> getValuesList();
+    List<String> getValues();
 
     /**
      * Get text from selected option in combobox using JavaScript

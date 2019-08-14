@@ -67,7 +67,7 @@ class ElementFinder implements IElementFinder {
         List<WebElement> foundElements = new ArrayList<>();
         List<WebElement> resultElements = new ArrayList<>();
         long zeroTimeout = 0L;
-        getBrowser().setImplicitWaitTimeOut(zeroTimeout);
+        getBrowser().setImplicitWaitTimeout(zeroTimeout);
         try{
             WebDriverWait webDriverWait = new WebDriverWait(getBrowser().getDriver(), timeout);
             webDriverWait.until(driver ->
@@ -81,7 +81,7 @@ class ElementFinder implements IElementFinder {
         }catch (TimeoutException e){
             applyResult(locator, desiredState, foundElements);
         }
-        getBrowser().setImplicitWaitTimeOut(getTimeoutConfiguration().getImplicit());
+        getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
         return resultElements;
     }
 

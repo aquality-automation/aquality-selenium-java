@@ -49,7 +49,7 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
         IMPLICIT("timeoutImplicit"),
         CONDITION("timeoutCondition"),
         SCRIPT("timeoutScript"),
-        PAGE_LOAD("timeoutPageload"),
+        PAGE_LOAD("timeoutPageLoad"),
         POLL_INTERVAL("timeoutPollingInterval");
 
         private String key;

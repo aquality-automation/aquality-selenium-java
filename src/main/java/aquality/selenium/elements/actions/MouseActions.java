@@ -7,8 +7,10 @@ import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.utils.ElementActionRetrier;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
+import java.util.function.BiConsumer;
 
 public class MouseActions {
 
@@ -19,10 +21,10 @@ public class MouseActions {
     private String name;
 
 
-    public MouseActions(IElement element, String type, String name) {
+    public MouseActions(IElement element, String type) {
         this.element = element;
         this.type = type;
-        this.name = name;
+        this.name = element.getName();
     }
 
     /**
@@ -30,8 +32,16 @@ public class MouseActions {
      */
     public void click() {
         infoLoc("loc.clicking");
-        new JsActions(element, type, name).highlightElement();
-        ElementActionRetrier.doWithRetry(() -> performAction(new Actions(getBrowser().getDriver()).click(element.getElement())));
+        new JsActions(element, type).highlightElement();
+        ElementActionRetrier.doWithRetry(() -> performAction((actions, el) -> actions.click().build().perform()));
+    }
+
+    /**
+     * Click Right (call context menu) on the element
+     */
+    public void clickRight() {
+        infoLoc("loc.clicking.right");
+        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.contextClick(el).build().perform())));
     }
 
     /**
@@ -40,7 +50,7 @@ public class MouseActions {
     public void moveMouseToElement() {
         infoLoc("loc.moving");
         element.getElement().getCoordinates().inViewPort();
-        ElementActionRetrier.doWithRetry(() -> performAction(new Actions(getBrowser().getDriver()).moveToElement(element.getElement())));
+        ElementActionRetrier.doWithRetry(() -> performAction((actions, el) -> actions.moveToElement(el).build().perform()));
     }
 
     /**
@@ -48,20 +58,13 @@ public class MouseActions {
      */
     public void doubleClick() {
         infoLoc("loc.clicking.double");
-        ElementActionRetrier.doWithRetry(() -> {
-            (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates());
-            performAction(new Actions(getBrowser().getDriver()).doubleClick(element.getElement()));
-        });
+        ElementActionRetrier.doWithRetry(() -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
+        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.doubleClick(el).build().perform())));
     }
 
-    private Boolean performAction(Actions actions) {
-        try {
-            actions.build().perform();
-            return true;
-        } catch (WebDriverException e) {
-            logger.debug(e.getMessage());
-            return false;
-        }
+    private void performAction(BiConsumer<Actions, WebElement> consumer) {
+        Actions actions = new Actions(getBrowser().getDriver());
+        consumer.accept(actions.moveToElement(element.getElement()), element.getElement());
     }
 
     /**
