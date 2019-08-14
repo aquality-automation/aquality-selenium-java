@@ -1,6 +1,6 @@
 package aquality.selenium.elements;
 
-public enum ExpectedCount {
+public enum ElementsCount {
     ZERO,
     MORE_THEN_ZERO
 }

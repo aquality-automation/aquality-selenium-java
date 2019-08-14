@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ComboBoxJsActions extends JsActions {
 
-    public ComboBoxJsActions(IComboBox comboBox, String elementType, String name) {
-        super(comboBox, elementType, name);
+    public ComboBoxJsActions(IComboBox comboBox, String elementType) {
+        super(comboBox, elementType);
     }
 
     /**
@@ -16,7 +16,7 @@ public class ComboBoxJsActions extends JsActions {
      *
      * @return values from ComboBox
      */
-    public List<String> getValuesList() {
+    public List<String> getValues() {
         return (List<String>) executeScript(JavaScript.GET_COMBOBOX_VALUES, element);
     }
 

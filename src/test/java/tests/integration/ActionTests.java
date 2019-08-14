@@ -34,11 +34,11 @@ public class ActionTests extends BaseTest {
     }
 
     @Test
-    public void testScrollToView() {
+    public void testScrollIntoView() {
         BrowserManager.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
         JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
-        jsActions.scrollToView();
-        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollToView()");
+        jsActions.scrollIntoView();
+        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollIntoView()");
     }
 
     @Test
