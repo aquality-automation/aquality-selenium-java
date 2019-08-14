@@ -93,7 +93,7 @@ public class Browser {
         }
     }
 
-    public void setImplicitlyWaitTimeout(Long timeout) {
+    public void setImplicitWaitTimeout(Long timeout) {
         if(!timeout.equals(getImplicitWaitTimeout())){
             getDriver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
             timeoutImpl = timeout;
