@@ -1,21 +1,23 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.configuration.ITimeoutConfiguration;
+import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.apache.commons.io.IOUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Browser {
     private final Logger logger = Logger.getInstance();
@@ -109,10 +111,7 @@ public class Browser {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
         };
-        boolean isLoaded = ConditionalWait.waitFor(condition, timeouts.getImplicit());
-        if (!isLoaded) {
-            logger.warn(getLocManager().getValue("loc.browser.page.timeout"));
-        }
+        getWebDriverWait(timeouts.getPageLoad()).until(condition);
     }
 
     public byte[] getScreenshot() {
@@ -127,21 +126,8 @@ public class Browser {
      * @return Result object of script execution
      */
     public Object executeScript(final String script, Object... arguments) {
-        AtomicBoolean isBooleanResult = new AtomicBoolean(false);
-        Object scriptResult = ConditionalWait.waitFor(driver ->
-                {
-                    JavascriptExecutor executor = ((JavascriptExecutor) driver);
-                    Object result = executor != null ? executor.executeScript(script, arguments) : null;
-                    if(result != null && Boolean.class == result.getClass()){
-                        isBooleanResult.set(true);
-                        return result.toString();
-                    }else {
-                        return result == null ? new Object() : result;
-                    }
-                }
-        );
-
-        return isBooleanResult.get() ? Boolean.valueOf(scriptResult.toString()) : scriptResult;
+        Object result = getDriver().executeScript(script, arguments);
+        return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
     }
 
     /**
@@ -216,6 +202,10 @@ public class Browser {
 
     private LocalizationManager getLocManager(){
         return LocalizationManager.getInstance();
+    }
+
+    private WebDriverWait getWebDriverWait(long timeout){
+        return new WebDriverWait(getDriver(), timeout);
     }
 }
 

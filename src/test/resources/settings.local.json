@@ -61,6 +61,10 @@
     "timeoutPageLoad" : 15,
     "timeoutPollingInterval": 300
   },
+  "retry": {
+    "number": 2,
+    "pollingInterval": 300
+  },
   "logger": {
     "language": "en"
   }

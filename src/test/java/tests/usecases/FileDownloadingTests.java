@@ -2,7 +2,7 @@ package tests.usecases;
 
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.ILabel;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;

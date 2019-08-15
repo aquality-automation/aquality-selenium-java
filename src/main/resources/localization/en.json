@@ -26,6 +26,7 @@
   "loc.combobox" : "ComboBox",
   "loc.combobox.select.by.text" : "Selecting value by text '%s'",
   "loc.combobox.get.values" : "Getting values array",
+  "loc.combobox.impossible.to.select.contain.value.or.text" : "It is impossible to select option that contains value/text '%1$s' from combobox '%2$s'",
   "loc.el.getattr" : "Getting attribute '%1$s'",
   "loc.el.cssvalue" : "Getting css value '%1$s'",
   "loc.file.reading_exception" : "Exception while reading file: '%s'",

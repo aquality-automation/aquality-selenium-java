@@ -1,6 +1,5 @@
 package aquality.selenium.elements.interfaces;
 
-import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;

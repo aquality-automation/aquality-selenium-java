@@ -3,13 +3,14 @@ package aquality.selenium.elements;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.JavaScript;
+import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -101,7 +102,9 @@ public class ElementFactory implements IElementFactory {
             case ZERO:
                 break;
             case MORE_THEN_ZERO:
-                ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty());
+                WebDriverWait webDriverWait = new WebDriverWait(getBrowser().getDriver(),
+                        Configuration.getInstance().getTimeoutConfiguration().getCondition());
+                webDriverWait.until(driver -> !driver.findElements(locator).isEmpty());
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));
