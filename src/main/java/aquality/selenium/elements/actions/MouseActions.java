@@ -37,9 +37,9 @@ public class MouseActions {
     }
 
     /**
-     * Click Right (call context menu) on the element
+     * Click Right (calls context menu) on the element
      */
-    public void clickRight() {
+    public void rightClick() {
         infoLoc("loc.clicking.right");
         ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.contextClick(el).build().perform())));
     }
