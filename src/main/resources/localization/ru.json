@@ -38,6 +38,7 @@
   "loc.label" : "Надпись",
   "loc.link" : "Ссылка",
   "loc.moving" : "Наведение курсора на элемент",
+  "loc.movingFrom" : "Сдвиг курсора с элемента",
   "loc.radio" : "Радиокнопка",
   "loc.scrolling.center.js" : "Скроллинг в центр (при помощи JavaScript)",
   "loc.scrolling.js" : "Скроллинг с помощью JavaScript",

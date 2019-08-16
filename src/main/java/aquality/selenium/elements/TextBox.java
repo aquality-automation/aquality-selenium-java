@@ -65,6 +65,11 @@ public class TextBox extends Element implements ITextBox {
         ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(""));
     }
 
+    @Override
+    public void unfocus() {
+        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(Keys.TAB));
+    }
+
     private void type(final String value, final boolean maskValueInLog) {
         info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
         getJsActions().highlightElement();

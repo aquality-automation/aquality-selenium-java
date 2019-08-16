@@ -38,6 +38,7 @@
   "loc.label" : "Label",
   "loc.link" : "Link",
   "loc.moving" : "Moving mouse to element",
+  "loc.movingFrom" : "Moving mouse from element",
   "loc.radio" : "RadioButton",
   "loc.scrolling.center.js" : "Scrolling to the center via JavaScript",
   "loc.scrolling.js" : "Scrolling via JavaScript",
