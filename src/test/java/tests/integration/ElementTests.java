@@ -6,6 +6,7 @@ import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
+import theinternet.forms.FormAuthenticationForm;
 import utils.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
@@ -17,7 +18,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
-import theinternet.forms.LoginForm;
 
 import java.util.List;
 
@@ -127,15 +127,15 @@ public class ElementTests extends BaseTest {
     @Test
     public void testTextBox() {
         navigate(TheInternetPage.LOGIN);
-        LoginForm loginForm = new LoginForm();
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
         SoftAssert softAssert = new SoftAssert();
 
-        ITextBox txbUsername = loginForm.getTxbUsername();
+        ITextBox txbUsername = authenticationForm.getTxbUsername();
         txbUsername.focus();
         txbUsername.type("wrong");
         softAssert.assertEquals(txbUsername.getValue(), "wrong");
 
-        ITextBox txbPass = loginForm.getTxbPassword();
+        ITextBox txbPass = authenticationForm.getTxbPassword();
         txbPass.sendKeys(Keys.NUMPAD0);
         softAssert.assertEquals(txbPass.getValue(), "0");
 
@@ -148,16 +148,16 @@ public class ElementTests extends BaseTest {
     @Test
     public void testSetInnerHtml() {
         navigate(TheInternetPage.LOGIN);
-        LoginForm loginForm = new LoginForm();
-        ITextBox txbUsername = loginForm.getTxbUsername();
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
+        ITextBox txbUsername = authenticationForm.getTxbUsername();
         Assert.assertTrue(txbUsername.state().waitForDisplayed());
 
-        ILabel lblLogin = loginForm.getLblLogin();
+        ILabel lblLogin = authenticationForm.getLblLogin();
         lblLogin.setInnerHtml("<p>123123</p>");
 
-        Assert.assertTrue(txbUsername.state().waitForNotExist(loginForm.getTimeout()));
+        Assert.assertTrue(txbUsername.state().waitForNotExist(authenticationForm.getTimeout()));
 
-        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
+        Assert.assertTrue(elementFactory.getLabel(By.xpath(authenticationForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
     }
 
     @Test

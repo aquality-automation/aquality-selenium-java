@@ -13,17 +13,19 @@ public class JavaScriptAlertsForm extends Form {
     private final IButton btnJsPrompt = getElementFactory().getButton(By.xpath("//button[@onclick='jsPrompt()']"), "Js Prompt");
     private final ILabel lblResult = getElementFactory().getLabel(By.id("result"), "Result");
 
-    public void clickJsAlertBtn(){
-        btnJsAlert.click();
-    }
-    public void clickJsConfirmBtn(){
-        btnJsConfirm.click();
-    }
-    public void clickJsPromptBtn(){
-        btnJsPrompt.click();
+    public IButton getBtnJsAlert() {
+        return btnJsAlert;
     }
 
-    public String getResultText(){
-        return lblResult.getText();
+    public IButton getBtnJsConfirm() {
+        return btnJsConfirm;
+    }
+
+    public IButton getBtnJsPrompt() {
+        return btnJsPrompt;
+    }
+
+    public ILabel getLblResult() {
+        return lblResult;
     }
 }

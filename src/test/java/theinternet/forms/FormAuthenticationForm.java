@@ -1,14 +1,15 @@
 package theinternet.forms;
 
-import aquality.selenium.forms.PageInfo;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 
-@PageInfo(id = "login", pageName = "Login")
-public class LoginForm extends Form {
+public class FormAuthenticationForm extends TheInternetForm {
+
+    public FormAuthenticationForm() {
+        super(By.id("login"), "login");
+    }
 
     private static final long DEFAULT_LOADING_TIMEOUT = 5L;
     private static final String XPATH_FORM_LOGIN = "//form[@id='login']";
@@ -35,5 +36,10 @@ public class LoginForm extends Form {
 
     public long getTimeout() {
         return DEFAULT_LOADING_TIMEOUT;
+    }
+
+    @Override
+    protected String getUri() {
+        return "/login";
     }
 }

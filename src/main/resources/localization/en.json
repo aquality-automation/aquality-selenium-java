@@ -1,5 +1,6 @@
 {
   "loc.browser.arguments.setting" : "Setting browser start arguments from JSON file: %s",
+  "loc.browser.goTo" : "Go to URL '%1$s'",
   "loc.browser.back" : "Return to previous page",
   "loc.browser.forward" : "Proceed to the next page",
   "loc.browser.caps.setting" : "Setting browser capabilities from JSON file: %s",
@@ -14,6 +15,9 @@
   "loc.browser.page.timeout" : "Page loading timed out",
   "loc.browser.ready" : "Browser '%1$s' ready...",
   "loc.browser.refresh" : "Refreshing the page",
+  "loc.browser.page.load.timeout" : "Set '%1$s' timeout in seconds for loading of pages",
+  "loc.browser.implicit.timeout" : "Set implicit timeout '%1$s' in seconds",
+  "loc.browser.script.timeout" : "Set async javascript execution timeout '%1$s' in seconds",
   "loc.browser.alert.fail" : "Failed while handling alert",
   "loc.element.wasnotfoundinstate" : "Element '%1$s' was not found in state %2$s during %3$s seconds",
   "loc.button" : "Button",

@@ -12,6 +12,7 @@ import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.DynamicControlsForm;
 import theinternet.forms.DynamicLoadingForm;
+import static utils.TimeUtil.*;
 
 public class ElementStateTests extends BaseTest {
 
@@ -25,7 +26,7 @@ public class ElementStateTests extends BaseTest {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = customWaitTime;
 
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isEnabled = new DynamicControlsForm().getTxbInput().state().waitForEnabled(waitTime);
         double duration = calculateDuration(startTime);
 
@@ -38,7 +39,7 @@ public class ElementStateTests extends BaseTest {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
 
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isEnabled = new DynamicControlsForm().getTxbInput().state().waitForEnabled();
         double duration = calculateDuration(startTime);
 
@@ -55,7 +56,7 @@ public class ElementStateTests extends BaseTest {
         dynamicControlsForm.getBtnEnable().click();
         dynamicControlsForm.getTxbInput().state().waitForEnabled();
 
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isDisabled = dynamicControlsForm.getTxbInput().state().waitForNotEnabled(waitTime);
         double duration = calculateDuration(startTime);
 
@@ -82,16 +83,12 @@ public class ElementStateTests extends BaseTest {
         dynamicControlsForm.getBtnEnable().click();
         dynamicControlsForm.getTxbInput().state().waitForEnabled();
 
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isDisabled = dynamicControlsForm.getTxbInput().state().waitForNotEnabled();
         double duration = calculateDuration(startTime);
 
         Assert.assertFalse(isDisabled);
         Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
-    }
-
-    private double calculateDuration(long startTimeNanoSec){
-        return (System.nanoTime() - startTimeNanoSec)/Math.pow(10,9);
     }
 
     @Test
@@ -148,7 +145,7 @@ public class ElementStateTests extends BaseTest {
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
         long waitTime = customWaitTime;
         dynamicControlsForm.getBtnRemove().click();
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isMissed = dynamicControlsForm.getChbACheckbox().state().waitForNotExist(waitTime);
         double duration = calculateDuration(startTime);
 
@@ -163,7 +160,7 @@ public class ElementStateTests extends BaseTest {
         long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
         dynamicControlsForm.getBtnRemove().click();
 
-        long startTime = System.nanoTime();
+        long startTime = getCurrentTime();
         boolean isMissed = dynamicControlsForm.getChbACheckbox().state().waitForNotExist();
         double duration = calculateDuration(startTime);
 

@@ -1,108 +1,208 @@
 package tests.integration;
 
-import aquality.selenium.browser.BrowserManager;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.browser.BrowserName;
+import aquality.selenium.browser.JavaScript;
+import aquality.selenium.configuration.Configuration;
+import aquality.selenium.utils.JsonFile;
 import automationpractice.forms.SliderForm;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
+import theinternet.forms.DynamicContentForm;
+import theinternet.forms.FormAuthenticationForm;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
+import static utils.FileUtil.getResourceFileByName;
+import static utils.TimeUtil.getCurrentTimeInSeconds;
 
 
 public class BrowserTests extends BaseTest {
 
     @Test
-    public void testBrowserShouldBeOpenedAfterQuitAndSecondStart(){
-        BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        BrowserManager.getBrowser().quit();
-        BrowserManager.getBrowser().goTo(TheInternetPage.CHECKBOXES.getAddress());
-        BrowserManager.getBrowser().quit();
+    public void testShouldBePossibleToStartBrowserAndNavigate(){
+        getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        Assert.assertEquals(getBrowser().getCurrentUrl(), TheInternetPage.LOGIN.getAddress());
     }
 
     @Test
-    public void testWindowSize() {
-        Dimension initialSize = BrowserManager.getBrowser().getDriver().manage().window().getSize();
+    public void testBrowserShouldKeepAndProvideWebDriver(){
+        getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        Assert.assertEquals(getBrowser().getDriver().getCurrentUrl(), TheInternetPage.LOGIN.getAddress());
+    }
+
+    @Test
+    public void testShouldBePossibleToNavigateBackAndForward() {
+        String firstNavigationUrl = TheInternetPage.LOGIN.getAddress();
+        String secondNavigationUrl = TheInternetPage.CHECKBOXES.getAddress();
+
+        getBrowser().goTo(firstNavigationUrl);
+        Assert.assertEquals(getBrowser().getCurrentUrl(), firstNavigationUrl);
+
+        getBrowser().goTo(secondNavigationUrl);
+        Assert.assertEquals(getBrowser().getCurrentUrl(), secondNavigationUrl);
+
+        getBrowser().goBack();
+        Assert.assertEquals(getBrowser().getCurrentUrl(), firstNavigationUrl);
+
+        getBrowser().goForward();
+        Assert.assertEquals(getBrowser().getCurrentUrl(), secondNavigationUrl);
+    }
+
+    @Test
+    public void testShouldBePossibleToOpenNewBrowserAfterQuit(){
+        getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        getBrowser().quit();
+
+        String currentUrl = getBrowser().getCurrentUrl();
+        Assert.assertEquals("data:,", currentUrl);
+    }
+
+    @Test
+    public void testBrowserShouldBePossibleToRefreshPage(){
+        DynamicContentForm dynamicContentForm = new DynamicContentForm();
+        getBrowser().goTo(dynamicContentForm.getUrl());
+        String firstItemText = dynamicContentForm.getFirstContentItem().getText();
+
+        getBrowser().refresh();
+        getBrowser().waitForPageToLoad();
+        String firstItemTextAfterRefresh = dynamicContentForm.getFirstContentItem().getText();
+        Assert.assertNotEquals(firstItemText, firstItemTextAfterRefresh);
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void testShouldBePossibleToSetPageLoadTimeout(){
+        getBrowser().setPageLoadTimeout(1L);
+        String urlAquality = "https://github.com/aquality-automation";
+        getBrowser().goTo(urlAquality);
+    }
+
+    @Test
+    public void testShouldBePossibleToMakeScreenshot() throws IOException {
+        String templateFileName = Configuration.getInstance().getBrowserProfile().isRemote() ?
+                "template_remote_screen1.png" : "template_screen1.png";
+        File templateImageFile = getResourceFileByName(templateFileName);
+        byte[] expectedImageAsBytes = Files.readAllBytes(templateImageFile.toPath());
+
+        getBrowser().goTo(new FormAuthenticationForm().getUrl());
+        getBrowser().waitForPageToLoad();
+
+        Assert.assertEquals(getBrowser().getScreenshot(), expectedImageAsBytes);
+    }
+
+    @Test
+    public void testShouldBePossibleToExecuteJavaScript(){
+        String url = new DynamicContentForm().getUrl();
+        getBrowser().goTo(url);
+        getBrowser().waitForPageToLoad();
+
+        String currentUrl = String.valueOf(getBrowser().executeScript("return window.location.href"));
+        Assert.assertEquals(currentUrl, url);
+    }
+
+    @Test
+    public void testShouldBePossibleToExecuteJavaScriptFile() throws IOException {
+        String url = new DynamicContentForm().getUrl();
+        getBrowser().goTo(url);
+        getBrowser().waitForPageToLoad();
+
+        String currentUrl = String.valueOf(getBrowser().executeScript(getResourceFileByName("js_current_url.js")));
+        Assert.assertEquals(currentUrl, url);
+    }
+
+    @Test
+    public void testShouldBePossibleToExecuteJavaScriptPredefinedFile() {
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
+        getBrowser().goTo(authenticationForm.getUrl());
+        getBrowser().waitForPageToLoad();
+
+        String valueToSet = "username";
+        getBrowser().executeScript(JavaScript.SET_VALUE, authenticationForm.getTxbUsername().getElement(), valueToSet);
+        Assert.assertEquals(authenticationForm.getTxbUsername().getValue(), valueToSet);
+    }
+
+    @Test
+    public void testShouldBePossibleToSetWindowSize() {
+        Dimension initialSize = getBrowser().getDriver().manage().window().getSize();
         Dimension testedSize = new Dimension(600, 600);
 
-        BrowserManager.getBrowser().setWindowSize(testedSize.width, testedSize.height);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height < initialSize.height);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height >= testedSize.height);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().width < initialSize.width);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().width >= testedSize.width);
+        getBrowser().setWindowSize(testedSize.width, testedSize.height);
+        Assert.assertTrue(getBrowser().getDriver().manage().window().getSize().height < initialSize.height);
+        Assert.assertTrue(getBrowser().getDriver().manage().window().getSize().width < initialSize.width);
+        Assert.assertTrue(getBrowser().getDriver().manage().window().getSize().width >= testedSize.width);
 
-        BrowserManager.getBrowser().maximize();
-        Assert.assertNotEquals(BrowserManager.getBrowser().getDriver().manage().window().getSize(), testedSize);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().height > testedSize.height);
-        Assert.assertTrue(BrowserManager.getBrowser().getDriver().manage().window().getSize().width > testedSize.width);
+        getBrowser().maximize();
+        Assert.assertNotEquals(getBrowser().getDriver().manage().window().getSize(), testedSize);
+        Assert.assertTrue(getBrowser().getDriver().manage().window().getSize().height > testedSize.height);
+        Assert.assertTrue(getBrowser().getDriver().manage().window().getSize().width > testedSize.width);
 
-        BrowserManager.getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
-        Assert.assertEquals(BrowserManager.getBrowser().getDriver().manage().window().getSize(), defaultSize);
+        getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
+        Assert.assertEquals(getBrowser().getDriver().manage().window().getSize(), defaultSize);
     }
 
     @Test
-    public void testPageNavigation() {
-        BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.LOGIN.getAddress());
-
-        BrowserManager.getBrowser().goTo(TheInternetPage.CHECKBOXES.getAddress());
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.CHECKBOXES.getAddress());
-
-        BrowserManager.getBrowser().goBack();
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.LOGIN.getAddress());
-
-        BrowserManager.getBrowser().goForward();
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.CHECKBOXES.getAddress());
-    }
-
-    @Test
-    public void testScrollWindowBy(){
-        BrowserManager.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+    public void testShouldBePossibleToScrollWindowBy(){
+        getBrowser().goTo(URL_AUTOMATIONPRACTICE);
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
         int formHeight = sliderForm.getFormSize().getHeight();
-        BrowserManager.getBrowser().scrollWindowBy(0, formHeight);
+        getBrowser().scrollWindowBy(0, formHeight);
         Assert.assertEquals(initialY - sliderForm.getFormPointInViewPort().getY(), formHeight);
     }
 
     @Test
-    public void testScreenshot() {
-        String baseDir = System.getProperty("user.dir") != null ? System.getProperty("user.dir") : System.getProperty("project.basedir");
-        BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        SoftAssert softAssert = new SoftAssert();
-        BrowserManager.getBrowser().waitForPageToLoad();
-        String screensSubPath = "/src/test/screen/";
-        File screensDir = Paths.get(baseDir, screensSubPath).toFile();
-        if(!screensDir.mkdir()){
-            Logger.getInstance().warn("failed to create screens dir");
-        }
-        File screenshotFile = Paths.get(screensDir.getPath(), "screen1.png").toFile();
-        try (FileOutputStream fos = new FileOutputStream(screenshotFile)) {
-            fos.write(BrowserManager.getBrowser().getScreenshot());
-        } catch (IOException e) {
-            Logger.getInstance().fatal(e.getMessage(), e);
-        }
-        softAssert.assertTrue(screenshotFile.exists(), "screenshot doesn't exist at ".concat(screenshotFile.getAbsolutePath()));
-        delete(screenshotFile);
-        delete(screensDir);
-        softAssert.assertFalse(screenshotFile.exists(), "screenshot still exist after deletion at ".concat(screenshotFile.getPath()));
-        softAssert.assertAll();
+    public void testShouldBePossibleToGetBrowserName() {
+        BrowserName expectedBrowserName = BrowserName.valueOf(getSettings().getValue("/browserName").toString().toUpperCase());
+        Assert.assertEquals(getBrowser().getBrowserName(), expectedBrowserName);
     }
 
-    private void delete(File file){
+    @Test
+    public void testShouldBePossibleToSetImplicitWait(){
+        long waitTime = 5L;
+        long operationTime = 2L;
+        getBrowser().setImplicitWaitTimeout(waitTime);
+
+        double startTime = getCurrentTimeInSeconds();
+        double endTime = 0L;
         try{
-            Files.delete(file.toPath());
+            getBrowser().getDriver().findElement(By.id("not_exist_element"));
+        }catch (NoSuchElementException e){
+            endTime = getCurrentTimeInSeconds();
+        }
+        Assert.assertTrue((endTime - startTime) < waitTime + operationTime);
+        Assert.assertTrue((endTime - startTime) >= waitTime);
+    }
+
+    @Test
+    public void testShouldBePossibleToGetDownloadDir(){
+        List<String> listOfDownloadDirs = new ArrayList<>();
+        listOfDownloadDirs.add("/driverSettings/chrome/options/download.default_directory");
+        listOfDownloadDirs.add("/driverSettings/firefox/options/browser.download.dir");
+        listOfDownloadDirs.add("/driverSettings/safari/downloadDir");
+
+        boolean isDirFound = listOfDownloadDirs.stream()
+                .anyMatch(dir -> String.valueOf(getSettings().getValue(dir)).contains(getBrowser().getDownloadDirectory()));
+
+        Assert.assertTrue(isDirFound);
+    }
+
+    private JsonFile getSettings() {
+        String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
+        try {
+            return new JsonFile(getResourceFileByName(settingsProfile));
         } catch (IOException e) {
-            Logger.getInstance().warn(e.getMessage());
+            throw new UncheckedIOException(e);
         }
     }
 }
