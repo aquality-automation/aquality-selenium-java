@@ -3,13 +3,14 @@ package aquality.selenium.elements;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.JavaScript;
+import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.logger.Logger;
-import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -79,29 +80,31 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ExpectedCount count,
+    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
                                                      ElementState state) {
         return findElementsCore(locator, supplier, state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ElementsCount count) {
         return findElementsCore(locator, getDefaultElementSupplier(clazz), state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ElementsCount count) {
         return findElements(locator, type.getClazz(), state, count);
     }
 
     private  <T extends IElement> List<T> findElementsCore(By locator, IElementSupplier<T> supplier,
-                                                           ElementState state, ExpectedCount count) {
+                                                           ElementState state, ElementsCount count) {
         List<T> elements = new ArrayList<>();
         switch (count) {
             case ZERO:
                 break;
             case MORE_THEN_ZERO:
-                ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty());
+                WebDriverWait webDriverWait = new WebDriverWait(getBrowser().getDriver(),
+                        Configuration.getInstance().getTimeoutConfiguration().getCondition());
+                webDriverWait.until(driver -> !driver.findElements(locator).isEmpty());
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));

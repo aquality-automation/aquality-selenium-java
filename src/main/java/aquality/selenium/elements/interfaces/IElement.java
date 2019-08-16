@@ -1,6 +1,5 @@
 package aquality.selenium.elements.interfaces;
 
-import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;
@@ -31,12 +30,6 @@ public interface IElement extends IParent {
      * @return Element locator
      */
     By getLocator();
-
-    /**
-     * get element state that used for interactions
-     * @return state of element that used for interactions
-     */
-    ElementState getElementState();
 
     /**
      * get element name
@@ -113,9 +106,9 @@ public interface IElement extends IParent {
     void setInnerHtml(String value);
 
     /**
-     * Right Click on the element
+     * Focuses the element
      */
-    void clickRight();
+    void focus();
 
     /**
      * Gets object for class designed to perform javascript actions

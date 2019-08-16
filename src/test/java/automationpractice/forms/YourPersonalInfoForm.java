@@ -2,7 +2,7 @@ package automationpractice.forms;
 
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
@@ -33,16 +33,16 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public Integer getNumOfDays(){
-        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementState.EXISTS_IN_ANY_STATE, ExpectedCount.MORE_THEN_ZERO);
+        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementState.EXISTS_IN_ANY_STATE, ElementsCount.MORE_THEN_ZERO);
         return lblDays.size();
     }
 
     public void selectState(String state){
-        cmbState.selectByText(state);
+        cmbState.clickAndSelectByText(state);
     }
 
     public void selectDay(Integer day){
-        cmbSelectDay.selectByValue(String.valueOf(day));
+        cmbSelectDay.clickAndSelectByValue(String.valueOf(day));
     }
 
     public boolean getNewsCheckBoxState(){
@@ -54,6 +54,6 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public void setNewsChb(){
-        chbNews.check();
+        chbNews.getJsActions().check();
     }
 }

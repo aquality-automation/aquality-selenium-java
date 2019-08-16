@@ -2,7 +2,7 @@ package aquality.selenium.elements.interfaces;
 
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public interface IElementFactory {
      * @param state visibility state of target elements
      * @return list of elements
      */
-    <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ExpectedCount count,
+    <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
                                               ElementState state);
 
     /**
@@ -113,7 +113,7 @@ public interface IElementFactory {
      * @param count type of expected count of elements
      * @return list of elements
      */
-    <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ExpectedCount count);
+    <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ElementsCount count);
 
     /**
      * Find list of elements
@@ -124,7 +124,7 @@ public interface IElementFactory {
      * @param count type of expected count of elements
      * @return list of elements
      */
-    <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ExpectedCount count);
+    <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ElementsCount count);
 
     /**
      * Find list of elements
@@ -134,7 +134,7 @@ public interface IElementFactory {
      * @return list of elements
      */
     default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz) {
-        return findElements(locator, clazz, ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
+        return findElements(locator, clazz, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
     }
 
     /**
@@ -145,7 +145,7 @@ public interface IElementFactory {
      * @param count type of expected count of elements
      * @return list of elements
      */
-    default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ExpectedCount count) {
+    default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementsCount count) {
         return findElements(locator, clazz, ElementState.DISPLAYED, count);
     }
 
@@ -157,7 +157,7 @@ public interface IElementFactory {
      * @return list of elements
      */
     default <T extends IElement> List<T> findElements(By locator, ElementType type) {
-        return findElements(locator, type, ExpectedCount.MORE_THEN_ZERO);
+        return findElements(locator, type, ElementsCount.MORE_THEN_ZERO);
     }
 
     /**
@@ -168,7 +168,7 @@ public interface IElementFactory {
      * @param count type of expected count of elements
      * @return list of elements
      */
-    default  <T extends IElement> List<T> findElements(By locator, ElementType type, ExpectedCount count) {
+    default  <T extends IElement> List<T> findElements(By locator, ElementType type, ElementsCount count) {
         return findElements(locator, type, ElementState.DISPLAYED, count);
     }
 }

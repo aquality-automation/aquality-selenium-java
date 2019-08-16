@@ -1,4 +1,4 @@
-package aquality.selenium.waitings;
+package utils;
 
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
@@ -67,14 +67,14 @@ public final class ConditionalWait {
      * @return Object which waiting for or null - is exceptions occured
      */
     public static <F, T> T waitFor(Function<F, T> condition, F waitWith, long timeOutInSeconds) {
-        getBrowser().setImplicitWaitTimeOut(0L);
+        getBrowser().setImplicitWaitTimeout(0L);
         Wait<F> wait = new FluentWait<>(waitWith)
                 .withTimeout(Duration.ofSeconds(timeOutInSeconds))
                 .pollingEvery(Duration.ofMillis(configuration.getTimeoutConfiguration().getPollingInterval()));
         try {
             return wait.until(condition);
         } finally {
-            getBrowser().setImplicitWaitTimeOut(configuration.getTimeoutConfiguration().getImplicit());
+            getBrowser().setImplicitWaitTimeout(configuration.getTimeoutConfiguration().getImplicit());
         }
     }
 
