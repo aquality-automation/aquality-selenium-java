@@ -10,7 +10,7 @@ public class JavaScriptAlertsForm extends TheInternetForm {
     private final IButton btnJsPrompt = getElementFactory().getButton(By.xpath("//button[@onclick='jsPrompt()']"), "Js Prompt");
     private final ILabel lblResult = getElementFactory().getLabel(By.id("result"), "Result");
 
-    JavaScriptAlertsForm() {
+    public JavaScriptAlertsForm() {
         super(By.id("content"), "JavaScript Alerts");
     }
 
