@@ -41,4 +41,13 @@ public interface ITextBox extends IElement {
      */
     String getValue();
 
+    /**
+     * Focuses on the element using send keys
+     */
+    void focus();
+
+    /**
+     * Removes focus from the element using send keys
+     */
+    void unfocus();
 }
