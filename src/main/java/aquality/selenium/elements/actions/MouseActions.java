@@ -9,7 +9,6 @@ import aquality.selenium.logger.Logger;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.function.BiConsumer;
 
@@ -59,9 +58,8 @@ public class MouseActions {
      */
     public void moveMouseFromElement() {
         infoLoc("loc.movingFrom");
-        RemoteWebElement remoteWebElement = element.getElement();
-        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.moveToElement(remoteWebElement,
-                -remoteWebElement.getSize().width / 2, -remoteWebElement.getSize().height / 2).build().perform())));
+        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.moveToElement(el,
+                -el.getSize().width / 2, -el.getSize().height / 2).build().perform())));
     }
 
     /**
