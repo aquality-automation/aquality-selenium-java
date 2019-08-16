@@ -7,10 +7,9 @@ import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.utils.ElementActionRetrier;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class MouseActions {
 
@@ -33,7 +32,7 @@ public class MouseActions {
     public void click() {
         infoLoc("loc.clicking");
         new JsActions(element, type).highlightElement();
-        ElementActionRetrier.doWithRetry(() -> performAction((actions, el) -> actions.click().build().perform()));
+        performAction(actions -> actions.click());
     }
 
     /**
@@ -41,7 +40,7 @@ public class MouseActions {
      */
     public void rightClick() {
         infoLoc("loc.clicking.right");
-        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.contextClick(el).build().perform())));
+        performAction(actions -> actions.contextClick(element.getElement()));
     }
 
     /**
@@ -50,7 +49,7 @@ public class MouseActions {
     public void moveMouseToElement() {
         infoLoc("loc.moving");
         element.getElement().getCoordinates().inViewPort();
-        ElementActionRetrier.doWithRetry(() -> performAction((actions, el) -> actions.moveToElement(el).build().perform()));
+        performAction(actions -> actions.moveToElement(element.getElement()));
     }
 
     /**
@@ -58,8 +57,8 @@ public class MouseActions {
      */
     public void moveMouseFromElement() {
         infoLoc("loc.movingFrom");
-        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.moveToElement(el,
-                -el.getSize().width / 2, -el.getSize().height / 2).build().perform())));
+        performAction(actions -> actions.moveToElement(element.getElement(),
+                -element.getElement().getSize().width / 2, -element.getElement().getSize().height / 2));
     }
 
     /**
@@ -68,12 +67,13 @@ public class MouseActions {
     public void doubleClick() {
         infoLoc("loc.clicking.double");
         ElementActionRetrier.doWithRetry(() -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
-        ElementActionRetrier.doWithRetry(() -> performAction(((actions, el) -> actions.doubleClick(el).build().perform())));
+        performAction(actions -> actions.doubleClick(element.getElement()));
     }
 
-    private void performAction(BiConsumer<Actions, WebElement> consumer) {
-        Actions actions = new Actions(getBrowser().getDriver());
-        consumer.accept(actions.moveToElement(element.getElement()), element.getElement());
+    private void performAction(Function<Actions, Actions> function) {
+        Actions actions = new Actions(getBrowser().getDriver()).moveToElement(element.getElement());
+        ElementActionRetrier.doWithRetry(() ->
+                        function.apply(actions).build().perform());
     }
 
     /**
