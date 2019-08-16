@@ -175,11 +175,10 @@ public class ElementTests extends BaseTest {
         ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "username");
 
         String propertyName = "font-family";
-        String expectedCssValue = "\"Helvetica Neue\", Helvetica, Helvetica, Arial, sans-serif";
+        String expectedCssValue = "Helvetica";
 
-        Assert.assertEquals(txbUsername.getCssValue(propertyName), expectedCssValue);
-
-        Assert.assertEquals(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT), expectedCssValue);
+        Assert.assertTrue(txbUsername.getCssValue(propertyName).contains(expectedCssValue));
+        Assert.assertTrue(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT).contains(expectedCssValue));
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)

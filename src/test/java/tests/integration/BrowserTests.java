@@ -62,11 +62,12 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToOpenNewBrowserAfterQuit(){
-        getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        String url = new FormAuthenticationForm().getUrl();
+        getBrowser().goTo(url);
         getBrowser().quit();
 
         String currentUrl = getBrowser().getCurrentUrl();
-        Assert.assertEquals("data:,", currentUrl);
+        Assert.assertFalse(currentUrl.equalsIgnoreCase(url));
     }
 
     @Test
