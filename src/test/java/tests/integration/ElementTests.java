@@ -3,10 +3,10 @@ package tests.integration;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -27,11 +27,11 @@ public class ElementTests extends BaseTest {
     public void testComboBox() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> values = comboBox.getValuesList();
+        List<String> values = comboBox.getValues();
         comboBox.selectByIndex(values.size() - 1);
         Assert.assertEquals(comboBox.getSelectedText(), values.get(values.size() - 1));
 
-        comboBox.selectOptionThatContainsText("1");
+        comboBox.selectByContainingText("1");
         Assert.assertEquals(comboBox.getSelectedText(), values.get(1));
 
         String selectedText = comboBox.getSelectedText();
@@ -45,9 +45,9 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = elementFactory.getComboBox(By.id("dropdown"), "Dropdown");
         comboBox.state().waitForDisplayed();
-        List<String> values = comboBox.getValuesList();
+        List<String> values = comboBox.getValues();
 
-        comboBox.selectOptionThatContainsValue("2");
+        comboBox.selectByContainingValue("2");
         Assert.assertEquals(comboBox.getSelectedText(), values.get(2));
     }
 
@@ -55,8 +55,8 @@ public class ElementTests extends BaseTest {
     public void testComboBoxGetValuesJs() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> valuesByJs = comboBox.getJsActions().getValuesList();
-        List<String> valuesBySelenium = comboBox.getValuesList();
+        List<String> valuesByJs = comboBox.getJsActions().getValues();
+        List<String> valuesBySelenium = comboBox.getValues();
         Assert.assertTrue(valuesByJs.containsAll(valuesBySelenium));
     }
 
@@ -83,7 +83,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
+                ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.isChecked();
@@ -164,7 +164,7 @@ public class ElementTests extends BaseTest {
     public void testRightClick() {
         BrowserManager.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
         ILabel label = elementFactory.getLabel(By.xpath("//span[contains(@class, 'context')]"), "Right click");
-        label.clickRight();
+        label.getMouseActions().rightClick();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();
         Assert.assertTrue(present, "");
     }

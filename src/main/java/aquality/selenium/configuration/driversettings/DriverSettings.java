@@ -38,7 +38,7 @@ abstract class DriverSettings implements IDriverSettings {
         return getDriverSettingsPath(browserName) + "/" + capabilityType.getKey();
     }
 
-    private String getDriverSettingsPath(BrowserName browserName){
+    protected String getDriverSettingsPath(BrowserName browserName){
         return String.format("/driverSettings/%1$s", browserName.toString().toLowerCase());
     }
 

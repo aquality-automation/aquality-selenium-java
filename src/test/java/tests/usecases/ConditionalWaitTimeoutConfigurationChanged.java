@@ -1,7 +1,7 @@
 package tests.usecases;
 
 import aquality.selenium.browser.BrowserManager;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.*;

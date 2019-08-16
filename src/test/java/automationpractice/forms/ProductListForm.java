@@ -4,7 +4,7 @@ import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -23,7 +23,7 @@ public class ProductListForm extends Form {
     private static final String XPATH_PRODUCT = "//ul[@id='homefeatured']//li";
 
     public List<ILabel> getProductContainerLabels(){
-        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
+        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
     }
 
     public ILabel getLblFirstProduct(){

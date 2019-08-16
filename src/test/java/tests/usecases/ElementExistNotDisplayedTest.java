@@ -3,7 +3,7 @@ package tests.usecases;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
-import aquality.selenium.waitings.ConditionalWait;
+import utils.ConditionalWait;
 import automationpractice.forms.SliderForm;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
