@@ -1,13 +1,11 @@
 package theinternet.forms;
 
 import aquality.selenium.elements.interfaces.ICheckBox;
-import aquality.selenium.forms.PageInfo;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 
-@PageInfo(id = "content", pageName = "Dynamic Controls")
 public class DynamicControlsForm extends Form {
 
     private final ITextBox txbInput = getElementFactory().getTextBox(By.xpath("//input[@type='text']"), "Input");
@@ -16,6 +14,9 @@ public class DynamicControlsForm extends Form {
     private final IButton btnRemove = getElementFactory().getButton(By.xpath("//button[contains(@onclick, 'swapCheckbox()')]"), "Remove");
     private final ICheckBox chbACheckbox = getElementFactory().getCheckBox(By.xpath("//div[@id='checkbox']"), "A Checkbox");
 
+    public DynamicControlsForm() {
+        super(By.id("content"), "Dynamic Controls");
+    }
 
     public ITextBox getTxbInput() {
         return txbInput;

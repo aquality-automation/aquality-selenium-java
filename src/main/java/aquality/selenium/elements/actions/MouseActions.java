@@ -9,7 +9,7 @@ import aquality.selenium.logger.Logger;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.interactions.Actions;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class MouseActions {
 
@@ -70,7 +70,7 @@ public class MouseActions {
         performAction(actions -> actions.doubleClick(element.getElement()));
     }
 
-    private void performAction(Function<Actions, Actions> function) {
+    private void performAction(UnaryOperator<Actions> function) {
         Actions actions = new Actions(getBrowser().getDriver()).moveToElement(element.getElement());
         ElementActionRetrier.doWithRetry(() ->
                         function.apply(actions).build().perform());

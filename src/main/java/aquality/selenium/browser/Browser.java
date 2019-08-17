@@ -1,7 +1,7 @@
 package aquality.selenium.browser;
 
+import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
-import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import org.apache.commons.io.IOUtils;
@@ -24,15 +24,13 @@ public class Browser {
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;
     private Long timeoutImpl;
-    private BrowserName browserName;
-    private IDriverSettings driverSettings;
+    private IConfiguration configuration;
 
 
-    public Browser(RemoteWebDriver remoteWebDriver, IDriverSettings driverSettings, ITimeoutConfiguration timeouts) {
+    public Browser(RemoteWebDriver remoteWebDriver, IConfiguration configuration) {
         webDriver = remoteWebDriver;
-        this.driverSettings = driverSettings;
-        this.browserName = driverSettings.getBrowserName();
-        this.timeouts = timeouts;
+        this.configuration = configuration;
+        this.timeouts = configuration.getTimeoutConfiguration();
         this.timeoutImpl = timeouts.getImplicit();
         getDriver().manage().timeouts().implicitlyWait(timeoutImpl, TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
@@ -272,7 +270,7 @@ public class Browser {
      * @return path to download directory
      */
     public String getDownloadDirectory() {
-        return driverSettings.getDownloadDir();
+        return configuration.getBrowserProfile().getDriverSettings().getDownloadDir();
     }
 
     /**
@@ -280,7 +278,7 @@ public class Browser {
      * @return name
      */
     public final BrowserName getBrowserName() {
-        return browserName;
+        return configuration.getBrowserProfile().getBrowserName();
     }
 
     private Long getImplicitWaitTimeout() {
