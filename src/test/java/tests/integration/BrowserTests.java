@@ -186,7 +186,7 @@ public class BrowserTests extends BaseTest {
 
         boolean isDirFound = listOfDownloadDirs.stream()
                 .anyMatch(dir -> getBrowser().getDownloadDirectory().toLowerCase().contains(dir.toLowerCase()));
-        Assert.assertTrue(isDirFound);
+        Assert.assertTrue(isDirFound, "Browser download directory is not correct " + getBrowser().getDownloadDirectory());
     }
 
     private JsonFile getSettings() {
