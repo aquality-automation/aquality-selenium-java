@@ -104,12 +104,12 @@ Settings файл содержит в себе несколько секций, 
 - [en](./src/main/resources/localization/en.json) - английский
 - [ru](./src/main/resources/localization/ru.json) - русский
 
-Значение языка логирования устанавливается в параметре [logger.language](./src/main/resources/settings.json)
+Значение языка логирования устанавливается в параметре [logger.language](./src/main/resources/settings.json).
 
 #### 2.7. CLOUD USAGE
 
 Для того, чтобы настроить запуск на облачной платформе (например, BrowserStack, Saucelabs и т.д.) необходимо в конфигурационном файле [settings.json](./src/main/resources/settings.json) установить корректное значение URL для подключения к сервису в параметр `remoteConnectionUrl`, а также убедиться, что параметр `isRemote` равен **true**.
-Например, для BrowserStack параметр может иметь вид [https://USERNAME:AUTOMATE_KEY@hub-cloud.browserstack.com/wd/hub](https://USERNAME:AUTOMATE_KEY@hub-cloud.browserstack.com/wd/hub)
+Например, для BrowserStack параметр может иметь вид [https://USERNAME:AUTOMATE_KEY@hub-cloud.browserstack.com/wd/hub](https://USERNAME:AUTOMATE_KEY@hub-cloud.browserstack.com/wd/hub).
 
 #### 2.8. ACTIONS HIGHLIGHTING
 
@@ -172,7 +172,7 @@ Browser browser = BrowserManager.getBrowser()
 В процессе создания Browser и в частности WebDriver используются реализации интерфейса `IDriverSettings`. Реализация включает метод getCapabilities, которые впоследствии устанавливаются в WebDriver при его инициализации. 
 Если вы пользуетесь `BrowserFactory` по умолчанию, список capabilities будет сформирован на основании информации в [settings.json](./src/main/resources/settings.json) файле.
 
-Пример с использованием пользовательских capabilities представлен зедсь [testShouldBePossibleToSetFactory](./src/test/java/tests/usecases/BrowserFactoryTests.java)
+Пример с использованием пользовательских capabilities представлен зедсь [testShouldBePossibleToSetFactory](./src/test/java/tests/usecases/BrowserFactoryTests.java).
 
 
 
@@ -205,7 +205,7 @@ Browser browser = BrowserManager.getBrowser()
 BrowserManager.getBrowser().handleAlert(AlertActions.ACCEPT);
 ```
 
-Больше примеров использования можно найти здесь [AlertTests.java](./src/test/java/tests/integration/AlertTests.java)
+Больше примеров использования можно найти здесь [AlertTests.java](./src/test/java/tests/integration/AlertTests.java).
 
 #### 3.7. SCREENSHOTS
 
@@ -233,7 +233,7 @@ ElementFactory` содержит ряд методов, которые возв�
 
 #### 4.2. CUSTOM ELEMENTS
 
-Пользователь имеет возможность создать свой элемент или расширить имеющийся по умолчанию. Для этих целей `ElementFactory` предоставляет метод \&lt;T extends IElement\&gt; T getCustomElement. Достаточно или реализовать `IElement` интерфейс или расширить имеющийся класс элемента. С примером расширения и последующего использования можно ознакомиться в классе [CustomElementTests](./src/test/java/tests/usecases/CustomElementTests.java)
+Пользователь имеет возможность создать свой элемент или расширить имеющийся по умолчанию. Для этих целей `ElementFactory` предоставляет метод \&lt;T extends IElement\&gt; T getCustomElement. Достаточно или реализовать `IElement` интерфейс или расширить имеющийся класс элемента. С примером расширения и последующего использования можно ознакомиться в классе [CustomElementTests](./src/test/java/tests/usecases/CustomElementTests.java).
 
 #### 4.3. LIST OF ELEMENTS
 
@@ -243,7 +243,7 @@ ElementFactory` содержит ряд методов, которые возв�
 List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ElementType.CHECKBOX);
 ```
 
-С другими примерами работы с `ElementFactory` и элементами можно здесь [ElementTests.java](./src/test/java/tests/integration/ElementTests.java)
+С другими примерами работы с `ElementFactory` и элементами можно здесь [ElementTests.java](./src/test/java/tests/integration/ElementTests.java).
 
 
 #### 4.4. STATES OF ELEMENTS
@@ -263,7 +263,7 @@ elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
 getTxbInput().state().waitForEnabled();
 getTxbInput().state().isDisplayed();
 ```
-Больше примеров можно увидеть в классе [ElementStateTests](./src/test/java/tests/integration/ElementStateTests.java)
+Больше примеров можно увидеть в классе [ElementStateTests](./src/test/java/tests/integration/ElementStateTests.java).
 
 ### **5. FORMS**
 
@@ -277,7 +277,7 @@ public class SliderForm extends Form {
 ```
 Здесь id = &quot;slider\_row&quot; устанавливает локатор, который будет использован при проверке открытия страницы/формы, используя метод `isFormDisplayed()` класса [Form](./src/main/java/aquality/selenium/forms/Form.java).
 
-Пример теста с использованием Page Objects здесь [ShoppingCartTest.java](./src/test/java/tests/usecases/ShoppingCartTest.java)
+Пример теста с использованием Page Objects здесь [ShoppingCartTest.java](./src/test/java/tests/usecases/ShoppingCartTest.java).
 
 
 ### **6. JAVASCRIPT EXECUTION**
@@ -287,13 +287,13 @@ public class SliderForm extends Form {
 browser.executeScript(final String script, Object... arguments).
 ```
 
-Решение содержит достаточное количество наиболее используемых скриптов при выполнении автоматизации тестирования. Список скриптов представлен перечислением JavaScript. Сами скрипты расположены в директории ресурсов /src/main/resources/js
+Решение содержит достаточное количество наиболее используемых скриптов при выполнении автоматизации тестирования. Список скриптов представлен перечислением JavaScript. Сами скрипты расположены в директории ресурсов /src/main/resources/js.
 
-Примеры использования метода имеются в классе [BrowserTests](./src/test/java/tests/integration/BrowserTests.java)
+Примеры использования метода имеются в классе [BrowserTests](./src/test/java/tests/integration/BrowserTests.java).
 
 ### **7. JSON FILE**
 
-Aquality Selenium использует для своей работы и предоставляет доступ к классу [JsonFile](./src/main/java/aquality/selenium/utils/JsonFile.java)
+Aquality Selenium использует для своей работы и предоставляет доступ к классу [JsonFile](./src/main/java/aquality/selenium/utils/JsonFile.java).
 Данный класс предоставляет удобные методы для работы с JSON файлами вашего проекта.
 Например, если вы захотите хранить URL сайта с которым вы работаете как параметр конфигурации вы сможете считывать значения из JSON при помощи указанного класса:
 ```
