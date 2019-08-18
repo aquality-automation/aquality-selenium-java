@@ -183,6 +183,7 @@ public class BrowserTests extends BaseTest {
         listOfDownloadDirs.add("//home//selenium//downloads");
         listOfDownloadDirs.add("/Users/username/Downloads");
         listOfDownloadDirs.add("target//downloads");
+        listOfDownloadDirs.add("/home/circleci/repo/target/downloads");
 
         boolean isDirFound = listOfDownloadDirs.stream()
                 .anyMatch(dir -> getBrowser().getDownloadDirectory().toLowerCase().contains(dir.toLowerCase()));
