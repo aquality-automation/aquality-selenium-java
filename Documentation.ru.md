@@ -42,7 +42,7 @@ Aquality Selenium предоставляет пользователю гибки
 
 ### 2.1. SETTINGS
 
-Работа с решением подразумевает использование [settings.json](../src/main/resources/settings.json) или его измененных копий для запуска тестов.
+Работа с решением подразумевает использование [settings.json](./src/main/resources/settings.json) или его измененных копий для запуска тестов.
 Если вы работаете в директории /src/`test`, то для начала работы скопируйте файл [settings.json](../src/main/resources/settings.json) в директорию `/src/test/resources`.
 
 По умолчанию у вас есть возможность вносить любые желаемые изменения в settings файл.
