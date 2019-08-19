@@ -23,7 +23,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
         IDriverSettings driverSettings = configuration.getBrowserProfile().getDriverSettings();
         logBrowserIsReady(browserName);
         RemoteWebDriver driver = createRemoteDriver(driverSettings.getCapabilities());
-        return new Browser(driver, driverSettings, configuration.getTimeoutConfiguration());
+        return new Browser(driver, configuration);
     }
 
     private BrowserName getBrowserName() {

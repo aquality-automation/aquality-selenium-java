@@ -35,7 +35,7 @@ public class BrowserConcurrencyTests {
     @Test
     public void testShouldBePossibleToUseParallelStreams(){
         Browser browser = BrowserManager.getBrowser();
-        browser.navigate().to(TheInternetPage.TABLES.getAddress());
+        browser.goTo(TheInternetPage.TABLES.getAddress());
         List<ILabel> textBoxes = new ElementFactory().findElements(By.xpath("//td"), ElementType.LABEL);
         List<String> texts = new ArrayList<>();
         textBoxes.parallelStream().forEach(lbl -> {

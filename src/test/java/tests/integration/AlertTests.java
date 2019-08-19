@@ -2,6 +2,7 @@ package tests.integration;
 
 import aquality.selenium.browser.AlertActions;
 import aquality.selenium.browser.BrowserManager;
+import org.openqa.selenium.NoAlertPresentException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,6 +12,8 @@ import theinternet.forms.JavaScriptAlertsForm;
 
 public class AlertTests extends BaseTest {
 
+    private final JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
+
     @BeforeMethod
     @Override
     public void beforeMethod() {
@@ -18,43 +21,48 @@ public class AlertTests extends BaseTest {
     }
 
     @Test
-    public void testAcceptAlert() {
-        JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
-        alertsForm.clickJsAlertBtn();
-        BrowserManager.getBrowser().handleAlert(AlertActions.ACCEPT);
-        Assert.assertEquals(alertsForm.getResultText(), "You successfuly clicked an alert");
+    public void testShouldBePossibleToAcceptAlert() {
+        alertsForm.getBtnJsAlert().click();
+        getBrowser().handleAlert(AlertActions.ACCEPT);
+        Assert.assertEquals(alertsForm.getLblResult().getText(), "You successfuly clicked an alert");
     }
 
     @Test
-    public void testAcceptConfirmationAlert() {
-        JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
-        alertsForm.clickJsConfirmBtn();
-        BrowserManager.getBrowser().handleAlert(AlertActions.ACCEPT);
-        Assert.assertEquals(alertsForm.getResultText(), "You clicked: Ok");
+    public void testShouldBePossibleToAcceptConfirmationAlert() {
+        alertsForm.getBtnJsConfirm().click();
+        getBrowser().handleAlert(AlertActions.ACCEPT);
+        Assert.assertEquals(alertsForm.getLblResult().getText(), "You clicked: Ok");
     }
 
     @Test
-    public void testDeclineConfirmationAlert() {
-        JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
-        alertsForm.clickJsConfirmBtn();
-        BrowserManager.getBrowser().handleAlert(AlertActions.DECLINE);
-        Assert.assertEquals(alertsForm.getResultText(), "You clicked: Cancel");
+    public void testShouldBePossibleToDeclineConfirmationAlert() {
+        alertsForm.getBtnJsConfirm().click();
+        getBrowser().handleAlert(AlertActions.DECLINE);
+        Assert.assertEquals(alertsForm.getLblResult().getText(), "You clicked: Cancel");
     }
 
     @Test
-    public void testAcceptPromptAlertWithText() {
-        JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
-        alertsForm.clickJsPromptBtn();
+    public void testShouldBePossibleToAcceptPromptAlertWithText() {
+        alertsForm.getBtnJsPrompt().click();
         String text = String.valueOf(System.currentTimeMillis());
-        BrowserManager.getBrowser().handlePromptAlert(AlertActions.ACCEPT, text);
-        Assert.assertEquals(alertsForm.getResultText(), String.format("You entered: %s", text));
+        getBrowser().handlePromptAlert(AlertActions.ACCEPT, text);
+        Assert.assertEquals(alertsForm.getLblResult().getText(), String.format("You entered: %s", text));
     }
 
     @Test
-    public void testDeclinePromptAlertWithText() {
-        JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();
-        alertsForm.clickJsPromptBtn();
-        BrowserManager.getBrowser().handlePromptAlert(AlertActions.DECLINE, "Hello");
-        Assert.assertEquals(alertsForm.getResultText(), String.format("You entered: %s", "null"));
+    public void testShouldBePossibleToDeclinePromptAlertWithText() {
+        alertsForm.getBtnJsPrompt().click();
+        getBrowser().handlePromptAlert(AlertActions.DECLINE, "Hello");
+        Assert.assertEquals(alertsForm.getLblResult().getText(), String.format("You entered: %s", "null"));
+    }
+
+    @Test(expectedExceptions = NoAlertPresentException.class)
+    public void testNoAlertExceptionShouldBeThrownIfNotAlertPresent(){
+        getBrowser().handleAlert(AlertActions.DECLINE);
+    }
+
+    @Test(expectedExceptions = NoAlertPresentException.class)
+    public void testNoAlertExceptionShouldBeThrownIfNotPromptsPresent(){
+        getBrowser().handlePromptAlert(AlertActions.DECLINE, "Hello");
     }
 }

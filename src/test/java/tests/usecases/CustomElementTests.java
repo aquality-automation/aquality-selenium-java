@@ -10,15 +10,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
-import theinternet.forms.LoginForm;
+import theinternet.forms.FormAuthenticationForm;
 
 public class CustomElementTests extends BaseTest {
 
     @Test
     public void testCustomTextBox() {
         BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        LoginForm loginForm = new LoginForm();
-        ITextBox txbUsername = loginForm.getTxbUsername();
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
+        ITextBox txbUsername = authenticationForm.getTxbUsername();
 
         CustomTextBox customTxbUsername = new ElementFactory()
                 .getCustomElement(CustomTextBox::new, txbUsername.getLocator(), txbUsername.getName(), ElementState.EXISTS_IN_ANY_STATE);
