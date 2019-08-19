@@ -22,7 +22,7 @@ public abstract class Form {
     private final IElementFactory elementFactory;
 
     /**
-     * Contructor with parameters
+     * Constructor with parameters
      */
     protected Form(By locator, String name) {
         this.locator = locator;
