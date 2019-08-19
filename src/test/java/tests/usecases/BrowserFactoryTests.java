@@ -91,7 +91,7 @@ public class BrowserFactoryTests {
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
 
-    class ACustomLocalFactory implements IBrowserFactory {
+    private class ACustomLocalFactory implements IBrowserFactory {
 
         @Override
         public Browser getBrowser() {
@@ -127,7 +127,7 @@ public class BrowserFactoryTests {
         }
     }
 
-    class CustomChromeSettings extends ChromeSettings {
+    private class CustomChromeSettings extends ChromeSettings {
 
         CustomChromeSettings(JsonFile jsonFile) {
             super(jsonFile);
@@ -144,7 +144,7 @@ public class BrowserFactoryTests {
         }
     }
 
-    class CustomConfiguration implements IConfiguration{
+    private class CustomConfiguration implements IConfiguration{
 
         private final IDriverSettings driverSettings;
         private final ITimeoutConfiguration timeoutConfiguration;
