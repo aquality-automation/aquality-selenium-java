@@ -64,7 +64,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().quit();
 
         String currentUrl = getBrowser().getCurrentUrl();
-        Assert.assertFalse(currentUrl.equalsIgnoreCase(url));
+        Assert.assertNotEquals(currentUrl.toLowerCase(), url.toLowerCase());
     }
 
     @Test
