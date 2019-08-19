@@ -2,7 +2,7 @@ package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.IRetryConfiguration;
-import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 
 import java.util.Optional;
@@ -69,6 +69,6 @@ public class ElementActionRetrier {
     private static boolean isExceptionHandled(Exception exception)
     {
         return (exception instanceof StaleElementReferenceException) ||
-                (exception instanceof ElementNotInteractableException);
+                (exception instanceof InvalidElementStateException);
     }
 }
