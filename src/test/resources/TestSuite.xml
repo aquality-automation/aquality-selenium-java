@@ -10,6 +10,7 @@
             <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
+            <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
