@@ -60,7 +60,6 @@ public class Browser {
      * @param url URL where you wish to navigate
      */
     public void goTo(String url) {
-        logger.info(String.format(getLocManager().getValue("loc.browser.goTo"), url));
         navigate().to(url);
     }
 
@@ -68,7 +67,6 @@ public class Browser {
      * Executes navigating back
      */
     public void goBack() {
-        logger.info(getLocManager().getValue("loc.browser.back"));
         navigate().back();
     }
 
@@ -76,7 +74,6 @@ public class Browser {
      * Executes navigating forward
      */
     public void goForward() {
-        logger.info(getLocManager().getValue("loc.browser.forward"));
         navigate().forward();
     }
 
@@ -101,7 +98,6 @@ public class Browser {
      * Executes refreshing of current page
      */
     public void refresh() {
-        logger.info(getLocManager().getValue("loc.browser.refresh"));
         navigate().refresh();
     }
 
