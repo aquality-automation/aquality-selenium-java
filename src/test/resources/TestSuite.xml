@@ -9,6 +9,7 @@
             <class name="tests.integration.ElementTests"/>
             <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.HiddenElementsTests"/>
+            <class name="aquality.selenium.localization.LocalizationManagerTests"/>
             <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
         </classes>
     </test>
@@ -25,7 +26,7 @@
     <test name="Non-threadsafe tests">
         <classes>
             <class name="tests.usecases.ConditionalWaitTimeoutConfigurationChanged"/>
-            <class name="tests.integration.LocalizationManagerTests"/>
+            <class name="aquality.selenium.logger.LoggerTests"/>
         </classes>
     </test>
 </suite>
