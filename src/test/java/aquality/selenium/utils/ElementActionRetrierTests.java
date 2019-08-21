@@ -13,12 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ElementActionRetrierTests {
-
-    private static final int attemptsCount = Configuration.getInstance().getRetryConfiguration().getNumber();
-    private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
 
     @DataProvider
     private Object[][] handledExceptions() {
@@ -30,9 +28,11 @@ public class ElementActionRetrierTests {
 
     @Test
     public void testRetrierShouldWorkOnceIfMethodSucceeded() {
+        long operationTime = 500;
         Date startTime = new Date();
         ElementActionRetrier.doWithRetry(() -> Logger.getInstance().info("text message from successful method"));
-        assertTrue(new Date().getTime() - startTime.getTime() < pollingInterval);
+        long duration = new Date().getTime() - startTime.getTime();
+        assertTrue(duration < getPollingInterval() + operationTime);
     }
 
     @Test(dataProvider = "handledExceptions")
@@ -46,7 +46,7 @@ public class ElementActionRetrierTests {
             }
         });
         long duration = new Date().getTime() - startTime.getTime();
-        assertTrue(duration >= pollingInterval && duration < 2 * pollingInterval);
+        assertTrue(duration >= getPollingInterval() && duration < 2 * getPollingInterval());
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
@@ -67,7 +67,7 @@ public class ElementActionRetrierTests {
             assertTrue(handledException.getClass().isInstance(e));
         }
         long duration = new Date().getTime() - startTime.getTime();
-        assertTrue(duration >= pollingInterval * attemptsCount && duration < pollingInterval * (attemptsCount + 1));
+        assertTrue(duration >= getPollingInterval() * getRetryNum() && duration < getPollingInterval() * (getRetryNum() + 1));
     }
 
     @Test(expectedExceptions = IllegalAccessException.class)
@@ -102,10 +102,17 @@ public class ElementActionRetrierTests {
         });
         thread.start();
         while (!isRetrierPaused.get()) {
-            Thread.sleep(pollingInterval / 10);
+            Thread.sleep(getPollingInterval() / 10);
         }
-        Thread.sleep(pollingInterval / 3);
+        Thread.sleep(getPollingInterval() / 3);
         thread.interrupt();
     }
 
+    private long getPollingInterval(){
+        return Configuration.getInstance().getRetryConfiguration().getPollingInterval();
+    }
+
+    private int getRetryNum(){
+        return Configuration.getInstance().getRetryConfiguration().getNumber();
+    }
 }
