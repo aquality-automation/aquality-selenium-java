@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class Browser {
     private final Logger logger = Logger.getInstance();
@@ -175,20 +176,63 @@ public class Browser {
         return getDriver().getScreenshotAs(OutputType.BYTES);
     }
 
+
     /**
-     * Execute JS (jQuery) script.
+     * Executes JS (jQuery) script asynchronous.
+     *
+     * @param script    Java Script
+     * @param arguments Arguments for the script (web elements, values etc.
+     * @return Result object of script execution
+     */
+    public Object executeAsyncScript(final String script, Object... arguments) {
+        Object result = executeJavaScript(() -> getDriver().executeAsyncScript(script, arguments));
+        return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
+    }
+
+    /**
+     * Executes JS (jQuery) script from the resource file asynchronous.
+     * To see the list of scripts see {@link JavaScript}
+     * JS files can be found in ~/resources/js/
+     *
+     * @param scriptName {@link JavaScript}
+     * @param args       List of script arguments. This list is unique for each script.
+     * @return Result object of script execution
+     */
+    public Object executeAsyncScript(JavaScript scriptName, Object... args) {
+        return executeAsyncScript(scriptName.getScript(), args);
+    }
+
+    /**
+     * Executes JS (jQuery) script from the File asynchronous.
+     *
+     * @param file      Java Script file
+     * @param arguments Arguments for the script (web elements, values etc.
+     * @throws IOException in case of problems with the File
+     * @return Result object of script execution
+     */
+    public Object executeAsyncScript(final File file, Object... arguments) throws IOException {
+        return executeAsyncScript(IOUtils.toString(file.toURI(), StandardCharsets.UTF_8.name()), arguments);
+    }
+
+    /**
+     * Executes JS (jQuery) script.
      *
      * @param script    Java Script
      * @param arguments Arguments for the script (web elements, values etc.
      * @return Result object of script execution
      */
     public Object executeScript(final String script, Object... arguments) {
-        Object result = getDriver().executeScript(script, arguments);
+        Object result =  executeJavaScript(() -> getDriver().executeScript(script, arguments));
+        return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
+    }
+
+    private Object executeJavaScript(Supplier<Object> executeScriptFunc){
+        Object result = executeScriptFunc.get();
         return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
     }
 
     /**
-     * Execute JS (jQuery) script from the resource file.
+     * Executes JS (jQuery) script from the resource file.
      * To see the list of scripts see {@link JavaScript}
      * JS files can be found in ~/resources/js/
      *
@@ -201,7 +245,7 @@ public class Browser {
     }
 
     /**
-     * Execute JS (jQuery) script from the File.
+     * Executes JS (jQuery) script from the File.
      *
      * @param file      Java Script file
      * @param arguments Arguments for the script (web elements, values etc.

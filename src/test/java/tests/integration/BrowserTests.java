@@ -2,18 +2,17 @@ package tests.integration;
 
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.JavaScript;
+import aquality.selenium.configuration.Configuration;
 import aquality.selenium.utils.JsonFile;
 import automationpractice.forms.SliderForm;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
+import utils.TimeUtil;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -102,6 +101,32 @@ public class BrowserTests extends BaseTest {
 
         String currentUrl = String.valueOf(getBrowser().executeScript("return window.location.href"));
         Assert.assertEquals(currentUrl, url);
+    }
+
+    @Test
+    public void testShouldBePossibleToExecuteJavaScriptAsync(){
+        String url = new DynamicContentForm().getUrl();
+        getBrowser().goTo(url);
+        getBrowser().waitForPageToLoad();
+
+        long expectedDurationInSeconds = 1;
+        long operationDurationInSeconds = 1;
+        double startTimeSeconds = TimeUtil.getCurrentTimeInSeconds();
+        getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
+        double durationSeconds = TimeUtil.getCurrentTimeInSeconds() - startTimeSeconds;
+
+        Assert.assertTrue(durationSeconds < (expectedDurationInSeconds + operationDurationInSeconds) &&
+                durationSeconds >= expectedDurationInSeconds);
+    }
+
+    @Test (expectedExceptions = ScriptTimeoutException.class)
+    public void testScriptTimeoutExeceptionShouldBeThrownIfScriptTimeoutIsOver(){
+        String url = new DynamicContentForm().getUrl();
+        getBrowser().goTo(url);
+        getBrowser().waitForPageToLoad();
+
+        long expectedDurationInSeconds = Configuration.getInstance().getTimeoutConfiguration().getScript() + 1;
+        getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
     }
 
     @Test
@@ -197,5 +222,9 @@ public class BrowserTests extends BaseTest {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private String getAsyncTimeoutJavaScript(double expectedDurationInSeconds){
+        return "window.setTimeout(arguments[arguments.length - 1], " + expectedDurationInSeconds*1000 + ");";
     }
 }
