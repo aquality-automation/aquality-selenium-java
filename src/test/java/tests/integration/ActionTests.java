@@ -51,6 +51,16 @@ public class ActionTests extends BaseTest {
     }
 
     @Test
+    public void testMoveMouseFromElement() {
+        ProductListForm productListForm = new ProductListForm();
+        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
+        IButton button = productListForm.getBtnLastProductMore();
+        Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
+        productListForm.getLblLastProduct().getMouseActions().moveMouseFromElement();
+        Assert.assertFalse(button.state().isDisplayed(), "element is still focused after moveMouseFromElement()");
+    }
+
+    @Test
     public void testGetElementText() {
         ProductListForm productListForm = new ProductListForm();
         productListForm.getLblFirstProduct().getMouseActions().moveMouseToElement();

@@ -14,11 +14,11 @@ public class LocalizationManager {
     private LocalizationManager(){
         SupportedLanguage language = Configuration.getInstance().getLoggerConfiguration().getLanguage();
         String translateDictFile = String.format("localization/%1$s.json", language.name().toLowerCase());
-        try{
+        try {
             localManager = new JsonFile(translateDictFile);
-        }catch (IOException e){
-            throw new UncheckedIOException("LocalizationManager was not instantiated. Localization file was not found by path " + translateDictFile, e);
-        }
+        } catch (IOException | IllegalArgumentException e) {
+        throw new UncheckedIOException("LocalizationManager was not instantiated. Localization file was not found by path " + translateDictFile, new IOException(e));
+    }
     }
 
     public static LocalizationManager getInstance() {

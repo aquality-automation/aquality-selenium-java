@@ -9,18 +9,20 @@ import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.forms.Form;
-import aquality.selenium.forms.PageInfo;
 import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.Random;
 
-@PageInfo(xpath = "//ul[@id='homefeatured']//div[@class='product-container']", pageName = "Product list")
 public class ProductListForm extends Form {
 
     private static final String XPATH_ADD_TO_CART_BTN = "//a[contains(@class, 'add_to_cart')]";
     private static final String XPATH_PRODUCT_CONTAINER = "//ul[@id='homefeatured']//div[@class='product-container']";
     private static final String XPATH_PRODUCT = "//ul[@id='homefeatured']//li";
+
+    public ProductListForm() {
+        super(By.xpath("//a[contains(@class, 'add_to_cart')]"), "Product List");
+    }
 
     public List<ILabel> getProductContainerLabels(){
         return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);

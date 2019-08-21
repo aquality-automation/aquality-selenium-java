@@ -2,7 +2,6 @@ package aquality.selenium.forms;
 
 import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.interfaces.IElementFactory;
-import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -23,42 +22,12 @@ public abstract class Form {
     private final IElementFactory elementFactory;
 
     /**
-     * Contructor
-     */
-    protected Form() {
-        PageInfo pageInfo = this.getClass().getAnnotation(PageInfo.class);
-        name = pageInfo.pageName();
-        locator = getLocatorFromPageInfo(pageInfo);
-        elementFactory = new ElementFactory();
-    }
-
-    /**
-     * Contructor with parameters
+     * Constructor with parameters
      */
     protected Form(By locator, String name) {
         this.locator = locator;
         this.name = name;
         this.elementFactory = new ElementFactory();
-    }
-
-    /**
-     * Get locator for form from pageInfo annotation
-     *
-     * @param pageInfo form pageInfo
-     * @return Form locator
-     */
-    protected By getLocatorFromPageInfo(PageInfo pageInfo) {
-        if (!pageInfo.xpath().isEmpty()) {
-            return By.xpath(pageInfo.xpath());
-        } else if (!pageInfo.id().isEmpty()) {
-            return By.id(pageInfo.id());
-        } else if (!pageInfo.css().isEmpty()) {
-            return By.cssSelector(pageInfo.css());
-        }
-        String msg = String.format(LocalizationManager.getInstance().getValue("loc.baseform.unknown.type"), name);
-        IllegalArgumentException ex = new IllegalArgumentException(msg);
-        logger.fatal(msg, ex);
-        throw ex;
     }
 
     /**

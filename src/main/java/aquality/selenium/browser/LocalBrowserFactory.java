@@ -61,6 +61,6 @@ public class LocalBrowserFactory extends BrowserFactory {
         }
         logBrowserIsReady(browserName);
 
-        return new Browser(driver, driverSettings, configuration.getTimeoutConfiguration());
+        return new Browser(driver, configuration);
     }
 }

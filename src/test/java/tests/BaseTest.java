@@ -1,5 +1,6 @@
 package tests;
 
+import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.interfaces.IElementFactory;
@@ -20,8 +21,8 @@ public abstract class BaseTest {
 
     @BeforeMethod
     protected void beforeMethod() {
-        BrowserManager.getBrowser().goTo(DEFAULT_URL);
-        BrowserManager.getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
+        getBrowser().goTo(DEFAULT_URL);
+        getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
     }
 
     @AfterMethod
@@ -30,6 +31,10 @@ public abstract class BaseTest {
     }
 
     protected void navigate(TheInternetPage page) {
-        BrowserManager.getBrowser().navigate().to(page.getAddress());
+        getBrowser().goTo(page.getAddress());
+    }
+
+    protected Browser getBrowser(){
+        return BrowserManager.getBrowser();
     }
 }
