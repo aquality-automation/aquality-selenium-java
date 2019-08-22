@@ -96,18 +96,12 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public String getSelectedText() {
-        if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()) {
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
-        }
         return ElementActionRetrier.doWithRetry(() -> new Select(getElement()).getFirstSelectedOption().getText());
     }
 
     @Override
     public List<String> getValues() {
         getLogger().info(getLocManager().getValue("loc.combobox.get.values"));
-        if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()){
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
-        }
         return ElementActionRetrier.doWithRetry(() ->
                 new Select(getElement()).getOptions()
                         .stream()
