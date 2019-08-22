@@ -17,8 +17,8 @@ public class LocalizationManager {
         try {
             localManager = new JsonFile(translateDictFile);
         } catch (IOException | IllegalArgumentException e) {
-        throw new UncheckedIOException("LocalizationManager was not instantiated. Localization file was not found by path " + translateDictFile, new IOException(e));
-    }
+            throw new UncheckedIOException("LocalizationManager was not instantiated. Localization file was not found by path " + translateDictFile, new IOException(e));
+        }
     }
 
     public static LocalizationManager getInstance() {

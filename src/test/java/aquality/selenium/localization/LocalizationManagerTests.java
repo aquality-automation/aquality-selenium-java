@@ -1,30 +1,24 @@
 package aquality.selenium.localization;
 
 import aquality.selenium.utils.JsonFile;
-import org.testng.annotations.AfterGroups;
-import org.testng.annotations.BeforeGroups;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 import static org.testng.Assert.*;
 
 public class LocalizationManagerTests {
 
-    private final String fieldLocalManagerName = "localManager";
-    private final String tmpDicFilePath = "localization/%1$s.json";
-    private final String key = "loc.clicking";
-    private final File dicFolder = new File(Objects.requireNonNull(LocalizationManagerTests.class.getClassLoader().getResource("localization")).getPath());
-    private final File renamedDicFolder = new File(dicFolder.getPath() + "Renamed");
+    private static final String fieldLocalManagerName = "localManager";
+    private static final String tmpDicFilePath = "localization/%1$s.json";
+    private static final String key = "loc.clicking";
+    private static final String languageKey = "logger.language";
 
-    @BeforeGroups("requireLocalizationRemove")
+
+    @BeforeGroups("unsupportedLanguage")
     private void renameLocalizationFolder() {
-        dicFolder.renameTo(renamedDicFolder);
+        System.setProperty(languageKey, "UnsupportedLanguage");
     }
 
     @DataProvider
@@ -50,14 +44,14 @@ public class LocalizationManagerTests {
         assertEquals(LocalizationManager.getInstance().getValue(key), value);
     }
 
-    @Test(groups = "requireLocalizationRemove", priority = -1, expectedExceptions = { UncheckedIOException.class} )
+    @Test(groups = "unsupportedLanguage", priority = -1, expectedExceptions = { IllegalArgumentException.class} )
     public void testShouldGetExceptionIfLocalizationFileIsNotExists() {
         LocalizationManager.getInstance();
     }
 
-    @AfterGroups("requireLocalizationRemove")
+    @AfterGroups("unsupportedLanguage")
     private void renameLocalizationFolderToInitial() {
-        renamedDicFolder.renameTo(dicFolder);
+        System.clearProperty(languageKey);
     }
 
 }
