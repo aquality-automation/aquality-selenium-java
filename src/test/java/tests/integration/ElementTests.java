@@ -7,7 +7,7 @@ import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
 import theinternet.forms.FormAuthenticationForm;
-import utils.ConditionalWait;
+import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -36,7 +36,7 @@ public class ElementTests extends BaseTest {
 
         String selectedText = comboBox.getSelectedText();
         comboBox.selectByText("Option 2");
-        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()));
+        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()), "Combobox should not be equal to " + selectedText);
         Assert.assertEquals(comboBox.getSelectedTextByJs(), values.get(2));
     }
 
@@ -109,18 +109,19 @@ public class ElementTests extends BaseTest {
         ILink link = elementFactory.getLink(By.id("redirect"), "Link");
         String href = link.getHref();
         link.click();
-        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(TheInternetPage.STATUS_CODES.getAddress());
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        String expectedUrl = TheInternetPage.STATUS_CODES.getAddress();
+        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(expectedUrl);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().goBack();
         link = elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
         link.click();
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().getDriver().navigate().to(href);
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition,"Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
     }
 
@@ -140,7 +141,8 @@ public class ElementTests extends BaseTest {
         softAssert.assertEquals(txbPass.getValue(), "0");
 
         txbPass.submit();
-        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(""));
+        String expectedValue = "";
+        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }

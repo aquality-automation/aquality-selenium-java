@@ -3,7 +3,7 @@ package tests.usecases;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
-import utils.ConditionalWait;
+import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.SliderForm;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -23,6 +23,6 @@ public class ElementExistNotDisplayedTest extends BaseTest {
     @Test
     public void testElementExistNotDisplayed() {
         IButton button = new SliderForm().getBtnAddToCart(ElementState.EXISTS_IN_ANY_STATE);
-        Assert.assertTrue(ConditionalWait.waitFor(driver -> button.state().isExist() && !button.state().isDisplayed()));
+        Assert.assertTrue(ConditionalWait.waitFor(driver -> button.state().isExist() && !button.state().isDisplayed(), "Button should exists in the DOM but should not be displayed "));
     }
 }

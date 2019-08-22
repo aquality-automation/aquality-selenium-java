@@ -2,7 +2,7 @@ package tests.usecases;
 
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.ILabel;
-import utils.ConditionalWait;
+import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -40,10 +40,10 @@ public class FileDownloadingTests extends BaseTest {
         BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
         ExpectedCondition<Boolean> fileDownloadedExpectedCondition = webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent);
         try {
-            ConditionalWait.waitFor(fileDownloadedExpectedCondition);
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition, "File should be downloaded");
         } catch (TimeoutException e) {
             BrowserManager.getBrowser().quit();
-            ConditionalWait.waitFor(fileDownloadedExpectedCondition);
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition, "File should be downloaded");
         }
     }
 }
