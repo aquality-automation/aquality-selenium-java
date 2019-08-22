@@ -1,6 +1,5 @@
 {
   "loc.browser.arguments.setting" : "Setting browser start arguments from JSON file: %s",
-  "loc.browser.goTo" : "Go to URL '%1$s'",
   "loc.browser.back" : "Return to previous page",
   "loc.browser.forward" : "Proceed to the next page",
   "loc.browser.caps.setting" : "Setting browser capabilities from JSON file: %s",
