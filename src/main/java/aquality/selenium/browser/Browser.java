@@ -185,8 +185,7 @@ public class Browser {
      * @return Result object of script execution
      */
     public Object executeAsyncScript(final String script, Object... arguments) {
-        Object result = executeJavaScript(() -> getDriver().executeAsyncScript(script, arguments));
-        return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
+        return executeJavaScript(() -> getDriver().executeAsyncScript(script, arguments));
     }
 
     /**
@@ -222,8 +221,7 @@ public class Browser {
      * @return Result object of script execution
      */
     public Object executeScript(final String script, Object... arguments) {
-        Object result =  executeJavaScript(() -> getDriver().executeScript(script, arguments));
-        return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
+        return executeJavaScript(() -> getDriver().executeScript(script, arguments));
     }
 
     private Object executeJavaScript(Supplier<Object> executeScriptFunc){
