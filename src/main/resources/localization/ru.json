@@ -1,6 +1,5 @@
 {
   "loc.browser.arguments.setting" : "Установка стартовых аргументов браузера из JSON файла: %s",
-  "loc.browser.goTo" : "Переход по URL '%1$s'",
   "loc.browser.back" : "Возврат на предыдущую страницу",
   "loc.browser.forward" : "Перейти на следующую страницу",
   "loc.browser.caps.setting" : "Установка capabilities браузера из JSON файла: %s",
