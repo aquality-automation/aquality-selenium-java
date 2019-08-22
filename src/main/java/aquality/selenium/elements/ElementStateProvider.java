@@ -119,7 +119,7 @@ class ElementStateProvider implements IElementStateProvider {
                 findElements(timeout).
                         stream().anyMatch(element ->
                         element.isEnabled() &&
-                                !element.getAttribute(Attributes.CLASS.toString()).contains(PopularClassNames.DISABLED)
+                                !element.getAttribute(Attributes.CLASS.toString()).contains("disabled")
                 ), getDesiredStateMessage("ENABLED", timeout)).withCatchingTimeoutException().withThrowingNoSuchElementException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
