@@ -11,7 +11,7 @@
             <class name="tests.integration.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
             <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
-            <class name="aquality.selenium.waitings.TestConditionalWait"/>
+            <class name="aquality.selenium.waitings.ConditionalWaitTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
