@@ -152,8 +152,6 @@ public class ConditionalWaitTests {
 
     @Test
     public void testTimeoutExceptionShouldNotBeThrownIfDriverConditionIsMetAndTimeoutIsNotOver(){
-        final double[] startTime = {0};
-
         ConditionalWait.waitFor((driver) ->
                 {
                     timer.start();
