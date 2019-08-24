@@ -12,51 +12,41 @@ We use interfaces where is possible, so you can implement your own version of ta
 
 1. To start work with this package, simply add the dependency to your pom.xml:
 ```
-<repositories>
-    <repository>
-        <id>ossrh</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-</repositories>
-
 <dependencies>
 ...
     <dependency>
         <groupId>com.github.aquality-automation</groupId>
         <artifactId>aquality-selenium</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <classifier>jar-with-dependencies</classifier>
+        <version>1.0</version>
     </dependency>
 ...
 </dependencies>
 
 ```
 
-2. Add configuration file [settings.json](./src/main/resources/settings.json) and localization [folder](./src/main/resources/localization/) to resources folder (usually `src/test/resources`)
-
-3. Create instance of Browser:
+2. Create instance of Browser in your test method:
 ```java
 Browser browser = BrowserManager.getBrowser();
 ```
 
-4. Use Browser's methods directly for general actions, such as navigation, window resize, scrolling and alerts handling:
+3. Use Browser's methods directly for general actions, such as navigation, window resize, scrolling and alerts handling:
 ```java
 browser.maximize();
 browser.goTo("https://wikipedia.org");
 browser.waitForPageToLoad()
 ```
 
-5. Add elements you want to interact within the current form as private final fields. Use ElementFactory class's methods to get an instance of each element.
+4. Add elements you want to interact within the current form as private final fields. Use ElementFactory class's methods to get an instance of each element.
 ```java
 ITextBox txbEmail = new ElementFactory().getTextBox(By.id("email_create"), "Email");
 ```
 
-6. Call element's methods to perform action with element: 
+5. Call element's methods to perform action with element: 
 ```java
 txbEmail.type("email@domain.com");
 ```
 
-7. Quit browser at the end
+6. Quit browser at the end
 ```
 browser.quit();
 ```

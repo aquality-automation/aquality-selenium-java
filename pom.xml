@@ -6,8 +6,12 @@
 
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
+
+    <name>Aquality Selenium</name>
+    <description>Library around Selenium WebDriver</description>
+    <url>https://github.com/aquality-automation/aquality-selenium-java</url>
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -38,6 +42,13 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <id>aquality-automation</id>
+            <name>aquality-automation</name>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
