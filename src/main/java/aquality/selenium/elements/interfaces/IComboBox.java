@@ -55,25 +55,31 @@ public interface IComboBox extends IElement {
     void clickAndSelectByValue(String value);
 
     /**
-     * Get selected value
+     * Gets value of selected option
      *
      * @return selected value
+     */
+    String getSelectedValue();
+
+    /**
+     * Gets text of selected option
+     *
+     * @return selected text
      */
     String getSelectedText();
 
 
     /**
-     * Get values list
+     * Gets values list
      * @return list of values
      */
     List<String> getValues();
 
     /**
-     * Get text from selected option in combobox using JavaScript
-     *
-     * @return element's text
+     * Gets options' texts list
+     * @return list of options' texts
      */
-    String getSelectedTextByJs();
+    List<String> getTexts();
 
     /**
      * Get {@link ComboBoxJsActions} object to access to available

@@ -7,7 +7,7 @@ import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
 import theinternet.forms.FormAuthenticationForm;
-import utils.ConditionalWait;
+import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -27,17 +27,18 @@ public class ElementTests extends BaseTest {
     public void testComboBox() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> values = comboBox.getValues();
-        comboBox.selectByIndex(values.size() - 1);
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(values.size() - 1));
+        List<String> texts = comboBox.getTexts();
+        int lastOptionIndex = texts.size() - 1;
+        comboBox.selectByIndex(lastOptionIndex);
+        Assert.assertEquals(comboBox.getSelectedText(), texts.get(lastOptionIndex));
 
         comboBox.selectByContainingText("1");
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(1));
+        Assert.assertEquals(comboBox.getSelectedText(), texts.get(1));
 
         String selectedText = comboBox.getSelectedText();
         comboBox.selectByText("Option 2");
-        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()));
-        Assert.assertEquals(comboBox.getSelectedTextByJs(), values.get(2));
+        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()), "Combobox should not be equal to " + selectedText);
+        Assert.assertEquals(comboBox.getJsActions().getSelectedText(), texts.get(2));
     }
 
     @Test
@@ -48,16 +49,16 @@ public class ElementTests extends BaseTest {
         List<String> values = comboBox.getValues();
 
         comboBox.selectByContainingValue("2");
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(2));
+        Assert.assertEquals(comboBox.getSelectedValue(), values.get(2));
     }
 
     @Test
     public void testComboBoxGetValuesJs() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> valuesByJs = comboBox.getJsActions().getValues();
-        List<String> valuesBySelenium = comboBox.getValues();
-        Assert.assertTrue(valuesByJs.containsAll(valuesBySelenium));
+        List<String> textsByJs = comboBox.getJsActions().getTexts();
+        List<String> textsBySelenium = comboBox.getTexts();
+        Assert.assertTrue(textsByJs.containsAll(textsBySelenium));
     }
 
     @Test
@@ -109,18 +110,19 @@ public class ElementTests extends BaseTest {
         ILink link = elementFactory.getLink(By.id("redirect"), "Link");
         String href = link.getHref();
         link.click();
-        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(TheInternetPage.STATUS_CODES.getAddress());
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        String expectedUrl = TheInternetPage.STATUS_CODES.getAddress();
+        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(expectedUrl);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().goBack();
         link = elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
         link.click();
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().getDriver().navigate().to(href);
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition,"Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
     }
 
@@ -140,7 +142,8 @@ public class ElementTests extends BaseTest {
         softAssert.assertEquals(txbPass.getValue(), "0");
 
         txbPass.submit();
-        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(""));
+        String expectedValue = "";
+        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }

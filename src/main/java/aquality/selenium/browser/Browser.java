@@ -4,6 +4,7 @@ import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
+import aquality.selenium.waitings.ConditionalWait;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Dimension;
@@ -12,11 +13,11 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -161,7 +162,11 @@ public class Browser {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
         };
-        getWebDriverWait(timeouts.getPageLoad()).until(condition);
+        ConditionalWait.waitFor(condition,
+                timeouts.getPageLoad(),
+                timeouts.getPollingInterval(),
+                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()),
+                Collections.emptyList());
     }
 
     /**
@@ -325,10 +330,6 @@ public class Browser {
 
     private LocalizationManager getLocManager(){
         return LocalizationManager.getInstance();
-    }
-
-    private WebDriverWait getWebDriverWait(long timeout){
-        return new WebDriverWait(getDriver(), timeout);
     }
 }
 
