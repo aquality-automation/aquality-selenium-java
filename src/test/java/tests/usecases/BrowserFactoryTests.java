@@ -19,7 +19,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import theinternet.TheInternetPage;
 import theinternet.forms.FileDownloaderForm;
-import utils.ConditionalWait;
+import aquality.selenium.waitings.ConditionalWait;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class BrowserFactoryTests {
 
         BrowserManager.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
-        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists());
+        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), "File should be downloaded");
 
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
