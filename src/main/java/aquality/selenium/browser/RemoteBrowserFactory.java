@@ -4,16 +4,9 @@ import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
-import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.remote.CommandExecutor;
-import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.http.HttpClient;
-
-import java.net.URL;
-import java.time.Duration;
 
 
 public class RemoteBrowserFactory extends BrowserFactory {
@@ -41,35 +34,10 @@ public class RemoteBrowserFactory extends BrowserFactory {
         Logger logger = Logger.getInstance();
         logger.info(LocalizationManager.getInstance().getValue("loc.browser.grid"));
 
-        ClientFactory clientFactory = new ClientFactory();
-        CommandExecutor commandExecutor = new HttpCommandExecutor(
-                ImmutableMap.of(),
-                configuration.getBrowserProfile().getRemoteConnectionUrl(),
-                clientFactory);
-
-        RemoteWebDriver driver = new RemoteWebDriver(commandExecutor, capabilities);
+        RemoteWebDriver driver = new RemoteWebDriver(
+                configuration.getBrowserProfile().getRemoteConnectionUrl(), capabilities);
 
         driver.setFileDetector(new LocalFileDetector());
         return driver;
-    }
-
-    class ClientFactory implements org.openqa.selenium.remote.http.HttpClient.Factory{
-        private final HttpClient.Factory defaultClientFactory = HttpClient.Factory.createDefault();
-        private final Duration timeoutCommand = Duration.ofSeconds(configuration.getTimeoutConfiguration().getCommand());
-
-        @Override
-        public HttpClient.Builder builder() {
-            return defaultClientFactory.builder().readTimeout(timeoutCommand).connectionTimeout(timeoutCommand);
-        }
-
-        @Override
-        public HttpClient createClient(URL url) {
-            return defaultClientFactory.createClient(url);
-        }
-
-        @Override
-        public void cleanupIdleClients() {
-            defaultClientFactory.cleanupIdleClients();
-        }
     }
 }

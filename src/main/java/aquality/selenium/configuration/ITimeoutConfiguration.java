@@ -11,6 +11,4 @@ public interface ITimeoutConfiguration {
     long getPageLoad();
 
     long getPollingInterval();
-
-    long getCommand();
 }
