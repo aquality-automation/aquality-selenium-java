@@ -59,12 +59,12 @@ public class RemoteBrowserFactory extends BrowserFactory {
 
         @Override
         public HttpClient.Builder builder() {
-            return defaultClientFactory.builder().readTimeout(timeoutCommand).connectionTimeout(timeoutCommand);
+            return defaultClientFactory.builder().readTimeout(timeoutCommand);
         }
 
         @Override
         public HttpClient createClient(URL url) {
-            return defaultClientFactory.createClient(url);
+            return this.builder().createClient(url);
         }
 
         @Override
