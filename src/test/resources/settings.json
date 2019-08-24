@@ -60,7 +60,8 @@
     "timeoutCondition" : 15,
     "timeoutScript" : 10,
     "timeoutPageLoad" : 30,
-    "timeoutPollingInterval": 300
+    "timeoutPollingInterval": 300,
+    "timeoutCommand": 120
   },
   "retry": {
     "number": 2,
