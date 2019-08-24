@@ -46,9 +46,7 @@
       "webDriverVersion": "latest",
       "capabilities": {
         "ignoreProtectedModeSettings": true
-      },
-      "options": {},
-      "startArguments": []
+      }
     },
     "safari": {
       "downloadDir": "/Users/username/Downloads"
