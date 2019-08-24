@@ -33,10 +33,8 @@ public class RemoteBrowserFactory extends BrowserFactory {
     private RemoteWebDriver createRemoteDriver(Capabilities capabilities){
         Logger logger = Logger.getInstance();
         logger.info(LocalizationManager.getInstance().getValue("loc.browser.grid"));
-
         RemoteWebDriver driver = new RemoteWebDriver(
                 configuration.getBrowserProfile().getRemoteConnectionUrl(), capabilities);
-
         driver.setFileDetector(new LocalFileDetector());
         return driver;
     }
