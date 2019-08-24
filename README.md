@@ -26,7 +26,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
