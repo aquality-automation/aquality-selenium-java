@@ -13,13 +13,14 @@ We use interfaces where is possible, so you can implement your own version of ta
 1. To start work with this package, simply add the dependency to your pom.xml:  
 ```
 <dependency>
-    <groupId>aquality-automation</groupId>
-    <artifactId>aquality.selenium</artifactId>
-    <version>0.0.1</version>
+    <groupId>com.github.aquality-automation</groupId>
+    <artifactId>aquality-selenium</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <classifier>jar-with-dependencies</classifier>
 </dependency>
 ```
 
-2. Add configuration file [settings.json](./src/main/resources/settings.json) to resources folder (usually `src/test/resources`)
+2. Add configuration file [settings.json](./src/main/resources/settings.json) and localization [folder](localization/) to resources folder (usually `src/test/resources`)
 
 3. Create instance of Browser:
 ```java
