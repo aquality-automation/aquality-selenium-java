@@ -1,37 +1,17 @@
 # Aquality Selenium
 
-Aquality Selenium is a wrapper over Selenium WebDriver tool that allows to automate work with web browsers. Selenium WebDriver requires some skill and experience. So, Aquality Selenium suggests simplified and most importantly safer and more stable way to work with Selenium WebDriver.
+Aquality Selenium is a library built over Selenium WebDriver tool that allows to automate work with web browsers. Selenium WebDriver requires some skill and experience. So, Aquality Selenium suggests simplified and most importantly safer and more stable way to work with Selenium WebDriver.
+
 The main benefits from using Aquality Selenium:
-![](brain.png =250x250)
 
-Простая конфигурация
-тип браузера
-опции браузера
-таймауты
-логирование
-Нативные параллельные запуски
-поддержка параллельных запусков всех доступных TestRunners (TestNG, JUnit и т.д.)
-каждый тест выполняется независимо в отдельном экземпляре браузера
-Гибкий конструктор браузера / WebDriver
-конфигурация по умолчанию
-расширение конфигурации
-создание WebDriver независимым способом
-Стабильная работа с веб элементами
-явные ожидания элементов и обработка исключений
-набор типов элементов (Button, CheckBox, TextBox и т.п.)
-получение одиночных экземпляров и списков элементов
-расширение и создание новых типов элементов
-Необходимое для Page Objects на борту
-базовые классы и аннотации для создания классов-pageobjects
-Умные ожидания
-методы явного ожидания событий (изменение атрибутов, текста, файла и т.п.) доступны к использованию
-Набор JavaScripts для остальных случаев
-включен набор скриптов, наиболее распространенных при автоматизации тестирования
-Право выбора
-возможность работать напрямую с WebDriver в случае необходимости
+1. Simple configuration
+2. Parallel runs
+3. Flexible browser (web driver) construction
+4. Stable and predictable interactions with elements
+5. Smart conditional waits
+6. Pack of JavaScripts for advanced usage
 
-
-
+**CONTENT**
  - <a href="#1-platform-support">1. PLATFORM SUPPORT</a>
  - <a href='#2-configurations'>2. CONFIGURATIONS</a>
     - <a href='#21-settings'>2.1. SETTINGS</a>
