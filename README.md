@@ -50,5 +50,5 @@ browser.quit();
 
 ### Documentation
 To get more details please look at documentation:
-- [In English](./Documentaion_en.md)
-- [In Russian](./Documentaion_ru.md)
+- [In English](./Documentation_en.md)
+- [In Russian](./Documentation_ru.md)
