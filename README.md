@@ -32,7 +32,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 
 ```
 
-2. Add configuration file [settings.json](./src/main/resources/settings.json) and localization [folder](localization/) to resources folder (usually `src/test/resources`)
+2. Add configuration file [settings.json](./src/main/resources/settings.json) and localization [folder](./src/main/resources/localization/) to resources folder (usually `src/test/resources`)
 
 3. Create instance of Browser:
 ```java
