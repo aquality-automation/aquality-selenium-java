@@ -12,12 +12,12 @@ public class ComboBoxJsActions extends JsActions {
     }
 
     /**
-     * Values from ComboBox by js
+     * Texts of options from ComboBox by js
      *
-     * @return values from ComboBox
+     * @return texts of options from ComboBox
      */
-    public List<String> getValues() {
-        return (List<String>) executeScript(JavaScript.GET_COMBOBOX_VALUES, element);
+    public List<String> getTexts() {
+        return (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
     }
 
     /**
@@ -26,7 +26,7 @@ public class ComboBoxJsActions extends JsActions {
      * @return text of selected element
      */
     public String getSelectedText() {
-        return (String) executeScript(JavaScript.GET_COMBOBOX_TEXT, element);
+        return (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
     }
 
     /**

@@ -46,9 +46,7 @@
       "webDriverVersion": "latest",
       "capabilities": {
         "ignoreProtectedModeSettings": true
-      },
-      "options": {},
-      "startArguments": []
+      }
     },
     "safari": {
       "downloadDir": "/Users/username/Downloads"
@@ -59,7 +57,8 @@
     "timeoutCondition" : 30,
     "timeoutScript" : 10,
     "timeoutPageLoad" : 15,
-    "timeoutPollingInterval": 300
+    "timeoutPollingInterval": 300,
+    "timeoutCommand": 120
   },
   "retry": {
     "number": 2,
