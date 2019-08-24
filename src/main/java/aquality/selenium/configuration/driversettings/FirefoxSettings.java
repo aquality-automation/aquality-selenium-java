@@ -3,12 +3,8 @@ package aquality.selenium.configuration.driversettings;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.utils.JsonFile;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 
 import java.util.Map;
-import java.util.logging.Level;
 
 public class FirefoxSettings extends DriverSettings {
 
@@ -21,14 +17,6 @@ public class FirefoxSettings extends DriverSettings {
     @Override
     public FirefoxOptions getCapabilities() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-        LoggingPreferences logPreferences = new LoggingPreferences();
-        logPreferences.enable(LogType.BROWSER, Level.OFF);
-        logPreferences.enable(LogType.CLIENT, Level.OFF);
-        logPreferences.enable(LogType.DRIVER, Level.OFF);
-        logPreferences.enable(LogType.PERFORMANCE, Level.OFF);
-        logPreferences.enable(LogType.PROFILER, Level.OFF);
-        logPreferences.enable(LogType.SERVER, Level.OFF);
-        firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPreferences);
         setCapabilities(firefoxOptions, getBrowserName());
         setFirefoxPrefs(firefoxOptions);
         setFirefoxArgs(firefoxOptions);
