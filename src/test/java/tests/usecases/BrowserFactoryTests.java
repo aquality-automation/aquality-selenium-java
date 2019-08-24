@@ -123,6 +123,11 @@ public class BrowserFactoryTests {
                 public long getPollingInterval() {
                     return 300;
                 }
+
+                @Override
+                public long getCommand() {
+                    return 120;
+                }
             }));
         }
     }
