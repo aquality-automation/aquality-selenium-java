@@ -1,7 +1,7 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
+import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import org.openqa.selenium.Capabilities;
