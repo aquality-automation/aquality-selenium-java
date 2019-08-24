@@ -12,16 +12,11 @@ We use interfaces where is possible, so you can implement your own version of ta
 
 1. To start work with this package, simply add the dependency to your pom.xml:
 ```
-<dependencies>
-...
-    <dependency>
-        <groupId>com.github.aquality-automation</groupId>
-        <artifactId>aquality-selenium</artifactId>
-        <version>1.0</version>
-    </dependency>
-...
-</dependencies>
-
+<dependency>
+    <groupId>com.github.aquality-automation</groupId>
+    <artifactId>aquality-selenium</artifactId>
+    <version>1.0</version>
+</dependency>
 ```
 
 2. Create instance of Browser in your test method:
