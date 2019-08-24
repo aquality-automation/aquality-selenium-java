@@ -40,10 +40,10 @@ public class FileDownloadingTests extends BaseTest {
         BrowserManager.getBrowser().getDriver().switchTo().window(tabs.get(0));
         ExpectedCondition<Boolean> fileDownloadedExpectedCondition = webDriver -> FileUtil.isFileDownloaded(fileAddress, lblFileContent);
         try {
-            ConditionalWait.waitFor(fileDownloadedExpectedCondition, "File should be downloaded");
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition, String.format("File %1$s should be downloaded", fileAddress));
         } catch (TimeoutException e) {
             BrowserManager.getBrowser().quit();
-            ConditionalWait.waitFor(fileDownloadedExpectedCondition, "File should be downloaded");
+            ConditionalWait.waitFor(fileDownloadedExpectedCondition, String.format("File %1$s should be downloaded", fileAddress));
         }
     }
 }

@@ -2,7 +2,6 @@ package utils;
 import static utils.TimeUtil.*;
 
 public class Timer{
-
     private double startTime;
 
     public void start(){

@@ -45,12 +45,11 @@ public final class ConditionalWait {
      * Wait for some condition within timeout. Method does not use WebDriverWait
      * @param condition condition with boolean result (predicate)
      * @param timeoutInSeconds Condition timeout
-     * @param pollingIntervalInSeconds Condition check interval
+     * @param pollingIntervalInMilliseconds Condition check interval
      * @param message Part of error message in case of Timeout exception
      * @throws TimeoutException will be thrown in case if timeout is over but condition was not met
-     * @throws InterruptedException will be thrown in case if thread is interrupted
      */
-    public static void waitForTrue(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInSeconds, String message) throws TimeoutException {
+    public static void waitForTrue(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInMilliseconds, String message) throws TimeoutException {
         if (condition == null)
         {
             throw new IllegalArgumentException(getLocalizationManager().getValue("loc.wait.condition.cant.be.null"));
@@ -72,7 +71,7 @@ public final class ConditionalWait {
             }
 
             try {
-                Thread.sleep(pollingIntervalInSeconds);
+                Thread.sleep(pollingIntervalInMilliseconds);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -82,7 +81,7 @@ public final class ConditionalWait {
     /**
      * Waits for function will be true or return some except false.
      * Default timeout condition from settings is using.
-     *
+     * StaleElementReferenceException will be handled by default
      * @param condition Function for waiting {@link Function}
      * @param message the message that will be added to an error in case if the condition is not matched during the timeout
      * @param <T>       Type of object which is waiting
