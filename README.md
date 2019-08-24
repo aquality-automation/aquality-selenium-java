@@ -31,7 +31,7 @@ browser.goTo("https://wikipedia.org");
 browser.waitForPageToLoad()
 ```
 
-4. Add elements you want to interact within the current form as private final fields. Use ElementFactory class's methods to get an instance of each element.
+4. Use ElementFactory class's methods to get an instance of each element.
 ```java
 ITextBox txbEmail = new ElementFactory().getTextBox(By.id("email_create"), "Email");
 ```
