@@ -2,6 +2,17 @@
 
 Aquality Selenium является надстройкой над инструментом работы с браузером посредством Selenium WebDriver. Работа с Selenium WebDriver требует определенных навыков и опыта. Aquality Selenium предлагает упрощенный, а главное более безопасный и стабильный способ работы с Selenium WebDriver.
 
+Основные преимущества использования Aquality Selenium:
+
+1. Простая конфигурация
+2. Поддержка запусков в параллели
+3. Гибкая настройка браузера
+4. Стабильная и предсказуемая работа с элементами
+5. Явные ожидания
+6. Набор скриптов JavaScripts для работы в исключительных ситуациях
+
+**СОДЕРЖАНИЕ**
+
  - <a href="#1-platform-support">1. PLATFORM SUPPORT</a>
  - <a href='#2-configurations'>2. CONFIGURATIONS</a>
     - <a href='#21-settings'>2.1. SETTINGS</a>

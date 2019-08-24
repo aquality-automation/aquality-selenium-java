@@ -1,7 +1,17 @@
 # Aquality Selenium
 
-Aquality Selenium is a wrapper over Selenium WebDriver tool that allows to automate work with web browsers. Selenium WebDriver requires some skill and experience. So, Aquality Selenium suggests simplified and most importantly safer and more stable way to work with Selenium WebDriver.
+Aquality Selenium is a library built over Selenium WebDriver tool that allows to automate work with web browsers. Selenium WebDriver requires some skill and experience. So, Aquality Selenium suggests simplified and most importantly safer and more stable way to work with Selenium WebDriver.
 
+The main benefits from using Aquality Selenium:
+
+1. Simple configuration
+2. Parallel runs
+3. Flexible browser (web driver) construction
+4. Stable and predictable interactions with elements
+5. Smart conditional waits
+6. Pack of JavaScripts for advanced usage
+
+**CONTENT**
  - <a href="#1-platform-support">1. PLATFORM SUPPORT</a>
  - <a href='#2-configurations'>2. CONFIGURATIONS</a>
     - <a href='#21-settings'>2.1. SETTINGS</a>
