@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -16,17 +15,17 @@ public class JsonFile {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final String fileCanonicalPath;
+    private final String content;
 
     public JsonFile(File file) throws IOException {
-        this.fileCanonicalPath = file.getCanonicalPath();
+        this.content = getFileContent(file.getCanonicalPath());
+        fileCanonicalPath = file.getCanonicalPath();
     }
 
-    public String getFileCanonicalPath(){
-        return fileCanonicalPath;
-    }
-
-    public JsonFile(String resourceName) throws IOException {
-        this(new File(getResourcePath(resourceName)));
+    public JsonFile(String resourceName) {
+        ResourceFile resourceFile = new ResourceFile(resourceName);
+        this.content = resourceFile.getFileContent();
+        this.fileCanonicalPath = resourceFile.getFileCanonicalPath();
     }
 
     public Object getValue(String jsonPath){
@@ -68,10 +67,10 @@ public class JsonFile {
 
     private JsonNode getJsonNode(String jsonPath){
         try{
-            JsonNode node = mapper.readTree(getFileContent(getFileCanonicalPath()));
+            JsonNode node = mapper.readTree(getContent());
             return node.at(jsonPath);
         }catch (IOException e){
-            throw new UncheckedIOException(String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, getFileCanonicalPath()),e);
+            throw new UncheckedIOException(String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, getContent()),e);
         }
     }
 
@@ -83,12 +82,11 @@ public class JsonFile {
         }
     }
 
-    private static String getResourcePath(final String resourceName) {
-        try{
-            URL resourceURL = JsonFile.class.getClassLoader().getResource(resourceName);
-            return Objects.requireNonNull(resourceURL).getPath();
-        }catch (NullPointerException e){
-            throw new IllegalArgumentException(String.format("Resource file %1$s was not found or cannot be loaded", resourceName), e);
-        }
+    public String getContent() {
+        return content;
+    }
+
+    public String getFileCanonicalPath() {
+        return fileCanonicalPath;
     }
 }

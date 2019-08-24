@@ -9,6 +9,7 @@ import aquality.selenium.configuration.driversettings.ChromeSettings;
 import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.utils.JsonFile;
+import aquality.selenium.waitings.ConditionalWait;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
@@ -19,11 +20,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import theinternet.TheInternetPage;
 import theinternet.forms.FileDownloaderForm;
-import aquality.selenium.waitings.ConditionalWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -38,11 +37,7 @@ public class BrowserFactoryTests {
     private final JsonFile jsonProfile;
 
     public BrowserFactoryTests() {
-        try{
-            this.jsonProfile = new JsonFile("settings.json");
-        }catch (IOException e){
-            throw new UncheckedIOException(e);
-        }
+        this.jsonProfile = new JsonFile("settings.json");
     }
 
     @Test
