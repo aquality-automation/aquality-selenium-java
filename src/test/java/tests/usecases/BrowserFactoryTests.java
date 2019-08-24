@@ -2,13 +2,14 @@ package tests.usecases;
 
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.IBrowserFactory;
-import aquality.selenium.configuration.Configuration;
-import aquality.selenium.configuration.ITimeoutConfiguration;
+import aquality.selenium.configuration.*;
 import aquality.selenium.configuration.driversettings.ChromeSettings;
 import aquality.selenium.configuration.driversettings.FirefoxSettings;
+import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.utils.JsonFile;
-import aquality.selenium.waitings.ConditionalWait;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,10 +19,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import theinternet.TheInternetPage;
 import theinternet.forms.FileDownloaderForm;
+import aquality.selenium.waitings.ConditionalWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,13 +46,13 @@ public class BrowserFactoryTests {
     }
 
     @Test
-    public void testShouldBePossibleToUseCustomWebDriverFactory() {
+    public void testShouldBePossibleToSetBrowser() {
 
         IBrowserFactory webDriverFactory = () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(jsonProfile);
             WebDriverManager.firefoxdriver().setup();
             FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities());
-            return new Browser(driver, firefoxSettings, Configuration.getInstance().getTimeoutConfiguration());
+            return new Browser(driver, new CustomConfiguration(BrowserName.FIREFOX, firefoxSettings, Configuration.getInstance().getTimeoutConfiguration()));
         };
 
         BrowserManager.setBrowser(webDriverFactory.getBrowser());
@@ -57,14 +61,7 @@ public class BrowserFactoryTests {
     }
 
     @Test
-    public void testShouldBePossibleToUseCustomBrowser() {
-        IBrowserFactory webDriverFactory = new ACustomLocalFactory();
-        BrowserManager.setBrowser(webDriverFactory.getBrowser());
-        Assert.assertEquals(BrowserManager.getBrowser().getDownloadDirectory(), new CustomChromeSettings(jsonProfile).getDownloadDir());
-    }
-
-    @Test
-    public void testShouldBePossibleToUseCustomFactory() {
+    public void testShouldBePossibleToSetFactory() {
         IBrowserFactory webDriverFactory = new ACustomLocalFactory();
         BrowserManager.setFactory(webDriverFactory);
         Assert.assertEquals(BrowserManager.getBrowser().getDownloadDirectory(), new CustomChromeSettings(jsonProfile).getDownloadDir());
@@ -89,19 +86,19 @@ public class BrowserFactoryTests {
 
         BrowserManager.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
-        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists());
+        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), "File should be downloaded");
 
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
 
-    class ACustomLocalFactory implements IBrowserFactory {
+    private class ACustomLocalFactory implements IBrowserFactory {
 
         @Override
         public Browser getBrowser() {
             WebDriverManager.chromedriver().setup();
             CustomChromeSettings chromeSettings = new CustomChromeSettings(jsonProfile);
             ChromeDriver driver = new ChromeDriver(chromeSettings.getCapabilities());
-            return new Browser(driver, chromeSettings, new ITimeoutConfiguration() {
+            return new Browser(driver, new CustomConfiguration(BrowserName.CHROME, chromeSettings, new ITimeoutConfiguration() {
                 @Override
                 public long getImplicit() {
                     return 0;
@@ -126,11 +123,16 @@ public class BrowserFactoryTests {
                 public long getPollingInterval() {
                     return 300;
                 }
-            });
+
+                @Override
+                public long getCommand() {
+                    return 120;
+                }
+            }));
         }
     }
 
-    class CustomChromeSettings extends ChromeSettings {
+    private class CustomChromeSettings extends ChromeSettings {
 
         CustomChromeSettings(JsonFile jsonFile) {
             super(jsonFile);
@@ -144,6 +146,68 @@ public class BrowserFactoryTests {
             catch (IOException e) {
                 throw new InvalidArgumentException(e.getMessage());
             }
+        }
+    }
+
+    private class CustomConfiguration implements IConfiguration{
+
+        private final IDriverSettings driverSettings;
+        private final ITimeoutConfiguration timeoutConfiguration;
+        private final BrowserName browserName;
+
+        CustomConfiguration(BrowserName browserName, IDriverSettings driverSettings, ITimeoutConfiguration timeoutConfiguration){
+            this.driverSettings = driverSettings;
+            this.timeoutConfiguration = timeoutConfiguration;
+            this.browserName = browserName;
+        }
+
+        @Override
+        public IBrowserProfile getBrowserProfile() {
+            return new IBrowserProfile() {
+                @Override
+                public BrowserName getBrowserName() {
+                    return browserName;
+                }
+
+                @Override
+                public boolean isRemote() {
+                    return false;
+                }
+
+                @Override
+                public boolean isElementHighlightEnabled() {
+                    return false;
+                }
+
+                @Override
+                public IDriverSettings getDriverSettings() {
+                    return driverSettings;
+                }
+
+                @Override
+                public URL getRemoteConnectionUrl() {
+                    try {
+                        return new URL(jsonProfile.getValue("/remoteConnectionUrl").toString());
+                    } catch (MalformedURLException e) {
+                        throw new UncheckedExecutionException(e);
+                    }
+                }
+            };
+        }
+
+        @Override
+        public ITimeoutConfiguration getTimeoutConfiguration() {
+            return timeoutConfiguration;
+        }
+
+        @Override
+        public IRetryConfiguration getRetryConfiguration() {
+            return null;
+        }
+
+        @Override
+        public ILoggerConfiguration getLoggerConfiguration() {
+            return null;
         }
     }
 

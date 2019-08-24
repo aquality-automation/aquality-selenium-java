@@ -34,11 +34,11 @@ public class ActionTests extends BaseTest {
     }
 
     @Test
-    public void testScrollToView() {
+    public void testScrollIntoView() {
         BrowserManager.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
         JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
-        jsActions.scrollToView();
-        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollToView()");
+        jsActions.scrollIntoView();
+        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollIntoView()");
     }
 
     @Test
@@ -48,6 +48,16 @@ public class ActionTests extends BaseTest {
         productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
         IButton button = productListForm.getBtnLastProductMore();
         Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
+    }
+
+    @Test
+    public void testMoveMouseFromElement() {
+        ProductListForm productListForm = new ProductListForm();
+        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
+        IButton button = productListForm.getBtnLastProductMore();
+        Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
+        productListForm.getLblLastProduct().getMouseActions().moveMouseFromElement();
+        Assert.assertFalse(button.state().isDisplayed(), "element is still focused after moveMouseFromElement()");
     }
 
     @Test

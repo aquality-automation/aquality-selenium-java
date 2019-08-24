@@ -10,6 +10,7 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
     private final long pageLoad;
     private final long pollInterval;
     private final long implicit;
+    private final long command;
     
     public TimeoutConfiguration(JsonFile settingsFile) {
         this.settingsFile = settingsFile;
@@ -18,6 +19,7 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
         pageLoad = getTimeout(TIMEOUT.PAGE_LOAD);
         pollInterval = getTimeout(TIMEOUT.POLL_INTERVAL);
         implicit = getTimeout(TIMEOUT.IMPLICIT);
+        command = getTimeout(TIMEOUT.COMMAND);
     }
 
     private long getTimeout(TIMEOUT timeout){
@@ -45,12 +47,17 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
         return pollInterval;
     }
 
+    public long getCommand(){
+        return command;
+    }
+
     private enum TIMEOUT {
         IMPLICIT("timeoutImplicit"),
         CONDITION("timeoutCondition"),
         SCRIPT("timeoutScript"),
-        PAGE_LOAD("timeoutPageload"),
-        POLL_INTERVAL("timeoutPollingInterval");
+        PAGE_LOAD("timeoutPageLoad"),
+        POLL_INTERVAL("timeoutPollingInterval"),
+        COMMAND("timeoutCommand");
 
         private String key;
         TIMEOUT(String key){

@@ -15,16 +15,17 @@ public class JsActions {
 
     private static final Configuration configuration = Configuration.getInstance();
     private static final String LOG_DELIMITER = "::";
-    private final Logger logger = Logger.getInstance();
+    protected final Logger logger = Logger.getInstance();
+    protected final LocalizationManager localizationManager = LocalizationManager.getInstance();
     protected IElement element;
-    private String type;
-    private String name;
+    protected String type;
+    protected String name;
 
 
-    public JsActions(IElement element, String type, String name) {
+    public JsActions(IElement element, String type) {
         this.element = element;
         this.type = type;
-        this.name = name;
+        this.name = element.getName();
     }
 
     /**
@@ -56,7 +57,7 @@ public class JsActions {
     /**
      * Scrolling to element
      */
-    public void scrollToView() {
+    public void scrollIntoView() {
         infoLoc("loc.scrolling.js");
         executeScript(JavaScript.SCROLL_TO_ELEMENT, element, true);
     }
@@ -160,7 +161,7 @@ public class JsActions {
     }
 
     protected void infoLoc(String key) {
-        logger.info(formatJsActionMessage(LocalizationManager.getInstance().getValue(key)));
+        logger.info(formatJsActionMessage(localizationManager.getValue(key)));
     }
 
     private Browser getBrowser(){

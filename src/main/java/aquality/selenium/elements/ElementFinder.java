@@ -8,12 +8,10 @@ import aquality.selenium.elements.interfaces.IElementFinder;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -67,8 +65,9 @@ class ElementFinder implements IElementFinder {
         List<WebElement> foundElements = new ArrayList<>();
         List<WebElement> resultElements = new ArrayList<>();
         long zeroTimeout = 0L;
-        getBrowser().setImplicitWaitTimeOut(zeroTimeout);
+        getBrowser().setImplicitWaitTimeout(zeroTimeout);
         try{
+
             ConditionalWait.waitFor(driver ->
             {
                 List<WebElement> allFoundElements = driver.findElements(locator);
@@ -76,11 +75,12 @@ class ElementFinder implements IElementFinder {
                 List<WebElement> filteredElements = filterByState(allFoundElements, desiredState.getDesiredStatePredicate());
                 resultElements.addAll(filteredElements);
                 return !filteredElements.isEmpty();
-            }, timeout);
+            }, timeout, getTimeoutConfiguration().getPollingInterval(),
+                    desiredState.getMessage(), Collections.emptyList());
         }catch (TimeoutException e){
             applyResult(locator, desiredState, foundElements);
         }
-        getBrowser().setImplicitWaitTimeOut(getTimeoutConfiguration().getImplicit());
+        getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
         return resultElements;
     }
 

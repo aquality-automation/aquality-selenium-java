@@ -13,6 +13,14 @@ import java.nio.file.Paths;
 
 public class FileUtil {
 
+    public static String getProjectBaseDir(){
+        return  System.getProperty("user.dir") != null ? System.getProperty("user.dir") : System.getProperty("project.basedir");
+    }
+
+    public static File getResourceFileByName(String fileName){
+        return Paths.get(getProjectBaseDir(), "/src/test/resources/" + fileName).toFile();
+    }
+
     public static void deleteFile(File file){
         if(file.exists()){
             try {

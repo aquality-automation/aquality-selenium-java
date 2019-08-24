@@ -1,13 +1,15 @@
 package aquality.selenium.elements.actions;
 
 
+import aquality.selenium.browser.Browser;
+import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.waitings.ConditionalWait;
 import aquality.selenium.logger.Logger;
-import org.openqa.selenium.*;
+import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.function.UnaryOperator;
 
 public class MouseActions {
 
@@ -18,10 +20,10 @@ public class MouseActions {
     private String name;
 
 
-    public MouseActions(IElement element, String type, String name) {
+    public MouseActions(IElement element, String type) {
         this.element = element;
         this.type = type;
-        this.name = name;
+        this.name = element.getName();
     }
 
     /**
@@ -29,8 +31,16 @@ public class MouseActions {
      */
     public void click() {
         infoLoc("loc.clicking");
-        new JsActions(element, type, name).highlightElement();
-        ConditionalWait.waitFor(driver -> performAction(new Actions(driver).click(element.getElement())));
+        new JsActions(element, type).highlightElement();
+        performAction(actions -> actions.click());
+    }
+
+    /**
+     * Click Right (calls context menu) on the element
+     */
+    public void rightClick() {
+        infoLoc("loc.clicking.right");
+        performAction(actions -> actions.contextClick(element.getElement()));
     }
 
     /**
@@ -39,7 +49,16 @@ public class MouseActions {
     public void moveMouseToElement() {
         infoLoc("loc.moving");
         element.getElement().getCoordinates().inViewPort();
-        ConditionalWait.waitFor(driver -> performAction(new Actions(driver).moveToElement(element.getElement())));
+        performAction(actions -> actions.moveToElement(element.getElement()));
+    }
+
+    /**
+     * Move mouse from this element.
+     */
+    public void moveMouseFromElement() {
+        infoLoc("loc.movingFrom");
+        performAction(actions -> actions.moveToElement(element.getElement(),
+                -element.getElement().getSize().width / 2, -element.getElement().getSize().height / 2));
     }
 
     /**
@@ -47,20 +66,14 @@ public class MouseActions {
      */
     public void doubleClick() {
         infoLoc("loc.clicking.double");
-        ConditionalWait.waitFor(driver -> {
-            ((RemoteWebDriver) driver).getMouse().mouseMove(element.getElement().getCoordinates());
-            return performAction(new Actions(driver).doubleClick(element.getElement()));
-        });
+        ElementActionRetrier.doWithRetry(() -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
+        performAction(actions -> actions.doubleClick(element.getElement()));
     }
 
-    private Boolean performAction(Actions actions) {
-        try {
-            actions.build().perform();
-            return true;
-        } catch (WebDriverException e) {
-            logger.debug(e.getMessage());
-            return false;
-        }
+    private void performAction(UnaryOperator<Actions> function) {
+        Actions actions = new Actions(getBrowser().getDriver()).moveToElement(element.getElement());
+        ElementActionRetrier.doWithRetry(() ->
+                        function.apply(actions).build().perform());
     }
 
     /**
@@ -75,5 +88,9 @@ public class MouseActions {
 
     private void infoLoc(String key) {
         logger.info(formatActionMessage(LocalizationManager.getInstance().getValue(key)));
+    }
+
+    private Browser getBrowser(){
+        return BrowserManager.getBrowser();
     }
 }

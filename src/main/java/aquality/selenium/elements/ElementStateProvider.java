@@ -1,6 +1,7 @@
 package aquality.selenium.elements;
 
 import aquality.selenium.configuration.Configuration;
+import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.elements.interfaces.IElementStateProvider;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
@@ -10,6 +11,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,10 +90,15 @@ class ElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotExist(long timeout) {
-        getLogger().info(getLocManager().getValue("loc.waitnotexists"), timeout);
+        String message = String.format(getLocManager().getValue("loc.waitnotexists"), timeout);
+        getLogger().info(message);
         try{
             long zeroTimeout = 0L;
-            return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(), timeout);
+            return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(),
+                    timeout,
+                    getTimeoutConfiguration().getPollingInterval(),
+                    message,
+                    Collections.emptyList());
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
             return false;
@@ -116,7 +123,7 @@ class ElementStateProvider implements IElementStateProvider {
                 findElements(timeout).
                         stream().anyMatch(element ->
                         element.isEnabled() &&
-                                !element.getAttribute(Attributes.CLASS.toString()).contains(PopularClassNames.DISABLED)
+                                !element.getAttribute(Attributes.CLASS.toString()).contains("disabled")
                 ), getDesiredStateMessage("ENABLED", timeout)).withCatchingTimeoutException().withThrowingNoSuchElementException();
         return isElementInDesiredCondition(timeout, desiredState);
     }
@@ -158,7 +165,11 @@ class ElementStateProvider implements IElementStateProvider {
     }
 
     private long getDefaultTimeout(){
-        return Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        return getTimeoutConfiguration().getCondition();
+    }
+
+    private ITimeoutConfiguration getTimeoutConfiguration(){
+        return Configuration.getInstance().getTimeoutConfiguration();
     }
 
     private String getDesiredStateMessage(String desiredStateName, long timeout){

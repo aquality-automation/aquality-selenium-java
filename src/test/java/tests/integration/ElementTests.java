@@ -3,9 +3,10 @@ package tests.integration;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ExpectedCount;
+import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
+import theinternet.forms.FormAuthenticationForm;
 import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
@@ -17,7 +18,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
-import theinternet.forms.LoginForm;
 
 import java.util.List;
 
@@ -27,17 +27,18 @@ public class ElementTests extends BaseTest {
     public void testComboBox() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> values = comboBox.getValuesList();
-        comboBox.selectByIndex(values.size() - 1);
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(values.size() - 1));
+        List<String> texts = comboBox.getTexts();
+        int lastOptionIndex = texts.size() - 1;
+        comboBox.selectByIndex(lastOptionIndex);
+        Assert.assertEquals(comboBox.getSelectedText(), texts.get(lastOptionIndex));
 
-        comboBox.selectOptionThatContainsText("1");
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(1));
+        comboBox.selectByContainingText("1");
+        Assert.assertEquals(comboBox.getSelectedText(), texts.get(1));
 
         String selectedText = comboBox.getSelectedText();
         comboBox.selectByText("Option 2");
-        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()));
-        Assert.assertEquals(comboBox.getSelectedTextByJs(), values.get(2));
+        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()), "Combobox should not be equal to " + selectedText);
+        Assert.assertEquals(comboBox.getJsActions().getSelectedText(), texts.get(2));
     }
 
     @Test
@@ -45,19 +46,19 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = elementFactory.getComboBox(By.id("dropdown"), "Dropdown");
         comboBox.state().waitForDisplayed();
-        List<String> values = comboBox.getValuesList();
+        List<String> values = comboBox.getValues();
 
-        comboBox.selectOptionThatContainsValue("2");
-        Assert.assertEquals(comboBox.getSelectedText(), values.get(2));
+        comboBox.selectByContainingValue("2");
+        Assert.assertEquals(comboBox.getSelectedValue(), values.get(2));
     }
 
     @Test
     public void testComboBoxGetValuesJs() {
         navigate(TheInternetPage.DROPDOWN);
         IComboBox comboBox = new DropDownForm().getComboBox();
-        List<String> valuesByJs = comboBox.getJsActions().getValuesList();
-        List<String> valuesBySelenium = comboBox.getValuesList();
-        Assert.assertTrue(valuesByJs.containsAll(valuesBySelenium));
+        List<String> textsByJs = comboBox.getJsActions().getTexts();
+        List<String> textsBySelenium = comboBox.getTexts();
+        Assert.assertTrue(textsByJs.containsAll(textsBySelenium));
     }
 
     @Test
@@ -83,7 +84,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementState.DISPLAYED, ExpectedCount.MORE_THEN_ZERO);
+                ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.isChecked();
@@ -109,38 +110,40 @@ public class ElementTests extends BaseTest {
         ILink link = elementFactory.getLink(By.id("redirect"), "Link");
         String href = link.getHref();
         link.click();
-        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(TheInternetPage.STATUS_CODES.getAddress());
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        String expectedUrl = TheInternetPage.STATUS_CODES.getAddress();
+        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(expectedUrl);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().goBack();
         link = elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
         link.click();
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
         BrowserManager.getBrowser().getDriver().navigate().to(href);
-        ConditionalWait.waitFor(statusCodesExpectedCondition);
+        ConditionalWait.waitFor(statusCodesExpectedCondition,"Current url should be equal to " + expectedUrl);
         Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
     }
 
     @Test
     public void testTextBox() {
         navigate(TheInternetPage.LOGIN);
-        LoginForm loginForm = new LoginForm();
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
         SoftAssert softAssert = new SoftAssert();
 
-        ITextBox txbUsername = loginForm.getTxbUsername();
+        ITextBox txbUsername = authenticationForm.getTxbUsername();
         txbUsername.focus();
         txbUsername.type("wrong");
         softAssert.assertEquals(txbUsername.getValue(), "wrong");
 
-        ITextBox txbPass = loginForm.getTxbPassword();
+        ITextBox txbPass = authenticationForm.getTxbPassword();
         txbPass.sendKeys(Keys.NUMPAD0);
         softAssert.assertEquals(txbPass.getValue(), "0");
 
         txbPass.submit();
-        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(""));
+        String expectedValue = "";
+        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }
@@ -148,23 +151,23 @@ public class ElementTests extends BaseTest {
     @Test
     public void testSetInnerHtml() {
         navigate(TheInternetPage.LOGIN);
-        LoginForm loginForm = new LoginForm();
-        ITextBox txbUsername = loginForm.getTxbUsername();
+        FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
+        ITextBox txbUsername = authenticationForm.getTxbUsername();
         Assert.assertTrue(txbUsername.state().waitForDisplayed());
 
-        ILabel lblLogin = loginForm.getLblLogin();
+        ILabel lblLogin = authenticationForm.getLblLogin();
         lblLogin.setInnerHtml("<p>123123</p>");
 
-        Assert.assertTrue(txbUsername.state().waitForNotExist(loginForm.getTimeout()));
+        Assert.assertTrue(txbUsername.state().waitForNotExist(authenticationForm.getTimeout()));
 
-        Assert.assertTrue(elementFactory.getLabel(By.xpath(loginForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
+        Assert.assertTrue(elementFactory.getLabel(By.xpath(authenticationForm.getXPathFormLogin().concat("/p[.='123123']")), "login with innerHTML").state().waitForDisplayed());
     }
 
     @Test
     public void testRightClick() {
         BrowserManager.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
         ILabel label = elementFactory.getLabel(By.xpath("//span[contains(@class, 'context')]"), "Right click");
-        label.clickRight();
+        label.getMouseActions().rightClick();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();
         Assert.assertTrue(present, "");
     }
@@ -175,11 +178,10 @@ public class ElementTests extends BaseTest {
         ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "username");
 
         String propertyName = "font-family";
-        String expectedCssValue = "\"Helvetica Neue\", Helvetica, Helvetica, Arial, sans-serif";
+        String expectedCssValue = "Helvetica";
 
-        Assert.assertEquals(txbUsername.getCssValue(propertyName), expectedCssValue);
-
-        Assert.assertEquals(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT), expectedCssValue);
+        Assert.assertTrue(txbUsername.getCssValue(propertyName).contains(expectedCssValue));
+        Assert.assertTrue(txbUsername.getCssValue(propertyName, HighlightState.HIGHLIGHT).contains(expectedCssValue));
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)

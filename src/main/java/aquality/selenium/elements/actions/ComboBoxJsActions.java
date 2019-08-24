@@ -7,17 +7,17 @@ import java.util.List;
 
 public class ComboBoxJsActions extends JsActions {
 
-    public ComboBoxJsActions(IComboBox comboBox, String elementType, String name) {
-        super(comboBox, elementType, name);
+    public ComboBoxJsActions(IComboBox comboBox, String elementType) {
+        super(comboBox, elementType);
     }
 
     /**
-     * Values from ComboBox by js
+     * Texts of options from ComboBox by js
      *
-     * @return values from ComboBox
+     * @return texts of options from ComboBox
      */
-    public List<String> getValuesList() {
-        return (List<String>) executeScript(JavaScript.GET_COMBOBOX_VALUES, element);
+    public List<String> getTexts() {
+        return (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
     }
 
     /**
@@ -26,7 +26,7 @@ public class ComboBoxJsActions extends JsActions {
      * @return text of selected element
      */
     public String getSelectedText() {
-        return (String) executeScript(JavaScript.GET_COMBOBOX_TEXT, element);
+        return (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
     }
 
     /**

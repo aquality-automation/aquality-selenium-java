@@ -3,12 +3,15 @@ package aquality.selenium.elements;
 import aquality.selenium.elements.actions.ComboBoxJsActions;
 import aquality.selenium.elements.interfaces.IComboBox;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.waitings.ConditionalWait;
+import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -29,97 +32,102 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByIndex(int index) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByIndex(index);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByIndex(index));
     }
 
     @Override
     public void selectByText(String value) {
         getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), value);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByVisibleText(value);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByVisibleText(value));
     }
 
     @Override
-    public void selectOptionThatContainsText(String text) {
-        info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
-            Select select = new Select(getElement());
-            List<WebElement> elements = select.getOptions();
-            for (WebElement el: elements) {
-                String currentText = el.getText();
-                getLogger().debug(currentText);
-                if(currentText.toLowerCase().contains(text.toLowerCase())){
-                    select.selectByVisibleText(currentText);
-                    return true;
-                }
-            }
-            return false;
-        });
+    public void clickAndSelectByText(String value) {
+        click();
+        selectByText(value);
     }
 
     @Override
-    public void selectOptionThatContainsValue(String value) {
+    public void selectByContainingText(String text) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
+        selectOptionThatContains(WebElement::getText,
+                Select::selectByVisibleText,
+                text);
+    }
+
+    @Override
+    public void selectByContainingValue(String value) {
+        info(LOG_SELECTING_VALUE);
+        selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
+                Select::selectByValue,
+                value);
+    }
+
+    private void selectOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
+        ElementActionRetrier.doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
+            boolean isSelected = false;
             for (WebElement el: elements) {
-                String currentValue = el.getAttribute(Attributes.VALUE.toString());
+                String currentValue = getValueFunc.apply(el);
                 getLogger().debug(currentValue);
                 if(currentValue.toLowerCase().contains(value.toLowerCase())){
-                    select.selectByValue(currentValue);
-                    return true;
+                    selectFunc.accept(select, currentValue);
+                    isSelected = true;
                 }
             }
-            return false;
+            if (!isSelected){
+                throw new InvalidElementStateException(String.format(getLocManager().getValue("loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
+            }
         });
     }
 
     @Override
     public void selectByValue(String value) {
         info(LOG_SELECTING_VALUE);
-        ConditionalWait.waitFor(y -> {
-            new Select(getElement()).selectByValue(value);
-            return true;
-        });
+        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByValue(value));
+    }
+
+    @Override
+    public void clickAndSelectByValue(String value) {
+        click();
+        selectByValue(value);
+    }
+
+    @Override
+    public String getSelectedValue() {
+        return ElementActionRetrier.doWithRetry(
+                () -> new Select(getElement()).getFirstSelectedOption().getAttribute(Attributes.VALUE.toString()));
     }
 
     @Override
     public String getSelectedText() {
-        if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()) {
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
-        }
-        return ConditionalWait.waitFor(y -> new Select(getElement()).getFirstSelectedOption().getText());
+        return ElementActionRetrier.doWithRetry(() -> new Select(getElement()).getFirstSelectedOption().getText());
     }
 
     @Override
-    public List<String> getValuesList() {
+    public List<String> getValues() {
         getLogger().info(getLocManager().getValue("loc.combobox.get.values"));
-        if(ElementFinder.getInstance().findElements(getLocator(), getDefaultTimeout(), getElementState()).isEmpty()){
-            throw new IllegalStateException(String.format(getLocManager().getValue("loc.element.wasnotfoundinstate"), getName(), getElementState(), getDefaultTimeout()));
-        }
-        return ConditionalWait.waitFor(y ->
+        return ElementActionRetrier.doWithRetry(() ->
                 new Select(getElement()).getOptions()
                         .stream()
-                        .map(option -> option.getText().isEmpty() ?
-                                option.getAttribute(Attributes.VALUE.toString()) : option.getText())
+                        .map(option -> option.getAttribute(Attributes.VALUE.toString()))
                         .collect(Collectors.toList()));
     }
 
     @Override
-    public String getSelectedTextByJs() {
-        getLogger().info(getLocManager().getValue("loc.get.text"));
-        return getJsActions().getSelectedText();
+    public List<String> getTexts() {
+        getLogger().info(getLocManager().getValue("loc.combobox.get.texts"));
+        return ElementActionRetrier.doWithRetry(() ->
+                new Select(getElement()).getOptions()
+                        .stream()
+                        .map(WebElement::getText)
+                        .collect(Collectors.toList()));
     }
 
     @Override
     public ComboBoxJsActions getJsActions() {
-        return new ComboBoxJsActions(this, getElementType(), getName());
+        return new ComboBoxJsActions(this, getElementType());
     }
 
 }

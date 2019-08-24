@@ -3,7 +3,9 @@ package aquality.selenium.elements;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.JavaScript;
+import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.*;
+import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
@@ -79,29 +81,33 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ExpectedCount count,
+    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
                                                      ElementState state) {
         return findElementsCore(locator, supplier, state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ElementsCount count) {
         return findElementsCore(locator, getDefaultElementSupplier(clazz), state, count);
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ExpectedCount count) {
+    public <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ElementsCount count) {
         return findElements(locator, type.getClazz(), state, count);
     }
 
     private  <T extends IElement> List<T> findElementsCore(By locator, IElementSupplier<T> supplier,
-                                                           ElementState state, ExpectedCount count) {
+                                                           ElementState state, ElementsCount count) {
         List<T> elements = new ArrayList<>();
         switch (count) {
             case ZERO:
                 break;
             case MORE_THEN_ZERO:
-                ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty());
+                ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty(),
+                        String.format(LocalizationManager.getInstance().getValue("loc.no.elements.found.in.state"),
+                                locator.toString(),
+                                state.toString(),
+                                Configuration.getInstance().getTimeoutConfiguration().getCondition()));
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));

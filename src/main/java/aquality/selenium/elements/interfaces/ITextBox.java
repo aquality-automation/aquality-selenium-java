@@ -1,7 +1,5 @@
 package aquality.selenium.elements.interfaces;
 
-import org.openqa.selenium.Keys;
-
 public interface ITextBox extends IElement {
     /**
      * Enter the text in the box
@@ -16,13 +14,6 @@ public interface ITextBox extends IElement {
      * @param value text
      */
     void typeSecret(String value);
-
-    /**
-     * Enter the text in the box
-     *
-     * @param keys text
-     */
-    void sendKeys(Keys keys);
 
     /**
      * Clears input and enters text in the box, inputted value isn't logging
@@ -54,4 +45,9 @@ public interface ITextBox extends IElement {
      * Focuses on the element using send keys
      */
     void focus();
+
+    /**
+     * Removes focus from the element using send keys
+     */
+    void unfocus();
 }

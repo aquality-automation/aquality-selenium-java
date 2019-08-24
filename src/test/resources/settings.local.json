@@ -49,17 +49,20 @@
       }
     },
     "safari": {
-      "capabilities": {
-        "safari.options.dataDir": "/Users/username/Downloads"
-      }
+      "downloadDir": "/Users/username/Downloads"
     }
   },
   "timeouts": {
     "timeoutImplicit" : 0,
     "timeoutCondition" : 30,
     "timeoutScript" : 10,
-    "timeoutPageload" : 15,
-    "timeoutPollingInterval": 300
+    "timeoutPageLoad" : 15,
+    "timeoutPollingInterval": 300,
+    "timeoutCommand": 120
+  },
+  "retry": {
+    "number": 2,
+    "pollingInterval": 300
   },
   "logger": {
     "language": "en"
