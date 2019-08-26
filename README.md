@@ -44,12 +44,14 @@ browser.waitForPageToLoad()
 
 4. Use ElementFactory class's methods to get an instance of each element.
 ```java
-ITextBox txbEmail = new ElementFactory().getTextBox(By.id("email_create"), "Email");
+ITextBox txbSearch = new ElementFactory().getTextBox(By.id("searchInput"), "Search");
 ```
 
 5. Call element's methods to perform action with element: 
 ```java
-txbEmail.type("email@domain.com");
+txbSearch.type("Selenium WebDriver");
+txbSearch.submit();
+browser.waitForPageToLoad();
 ```
 
 6. Quit browser at the end
