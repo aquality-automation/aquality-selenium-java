@@ -38,6 +38,5 @@ public class HiddenElementsTests extends BaseTest {
     public void testNotHiddenElementsNotDisplayed() {
         List<ILabel> listElements = new SliderForm().getListElements(ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
-        Assert.assertFalse(listElements.stream().anyMatch(label -> label.state().waitForDisplayed(1L)));
     }
 }

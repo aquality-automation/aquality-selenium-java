@@ -4,6 +4,7 @@ import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.configuration.Configuration;
+import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
@@ -101,18 +102,22 @@ public class ElementFactory implements IElementFactory {
         List<T> elements = new ArrayList<>();
         switch (count) {
             case ZERO:
+                ConditionalWait.waitFor(driver -> driver.findElements(locator).isEmpty(),
+                        String.format(LocalizationManager.getInstance().getValue("loc.elements.found.but.should.not"),
+                                locator.toString()));
                 break;
             case MORE_THEN_ZERO:
                 ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty(),
                         String.format(LocalizationManager.getInstance().getValue("loc.no.elements.found.in.state"),
                                 locator.toString(),
                                 state.toString(),
-                                Configuration.getInstance().getTimeoutConfiguration().getCondition()));
+                                getTimeoutConfig()));
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));
         }
-        List<WebElement> webElements = getBrowser().getDriver().findElements(locator);
+
+        List<WebElement> webElements = ElementFinder.getInstance().findElements(locator, getTimeoutConfig().getCondition(), state);
         int index = 1;
         for (WebElement webElement : webElements) {
             try {
@@ -179,6 +184,10 @@ public class ElementFactory implements IElementFactory {
 
     private Browser getBrowser(){
         return BrowserManager.getBrowser();
+    }
+
+    private ITimeoutConfiguration getTimeoutConfig(){
+        return Configuration.getInstance().getTimeoutConfiguration();
     }
 }
 

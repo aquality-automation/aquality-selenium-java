@@ -63,5 +63,6 @@
   "loc.waitnotexists" : "Wait until element does not exist in DOM during %1$s seconds",
   "loc.no.elements.found.in.state" : "no elements with locator '%1$s' found in state '%2$s' during %3$s seconds",
   "loc.no.elements.found.by.locator" : "No elements were found by locator '%1$s'",
-  "loc.elements.were.found.but.not.in.state" :  "Elements were found by locator '%1$s'. But %2$s"
+  "loc.elements.were.found.but.not.in.state" :  "Elements were found by locator '%1$s'. But %2$s",
+  "loc.elements.found.but.should.not": "No elements should be found by locator '%1$s'"
 }
