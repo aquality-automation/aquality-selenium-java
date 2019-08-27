@@ -20,6 +20,7 @@ public class QuickStartExample {
         ElementFactory elementFactory = new ElementFactory();
         ITextBox txbSearch = elementFactory.getTextBox(By.id("searchInput"), "Search");
         txbSearch.type("quality assurance");
+        browser.waitForPageToLoad();
 
         browser.quit();
     }
