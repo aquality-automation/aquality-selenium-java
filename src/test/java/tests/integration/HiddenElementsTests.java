@@ -35,8 +35,8 @@ public class HiddenElementsTests extends BaseTest {
     }
 
     @Test
-    public void testNotHiddenElementsNotDisplayed() {
+    public void testFindDisplayedElementsShouldReturnNoElementsIfTheyAreNotDisplayed() {
         List<ILabel> listElements = new SliderForm().getListElements(ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
-        Assert.assertFalse(listElements.isEmpty());
+        Assert.assertTrue(listElements.isEmpty());
     }
 }

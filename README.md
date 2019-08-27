@@ -35,6 +35,7 @@ browser.waitForPageToLoad();
 ```java
 ElementFactory elementFactory = new ElementFactory();
 ITextBox txbSearch = elementFactory.getTextBox(By.id("searchInput"), "Search");
+txbSearch.submit();
 browser.waitForPageToLoad();
 ```
 
