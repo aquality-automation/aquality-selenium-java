@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8-jdk-stretch-node-browsers
+      - image: circleci/openjdk:11-jdk-stretch-node-browsers
 
     working_directory: ~/repo
 
@@ -27,4 +27,4 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-      - run: mvn clean test -Dprofile=local -DdriverSettings.chrome.webDriverVersion=76.0.3809.126
+      - run: mvn clean test -Dprofile=local
