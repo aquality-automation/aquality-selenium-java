@@ -27,4 +27,4 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-      - run: mvn clean test -Dprofile=local
+      - run: mvn clean test -Dprofile=local -DdriverSettings.chrome.webDriverVersion=76.0.3809.126
