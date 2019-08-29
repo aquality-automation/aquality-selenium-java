@@ -4,20 +4,24 @@ import aquality.selenium.configuration.Configuration;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import utils.Timer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ElementActionRetrierTests {
 
     private static final int attemptsCount = Configuration.getInstance().getRetryConfiguration().getNumber();
     private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
+    private Timer timer;
 
     @DataProvider
     private Object[][] handledExceptions() {
@@ -25,6 +29,11 @@ public class ElementActionRetrierTests {
                 { new StaleElementReferenceException("") },
                 { new InvalidElementStateException("")}
         };
+    }
+
+    @BeforeMethod
+    public void initializeTimer(){
+        timer = new Timer();
     }
 
     @Test
@@ -36,7 +45,7 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
-        Date startTime = new Date();
+        timer.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
         ElementActionRetrier.doWithRetry(() -> {
             if (isThrowException.get()) {
@@ -44,8 +53,8 @@ public class ElementActionRetrierTests {
                 throw handledException;
             }
         });
-        long duration = new Date().getTime() - startTime.getTime();
-        assertTrue(duration >= pollingInterval && duration < 2 * pollingInterval);
+        double duration = timer.stop();
+        assertTrue(duration >= Double.valueOf(pollingInterval)/1000 && duration < 2 * Double.valueOf(pollingInterval)/1000);
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
@@ -57,7 +66,7 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWorkCorrectTimes(RuntimeException handledException) {
-        Date startTime = new Date();
+        timer.start();
         try {
             ElementActionRetrier.doWithRetry(() -> {
                 throw handledException;
@@ -65,8 +74,8 @@ public class ElementActionRetrierTests {
         } catch (RuntimeException e) {
             assertTrue(handledException.getClass().isInstance(e));
         }
-        long duration = new Date().getTime() - startTime.getTime();
-        assertTrue(duration >= pollingInterval * attemptsCount && duration < pollingInterval * (attemptsCount + 1));
+        double duration = timer.stop();
+        assertTrue(duration >= (Double.valueOf(pollingInterval)/1000) * attemptsCount && duration < (Double.valueOf(pollingInterval)/1000) * (attemptsCount + 1));
     }
 
     @Test(expectedExceptions = IllegalAccessException.class)
