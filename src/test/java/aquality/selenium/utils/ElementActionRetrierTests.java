@@ -4,7 +4,6 @@ import aquality.selenium.configuration.Configuration;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import utils.Timer;
@@ -21,7 +20,7 @@ public class ElementActionRetrierTests {
 
     private static final int attemptsCount = Configuration.getInstance().getRetryConfiguration().getNumber();
     private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
-    private Timer timer;
+
 
     @DataProvider
     private Object[][] handledExceptions() {
@@ -29,11 +28,6 @@ public class ElementActionRetrierTests {
                 { new StaleElementReferenceException("") },
                 { new InvalidElementStateException("")}
         };
-    }
-
-    @BeforeMethod
-    public void initializeTimer(){
-        timer = new Timer();
     }
 
     @Test
@@ -45,6 +39,7 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
+        Timer timer = new Timer();
         timer.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
         ElementActionRetrier.doWithRetry(() -> {
@@ -66,6 +61,7 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWorkCorrectTimes(RuntimeException handledException) {
+        Timer timer = new Timer();
         timer.start();
         try {
             ElementActionRetrier.doWithRetry(() -> {
