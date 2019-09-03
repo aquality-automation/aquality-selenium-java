@@ -16,7 +16,7 @@ import static utils.TimeUtil.*;
 
 public class ElementStateTests extends BaseTest {
 
-    private final double operationTime = 2;
+    private final double operationTime = 5;
     private final long customWaitTime = 2L;
     private final ElementFactory elementFactory = new ElementFactory();
     private final ILabel lblNotExists = elementFactory.getLabel(By.xpath("//div[@class='not exist element']"), "not exist element");

@@ -28,23 +28,28 @@ Browser browser = BrowserManager.getBrowser();
 ```java
 browser.maximize();
 browser.goTo("https://wikipedia.org");
-browser.waitForPageToLoad()
+browser.waitForPageToLoad();
 ```
 
 4. Use ElementFactory class's methods to get an instance of each element.
 ```java
-ITextBox txbEmail = new ElementFactory().getTextBox(By.id("email_create"), "Email");
+ElementFactory elementFactory = new ElementFactory();
+ITextBox txbSearch = elementFactory.getTextBox(By.id("searchInput"), "Search");
+txbSearch.submit();
+browser.waitForPageToLoad();
 ```
 
 5. Call element's methods to perform action with element: 
 ```java
-txbEmail.type("email@domain.com");
+txbSearch.type("quality assurance");
 ```
 
 6. Quit browser at the end
 ```
 browser.quit();
 ```
+
+See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:
