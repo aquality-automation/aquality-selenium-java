@@ -22,6 +22,7 @@
     },
     "firefox": {
       "webDriverVersion": "latest",
+      "systemArchitecture": "X32",
       "capabilities": {
         "enableVNC": true
       },

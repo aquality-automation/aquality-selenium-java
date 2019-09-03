@@ -28,7 +28,7 @@ public class ProductListForm extends Form {
         return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
     }
 
-    public ILabel getLblFirstProduct(){
+    private ILabel getLblFirstProduct(){
         return getElementFactory().getLabel(By.xpath(XPATH_PRODUCT.concat("[1]")), "First product");
     }
 
@@ -36,7 +36,9 @@ public class ProductListForm extends Form {
         return getElementFactory().getLabel(By.id("homefeatured"), "home featured").findChildElement(By.xpath("//li".concat("[last()]")), ILabel.class);
     }
 
-    public IButton getBtnLastProductMore(){
+    public IButton getBtnLastProductMoreFocused() {
+        getLblFirstProduct().getMouseActions().moveMouseToElement();
+        getLblLastProduct().getMouseActions().moveMouseToElement();
         return getLblLastProduct().findChildElement(By.xpath(".//a[contains(@class, 'lnk_view')]"), ElementType.BUTTON);
     }
 

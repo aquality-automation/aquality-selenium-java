@@ -43,18 +43,14 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testMoveMouseToElement() {
-        ProductListForm productListForm = new ProductListForm();
-        productListForm.getLblFirstProduct().getMouseActions().moveMouseToElement();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
-        IButton button = productListForm.getBtnLastProductMore();
+        IButton button = new ProductListForm().getBtnLastProductMoreFocused();
         Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
     }
 
     @Test
     public void testMoveMouseFromElement() {
         ProductListForm productListForm = new ProductListForm();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
-        IButton button = productListForm.getBtnLastProductMore();
+        IButton button = productListForm.getBtnLastProductMoreFocused();
         Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
         productListForm.getLblLastProduct().getMouseActions().moveMouseFromElement();
         Assert.assertFalse(button.state().isDisplayed(), "element is still focused after moveMouseFromElement()");
@@ -62,20 +58,14 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testGetElementText() {
-        ProductListForm productListForm = new ProductListForm();
-        productListForm.getLblFirstProduct().getMouseActions().moveMouseToElement();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
-        IButton button = productListForm.getBtnLastProductMore();
+        IButton button = new ProductListForm().getBtnLastProductMoreFocused();
         Assert.assertEquals(button.getText().trim(), button.getJsActions().getElementText().trim(),
                 "element text got via JsActions is not match to expected");
     }
 
     @Test
     public void testSetFocus() {
-        ProductListForm productListForm = new ProductListForm();
-        productListForm.getLblFirstProduct().getMouseActions().moveMouseToElement();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
-        productListForm.getBtnLastProductMore().getJsActions().clickAndWait();
+        new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
 
         ITextBox txbQuantity = new ProductForm().getTxbQuantity();
         txbQuantity.getJsActions().setFocus();
@@ -87,10 +77,7 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testSetValue() {
-        ProductListForm productListForm = new ProductListForm();
-        productListForm.getLblFirstProduct().getMouseActions().moveMouseToElement();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseToElement();
-        productListForm.getBtnLastProductMore().getJsActions().clickAndWait();
+        new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
 
         ProductForm productForm = new ProductForm();
         ITextBox txbQuantity = productForm.getTxbQuantity();
