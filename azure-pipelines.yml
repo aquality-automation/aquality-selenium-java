@@ -10,6 +10,9 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: ScreenResolutionUtility@1
+  inputs:
+    displaySettings: 'optimal'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
