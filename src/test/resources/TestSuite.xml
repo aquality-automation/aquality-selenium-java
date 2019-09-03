@@ -22,7 +22,7 @@
             <class name="tests.usecases.ShoppingCartTest"/>
         </classes>
     </test>
-    <test name="Non-threadsafe tests">
+    <test name="Non-threadsafe tests" parallel="false">
         <classes>
             <class name="tests.usecases.TestTimeoutConfiguration"/>
             <class name="aquality.selenium.logger.LoggerTests"/>
