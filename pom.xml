@@ -166,9 +166,9 @@
                             <parallel>methods</parallel>
                             <forkCount>10</forkCount>
                             <reuseForks>false</reuseForks>
-                            <includes>
-                                <include>**/*Test*.java</include>
-                            </includes>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/TestSuite.xml</suiteXmlFile>
+                            </suiteXmlFiles>
                         </configuration>
                     </plugin>
                     <plugin>

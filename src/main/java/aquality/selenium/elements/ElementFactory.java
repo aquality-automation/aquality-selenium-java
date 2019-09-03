@@ -102,16 +102,15 @@ public class ElementFactory implements IElementFactory {
         List<T> elements = new ArrayList<>();
         switch (count) {
             case ZERO:
-                ConditionalWait.waitFor(driver -> driver.findElements(locator).isEmpty(),
+                ConditionalWait.waitFor(driver -> driver.findElements(locator).stream()
+                                .noneMatch(webElement -> state == ElementState.EXISTS_IN_ANY_STATE || webElement.isDisplayed()),
                         String.format(LocalizationManager.getInstance().getValue("loc.elements.found.but.should.not"),
                                 locator.toString()));
                 break;
             case MORE_THEN_ZERO:
                 ConditionalWait.waitFor(driver -> !driver.findElements(locator).isEmpty(),
-                        String.format(LocalizationManager.getInstance().getValue("loc.no.elements.found.in.state"),
-                                locator.toString(),
-                                state.toString(),
-                                getTimeoutConfig()));
+                        String.format(LocalizationManager.getInstance().getValue("loc.no.elements.found.by.locator"),
+                                locator.toString()));
                 break;
             default:
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));

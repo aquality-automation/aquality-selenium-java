@@ -37,7 +37,8 @@ public class BrowserFactoryTests {
     private final JsonFile jsonProfile;
 
     public BrowserFactoryTests() {
-        this.jsonProfile = new JsonFile("settings.json");
+        String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
+        this.jsonProfile = new JsonFile(settingsProfile);
     }
 
     @Test
