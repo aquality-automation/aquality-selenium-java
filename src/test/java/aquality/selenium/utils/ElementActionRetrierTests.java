@@ -1,6 +1,7 @@
 package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
+import aquality.selenium.logger.Logger;
 import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
@@ -14,13 +15,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class ElementActionRetrierTests {
 
-    private static final int attemptsCount = Configuration.getInstance().getRetryConfiguration().getNumber();
+    private static final int retriesCount = Configuration.getInstance().getRetryConfiguration().getNumber();
     private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
 
 
@@ -53,8 +55,8 @@ public class ElementActionRetrierTests {
         stopWatch.stop();
 
         long duration = stopWatch.getTime(TimeUnit.MILLISECONDS);
-        assertTrue(duration >= pollingInterval, "duration should be more than polling interval");
-        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval");
+        assertTrue(duration >= pollingInterval, "duration should be more than polling interval. actual is " + pollingInterval + " milliseconds");
+        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval. actual is " + pollingInterval + " milliseconds");
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
@@ -66,18 +68,16 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWorkCorrectTimes(RuntimeException handledException) {
-        Timer timer = new Timer();
-        timer.start();
+        AtomicInteger actualAttempts = new AtomicInteger(0);
         try {
             ElementActionRetrier.doWithRetry(() -> {
+                Logger.getInstance().info("current attempt is "+actualAttempts.incrementAndGet());
                 throw handledException;
             });
         } catch (RuntimeException e) {
             assertTrue(handledException.getClass().isInstance(e));
         }
-        double duration = timer.stop();
-        double pollingIntervalInSeconds = (double) pollingInterval /1000;
-        assertTrue(duration >= pollingIntervalInSeconds * attemptsCount && duration < pollingIntervalInSeconds * (attemptsCount + 1));
+        assertEquals(actualAttempts.get(), retriesCount + 1, "actual attempts count is not match to expected");
     }
 
     @Test(expectedExceptions = IllegalAccessException.class)
