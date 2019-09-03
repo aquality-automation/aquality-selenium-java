@@ -55,8 +55,8 @@ public class ElementActionRetrierTests {
         stopWatch.stop();
 
         long duration = stopWatch.getTime(TimeUnit.MILLISECONDS);
-        assertTrue(duration >= pollingInterval, "duration should be more than polling interval. actual is " + pollingInterval + " milliseconds");
-        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval. actual is " + pollingInterval + " milliseconds");
+        assertTrue(duration >= pollingInterval, "duration should be more than polling interval. actual is " + duration + " milliseconds");
+        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval. actual is " + duration + " milliseconds");
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
