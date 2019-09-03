@@ -163,8 +163,6 @@
                         <version>2.20</version>
                         <configuration>
                             <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
-                            <parallel>methods</parallel>
-                            <forkCount>10</forkCount>
                             <reuseForks>false</reuseForks>
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/resources/TestSuite.xml</suiteXmlFile>
