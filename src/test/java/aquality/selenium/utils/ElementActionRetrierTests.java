@@ -1,6 +1,7 @@
 package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -11,6 +12,7 @@ import utils.Timer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.testng.Assert.assertEquals;
@@ -39,8 +41,8 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
-        Timer timer = new Timer();
-        timer.start();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
         ElementActionRetrier.doWithRetry(() -> {
             if (isThrowException.get()) {
@@ -48,8 +50,11 @@ public class ElementActionRetrierTests {
                 throw handledException;
             }
         });
-        double duration = timer.stop();
-        assertTrue(duration >= Double.valueOf(pollingInterval)/1000 && duration < 2 * Double.valueOf(pollingInterval)/1000);
+        stopWatch.stop();
+
+        long duration = stopWatch.getTime(TimeUnit.MILLISECONDS);
+        assertTrue(duration >= pollingInterval, "duration should be more than polling interval");
+        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval");
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
@@ -71,7 +76,8 @@ public class ElementActionRetrierTests {
             assertTrue(handledException.getClass().isInstance(e));
         }
         double duration = timer.stop();
-        assertTrue(duration >= (Double.valueOf(pollingInterval)/1000) * attemptsCount && duration < (Double.valueOf(pollingInterval)/1000) * (attemptsCount + 1));
+        double pollingIntervalInSeconds = (double) pollingInterval /1000;
+        assertTrue(duration >= pollingIntervalInSeconds * attemptsCount && duration < pollingIntervalInSeconds * (attemptsCount + 1));
     }
 
     @Test(expectedExceptions = IllegalAccessException.class)
