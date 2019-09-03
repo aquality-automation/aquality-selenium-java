@@ -71,7 +71,7 @@ public class ElementActionRetrierTests {
         AtomicInteger actualAttempts = new AtomicInteger(0);
         try {
             ElementActionRetrier.doWithRetry(() -> {
-                Logger.getInstance().info("current attempt is "+actualAttempts.incrementAndGet());
+                Logger.getInstance().info("current attempt is " + actualAttempts.incrementAndGet());
                 throw handledException;
             });
         } catch (RuntimeException e) {
