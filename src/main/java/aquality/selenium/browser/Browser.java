@@ -1,5 +1,6 @@
 package aquality.selenium.browser;
 
+import aquality.selenium.IRemoteApplication;
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.localization.LocalizationManager;
@@ -21,7 +22,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public class Browser {
+public class Browser implements IRemoteApplication {
     private final Logger logger = Logger.getInstance();
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;

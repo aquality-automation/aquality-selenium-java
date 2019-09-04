@@ -145,7 +145,7 @@ class ElementStateProvider implements IElementStateProvider {
     }
 
     private List<WebElement> findElements(long timeout) {
-        return ElementFinder.getInstance().findElements(getLocator(), timeout, ElementState.EXISTS_IN_ANY_STATE);
+        return ElementServices.getInstance(ElementFinder.class).findElements(getLocator(), timeout, ElementState.EXISTS_IN_ANY_STATE);
     }
 
     private By getLocator() {
@@ -153,7 +153,7 @@ class ElementStateProvider implements IElementStateProvider {
     }
 
     private boolean isElementInDesiredCondition(long timeout, DesiredState desiredState){
-        return !ElementFinder.getInstance().findElements(locator, timeout, desiredState).isEmpty();
+        return !ElementServices.getInstance(ElementFinder.class).findElements(locator, timeout, desiredState).isEmpty();
     }
 
     private Logger getLogger(){

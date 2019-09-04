@@ -7,6 +7,7 @@ import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;
 import aquality.selenium.elements.interfaces.IElement;
+import aquality.selenium.elements.interfaces.IElementFinder;
 import aquality.selenium.elements.interfaces.IElementStateProvider;
 import aquality.selenium.elements.interfaces.IElementSupplier;
 import aquality.selenium.localization.LocalizationManager;
@@ -66,7 +67,7 @@ public abstract class Element implements IElement {
     @Override
     public RemoteWebElement getElement(Long timeout) {
         try {
-            return (RemoteWebElement) ElementFinder.getInstance().findElement(locator, timeout, getElementState());
+            return (RemoteWebElement) ElementServices.getInstance(IElementFinder.class).findElement(locator, timeout, getElementState());
         } catch (NoSuchElementException e) {
             getLogger().error(e.getMessage());
             getLogger().debug("Page Source:\r\n" + getBrowser().getDriver().getPageSource());

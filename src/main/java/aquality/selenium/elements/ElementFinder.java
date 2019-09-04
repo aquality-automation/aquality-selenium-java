@@ -18,17 +18,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class ElementFinder implements IElementFinder {
-    private static final ThreadLocal<ElementFinder> instanceHolder = new ThreadLocal<>();
-
-    static ElementFinder getInstance() {
-        if(instanceHolder.get() == null){
-            instanceHolder.set(new ElementFinder());
-        }
-        return instanceHolder.get();
-    }
-
-    private ElementFinder(){
-    }
 
     @Override
     public long getDefaultTimeout() {
