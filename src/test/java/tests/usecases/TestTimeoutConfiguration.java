@@ -23,9 +23,14 @@ public class TestTimeoutConfiguration {
     @Test
     public void testNumberFormatExceptionShouldBeThrownIfTimeoutIsNotANumber() {
 
-        Assert.assertThrows(NumberFormatException.class, () ->
-        {
+        Assert.assertThrows(Exception.class, () ->
+                BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress()));
+
+        try {
             BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        });
+        } catch (Exception e){
+            Assert.assertSame(e.getCause().getClass(), NumberFormatException.class);
+            Assert.assertTrue(e.getMessage().contains("NumberFormatException"));
+        }
     }
 }
