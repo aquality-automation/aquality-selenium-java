@@ -7,13 +7,14 @@ import com.google.inject.Injector;
 public class Configuration implements IConfiguration{
 
     private static ThreadLocal<Configuration> instance = ThreadLocal.withInitial(Configuration::new);
+    private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
     private final ITimeoutConfiguration timeoutConfiguration;
     private final IRetryConfiguration retryConfiguration;
     private final IBrowserProfile browserProfile;
     private final ILoggerConfiguration loggerConfiguration;
 
     private Configuration() {
-        Injector injector = Guice.createInjector(new ConfigurationModule());
+        Injector injector = getInjector();
         timeoutConfiguration = injector.getInstance(ITimeoutConfiguration.class);
         retryConfiguration = injector.getInstance(IRetryConfiguration.class);
         browserProfile = injector.getInstance(IBrowserProfile.class);
@@ -22,6 +23,20 @@ public class Configuration implements IConfiguration{
 
     public static Configuration getInstance() {
         return instance.get();
+    }
+
+    public static void injectDependencies(Injector injector) {
+        if(injectorContainer.get() != null) {
+            injectorContainer.remove();
+        }
+        injectorContainer.set(injector);
+    }
+
+    private static Injector getInjector() {
+        if(injectorContainer.get() == null) {
+            injectorContainer.set(Guice.createInjector(new ConfigurationModule()));
+        }
+        return injectorContainer.get();
     }
 
     @Override

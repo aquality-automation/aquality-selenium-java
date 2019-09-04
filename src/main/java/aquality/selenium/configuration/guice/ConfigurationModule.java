@@ -14,7 +14,7 @@ public class ConfigurationModule extends AbstractModule {
         bindJsonConstructor(ITimeoutConfiguration.class, TimeoutConfiguration.class);
     }
 
-    private <T, S extends T> void bindJsonConstructor(Class<T> interf, Class<S> implementation) {
+    protected  <T, S extends T> void bindJsonConstructor(Class<T> interf, Class<S> implementation) {
         try {
             bind(interf).toConstructor(implementation.getConstructor(JsonFile.class));
         } catch (NoSuchMethodException e) {
@@ -23,7 +23,7 @@ public class ConfigurationModule extends AbstractModule {
     }
 
     @Provides
-    JsonFile provideSettings() {
+    protected JsonFile provideSettings() {
         String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
         return new JsonFile(settingsProfile);
     }
