@@ -6,7 +6,7 @@ import com.google.inject.Injector;
 
 public class Configuration implements IConfiguration{
 
-    private static ThreadLocal<Configuration> instance = ThreadLocal.withInitial(Configuration::new);
+    private static ThreadLocal<Configuration> instance = new ThreadLocal<>();
     private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
     private final ITimeoutConfiguration timeoutConfiguration;
     private final IRetryConfiguration retryConfiguration;
@@ -22,6 +22,9 @@ public class Configuration implements IConfiguration{
     }
 
     public static Configuration getInstance() {
+        if(instance.get() == null){
+            instance.set(new Configuration());
+        }
         return instance.get();
     }
 
@@ -30,6 +33,7 @@ public class Configuration implements IConfiguration{
             injectorContainer.remove();
         }
         injectorContainer.set(injector);
+        instance.remove();
     }
 
     private static Injector getInjector() {
