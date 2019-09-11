@@ -6,7 +6,7 @@
 
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>Aquality Selenium</name>
@@ -45,8 +45,24 @@
 
     <developers>
         <developer>
-            <id>aquality-automation</id>
-            <name>aquality-automation</name>
+            <id>DmitryBogatko</id>
+            <name>Dmitry Bogatko</name>
+        </developer>
+        <developer>
+            <id>pavelanihimovsky</id>
+            <name>Pavel Anihimovsky</name>
+        </developer>
+        <developer>
+            <id>Nikikuzi</id>
+            <name>Nikita Kuznetsov</name>
+        </developer>
+        <developer>
+            <id>mialeska</id>
+            <name>Alaksiej Mialeška</name>
+        </developer>
+        <developer>
+            <id>sunigos</id>
+            <name>Igor Sontsa</name>
         </developer>
     </developers>
 
@@ -147,12 +163,10 @@
                         <version>2.20</version>
                         <configuration>
                             <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
-                            <parallel>methods</parallel>
-                            <forkCount>10</forkCount>
                             <reuseForks>false</reuseForks>
-                            <includes>
-                                <include>**/*Test*.java</include>
-                            </includes>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/TestSuite.xml</suiteXmlFile>
+                            </suiteXmlFiles>
                         </configuration>
                     </plugin>
                     <plugin>

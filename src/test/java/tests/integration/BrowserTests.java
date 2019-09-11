@@ -16,8 +16,6 @@ import utils.TimeUtil;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
@@ -204,15 +202,7 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToGetDownloadDir(){
-        List<String> listOfDownloadDirs = new ArrayList<>();
-        listOfDownloadDirs.add("//home//selenium//downloads");
-        listOfDownloadDirs.add("/Users/username/Downloads");
-        listOfDownloadDirs.add("target//downloads");
-        listOfDownloadDirs.add("/home/circleci/repo/target/downloads");
-
-        boolean isDirFound = listOfDownloadDirs.stream()
-                .anyMatch(dir -> getBrowser().getDownloadDirectory().toLowerCase().contains(dir.toLowerCase()));
-        Assert.assertTrue(isDirFound, "Browser download directory is not correct " + getBrowser().getDownloadDirectory());
+        Assert.assertFalse(getBrowser().getDownloadDirectory().isEmpty(), "Browser download directory should not be empty " + getBrowser().getDownloadDirectory());
     }
 
     private JsonFile getSettings() {

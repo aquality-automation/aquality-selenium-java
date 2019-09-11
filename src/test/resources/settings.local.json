@@ -22,6 +22,7 @@
     },
     "firefox": {
       "webDriverVersion": "latest",
+      "systemArchitecture": "X32",
       "capabilities": {
         "enableVNC": true
       },
@@ -56,7 +57,7 @@
     "timeoutImplicit" : 0,
     "timeoutCondition" : 30,
     "timeoutScript" : 10,
-    "timeoutPageLoad" : 15,
+    "timeoutPageLoad" : 30,
     "timeoutPollingInterval": 300,
     "timeoutCommand": 120
   },

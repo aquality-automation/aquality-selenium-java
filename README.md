@@ -12,21 +12,10 @@ We use interfaces where is possible, so you can implement your own version of ta
 
 1. To start work with this package, simply add the dependency to your pom.xml:
 ```
-<repositories>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-    </repositories>
-
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -39,7 +28,7 @@ Browser browser = BrowserManager.getBrowser();
 ```java
 browser.maximize();
 browser.goTo("https://wikipedia.org");
-browser.waitForPageToLoad()
+browser.waitForPageToLoad();
 ```
 
 4. Use ElementFactory class's methods to get an instance of each element.
@@ -58,6 +47,8 @@ browser.waitForPageToLoad();
 ```
 browser.quit();
 ```
+
+See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:
