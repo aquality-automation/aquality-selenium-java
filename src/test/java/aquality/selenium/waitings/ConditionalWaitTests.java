@@ -1,10 +1,11 @@
 package aquality.selenium.waitings;
 
+import aquality.selenium.browser.BrowserManager;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.DurationSample;
 import utils.Timer;
 
 import java.util.Collections;
@@ -17,30 +18,26 @@ public class ConditionalWaitTests {
 
     private static final long waitForTimeoutCondition = 10;
     private static final long waitForTimeoutPolling = 150;
-    private Timer timer;
-
-    @BeforeMethod
-    public void initTimer(){
-        timer = new Timer();
-    }
 
     @Test
     public void testFalseShouldBeReturnedIfConditionIsNotMetAndDefaultTimeoutIsOver(){
         long timeoutCondition = getTimeoutConfig().getCondition();
 
+        Timer timer = new Timer();
         boolean result = ConditionalWait.waitForTrue(() ->
         {
             timer.start();
             return false;
         }, "Condition should be true");
-        double duration = timer.stop();
+        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 7);
 
         assertFalse(result);
-        assertTrue(duration > timeoutCondition && duration < 2 * timeoutCondition);
+        assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test
     public void testTimeoutExceptionShouldBeThrownIfConditionIsMetAndTimeoutIsOver(){
+        Timer timer = new Timer();
         try {
             ConditionalWait.waitForTrue(() ->
             {
@@ -48,36 +45,38 @@ public class ConditionalWaitTests {
                 return false;
             }, waitForTimeoutCondition, waitForTimeoutPolling,"Condition should be true");
         } catch (TimeoutException e) {
-            double duration = timer.stop();
-            assertTrue(duration > waitForTimeoutCondition && duration < 2 * waitForTimeoutCondition);
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
         }
     }
 
     @Test
     public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndDefaultTimeoutIsNotOver(){
         long timeoutCondition = getTimeoutConfig().getCondition();
+        Timer timer = new Timer();
 
         boolean result = ConditionalWait.waitForTrue(() ->
         {
             timer.start();
             return true;
         }, "Timeout exception should not be thrown");
-        double duration = timer.stop();
+        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 0);
 
         assertTrue(result);
-        assertTrue(duration < timeoutCondition);
+        assertTrue(durationSample.getDuration() < timeoutCondition);
     }
 
     @Test
     public void testTimeoutExceptionShouldNotBeThrownIfConditionMetAndTimeoutIsNotOver() throws TimeoutException {
+        Timer timer = new Timer();
+
         ConditionalWait.waitForTrue(() ->
         {
             timer.start();
             return true;
         }, waitForTimeoutCondition, waitForTimeoutPolling, "Timeout exception should not be thrown");
-        double duration = timer.stop();
-
-        assertTrue(duration < waitForTimeoutCondition);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        assertTrue(durationSample.getDuration() < waitForTimeoutCondition);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -88,6 +87,8 @@ public class ConditionalWaitTests {
     @Test
     public void testTimeoutExceptionShouldBeThrownIfDriverConditionIsNotMetAndDefaultTimeoutIsOver(){
         long timeoutCondition = getTimeoutConfig().getCondition();
+        Timer timer = new Timer();
+
         try{
             ConditionalWait.waitFor((driver) ->
                     {
@@ -97,14 +98,17 @@ public class ConditionalWaitTests {
                     "Condition should be true");
 
         }catch (org.openqa.selenium.TimeoutException e){
-            double duration = timer.stop();
+            DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 7);
+            BrowserManager.getBrowser().quit();
 
-            assertTrue(duration > timeoutCondition && duration < 2 * timeoutCondition);
+            assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
         }
     }
 
     @Test
     public void testTimeoutExceptionShouldBeThrownIfDriverConditionIsNotMetAndTimeoutIsOver(){
+        Timer timer = new Timer();
+
         try{
             ConditionalWait.waitFor((driver) ->
                     {
@@ -114,28 +118,33 @@ public class ConditionalWaitTests {
                     "Conditional should be true", Collections.singleton(StaleElementReferenceException.class));
 
         }catch (org.openqa.selenium.TimeoutException e){
-            double duration = timer.stop();
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            BrowserManager.getBrowser().quit();
 
-            assertTrue(duration > waitForTimeoutCondition && duration < 2 * waitForTimeoutCondition);
-
+            assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
         }
     }
 
     @Test
     public void testTimeoutExceptionShouldNotBeThrownIfDriverConditionIsMetAndDefaultTimeoutIsNotOver(){
+        Timer timer = new Timer();
+
         ConditionalWait.waitFor((driver) ->
                 {
                     timer.start();
                     return true;
                 },
                 "Conditional should be true");
-        double duration = timer.stop();
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        BrowserManager.getBrowser().quit();
 
-        assertTrue(duration < getTimeoutConfig().getCondition());
+        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition());
     }
 
     @Test
     public void testExceptionShouldBeCatchedConditionIsMetAndDefaultTimeoutIsNotOver(){
+        Timer timer = new Timer();
+
         try{
             ConditionalWait.waitFor((driver) ->
                     {
@@ -144,25 +153,27 @@ public class ConditionalWaitTests {
                     }, waitForTimeoutCondition, waitForTimeoutPolling,
                     "Conditional should be true", Collections.singleton(IllegalArgumentException.class));
         } catch (org.openqa.selenium.TimeoutException e){
-            double duration = timer.stop();
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            BrowserManager.getBrowser().quit();
 
-            double lowLimit = waitForTimeoutCondition;
-            double highLimit = 2 * waitForTimeoutCondition;
-            assertTrue(duration > lowLimit && duration < highLimit, String.format("Duration was '%1$s' but expected between %2$s and %3$s", duration, lowLimit, highLimit));
+            assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
         }
     }
 
     @Test
     public void testTimeoutExceptionShouldNotBeThrownIfDriverConditionIsMetAndTimeoutIsNotOver(){
+        Timer timer = new Timer();
+
         ConditionalWait.waitFor((driver) ->
                 {
                     timer.start();
                     return true;
                 }, waitForTimeoutCondition, waitForTimeoutPolling,
                 "Conditional should be true", Collections.singleton(IllegalArgumentException.class));
-        double duration = timer.stop();
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        BrowserManager.getBrowser().quit();
 
-        assertTrue(duration < waitForTimeoutCondition);
+        assertTrue(durationSample.getDuration() < waitForTimeoutCondition);
     }
 
     private ITimeoutConfiguration getTimeoutConfig(){

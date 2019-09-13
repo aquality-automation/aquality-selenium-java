@@ -12,12 +12,14 @@ import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.DynamicControlsForm;
 import theinternet.forms.DynamicLoadingForm;
-import static utils.TimeUtil.*;
+import utils.DurationSample;
+import utils.Timer;
 
 public class ElementStateTests extends BaseTest {
 
-    private final double operationTime = 5;
     private final long customWaitTime = 2L;
+    private final double customDeviation = 2;
+    private final double defaultDeviation = 7;
     private final ElementFactory elementFactory = new ElementFactory();
     private final ILabel lblNotExists = elementFactory.getLabel(By.xpath("//div[@class='not exist element']"), "not exist element");
 
@@ -26,12 +28,13 @@ public class ElementStateTests extends BaseTest {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = customWaitTime;
 
-        long startTime = getCurrentTime();
+        Timer timer = new Timer();
+        timer.start();
         boolean isEnabled = new DynamicControlsForm().getTxbInput().state().waitForEnabled(waitTime);
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, customDeviation);
 
         Assert.assertFalse(isEnabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test
@@ -39,12 +42,13 @@ public class ElementStateTests extends BaseTest {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
 
-        long startTime = getCurrentTime();
+        Timer timer = new Timer();
+        timer.start();
         boolean isEnabled = new DynamicControlsForm().getTxbInput().state().waitForEnabled();
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
 
         Assert.assertFalse(isEnabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test
@@ -56,12 +60,13 @@ public class ElementStateTests extends BaseTest {
         dynamicControlsForm.getBtnEnable().click();
         dynamicControlsForm.getTxbInput().state().waitForEnabled();
 
-        long startTime = getCurrentTime();
+        Timer timer = new Timer();
+        timer.start();
         boolean isDisabled = dynamicControlsForm.getTxbInput().state().waitForNotEnabled(waitTime);
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
 
         Assert.assertFalse(isDisabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)
@@ -83,12 +88,13 @@ public class ElementStateTests extends BaseTest {
         dynamicControlsForm.getBtnEnable().click();
         dynamicControlsForm.getTxbInput().state().waitForEnabled();
 
-        long startTime = getCurrentTime();
+        Timer timer = new Timer();
+        timer.start();
         boolean isDisabled = dynamicControlsForm.getTxbInput().state().waitForNotEnabled();
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
 
         Assert.assertFalse(isDisabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test
@@ -145,12 +151,14 @@ public class ElementStateTests extends BaseTest {
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
         long waitTime = customWaitTime;
         dynamicControlsForm.getBtnRemove().click();
-        long startTime = getCurrentTime();
+
+        Timer timer = new Timer();
+        timer.start();
         boolean isMissed = dynamicControlsForm.getChbACheckbox().state().waitForNotExist(waitTime);
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, customDeviation);
 
         Assert.assertFalse(isMissed);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + operationTime));
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test
@@ -160,11 +168,13 @@ public class ElementStateTests extends BaseTest {
         long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
         dynamicControlsForm.getBtnRemove().click();
 
-        long startTime = getCurrentTime();
+        Timer timer = new Timer();
+        timer.start();
         boolean isMissed = dynamicControlsForm.getChbACheckbox().state().waitForNotExist();
-        double duration = calculateDuration(startTime);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
+
 
         Assert.assertTrue(isMissed);
-        Assert.assertTrue(duration < waitTime);
+        Assert.assertTrue(durationSample.getDuration() < waitTime, durationSample.toString());
     }
 }

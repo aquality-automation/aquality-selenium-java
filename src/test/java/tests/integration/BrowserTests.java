@@ -12,14 +12,14 @@ import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
-import utils.TimeUtil;
+import utils.DurationSample;
+import utils.Timer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
-import static utils.TimeUtil.getCurrentTimeInSeconds;
 
 
 public class BrowserTests extends BaseTest {
@@ -108,13 +108,14 @@ public class BrowserTests extends BaseTest {
         getBrowser().waitForPageToLoad();
 
         long expectedDurationInSeconds = 1;
-        long operationDurationInSeconds = 1;
-        double startTimeSeconds = TimeUtil.getCurrentTimeInSeconds();
-        getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
-        double durationSeconds = TimeUtil.getCurrentTimeInSeconds() - startTimeSeconds;
 
-        Assert.assertTrue(durationSeconds < (expectedDurationInSeconds + operationDurationInSeconds) &&
-                durationSeconds >= expectedDurationInSeconds);
+        Timer timer = new Timer();
+        timer.start();
+        getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
+
+        DurationSample durationSample = new DurationSample(timer.duration(), expectedDurationInSeconds, 2);
+
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test (expectedExceptions = ScriptTimeoutException.class)
@@ -186,18 +187,17 @@ public class BrowserTests extends BaseTest {
     @Test
     public void testShouldBePossibleToSetImplicitWait(){
         long waitTime = 5L;
-        long operationTime = 2L;
         getBrowser().setImplicitWaitTimeout(waitTime);
 
-        double startTime = getCurrentTimeInSeconds();
-        double endTime = 0L;
+        Timer timer = new Timer();
+        timer.start();
+        DurationSample durationSample = null;
         try{
             getBrowser().getDriver().findElement(By.id("not_exist_element"));
         }catch (NoSuchElementException e){
-            endTime = getCurrentTimeInSeconds();
+            durationSample = new DurationSample(timer.duration(), waitTime, 2);
         }
-        Assert.assertTrue((endTime - startTime) < waitTime + operationTime);
-        Assert.assertTrue((endTime - startTime) >= waitTime);
+        Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test

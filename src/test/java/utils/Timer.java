@@ -6,16 +6,16 @@ public class Timer{
     private final Supplier<Double> getCurrentTime;
 
     public Timer(){
-        getCurrentTime = TimeUtil::getCurrentTimeInSeconds;
+        getCurrentTime = Timer::getCurrentTimeInSeconds;
     }
 
     public Timer(TimeUnit timeUnit){
         switch (timeUnit){
             case MILLISECONDS:
-                getCurrentTime = TimeUtil::getCurrentTimeInMilliseconds;
+                getCurrentTime = Timer::getCurrentTimeInMilliseconds;
                 break;
             case SECONDS:
-                getCurrentTime = TimeUtil::getCurrentTimeInSeconds;
+                getCurrentTime = Timer::getCurrentTimeInSeconds;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown TimeUnit " + timeUnit);
@@ -31,15 +31,22 @@ public class Timer{
         }
     }
 
-    public double stop(){
+    /**
+     * @return duration from the start to current moment
+     */
+    public double duration(){
         return getCurrentTime.get() - startTime;
-    }
-
-    public static boolean isDurationBetweenLimits(double duration, double minLimit, double maxLimit, double deviation) {
-        return duration >= (minLimit - deviation) && duration <= (maxLimit + deviation);
     }
 
     public enum TimeUnit{
         SECONDS, MILLISECONDS
+    }
+
+    private static double getCurrentTimeInSeconds(){
+        return System.nanoTime()/Math.pow(10,9);
+    }
+
+    private static double getCurrentTimeInMilliseconds(){
+        return System.nanoTime()/Math.pow(10,6);
     }
 }

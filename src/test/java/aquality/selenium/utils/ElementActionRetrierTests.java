@@ -7,6 +7,7 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import utils.DurationSample;
 import utils.Timer;
 
 import java.lang.reflect.Constructor;
@@ -50,13 +51,9 @@ public class ElementActionRetrierTests {
                 throw handledException;
             }
         });
-        double duration = timer.stop();
-        double minLimit = pollingInterval;
-        double maxLimit = 2 * pollingInterval;
-        double deviation = 50;
+        DurationSample durationSample = new DurationSample( timer.duration(), pollingInterval, 50);
 
-        assertTrue(Timer.isDurationBetweenLimits(duration, minLimit, maxLimit, deviation),
-                String.format("Duration: %1$s\nMin Limit: %2$s\nMax Limit: %3$s\nDeviation: %4$s", duration, minLimit, maxLimit, deviation));
+        assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
