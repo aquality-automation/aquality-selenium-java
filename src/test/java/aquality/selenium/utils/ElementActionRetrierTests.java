@@ -2,7 +2,6 @@ package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.logger.Logger;
-import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -13,7 +12,6 @@ import utils.Timer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,8 +41,8 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        Timer timer = new Timer(Timer.TimeUnit.MILLISECONDS);
+        timer.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
         ElementActionRetrier.doWithRetry(() -> {
             if (isThrowException.get()) {
@@ -52,11 +50,13 @@ public class ElementActionRetrierTests {
                 throw handledException;
             }
         });
-        stopWatch.stop();
+        double duration = timer.stop();
+        double minLimit = pollingInterval;
+        double maxLimit = 2 * pollingInterval;
+        double deviation = 50;
 
-        long duration = stopWatch.getTime(TimeUnit.MILLISECONDS);
-        assertTrue(duration >= pollingInterval, "duration should be more than polling interval. actual is " + duration + " milliseconds");
-        assertTrue(duration <= 2 * pollingInterval, "duration should be less than doubled polling interval. actual is " + duration + " milliseconds");
+        assertTrue(Timer.isDurationBetweenLimits(duration, minLimit, maxLimit, deviation),
+                String.format("Duration: %1$s\nMin Limit: %2$s\nMax Limit: %3$s\nDeviation: %4$s", duration, minLimit, maxLimit, deviation));
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
