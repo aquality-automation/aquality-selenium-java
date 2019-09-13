@@ -146,7 +146,9 @@ public class ConditionalWaitTests {
         } catch (org.openqa.selenium.TimeoutException e){
             double duration = timer.stop();
 
-            assertTrue(duration > waitForTimeoutCondition && duration < 2 * waitForTimeoutCondition);
+            double lowLimit = waitForTimeoutCondition;
+            double highLimit = 2 * waitForTimeoutCondition;
+            assertTrue(duration > lowLimit && duration < highLimit, String.format("Duration was '%1$s' but expected between %2$s and %3$s", duration, lowLimit, highLimit));
         }
     }
 
