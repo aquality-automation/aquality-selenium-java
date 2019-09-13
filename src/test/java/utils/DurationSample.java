@@ -15,10 +15,7 @@ public class DurationSample {
     }
 
     public DurationSample(double duration, double expectedDuration, double deviation) {
-        this.duration = duration;
-        this.minLimit = expectedDuration;
-        this.maxLimit = expectedDuration;
-        this.deviation = deviation;
+        this(duration, expectedDuration, expectedDuration, deviation);
     }
 
     public boolean isDurationBetweenLimits(){
