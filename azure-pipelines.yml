@@ -10,9 +10,6 @@ steps:
 - task: ScreenResolutionUtility@1
   inputs:
     displaySettings: 'optimal'
-
-  inputs:
-    pollingTimeoutSec: '300'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
