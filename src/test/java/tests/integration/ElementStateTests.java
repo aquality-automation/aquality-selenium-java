@@ -2,7 +2,6 @@ package tests.integration;
 
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.ElementFactory;
-import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -104,35 +103,6 @@ public class ElementStateTests extends BaseTest {
         dynamicControlsForm.getBtnEnable().click();
         dynamicControlsForm.getTxbInput().state().waitForEnabled();
         Assert.assertTrue(dynamicControlsForm.getTxbInput().state().isEnabled());
-    }
-
-    @Test
-    public void testWaitInvisibility() {
-        navigate(TheInternetPage.DYNAMIC_LOADING);
-        DynamicLoadingForm loadingForm = new DynamicLoadingForm();
-
-        loadingForm.getBtnStart().state().waitForClickable();
-        loadingForm.getBtnStart().click();
-
-        ILabel lblLoading = loadingForm.getLblLoading();
-        String id = lblLoading.getAttribute("id", HighlightState.HIGHLIGHT);
-        String id2 = lblLoading.getAttribute("id");
-        String loadingText = "loading";
-
-        Assert.assertEquals(id,loadingText);
-        Assert.assertEquals(id2,loadingText);
-
-        lblLoading.state().waitForDisplayed(2L);
-
-        boolean status = lblLoading.state().waitForNotDisplayed(2L);
-        Assert.assertFalse(status);
-
-        status = lblLoading.state().waitForNotDisplayed();
-        Assert.assertTrue(status);
-
-        String finishText = loadingForm.getLblFinish().getText(HighlightState.HIGHLIGHT);
-
-        Assert.assertTrue(finishText.contains("Hello World!"));
     }
 
     @Test
