@@ -1,0 +1,71 @@
+{
+  "browserName" : "chrome",
+  "isRemote": true,
+  "remoteConnectionUrl": "http://qa-auto-nexus:4444/wd/hub",
+  "isElementHighlightEnabled" : true,
+
+  "driverSettings": {
+    "chrome": {
+      "webDriverVersion": "latest",
+      "capabilities": {
+        "enableVNC": true
+      },
+      "options": {
+        "intl.accept_languages": "en",
+        "safebrowsing.enabled": "true",
+        "profile.default_content_settings.popups": "0",
+        "disable-popup-blocking": "true",
+        "download.prompt_for_download": "false",
+        "download.default_directory": "//home//selenium//downloads"
+      },
+      "startArguments": []
+    },
+    "firefox": {
+      "webDriverVersion": "latest",
+      "capabilities": {
+        "enableVNC": true
+      },
+      "options": {
+        "intl.accept_languages": "en",
+        "browser.download.dir": "//home//selenium//downloads",
+        "browser.download.folderList": 2,
+        "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream, application/x-debian-package, application/x-www-form-urlencod, application/json, application/x-compressed, application/x-zip-compressed, application/zip, multipart/x-zip, text/plain, text/csv",
+        "browser.helperApps.alwaysAsk.force": false,
+        "browser.download.manager.alertOnEXEOpen": false,
+        "browser.download.manager.focusWhenStarting": false,
+        "browser.download.useDownloadDir": true,
+        "browser.download.manager.showWhenStarting": false,
+        "browser.download.manager.closeWhenDone": true,
+        "browser.download.manager.showAlertOnComplete": false,
+        "browser.download.manager.useWindow": false,
+        "browser.download.panel.shown": false
+      },
+      "startArguments": []
+    },
+    "iexplorer": {
+      "webDriverVersion": "latest",
+      "systemArchitecture": "X32",
+      "capabilities": {
+        "ignoreProtectedModeSettings": true
+      }
+    },
+    "safari": {
+      "downloadDir": "/Users/username/Downloads"
+    }
+  },
+  "timeouts": {
+    "timeoutImplicit" : "asd",
+    "timeoutCondition" : 25,
+    "timeoutScript" : 10,
+    "timeoutPageLoad" : 60,
+    "timeoutPollingInterval": 300,
+    "timeoutCommand": 120
+  },
+  "retry": {
+    "number": 2,
+    "pollingInterval": 300
+  },
+  "logger": {
+    "language": "en"
+  }
+}
