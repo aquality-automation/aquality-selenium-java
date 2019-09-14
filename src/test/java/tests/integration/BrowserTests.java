@@ -113,7 +113,7 @@ public class BrowserTests extends BaseTest {
         timer.start();
         getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
 
-        DurationSample durationSample = new DurationSample(timer.duration(), expectedDurationInSeconds, 2);
+        DurationSample durationSample = new DurationSample(timer.duration(), expectedDurationInSeconds, 3);
 
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
@@ -195,7 +195,7 @@ public class BrowserTests extends BaseTest {
         try{
             getBrowser().getDriver().findElement(By.id("not_exist_element"));
         }catch (NoSuchElementException e){
-            durationSample = new DurationSample(timer.duration(), waitTime, 2);
+            durationSample = new DurationSample(timer.duration(), waitTime, 3);
         }
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
