@@ -18,6 +18,7 @@ public class ConditionalWaitTests {
 
     private static final long waitForTimeoutCondition = 10;
     private static final long waitForTimeoutPolling = 150;
+    private static final double defaultDeviation = 7;
 
     @Test
     public void testFalseShouldBeReturnedIfConditionIsNotMetAndDefaultTimeoutIsOver(){
@@ -29,7 +30,7 @@ public class ConditionalWaitTests {
             timer.start();
             return false;
         }, "Condition should be true");
-        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 7);
+        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, defaultDeviation);
 
         assertFalse(result);
         assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
@@ -45,7 +46,7 @@ public class ConditionalWaitTests {
                 return false;
             }, waitForTimeoutCondition, waitForTimeoutPolling,"Condition should be true");
         } catch (TimeoutException e) {
-            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, defaultDeviation);
             assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
         }
     }
@@ -60,7 +61,7 @@ public class ConditionalWaitTests {
             timer.start();
             return true;
         }, "Timeout exception should not be thrown");
-        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 0);
+        DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition);
 
         assertTrue(result);
         assertTrue(durationSample.getDuration() < timeoutCondition);
@@ -75,7 +76,7 @@ public class ConditionalWaitTests {
             timer.start();
             return true;
         }, waitForTimeoutCondition, waitForTimeoutPolling, "Timeout exception should not be thrown");
-        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition);
         assertTrue(durationSample.getDuration() < waitForTimeoutCondition);
     }
 
@@ -98,7 +99,7 @@ public class ConditionalWaitTests {
                     "Condition should be true");
 
         }catch (org.openqa.selenium.TimeoutException e){
-            DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, 7);
+            DurationSample durationSample = new DurationSample(timer.duration(), timeoutCondition, defaultDeviation);
             BrowserManager.getBrowser().quit();
 
             assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
@@ -118,7 +119,7 @@ public class ConditionalWaitTests {
                     "Conditional should be true", Collections.singleton(StaleElementReferenceException.class));
 
         }catch (org.openqa.selenium.TimeoutException e){
-            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, defaultDeviation);
             BrowserManager.getBrowser().quit();
 
             assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
@@ -135,7 +136,7 @@ public class ConditionalWaitTests {
                     return true;
                 },
                 "Conditional should be true");
-        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition);
         BrowserManager.getBrowser().quit();
 
         assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition());
@@ -153,7 +154,7 @@ public class ConditionalWaitTests {
                     }, waitForTimeoutCondition, waitForTimeoutPolling,
                     "Conditional should be true", Collections.singleton(IllegalArgumentException.class));
         } catch (org.openqa.selenium.TimeoutException e){
-            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 7);
+            DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, defaultDeviation);
             BrowserManager.getBrowser().quit();
 
             assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
@@ -170,7 +171,7 @@ public class ConditionalWaitTests {
                     return true;
                 }, waitForTimeoutCondition, waitForTimeoutPolling,
                 "Conditional should be true", Collections.singleton(IllegalArgumentException.class));
-        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition, 0);
+        DurationSample durationSample = new DurationSample(timer.duration(), waitForTimeoutCondition);
         BrowserManager.getBrowser().quit();
 
         assertTrue(durationSample.getDuration() < waitForTimeoutCondition);

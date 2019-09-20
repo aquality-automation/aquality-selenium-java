@@ -24,6 +24,8 @@ import static utils.FileUtil.getResourceFileByName;
 
 public class BrowserTests extends BaseTest {
 
+    private static final double defaultDeviation = 3;
+
     @Test
     public void testShouldBePossibleToStartBrowserAndNavigate(){
         getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
@@ -113,7 +115,7 @@ public class BrowserTests extends BaseTest {
         timer.start();
         getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
 
-        DurationSample durationSample = new DurationSample(timer.duration(), expectedDurationInSeconds, 3);
+        DurationSample durationSample = new DurationSample(timer.duration(), expectedDurationInSeconds, defaultDeviation);
 
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
@@ -195,7 +197,7 @@ public class BrowserTests extends BaseTest {
         try{
             getBrowser().getDriver().findElement(By.id("not_exist_element"));
         }catch (NoSuchElementException e){
-            durationSample = new DurationSample(timer.duration(), waitTime, 3);
+            durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
         }
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }

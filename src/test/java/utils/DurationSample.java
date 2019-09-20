@@ -18,6 +18,10 @@ public class DurationSample {
         this(duration, expectedDuration, expectedDuration, deviation);
     }
 
+    public DurationSample(double duration, double expectedDuration) {
+        this(duration, expectedDuration, expectedDuration, 0);
+    }
+
     public boolean isDurationBetweenLimits(){
         return duration >= (minLimit - deviation) && duration <= (maxLimit + deviation);
     }
