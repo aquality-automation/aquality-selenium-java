@@ -10,6 +10,7 @@
             <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
+            <class name="tests.usecases.TestTimeoutConfiguration"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
@@ -24,7 +25,6 @@
     </test>
     <test name="Non-threadsafe tests" parallel="classes">
         <classes>
-            <class name="tests.usecases.TestTimeoutConfiguration"/>
             <class name="aquality.selenium.logger.LoggerTests"/>
             <class name="aquality.selenium.waitings.ConditionalWaitTests"/>
             <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
