@@ -1,31 +1,41 @@
 package tests.usecases;
 
+import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.configuration.*;
+import aquality.selenium.utils.JsonFile;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import theinternet.TheInternetPage;
 
 public class TestTimeoutConfiguration {
-    private static final String TIMEOUT_KEY = "timeouts.timeoutCondition";
-
-    @BeforeMethod
-    private void before(){
-        System.setProperty(TIMEOUT_KEY, "abcdef");
-    }
-
-    @AfterMethod
-    private void after(){
-        System.clearProperty(TIMEOUT_KEY);
-    }
 
     @Test
     public void testNumberFormatExceptionShouldBeThrownIfTimeoutIsNotANumber() {
-
         Assert.assertThrows(NumberFormatException.class, () ->
         {
-            BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+            BrowserManager.setBrowser(new Browser(null, configuration));
         });
     }
+
+    IConfiguration configuration = new IConfiguration() {
+        @Override
+        public IBrowserProfile getBrowserProfile() {
+            return Configuration.getInstance().getBrowserProfile();
+        }
+
+        @Override
+        public ITimeoutConfiguration getTimeoutConfiguration() {
+            return new TimeoutConfiguration(new JsonFile("settings.incorrect.json"));
+        }
+
+        @Override
+        public IRetryConfiguration getRetryConfiguration() {
+            return Configuration.getInstance().getRetryConfiguration();
+        }
+
+        @Override
+        public ILoggerConfiguration getLoggerConfiguration() {
+            return Configuration.getInstance().getLoggerConfiguration();
+        }
+    };
 }

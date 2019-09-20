@@ -35,20 +35,18 @@ public class JsonFile {
     private Object getEnvValueOrDefault(String jsonPath){
         String key = jsonPath.replace("/",".").substring(1, jsonPath.length());
         String envVar = System.getProperty(key);
-        if(envVar == null){
-            JsonNode node = getJsonNode(jsonPath);
-            if(node.isBoolean()){
-                return node.asBoolean();
-            }else if(node.isLong()){
-                return node.asLong();
-            }else if(node.isInt()){
-                return node.asInt();
-            }else{
-                return node.asText();
-            }
-        }else {
+        if(envVar != null){
             Logger.getInstance().debug(String.format("***** Using variable passed from environment %1$s=%2$s", key, envVar));
-            return envVar;
+        }
+        JsonNode node = getJsonNode(jsonPath);
+        if(node.isBoolean()){
+            return envVar == null ? node.asBoolean() : Boolean.parseBoolean(envVar);
+        }else if(node.isLong()){
+            return envVar == null ? node.asLong() : Long.parseLong(envVar);
+        }else if(node.isInt()){
+            return envVar == null ? node.asInt() : Integer.parseInt(envVar);
+        }else{
+            return envVar == null ? node.asText() : envVar;
         }
     }
 

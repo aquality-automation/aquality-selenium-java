@@ -13,6 +13,7 @@ import aquality.selenium.waitings.ConditionalWait;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -82,7 +84,7 @@ public class BrowserFactoryTests {
 
         BrowserManager.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
-        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), "File should be downloaded");
+        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), 120, 300, "File should be downloaded", Collections.singleton(StaleElementReferenceException.class));
 
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
