@@ -1,3 +1,6 @@
+[![Build Status](https://dev.azure.com/aquality-automation/aquality-automation/_apis/build/status/aquality-automation.aquality-selenium-java?branchName=master)](https://dev.azure.com/aquality-automation/aquality-automation/_build/latest?definitionId=1&branchName=master)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=aquality-automation_aquality-selenium-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=aquality-automation_aquality-selenium-java)
+
 ### Overview
 
 This package is a library designed to simplify your work with Selenium WebDriver.
