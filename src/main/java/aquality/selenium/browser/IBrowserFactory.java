@@ -6,7 +6,7 @@ package aquality.selenium.browser;
 public interface IBrowserFactory {
 
     /**
-     * Creates instance of Browser.
+     * Gets instance of Browser.
      * @return Instance of desired Browser.
      */
     Browser getBrowser();

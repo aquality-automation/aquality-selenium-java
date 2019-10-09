@@ -14,7 +14,7 @@ public class BrowserManager {
     }
 
     /**
-     * Gets thread-safe instance of browser.
+     * Gets instance of browser.
      * @return Instance of desired browser.
      */
     public static Browser getBrowser(){
@@ -51,7 +51,7 @@ public class BrowserManager {
     }
 
     /**
-     * Sets thread-safe instance of browser.
+     * Sets instance of browser.
      * @param browser Instance of desired browser.
      */
     public static void setBrowser(Browser browser){
