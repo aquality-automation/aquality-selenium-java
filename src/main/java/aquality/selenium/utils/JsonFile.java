@@ -11,23 +11,44 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Provides methods to get info from JSON files.
+ * Note that the value can be overriden via Environment variable with the same name
+ * (e.g. for json path ".timeouts.timeoutScript" you can set environment variable "timeouts.timeoutScript")
+ */
 public class JsonFile {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final String fileCanonicalPath;
     private final String content;
 
+    /**
+     * Inistantiates class using desired JSON file.
+     * @param file JSON file.
+     * @throws IOException if file is not found
+     */
     public JsonFile(File file) throws IOException {
         this.content = getFileContent(file.getCanonicalPath());
         fileCanonicalPath = file.getCanonicalPath();
     }
 
+    /**
+     * Inistantiates class using desired JSON file.
+     * @param resourceName path to JSON relatively resources
+     */
     public JsonFile(String resourceName) {
         ResourceFile resourceFile = new ResourceFile(resourceName);
         this.content = resourceFile.getFileContent();
         this.fileCanonicalPath = resourceFile.getFileCanonicalPath();
     }
 
+    /**
+     * Gets value from JSON.
+     * Note that the value can be overriden via Environment variable with the same name
+     * (e.g. for json path ".timeouts.timeoutScript" you can set environment variable "timeouts.timeoutScript")
+     * @param jsonPath Relative jsonPath to the value.
+     * @return Value from JSON/Environment by jsonPath.
+     */
     public Object getValue(String jsonPath){
         return getEnvValueOrDefault(jsonPath);
     }
@@ -50,12 +71,24 @@ public class JsonFile {
         }
     }
 
+    /**
+     * Gets list of values from JSON.
+     * @param jsonPath Relative JsonPath to the values.
+     * @return Values from JSON/Environment by jsonPath.
+     */
     public List<String> getList(String jsonPath){
         List<String> list = new ArrayList<>();
         getJsonNode(jsonPath).elements().forEachRemaining(node -> list.add(node.asText()));
         return list;
     }
 
+    /**
+     * Gets map of values from JSON.
+     * Note that the value can be overriden via Environment variable with the same name
+     * (e.g. for json path ".timeouts.timeoutScript" you can set environment variable "timeouts.timeoutScript")
+     * @param jsonPath
+     * @return
+     */
     public Map<String, Object> getMap(String jsonPath) {
         Iterator<Map.Entry<String, JsonNode>> iterator = getJsonNode(jsonPath).fields();
         final Map<String, Object> result = new HashMap<>();
@@ -80,10 +113,18 @@ public class JsonFile {
         }
     }
 
+    /**
+     * Gets content of JsonFile
+     * @return content of the file
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * Gets canonical path to the file
+     * @return canonical path to the file
+     */
     public String getFileCanonicalPath() {
         return fileCanonicalPath;
     }

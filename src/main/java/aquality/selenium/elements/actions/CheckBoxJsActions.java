@@ -3,6 +3,9 @@ package aquality.selenium.elements.actions;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.interfaces.ICheckBox;
 
+/**
+ * Allows to perform actions on elements via JavaScript specific for CheckBoxes.
+ */
 public class CheckBoxJsActions extends JsActions {
 
     public CheckBoxJsActions(ICheckBox checkBox, String elementType) {
@@ -17,18 +20,31 @@ public class CheckBoxJsActions extends JsActions {
         return Boolean.valueOf(executeScript(JavaScript.GET_CHECKBOX_STATE, element).toString());
     }
 
+    /**
+     * Performs check action on the element.
+     */
     public void check() {
         setState(true);
     }
 
+    /**
+     * Performs uncheck action on the element.
+     */
     public void uncheck() {
         setState(false);
     }
 
+    /**
+     * Get status if element is checked
+     * @return true if checked, false otherwise
+     */
     public boolean isChecked() {
         return getState();
     }
 
+    /**
+     * Performs toggle action on the element.
+     */
     public void toggle() {
         setState(!isChecked());
     }
