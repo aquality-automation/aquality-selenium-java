@@ -39,7 +39,7 @@ public class ProductListForm extends Form {
     public IButton getBtnLastProductMoreFocused() {
         getLblFirstProduct().getMouseActions().moveMouseToElement();
         getLblLastProduct().getMouseActions().moveMouseToElement();
-        IButton btnLastProductMore = getLblLastProduct().findChildElement(By.xpath(".//a[contains(@class, 'lnk_view')]"), ElementType.BUTTON);
+        IButton btnLastProductMore = getLblLastProduct().findChildElement(By.xpath(".//a[contains(@class, 'lnk_view')]"), ElementType.BUTTON, ElementState.EXISTS_IN_ANY_STATE);
         if(!btnLastProductMore.state().isDisplayed()) {
             getLblLastProduct().getMouseActions().moveMouseFromElement();
             getLblLastProduct().getMouseActions().moveMouseToElement();
