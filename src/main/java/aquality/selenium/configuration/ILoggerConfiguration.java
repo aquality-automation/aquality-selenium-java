@@ -8,7 +8,7 @@ import aquality.selenium.localization.SupportedLanguage;
 public interface ILoggerConfiguration {
 
     /**
-     * Gets language of framework.
+     * Gets language which will be used for framework logger.
      * @return Supported language.
      */
     SupportedLanguage getLanguage();

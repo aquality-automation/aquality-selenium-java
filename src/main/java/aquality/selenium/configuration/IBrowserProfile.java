@@ -17,7 +17,7 @@ public interface IBrowserProfile {
     BrowserName getBrowserName();
 
     /**
-     * Check if is remote browser or not.
+     * Checks if is remote browser or not.
      * @return true if remote browser and false if local.
      */
     boolean isRemote();
