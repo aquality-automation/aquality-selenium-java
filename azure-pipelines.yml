@@ -13,6 +13,8 @@ steps:
       organization: 'aqualityautomation'
       scannerMode: 'CLI'
       configMode: 'file'
+      extraProperties: |
+        sonar.coverage.exclusions=**/**
 
   - task: ScreenResolutionUtility@1
     inputs:
