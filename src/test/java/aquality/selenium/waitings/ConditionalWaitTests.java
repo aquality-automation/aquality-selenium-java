@@ -179,7 +179,7 @@ public class ConditionalWaitTests {
     }
 
     @Test
-    public void testFalseShouldNotBeReturnedIfConditionIsNotMetAndTimeoutIsOver(){
+    public void testFalseShouldBeReturnedIfConditionIsNotMetAndTimeoutIsOver(){
         Timer timer = new Timer();
         boolean conditionResult = ConditionalWait.waitFor(() ->
         {
@@ -192,7 +192,7 @@ public class ConditionalWaitTests {
     }
 
     @Test
-    public void testTrueShouldNotBeReturnedIfConditionIsMetAndDefaultTimeoutIsNotOver(){
+    public void testTrueShouldBeReturnedIfConditionIsMetAndDefaultTimeoutIsNotOver(){
         Timer timer = new Timer();
         boolean conditionResult = ConditionalWait.waitFor(() ->
         {
@@ -205,7 +205,7 @@ public class ConditionalWaitTests {
     }
 
     @Test
-    public void testFalseShouldNotBeReturnedIfConditionIsNotMetAndDefaultTimeoutIsOver(){
+    public void testFalseShouldBeReturnedIfConditionIsNotMetAndDefaultTimeoutIsOver(){
         Timer timer = new Timer();
         boolean conditionResult = ConditionalWait.waitFor(() ->
         {

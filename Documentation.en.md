@@ -39,6 +39,7 @@ The main benefits from using Aquality Selenium:
  - <a href='#5-forms'>5. FORMS</a>
  - <a href='#6-javascript-execution'>6. JAVASCRIPT EXECUTION</a>
  - <a href='#7-json-file'>7. JSON FILE</a>
+ - <a href='#8-conditional-wait'>8. CONDITIONAL WAIT</a>
 
 ### 1. PLATFORM SUPPORT
 At the moment Aquality Selenium allows to automate web tests for Chrome, Firefox, Safari, IExplorer and Edge. Also you can implement support of new browsers that Selenium supports
@@ -346,3 +347,10 @@ For example, if user wants to keep URL to web site that is automating he can put
 JsonFile environment = new JsonFile("settings.json")
 String url = environment.getValue("/url").toString();
 ```
+### **8. CONDITIONAL WAIT**
+
+If you need to wait for any condition to be met, you can use the [ConditionalWait](./src/main/java/aquality/selenium/waitings/ConditionalWait.java) class provided by Aquality Selenium.
+All class methods wait for the condition to be met, but return values and handle exceptions ​​differently: 
+1. ```waitForTrue``` - throws an exception if the condition is not met, returns nothing.
+2. ```boolean waitFor``` - returns true if the condition is fulfilled or false otherwise. Method does not throw any exception.
+3. ```<T> T waitFor``` - uses the WebDriver's wait, returns a T object or an exception if the condition is not met.
