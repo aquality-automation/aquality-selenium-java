@@ -127,7 +127,7 @@ public class ElementStateTests extends BaseTest {
         boolean isMissed = dynamicControlsForm.getChbACheckbox().state().waitForNotExist(waitTime);
         DurationSample durationSample = new DurationSample(timer.duration(), waitTime, customDeviation);
 
-        Assert.assertFalse(isMissed);
+        Assert.assertTrue(isMissed);
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 

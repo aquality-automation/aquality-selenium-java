@@ -12,7 +12,7 @@ public class DynamicControlsForm extends Form {
     private final IButton btnEnable = getElementFactory().getButton(By.xpath("//button[contains(@onclick, 'swapInput()')][contains(.,'Enable')]"), "Enable");
     private final IButton btnDisable = getElementFactory().getButton(By.xpath("//button[contains(@onclick, 'swapInput()')][contains(.,'Disable')]"), "Disable");
     private final IButton btnRemove = getElementFactory().getButton(By.xpath("//button[contains(@onclick, 'swapCheckbox()')]"), "Remove");
-    private final ICheckBox chbACheckbox = getElementFactory().getCheckBox(By.xpath("//div[@id='checkbox']"), "A Checkbox");
+    private final ICheckBox chbACheckbox = getElementFactory().getCheckBox(By.xpath("//input[@id='checkbox']"), "A Checkbox");
 
     public DynamicControlsForm() {
         super(By.id("content"), "Dynamic Controls");
