@@ -52,7 +52,7 @@ public class ActionTests extends BaseTest {
     public void testMoveMouseFromElement() {
         ProductListForm productListForm = new ProductListForm();
 
-        Assert.assertTrue(ConditionalWait.waitForTrue(() -> {
+        Assert.assertTrue(ConditionalWait.waitFor(() -> {
             IButton button = productListForm.getBtnLastProductMoreFocused();
             return button.getText().contains("More");
         }, "element is not focused after moveMouseToElement()"));

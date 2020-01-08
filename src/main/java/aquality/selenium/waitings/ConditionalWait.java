@@ -27,18 +27,10 @@ public final class ConditionalWait {
      * Default values for timeouts used from configuration settings file
      * @param condition condition with boolean result (predicate)
      * @param message Part of error message in case of Timeout exception
-     * @return true if the condition has been met during the timeout
+     * @throws TimeoutException will be thrown in case if timeout is over but condition was not met
      */
-    public static boolean waitForTrue(BooleanSupplier condition, String message)
-    {
-        try
-        {
-            waitForTrue(condition, getTimeoutConfiguration().getCondition(), getTimeoutConfiguration().getPollingInterval(), message);
-            return true;
-        }
-        catch (TimeoutException e) {
-            return false;
-        }
+    public static void waitForTrue(BooleanSupplier condition, String message) throws TimeoutException {
+        waitForTrue(condition, getTimeoutConfiguration().getCondition(), getTimeoutConfiguration().getPollingInterval(), message);
     }
 
     /**
@@ -79,6 +71,37 @@ public final class ConditionalWait {
     }
 
     /**
+     * Waits for function will be true or return false. Method does not use WebDriverWait.
+     * Default timeout condition from settings is using.
+     * @param condition condition with boolean result (predicate).
+     * @param message Part of error message in case of Timeout exception.
+     * @return true if condition is satisfied, false otherwise.
+     */
+    public static boolean waitFor(BooleanSupplier condition, String message) {
+        return waitFor(condition,
+                getTimeoutConfiguration().getCondition(),
+                getTimeoutConfiguration().getPollingInterval(),
+                message);
+    }
+
+    /**
+     * Waits for function will be true or return false. Method does not use WebDriverWait.
+     * @param condition condition with boolean result (predicate)
+     * @param timeOutInSeconds Condition timeout
+     * @param pollingIntervalInMilliseconds Condition check interval
+     * @param message Part of error message in case of Timeout exception
+     * @return true if condition is satisfied, false otherwise.
+     */
+    public static boolean waitFor(BooleanSupplier condition, long timeOutInSeconds, long pollingIntervalInMilliseconds, String message) {
+        try {
+            waitForTrue(condition, timeOutInSeconds, pollingIntervalInMilliseconds, message);
+            return true;
+        }catch (TimeoutException e){
+            return false;
+        }
+    }
+
+    /**
      * Waits for function will be true or return some except false.
      * Default timeout condition from settings is using.
      * StaleElementReferenceException will be handled by default
@@ -104,7 +127,7 @@ public final class ConditionalWait {
      * @param message the message that will be added to an error in case if the condition is not matched during the timeout
      * @param exceptionsToIgnore list of exceptions that should be ignored during waiting
      * @param <T>              Type of object which is waiting
-     * @return Object which waiting for or null - is exceptions occured
+     * @return Object which waiting for or null - is exceptions occurred
      */
     public static <T> T waitFor(ExpectedCondition<T> condition, long timeOutInSeconds, long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         getBrowser().setImplicitWaitTimeout(0L);

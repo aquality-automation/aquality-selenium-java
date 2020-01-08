@@ -143,7 +143,7 @@ public class ElementTests extends BaseTest {
 
         txbPass.submit();
         String expectedValue = "";
-        boolean result = ConditionalWait.waitFor(webDriver -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
+        boolean result = ConditionalWait.waitFor(() -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }
