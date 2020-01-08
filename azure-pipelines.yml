@@ -27,7 +27,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean test -DdriverSettings.chrome.webDriverVersion=75.0.3770.140 -Dprofile=local'
+      goals: 'clean test -Dprofile=local'
 
   - task: SonarCloudAnalyze@1
 
