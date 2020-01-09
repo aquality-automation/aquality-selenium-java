@@ -120,6 +120,24 @@ public final class ConditionalWait {
 
     /**
      * Waits for function will be true or return some except false.
+     * StaleElementReferenceException will be handled by default
+     * @param condition        Function for waiting {@link Function}.,
+     * @param timeOutInSeconds Time-out in seconds
+     * @param pollingIntervalInMilliseconds interval in milliseconds between checks whether condition match
+     * @param message the message that will be added to an error in case if the condition is not matched during the timeout
+     * @param <T>              Type of object which is waiting
+     * @return Object which waiting for or null - is exceptions occurred
+     */
+    public static <T> T waitFor(ExpectedCondition<T> condition, long timeOutInSeconds, long pollingIntervalInMilliseconds, String message) {
+        return waitFor(condition,
+                timeOutInSeconds,
+                pollingIntervalInMilliseconds,
+                message,
+                Collections.singleton(StaleElementReferenceException.class));
+    }
+
+    /**
+     * Waits for function will be true or return some except false.
      *
      * @param condition        Function for waiting {@link Function}.,
      * @param timeOutInSeconds Time-out in seconds

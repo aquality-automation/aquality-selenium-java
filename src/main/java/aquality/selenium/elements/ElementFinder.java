@@ -9,9 +9,7 @@ import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.*;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -60,14 +58,12 @@ class ElementFinder implements IElementFinder {
         }
     }
 
-    List<WebElement> findElements(By locator, long timeout, DesiredState desiredState)
-    {
+    List<WebElement> findElements(By locator, long timeout, DesiredState desiredState) {
         List<WebElement> foundElements = new ArrayList<>();
         List<WebElement> resultElements = new ArrayList<>();
         long zeroTimeout = 0L;
         getBrowser().setImplicitWaitTimeout(zeroTimeout);
-        try{
-
+        try {
             ConditionalWait.waitFor(driver ->
             {
                 List<WebElement> allFoundElements = driver.findElements(locator);
@@ -75,9 +71,8 @@ class ElementFinder implements IElementFinder {
                 List<WebElement> filteredElements = filterByState(allFoundElements, desiredState.getDesiredStatePredicate());
                 resultElements.addAll(filteredElements);
                 return !filteredElements.isEmpty();
-            }, timeout, getTimeoutConfiguration().getPollingInterval(),
-                    desiredState.getMessage(), Collections.emptyList());
-        }catch (TimeoutException e){
+            }, timeout, getTimeoutConfiguration().getPollingInterval(), desiredState.getMessage());
+        } catch (TimeoutException e) {
             applyResult(locator, desiredState, foundElements);
         }
         getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());

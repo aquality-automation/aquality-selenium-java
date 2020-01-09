@@ -10,8 +10,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,8 +95,7 @@ class ElementStateProvider implements IElementStateProvider {
             return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(),
                     timeout,
                     getTimeoutConfiguration().getPollingInterval(),
-                    message,
-                    Collections.emptyList());
+                    message);
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
             return false;

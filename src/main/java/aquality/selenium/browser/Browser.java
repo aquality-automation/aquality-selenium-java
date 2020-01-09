@@ -13,11 +13,9 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -165,8 +163,7 @@ public class Browser {
         ConditionalWait.waitFor(condition,
                 timeouts.getPageLoad(),
                 timeouts.getPollingInterval(),
-                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()),
-                Collections.emptyList());
+                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()));
     }
 
     /**
