@@ -9,10 +9,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import utils.DurationSample;
 import utils.Timer;
-
 import java.util.Collections;
 import java.util.concurrent.TimeoutException;
-
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
