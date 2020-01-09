@@ -97,8 +97,7 @@ class ElementStateProvider implements IElementStateProvider {
             return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(),
                     timeout,
                     getTimeoutConfiguration().getPollingInterval(),
-                    message,
-                    Collections.emptyList());
+                    message);
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
             return false;

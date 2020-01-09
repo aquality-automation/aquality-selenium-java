@@ -165,8 +165,7 @@ public class Browser {
         ConditionalWait.waitFor(condition,
                 timeouts.getPageLoad(),
                 timeouts.getPollingInterval(),
-                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()),
-                Collections.emptyList());
+                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()));
     }
 
     /**
