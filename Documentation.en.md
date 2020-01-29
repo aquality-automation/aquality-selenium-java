@@ -349,8 +349,11 @@ String url = environment.getValue("/url").toString();
 ```
 ### **8. CONDITIONAL WAIT**
 
-If you need to wait for any condition to be met, you can use the [ConditionalWait](./src/main/java/aquality/selenium/waitings/ConditionalWait.java) class provided by Aquality Selenium.
-All class methods wait for the condition to be met, but return values and handle exceptions ​​differently: 
-1. ```waitForTrue``` - throws an exception if the condition is not met, returns nothing.
-2. ```boolean waitFor``` - returns true if the condition is fulfilled or false otherwise. Method does not throw any exception.
-3. ```<T> T waitFor``` - uses the WebDriver's wait, returns a T object or an exception if the condition is not met.
+If you need to wait for any condition to be met, you can use the IConditionalWait, which is implemented [here by default](https://github.com/aquality-automation/aquality-selenium-core-dotnet/blob/master/Aquality.Selenium.Core/src/Aquality.Selenium.Core/Waitings/ConditionalWait.cs). You are able to get this implementation by using following code: 
+
+``` AqualityServices.ConditionalWait ```
+
+All class methods wait for the condition to be met, but return values and handle exceptions differently: 
+1. ```public void WaitForTrue``` - throws an exception if the condition is not met, returns nothing. Note that the method doesn't use WebDriver's wait.
+2. ```bool WaitFor``` - returns true if the condition is fulfilled or false otherwise. Method does not throw any exception.
+3. ```public T WaitFor<T>``` - uses the WebDriver's wait, returns a T object or an exception if the condition is not met.
