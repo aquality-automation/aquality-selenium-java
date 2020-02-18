@@ -1,6 +1,6 @@
 package tests.integration;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.interfaces.IButton;
@@ -21,9 +21,9 @@ public class ActionTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        BrowserManager.getBrowser().getDriver().manage().window().maximize();
-        if (!BrowserManager.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
-            BrowserManager.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        AqualityServices.getBrowser().getDriver().manage().window().maximize();
+        if (!AqualityServices.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
+            AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
         }
     }
 
@@ -36,7 +36,7 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testScrollIntoView() {
-        BrowserManager.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
+        AqualityServices.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
         JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
         jsActions.scrollIntoView();
         Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollIntoView()");

@@ -1,7 +1,7 @@
 package aquality.selenium.waitings;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.localization.LocalizationManager;
@@ -148,7 +148,7 @@ public final class ConditionalWait {
      * @return Object which waiting for or null - is exceptions occurred
      */
     public static <T> T waitFor(ExpectedCondition<T> condition, long timeOutInSeconds, long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
-        getBrowser().setImplicitWaitTimeout(0L);
+        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(0L));
         WebDriverWait wait = new WebDriverWait(getBrowser().getDriver(), timeOutInSeconds);
         wait.pollingEvery(Duration.ofMillis(pollingIntervalInMilliseconds));
         wait.withMessage(message);
@@ -157,12 +157,12 @@ public final class ConditionalWait {
         try {
             return wait.until(condition);
         } finally {
-            getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
+            getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(getTimeoutConfiguration().getImplicit()));
         }
     }
 
     private static Browser getBrowser(){
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 
     private static ITimeoutConfiguration getTimeoutConfiguration(){

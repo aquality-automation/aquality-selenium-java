@@ -1,6 +1,6 @@
 package aquality.selenium.waitings;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -267,7 +267,7 @@ public class ConditionalWaitTests {
 
     @AfterMethod
     public void after() {
-        BrowserManager.getBrowser().quit();
+        AqualityServices.getBrowser().quit();
     }
 
     private ITimeoutConfiguration getTimeoutConfig() {

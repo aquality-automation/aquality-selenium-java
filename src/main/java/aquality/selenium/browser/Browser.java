@@ -2,6 +2,7 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
+import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
@@ -16,14 +17,15 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public class Browser {
+public class Browser implements IApplication {
     private final Logger logger = Logger.getInstance();
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;
-    private Long timeoutImpl;
+    private Duration timeoutImpl;
     private IConfiguration configuration;
 
 
@@ -31,8 +33,8 @@ public class Browser {
         webDriver = remoteWebDriver;
         this.configuration = configuration;
         this.timeouts = configuration.getTimeoutConfiguration();
-        this.timeoutImpl = timeouts.getImplicit();
-        getDriver().manage().timeouts().implicitlyWait(timeoutImpl, TimeUnit.SECONDS);
+        this.timeoutImpl = Duration.ofSeconds(timeouts.getImplicit());
+        getDriver().manage().timeouts().implicitlyWait(timeoutImpl.getSeconds(), TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
     }
@@ -53,6 +55,11 @@ public class Browser {
      */
     public RemoteWebDriver getDriver() {
         return webDriver;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return webDriver.getSessionId() != null;
     }
 
     /**
@@ -129,12 +136,12 @@ public class Browser {
     /**
      * Sets web driver implicit wait timeout
      * Be careful with using this method. Implicit timeout can affect to duration of driver operations
-     * @param timeout seconds to wait
+     * @param timeout duration of time to wait
      */
-    public void setImplicitWaitTimeout(Long timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.implicit.timeout"), timeout));
+    public void setImplicitWaitTimeout(Duration timeout) {
+        logger.debug(String.format(getLocManager().getValue("loc.browser.implicit.timeout"), timeout.getSeconds()));
         if(!timeout.equals(getImplicitWaitTimeout())){
-            getDriver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+            getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
             timeoutImpl = timeout;
         }
     }
@@ -321,7 +328,7 @@ public class Browser {
         return configuration.getBrowserProfile().getBrowserName();
     }
 
-    private Long getImplicitWaitTimeout() {
+    private Duration getImplicitWaitTimeout() {
         return timeoutImpl;
     }
 

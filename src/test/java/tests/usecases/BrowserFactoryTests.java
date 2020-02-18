@@ -1,7 +1,7 @@
 package tests.usecases;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.IBrowserFactory;
 import aquality.selenium.configuration.*;
@@ -13,7 +13,6 @@ import aquality.selenium.waitings.ConditionalWait;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
@@ -29,7 +28,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -53,24 +51,24 @@ public class BrowserFactoryTests {
             return new Browser(driver, new CustomConfiguration(BrowserName.FIREFOX, firefoxSettings, Configuration.getInstance().getTimeoutConfiguration()));
         };
 
-        BrowserManager.setBrowser(webDriverFactory.getBrowser());
-        BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
-        Assert.assertEquals(BrowserManager.getBrowser().getDriver().getCapabilities().getBrowserName(), "firefox");
+        AqualityServices.setBrowser(webDriverFactory.getBrowser());
+        AqualityServices.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        Assert.assertEquals(AqualityServices.getBrowser().getDriver().getCapabilities().getBrowserName(), "firefox");
     }
 
     @Test
     public void testShouldBePossibleToSetFactory() {
         IBrowserFactory webDriverFactory = new ACustomLocalFactory();
-        BrowserManager.setFactory(webDriverFactory);
-        Assert.assertEquals(BrowserManager.getBrowser().getDownloadDirectory(), new CustomChromeSettings(jsonProfile).getDownloadDir());
+        AqualityServices.setBrowserFactory(webDriverFactory);
+        Assert.assertEquals(AqualityServices.getBrowser().getDownloadDirectory(), new CustomChromeSettings(jsonProfile).getDownloadDir());
     }
 
     @Test
     public void testShouldBePossibleToOverrideDownloadDirectory() throws IOException {
         IBrowserFactory webDriverFactory = new ACustomLocalFactory();
-        BrowserManager.setFactory(webDriverFactory);
+        AqualityServices.setBrowserFactory(webDriverFactory);
 
-        String downloadDir = BrowserManager.getBrowser().getDownloadDirectory();
+        String downloadDir = AqualityServices.getBrowser().getDownloadDirectory();
         if (new File(downloadDirFactoryInitialized).exists()){
             try (Stream<Path> walk = Files.walk(Paths.get(downloadDir))) {
                 walk.sorted(Comparator.reverseOrder())
@@ -82,7 +80,7 @@ public class BrowserFactoryTests {
         String fileName = new FileDownloaderForm().getFileName();
         String urlXlsSample = TheInternetPage.DOWNLOAD.getAddress() + "/" + fileName;
 
-        BrowserManager.getBrowser().goTo(urlXlsSample);
+        AqualityServices.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
         boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), 120, 300, "File should be downloaded");
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
@@ -210,7 +208,7 @@ public class BrowserFactoryTests {
 
     @AfterMethod
     public void afterMethod(){
-        BrowserManager.getBrowser().quit();
-        BrowserManager.setDefaultFactory();
+        AqualityServices.getBrowser().quit();
+        AqualityServices.setDefaultBrowserFactory();
     }
 }

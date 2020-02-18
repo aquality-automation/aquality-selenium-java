@@ -1,7 +1,7 @@
 package aquality.selenium.elements;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
@@ -182,7 +182,7 @@ public class ElementFactory implements IElementFactory {
     }
 
     private Browser getBrowser(){
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 
     private ITimeoutConfiguration getTimeoutConfig(){

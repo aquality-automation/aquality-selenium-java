@@ -1,7 +1,7 @@
 package tests.usecases;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.interfaces.ITextBox;
 import org.openqa.selenium.By;
@@ -11,7 +11,7 @@ public class QuickStartExample {
 
     @Test
     public void test(){
-        Browser browser = BrowserManager.getBrowser();
+        Browser browser = AqualityServices.getBrowser();
 
         browser.maximize();
         browser.goTo("https://wikipedia.org");

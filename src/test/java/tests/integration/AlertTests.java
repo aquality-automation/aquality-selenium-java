@@ -1,7 +1,7 @@
 package tests.integration;
 
 import aquality.selenium.browser.AlertActions;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import org.openqa.selenium.NoAlertPresentException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -17,7 +17,7 @@ public class AlertTests extends BaseTest {
     @BeforeMethod
     @Override
     public void beforeMethod() {
-        BrowserManager.getBrowser().goTo(TheInternetPage.JAVASCRIPT_ALERTS.getAddress());
+        AqualityServices.getBrowser().goTo(TheInternetPage.JAVASCRIPT_ALERTS.getAddress());
     }
 
     @Test

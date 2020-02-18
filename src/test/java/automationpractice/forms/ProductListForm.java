@@ -1,6 +1,6 @@
 package automationpractice.forms;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.ElementType;
@@ -50,7 +50,7 @@ public class ProductListForm extends Form {
     public void addToCardRandomProduct(){
         List<ILabel> productList = getProductContainerLabels();
         ILabel lblProduct = productList.get(new Random().nextInt(productList.size()));
-        BrowserManager.getBrowser().executeScript(JavaScript.SCROLL_TO_ELEMENT, lblProduct.getElement());
+        AqualityServices.getBrowser().executeScript(JavaScript.SCROLL_TO_ELEMENT, lblProduct.getElement());
         lblProduct.getMouseActions().moveMouseToElement();
         getBtnAddCard(lblProduct).getJsActions().click();
     }

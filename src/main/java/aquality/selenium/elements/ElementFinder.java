@@ -1,7 +1,7 @@
 package aquality.selenium.elements;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.elements.interfaces.IElementFinder;
@@ -9,6 +9,8 @@ import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.*;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +64,7 @@ class ElementFinder implements IElementFinder {
         List<WebElement> foundElements = new ArrayList<>();
         List<WebElement> resultElements = new ArrayList<>();
         long zeroTimeout = 0L;
-        getBrowser().setImplicitWaitTimeout(zeroTimeout);
+        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(zeroTimeout));
         try {
             ConditionalWait.waitFor(driver ->
             {
@@ -75,7 +77,7 @@ class ElementFinder implements IElementFinder {
         } catch (TimeoutException e) {
             applyResult(locator, desiredState, foundElements);
         }
-        getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
+        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(getTimeoutConfiguration().getImplicit()));
         return resultElements;
     }
 
@@ -120,7 +122,7 @@ class ElementFinder implements IElementFinder {
     }
 
     private Browser getBrowser() {
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 
     private ITimeoutConfiguration getTimeoutConfiguration() {

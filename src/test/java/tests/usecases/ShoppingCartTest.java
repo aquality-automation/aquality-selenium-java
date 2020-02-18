@@ -1,6 +1,6 @@
 package tests.usecases;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.*;
 import automationpractice.modals.ProceedToCheckoutModal;
@@ -20,7 +20,7 @@ public class ShoppingCartTest extends BaseTest {
 
     @Test
     public void testShoppingCart() {
-        BrowserManager.getBrowser().getDriver().navigate().to(URL_AUTOMATIONPRACTICE);
+        AqualityServices.getBrowser().getDriver().navigate().to(URL_AUTOMATIONPRACTICE);
         SoftAssert softAssert = new SoftAssert();
 
         SliderForm sliderForm = new SliderForm();

@@ -1,7 +1,7 @@
 package tests.usecases;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.configuration.*;
 import aquality.selenium.utils.JsonFile;
 import org.testng.Assert;
@@ -13,7 +13,7 @@ public class TestTimeoutConfiguration {
     public void testNumberFormatExceptionShouldBeThrownIfTimeoutIsNotANumber() {
         Assert.assertThrows(NumberFormatException.class, () ->
         {
-            BrowserManager.setBrowser(new Browser(null, configuration));
+            AqualityServices.setBrowser(new Browser(null, configuration));
         });
     }
 

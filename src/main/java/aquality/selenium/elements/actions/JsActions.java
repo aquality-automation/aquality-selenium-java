@@ -1,7 +1,7 @@
 package aquality.selenium.elements.actions;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.IElement;
@@ -165,6 +165,6 @@ public class JsActions {
     }
 
     private Browser getBrowser(){
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 }

@@ -1,6 +1,6 @@
 package tests.usecases;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.TextBox;
@@ -16,7 +16,7 @@ public class CustomElementTests extends BaseTest {
 
     @Test
     public void testCustomTextBox() {
-        BrowserManager.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        AqualityServices.getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
         FormAuthenticationForm authenticationForm = new FormAuthenticationForm();
         ITextBox txbUsername = authenticationForm.getTxbUsername();
 

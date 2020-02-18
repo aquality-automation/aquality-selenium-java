@@ -17,6 +17,7 @@ import utils.Timer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
@@ -189,7 +190,7 @@ public class BrowserTests extends BaseTest {
     @Test
     public void testShouldBePossibleToSetImplicitWait(){
         long waitTime = 5L;
-        getBrowser().setImplicitWaitTimeout(waitTime);
+        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(waitTime));
 
         Timer timer = new Timer();
         timer.start();

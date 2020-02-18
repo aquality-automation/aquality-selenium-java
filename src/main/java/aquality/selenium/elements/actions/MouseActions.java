@@ -2,7 +2,7 @@ package aquality.selenium.elements.actions;
 
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
@@ -91,6 +91,6 @@ public class MouseActions {
     }
 
     private Browser getBrowser(){
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 }

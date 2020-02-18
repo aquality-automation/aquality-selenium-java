@@ -1,7 +1,7 @@
 package tests;
 
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.Dimension;
@@ -27,7 +27,7 @@ public abstract class BaseTest {
 
     @AfterMethod
     public void afterTest(){
-        BrowserManager.getBrowser().quit();
+        AqualityServices.getBrowser().quit();
     }
 
     protected void navigate(TheInternetPage page) {
@@ -35,6 +35,6 @@ public abstract class BaseTest {
     }
 
     protected Browser getBrowser(){
-        return BrowserManager.getBrowser();
+        return AqualityServices.getBrowser();
     }
 }
