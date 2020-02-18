@@ -9,6 +9,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import utils.DurationSample;
 import utils.Timer;
+import utils.Timer.TimeUnit;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +23,7 @@ import static org.testng.Assert.assertTrue;
 public class ElementActionRetrierTests {
 
     private static final int retriesCount = Configuration.getInstance().getRetryConfiguration().getNumber();
-    private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
+    private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval().toMillis();
 
 
     @DataProvider
@@ -42,7 +43,7 @@ public class ElementActionRetrierTests {
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
-        Timer timer = new Timer(Timer.TimeUnit.MILLISECONDS);
+        Timer timer = new Timer(TimeUnit.MILLISECONDS);
         timer.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
         ElementActionRetrier.doWithRetry(() -> {

@@ -1,7 +1,6 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.utils.JsonFile;
 import org.openqa.selenium.Capabilities;
 
 /**
@@ -44,11 +43,4 @@ public interface IDriverSettings {
      * @return Browser name
      */
     BrowserName getBrowserName();
-
-    /**
-     * Gets desired json file.
-     * @return Json file.
-     */
-    JsonFile getSettingsFile();
-
 }

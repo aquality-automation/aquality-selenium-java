@@ -1,70 +1,49 @@
 package aquality.selenium.configuration;
 
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
+import com.google.inject.Inject;
 
-public class TimeoutConfiguration implements ITimeoutConfiguration{
-    private final JsonFile settingsFile;
+import java.time.Duration;
 
-    private final long condition;
-    private final long script;
-    private final long pageLoad;
-    private final long pollInterval;
-    private final long implicit;
-    private final long command;
-    
-    public TimeoutConfiguration(JsonFile settingsFile) {
+public class TimeoutConfiguration extends aquality.selenium.core.configurations.TimeoutConfiguration
+        implements ITimeoutConfiguration {
+
+    private final ISettingsFile settingsFile;
+    private final Duration script;
+    private final Duration pageLoad;
+
+    @Inject
+    public TimeoutConfiguration(ISettingsFile settingsFile) {
+        super(settingsFile);
         this.settingsFile = settingsFile;
-        condition = getTimeout(TIMEOUT.CONDITION);
-        script = getTimeout(TIMEOUT.SCRIPT);
-        pageLoad = getTimeout(TIMEOUT.PAGE_LOAD);
-        pollInterval = getTimeout(TIMEOUT.POLL_INTERVAL);
-        implicit = getTimeout(TIMEOUT.IMPLICIT);
-        command = getTimeout(TIMEOUT.COMMAND);
+        script = getDurationFromSeconds(TIMEOUT.SCRIPT);
+        pageLoad = getDurationFromSeconds(TIMEOUT.PAGE_LOAD);
     }
 
-    private long getTimeout(TIMEOUT timeout){
-        return Long.valueOf(settingsFile.getValue("/timeouts/" + timeout.getKey()).toString());
+    private Duration getDurationFromSeconds(TIMEOUT timeout) {
+        long seconds = Long.valueOf(settingsFile.getValue("/timeouts/" + timeout.getKey()).toString());
+        return Duration.ofSeconds(seconds);
     }
 
-
-    public long getImplicit(){
-        return implicit;
-    }
-
-    public long getCondition(){
-        return condition;
-    }
-
-    public long getScript(){
+    public Duration getScript() {
         return script;
     }
 
-    public long getPageLoad(){
+    public Duration getPageLoad() {
         return pageLoad;
     }
 
-    public long getPollingInterval(){
-        return pollInterval;
-    }
-
-    public long getCommand(){
-        return command;
-    }
-
     private enum TIMEOUT {
-        IMPLICIT("timeoutImplicit"),
-        CONDITION("timeoutCondition"),
         SCRIPT("timeoutScript"),
-        PAGE_LOAD("timeoutPageLoad"),
-        POLL_INTERVAL("timeoutPollingInterval"),
-        COMMAND("timeoutCommand");
+        PAGE_LOAD("timeoutPageLoad");
 
         private String key;
-        TIMEOUT(String key){
+
+        TIMEOUT(String key) {
             this.key = key;
         }
 
-        private String getKey(){
+        private String getKey() {
             return key;
         }
     }

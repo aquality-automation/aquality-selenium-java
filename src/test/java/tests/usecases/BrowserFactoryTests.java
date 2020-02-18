@@ -1,14 +1,20 @@
 package tests.usecases;
 
-import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.IBrowserFactory;
-import aquality.selenium.configuration.*;
+import aquality.selenium.configuration.Configuration;
+import aquality.selenium.configuration.IBrowserProfile;
+import aquality.selenium.configuration.IConfiguration;
+import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.configuration.driversettings.ChromeSettings;
 import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
+import aquality.selenium.core.configurations.IRetryConfiguration;
+import aquality.selenium.core.utilities.ISettingsFile;
+import aquality.selenium.core.utilities.JsonSettingsFile;
 import aquality.selenium.waitings.ConditionalWait;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -28,24 +34,25 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class BrowserFactoryTests {
 
     private final String downloadDirFactoryInitialized = "./target/downloads_custom/";
-    private final JsonFile jsonProfile;
+    private final ISettingsFile settingsFile;
 
     public BrowserFactoryTests() {
         String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
-        this.jsonProfile = new JsonFile(settingsProfile);
+        this.settingsFile = new JsonSettingsFile(settingsProfile);
     }
 
     @Test
     public void testShouldBePossibleToSetBrowser() {
 
         IBrowserFactory webDriverFactory = () -> {
-            FirefoxSettings firefoxSettings = new FirefoxSettings(jsonProfile);
+            FirefoxSettings firefoxSettings = new FirefoxSettings(settingsFile);
             WebDriverManager.firefoxdriver().setup();
             FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities());
             return new Browser(driver, new CustomConfiguration(BrowserName.FIREFOX, firefoxSettings, Configuration.getInstance().getTimeoutConfiguration()));
@@ -60,7 +67,7 @@ public class BrowserFactoryTests {
     public void testShouldBePossibleToSetFactory() {
         IBrowserFactory webDriverFactory = new ACustomLocalFactory();
         AqualityServices.setBrowserFactory(webDriverFactory);
-        Assert.assertEquals(AqualityServices.getBrowser().getDownloadDirectory(), new CustomChromeSettings(jsonProfile).getDownloadDir());
+        Assert.assertEquals(AqualityServices.getBrowser().getDownloadDirectory(), new CustomChromeSettings(settingsFile).getDownloadDir());
     }
 
     @Test
@@ -91,37 +98,37 @@ public class BrowserFactoryTests {
         @Override
         public Browser getBrowser() {
             WebDriverManager.chromedriver().setup();
-            CustomChromeSettings chromeSettings = new CustomChromeSettings(jsonProfile);
+            CustomChromeSettings chromeSettings = new CustomChromeSettings(settingsFile);
             ChromeDriver driver = new ChromeDriver(chromeSettings.getCapabilities());
             return new Browser(driver, new CustomConfiguration(BrowserName.CHROME, chromeSettings, new ITimeoutConfiguration() {
                 @Override
-                public long getImplicit() {
-                    return 0;
+                public Duration getImplicit() {
+                    return Duration.ZERO;
                 }
 
                 @Override
-                public long getCondition() {
-                    return 30;
+                public Duration getCondition() {
+                    return Duration.ofSeconds(30);
                 }
 
                 @Override
-                public long getScript() {
-                    return 10;
+                public Duration getScript() {
+                    return Duration.ofSeconds(10);
                 }
 
                 @Override
-                public long getPageLoad() {
-                    return 10;
+                public Duration getPageLoad() {
+                    return Duration.ofSeconds(10);
                 }
 
                 @Override
-                public long getPollingInterval() {
-                    return 300;
+                public Duration getPollingInterval() {
+                    return Duration.ofMillis(300);
                 }
 
                 @Override
-                public long getCommand() {
-                    return 120;
+                public Duration getCommand() {
+                    return Duration.ofSeconds(120);
                 }
             }));
         }
@@ -129,7 +136,7 @@ public class BrowserFactoryTests {
 
     private class CustomChromeSettings extends ChromeSettings {
 
-        CustomChromeSettings(JsonFile jsonFile) {
+        CustomChromeSettings(ISettingsFile jsonFile) {
             super(jsonFile);
         }
 
@@ -182,7 +189,7 @@ public class BrowserFactoryTests {
                 @Override
                 public URL getRemoteConnectionUrl() {
                     try {
-                        return new URL(jsonProfile.getValue("/remoteConnectionUrl").toString());
+                        return new URL(settingsFile.getValue("/remoteConnectionUrl").toString());
                     } catch (MalformedURLException e) {
                         throw new UncheckedExecutionException(e);
                     }

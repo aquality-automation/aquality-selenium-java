@@ -32,6 +32,22 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
     }
 
     /**
+     * Resolves required service from DI container.
+     * Note that the service should be binded in {@link BrowserModule}.
+     *
+     * @param type class of required service.
+     * @param <T> type of required service.
+     * @return required service.
+     */
+    public static <T> T get(Class<T> type) {
+        return getServiceProvider().getInstance(type);
+    }
+
+    private static Injector getServiceProvider() {
+        return getInstance().getInjector();
+    }
+
+    /**
      * Sets default(local {@link LocalBrowserFactory} or remote {@link RemoteBrowserFactory}) browser factory.
      */
     public static void setDefaultBrowserFactory(){

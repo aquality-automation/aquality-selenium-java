@@ -1,9 +1,11 @@
 package tests.usecases;
 
-import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.browser.Browser;
 import aquality.selenium.configuration.*;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
+import aquality.selenium.core.configurations.IRetryConfiguration;
+import aquality.selenium.core.utilities.JsonSettingsFile;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,9 +14,7 @@ public class TestTimeoutConfiguration {
     @Test
     public void testNumberFormatExceptionShouldBeThrownIfTimeoutIsNotANumber() {
         Assert.assertThrows(NumberFormatException.class, () ->
-        {
-            AqualityServices.setBrowser(new Browser(null, configuration));
-        });
+                AqualityServices.setBrowser(new Browser(null, configuration)));
     }
 
     IConfiguration configuration = new IConfiguration() {
@@ -25,7 +25,7 @@ public class TestTimeoutConfiguration {
 
         @Override
         public ITimeoutConfiguration getTimeoutConfiguration() {
-            return new TimeoutConfiguration(new JsonFile("settings.incorrect.json"));
+            return new TimeoutConfiguration(new JsonSettingsFile("settings.incorrect.json"));
         }
 
         @Override

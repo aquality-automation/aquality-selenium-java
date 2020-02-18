@@ -1,6 +1,7 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
+import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.logger.Logger;
 import org.openqa.selenium.MutableCapabilities;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 abstract class DriverSettings implements IDriverSettings {
+
+    abstract ISettingsFile getSettingsFile();
 
     Map<String, Object> getBrowserOptions(BrowserName browserName) {
         return getSettingsFile().getMap(getDriverSettingsPath(browserName, CapabilityType.OPTIONS));

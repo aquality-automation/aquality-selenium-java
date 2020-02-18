@@ -116,7 +116,7 @@ public class ElementFactory implements IElementFactory {
                 throw new IllegalArgumentException("No such expected value:".concat(count.toString()));
         }
 
-        List<WebElement> webElements = ElementFinder.getInstance().findElements(locator, getTimeoutConfig().getCondition(), state);
+        List<WebElement> webElements = ElementFinder.getInstance().findElements(locator, getTimeoutConfig().getCondition().getSeconds(), state);
         int index = 1;
         for (WebElement webElement : webElements) {
             try {

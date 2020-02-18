@@ -1,7 +1,7 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.HashMap;
@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class ChromeSettings extends DriverSettings {
 
-    private final JsonFile jsonFile;
+    private final ISettingsFile settingsFile;
 
-    public ChromeSettings(JsonFile jsonFile){
-        this.jsonFile = jsonFile;
+    public ChromeSettings(ISettingsFile settingsFile){
+        this.settingsFile = settingsFile;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class ChromeSettings extends DriverSettings {
     }
 
     @Override
-    public JsonFile getSettingsFile() {
-        return jsonFile;
+    protected ISettingsFile getSettingsFile() {
+        return settingsFile;
     }
 
     @Override

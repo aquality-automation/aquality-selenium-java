@@ -226,6 +226,6 @@ public abstract class Element implements IElement {
     }
 
     long getDefaultTimeout(){
-        return Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        return Configuration.getInstance().getTimeoutConfiguration().getCondition().getSeconds();
     }
 }

@@ -1,15 +1,15 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class SafariSettings extends DriverSettings {
 
-    private final JsonFile jsonFile;
+    private final ISettingsFile settingsFile;
 
-    public SafariSettings(JsonFile jsonFile){
-        this.jsonFile = jsonFile;
+    public SafariSettings(ISettingsFile settingsFile){
+        this.settingsFile = settingsFile;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SafariSettings extends DriverSettings {
     }
 
     @Override
-    public JsonFile getSettingsFile() {
-        return jsonFile;
+    protected ISettingsFile getSettingsFile() {
+        return settingsFile;
     }
 }

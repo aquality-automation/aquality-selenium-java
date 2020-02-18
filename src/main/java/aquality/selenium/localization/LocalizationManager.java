@@ -9,7 +9,7 @@ public class LocalizationManager {
     private static ThreadLocal<LocalizationManager> instance = ThreadLocal.withInitial(LocalizationManager::new);
 
     private LocalizationManager(){
-        SupportedLanguage language = Configuration.getInstance().getLoggerConfiguration().getLanguage();
+        SupportedLanguage language = SupportedLanguage.valueOf(Configuration.getInstance().getLoggerConfiguration().getLanguage().toUpperCase());
         String translateDictFile = String.format("localization/%1$s.json", language.name().toLowerCase());
         localManager = new JsonFile(translateDictFile);
     }

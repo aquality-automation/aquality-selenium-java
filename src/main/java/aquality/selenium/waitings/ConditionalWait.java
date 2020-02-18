@@ -30,7 +30,7 @@ public final class ConditionalWait {
      * @throws TimeoutException will be thrown in case if timeout is over but condition was not met
      */
     public static void waitForTrue(BooleanSupplier condition, String message) throws TimeoutException {
-        waitForTrue(condition, getTimeoutConfiguration().getCondition(), getTimeoutConfiguration().getPollingInterval(), message);
+        waitForTrue(condition, getTimeoutConfiguration().getCondition().getSeconds(), getTimeoutConfiguration().getPollingInterval().toMillis(), message);
     }
 
     /**
@@ -79,8 +79,8 @@ public final class ConditionalWait {
      */
     public static boolean waitFor(BooleanSupplier condition, String message) {
         return waitFor(condition,
-                getTimeoutConfiguration().getCondition(),
-                getTimeoutConfiguration().getPollingInterval(),
+                getTimeoutConfiguration().getCondition().getSeconds(),
+                getTimeoutConfiguration().getPollingInterval().toMillis(),
                 message);
     }
 
@@ -112,8 +112,8 @@ public final class ConditionalWait {
      */
     public static <T> T waitFor(ExpectedCondition<T> condition, String message) {
         return waitFor(condition,
-                getTimeoutConfiguration().getCondition(),
-                getTimeoutConfiguration().getPollingInterval(),
+                getTimeoutConfiguration().getCondition().getSeconds(),
+                getTimeoutConfiguration().getPollingInterval().toMillis(),
                 message,
                 Collections.singleton(StaleElementReferenceException.class));
     }
@@ -157,7 +157,7 @@ public final class ConditionalWait {
         try {
             return wait.until(condition);
         } finally {
-            getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(getTimeoutConfiguration().getImplicit()));
+            getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
         }
     }
 

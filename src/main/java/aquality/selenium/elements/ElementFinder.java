@@ -32,7 +32,7 @@ class ElementFinder implements IElementFinder {
 
     @Override
     public long getDefaultTimeout() {
-        return getTimeoutConfiguration().getCondition();
+        return getTimeoutConfiguration().getCondition().getSeconds();
     }
 
     @Override
@@ -73,11 +73,11 @@ class ElementFinder implements IElementFinder {
                 List<WebElement> filteredElements = filterByState(allFoundElements, desiredState.getDesiredStatePredicate());
                 resultElements.addAll(filteredElements);
                 return !filteredElements.isEmpty();
-            }, timeout, getTimeoutConfiguration().getPollingInterval(), desiredState.getMessage());
+            }, timeout, getTimeoutConfiguration().getPollingInterval().toMillis(), desiredState.getMessage());
         } catch (TimeoutException e) {
             applyResult(locator, desiredState, foundElements);
         }
-        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(getTimeoutConfiguration().getImplicit()));
+        getBrowser().setImplicitWaitTimeout(getTimeoutConfiguration().getImplicit());
         return resultElements;
     }
 

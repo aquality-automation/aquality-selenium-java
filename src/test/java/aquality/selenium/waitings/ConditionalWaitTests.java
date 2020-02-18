@@ -65,7 +65,7 @@ public class ConditionalWaitTests {
             return true;
         }, "Timeout exception should not be thrown");
         DurationSample durationSample = new DurationSample(timer.duration(), getTimeoutConfig().getCondition());
-        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition());
+        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition().getSeconds());
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -135,7 +135,7 @@ public class ConditionalWaitTests {
                 },
                 "Conditional should be true");
         DurationSample durationSample = new DurationSample(timer.duration(), getTimeoutConfig().getCondition());
-        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition());
+        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition().getSeconds());
     }
 
     @Test
@@ -248,7 +248,7 @@ public class ConditionalWaitTests {
             return true;
         }, "Timeout exception should not be thrown");
         DurationSample durationSample = new DurationSample(timer.duration(), getTimeoutConfig().getCondition());
-        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition());
+        assertTrue(durationSample.getDuration() < getTimeoutConfig().getCondition().getSeconds());
         assertTrue(conditionResult, "Condition result should be true");
     }
 

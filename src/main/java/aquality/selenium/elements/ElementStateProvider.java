@@ -94,7 +94,7 @@ class ElementStateProvider implements IElementStateProvider {
             long zeroTimeout = 0L;
             return ConditionalWait.waitFor(y -> findElements(zeroTimeout).isEmpty(),
                     timeout,
-                    getTimeoutConfiguration().getPollingInterval(),
+                    getTimeoutConfiguration().getPollingInterval().toMillis(),
                     message);
         }catch (TimeoutException e){
             getLogger().debug(getDesiredStateMessage("NOT EXIST", timeout));
@@ -162,7 +162,7 @@ class ElementStateProvider implements IElementStateProvider {
     }
 
     private long getDefaultTimeout(){
-        return getTimeoutConfiguration().getCondition();
+        return getTimeoutConfiguration().getCondition().getSeconds();
     }
 
     private ITimeoutConfiguration getTimeoutConfiguration(){

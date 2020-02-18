@@ -1,5 +1,7 @@
 package utils;
 
+import java.time.Duration;
+
 public class DurationSample {
 
     private final double duration;
@@ -7,18 +9,26 @@ public class DurationSample {
     private final double maxLimit;
     private final double deviation;
 
-    public DurationSample(double duration, double minLimit, double maxLimit, double deviation) {
+    public DurationSample(double duration, Duration minLimit, Duration maxLimit, double deviation) {
         this.duration = duration;
-        this.minLimit = minLimit;
-        this.maxLimit = maxLimit;
+        this.minLimit = minLimit.getSeconds();
+        this.maxLimit = maxLimit.getSeconds();
         this.deviation = deviation;
     }
 
-    public DurationSample(double duration, double expectedDuration, double deviation) {
+    public DurationSample(double duration, Duration expectedDuration, double deviation) {
         this(duration, expectedDuration, expectedDuration, deviation);
     }
 
-    public DurationSample(double duration, double expectedDuration) {
+    public DurationSample(double duration, long expectedDuration, double deviation) {
+        this(duration, Duration.ofSeconds(expectedDuration), deviation);
+    }
+
+    public DurationSample(double duration, long expectedDuration) {
+        this(duration, Duration.ofSeconds(expectedDuration));
+    }
+
+    public DurationSample(double duration, Duration expectedDuration) {
         this(duration, expectedDuration, expectedDuration, 0);
     }
 

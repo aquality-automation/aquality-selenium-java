@@ -1,7 +1,7 @@
 package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
-import aquality.selenium.configuration.IRetryConfiguration;
+import aquality.selenium.core.configurations.IRetryConfiguration;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 
@@ -37,7 +37,7 @@ public class ElementActionRetrier {
     {
         IRetryConfiguration retryConfiguration = Configuration.getInstance().getRetryConfiguration();
         int retryAttemptsLeft = retryConfiguration.getNumber();
-        long actualInterval = retryConfiguration.getPollingInterval();
+        long actualInterval = retryConfiguration.getPollingInterval().toMillis();
         Optional<T> result = Optional.empty();
         while(retryAttemptsLeft >= 0)
         {

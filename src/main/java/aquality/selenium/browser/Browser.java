@@ -33,7 +33,7 @@ public class Browser implements IApplication {
         webDriver = remoteWebDriver;
         this.configuration = configuration;
         this.timeouts = configuration.getTimeoutConfiguration();
-        this.timeoutImpl = Duration.ofSeconds(timeouts.getImplicit());
+        this.timeoutImpl = timeouts.getImplicit();
         getDriver().manage().timeouts().implicitlyWait(timeoutImpl.getSeconds(), TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
@@ -126,10 +126,10 @@ public class Browser implements IApplication {
      * Sets page load timeout (Will be ignored for Safari https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687)
      * @param timeout seconds to wait
      */
-    public void setPageLoadTimeout(Long timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.page.load.timeout"), timeout));
+    public void setPageLoadTimeout(Duration timeout) {
+        logger.debug(String.format(getLocManager().getValue("loc.browser.page.load.timeout"), timeout.getSeconds()));
         if(!getBrowserName().equals(BrowserName.SAFARI)){
-            getDriver().manage().timeouts().pageLoadTimeout(timeout, TimeUnit.SECONDS);
+            getDriver().manage().timeouts().pageLoadTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
         }
     }
 
@@ -150,9 +150,9 @@ public class Browser implements IApplication {
      * Sets timeout to async javascript executions
      * @param timeout timeout in seconds
      */
-    public void setScriptTimeout(Long timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.script.timeout"), timeout));
-        getDriver().manage().timeouts().setScriptTimeout(timeout, TimeUnit.SECONDS);
+    public void setScriptTimeout(Duration timeout) {
+        logger.debug(String.format(getLocManager().getValue("loc.browser.script.timeout"), timeout.getSeconds()));
+        getDriver().manage().timeouts().setScriptTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
     }
 
 
@@ -168,8 +168,8 @@ public class Browser implements IApplication {
             return result instanceof Boolean && (Boolean) result;
         };
         ConditionalWait.waitFor(condition,
-                timeouts.getPageLoad(),
-                timeouts.getPollingInterval(),
+                timeouts.getPageLoad().getSeconds(),
+                timeouts.getPollingInterval().toMillis(),
                 String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()));
     }
 

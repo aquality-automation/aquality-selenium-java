@@ -81,7 +81,7 @@ public class BrowserTests extends BaseTest {
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testShouldBePossibleToSetPageLoadTimeout(){
-        getBrowser().setPageLoadTimeout(1L);
+        getBrowser().setPageLoadTimeout(Duration.ofSeconds(1L));
         String urlAquality = "https://github.com/aquality-automation";
         getBrowser().goTo(urlAquality);
     }
@@ -127,7 +127,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().goTo(url);
         getBrowser().waitForPageToLoad();
 
-        long expectedDurationInSeconds = Configuration.getInstance().getTimeoutConfiguration().getScript() + 1;
+        long expectedDurationInSeconds = Configuration.getInstance().getTimeoutConfiguration().getScript().getSeconds() + 1;
         getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
     }
 
