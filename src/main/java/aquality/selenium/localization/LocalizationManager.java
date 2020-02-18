@@ -1,17 +1,18 @@
 package aquality.selenium.localization;
 
 import aquality.selenium.configuration.Configuration;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
+import aquality.selenium.core.utilities.JsonSettingsFile;
 
 public class LocalizationManager {
 
-    private final JsonFile localManager;
+    private final ISettingsFile localManager;
     private static ThreadLocal<LocalizationManager> instance = ThreadLocal.withInitial(LocalizationManager::new);
 
     private LocalizationManager(){
         SupportedLanguage language = SupportedLanguage.valueOf(Configuration.getInstance().getLoggerConfiguration().getLanguage().toUpperCase());
         String translateDictFile = String.format("localization/%1$s.json", language.name().toLowerCase());
-        localManager = new JsonFile(translateDictFile);
+        localManager = new JsonSettingsFile(translateDictFile);
     }
 
     public static LocalizationManager getInstance() {

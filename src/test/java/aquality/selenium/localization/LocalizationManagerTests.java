@@ -1,12 +1,15 @@
 package aquality.selenium.localization;
 
-import aquality.selenium.utils.JsonFile;
-import org.testng.annotations.*;
+import aquality.selenium.core.utilities.ISettingsFile;
+import aquality.selenium.core.utilities.JsonSettingsFile;
+import org.testng.annotations.AfterGroups;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 public class LocalizationManagerTests {
 
@@ -35,11 +38,11 @@ public class LocalizationManagerTests {
     }
 
     @Test(dataProvider = "languagesAndValues")
-    public void testGetValueShouldReturnValueFromSelectedLanguage(SupportedLanguage language, String value) throws NoSuchFieldException, IllegalAccessException, IOException {
+    public void testGetValueShouldReturnValueFromSelectedLanguage(SupportedLanguage language, String value) throws NoSuchFieldException, IllegalAccessException {
         Field fieldLocalManager = LocalizationManager.class.getDeclaredField(fieldLocalManagerName);
         fieldLocalManager.setAccessible(true);
 
-        JsonFile jsonFileRu = new JsonFile(String.format(tmpDicFilePath, language.name().toLowerCase()));
+        ISettingsFile jsonFileRu = new JsonSettingsFile(String.format(tmpDicFilePath, language.name().toLowerCase()));
         fieldLocalManager.set(LocalizationManager.getInstance(), jsonFileRu);
         assertEquals(LocalizationManager.getInstance().getValue(key), value);
     }
