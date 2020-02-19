@@ -1,10 +1,9 @@
 package aquality.selenium.elements.actions;
 
-
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
+import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.interfaces.IElement;
-import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.function.UnaryOperator;
@@ -61,13 +60,14 @@ public class MouseActions {
      */
     public void doubleClick() {
         infoLoc("loc.clicking.double");
-        ElementActionRetrier.doWithRetry(() -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
+        AqualityServices.get(IElementActionRetrier.class).doWithRetry(
+                () -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
         performAction(actions -> actions.doubleClick(element.getElement()));
     }
 
     private void performAction(UnaryOperator<Actions> function) {
         Actions actions = new Actions(getBrowser().getDriver()).moveToElement(element.getElement());
-        ElementActionRetrier.doWithRetry(() ->
+        AqualityServices.get(IElementActionRetrier.class).doWithRetry(() ->
                 function.apply(actions).build().perform());
     }
 

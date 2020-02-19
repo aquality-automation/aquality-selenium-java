@@ -17,7 +17,6 @@ import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.IElementFactory;
-import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -97,7 +96,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     public void click() {
         logElementAction("loc.clicking");
         getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> getElement().click());
+        doWithRetry(() -> getElement().click());
     }
 
     @Override
@@ -115,7 +114,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     public String getText(HighlightState highlightState) {
         logElementAction("loc.get.text");
         getJsActions().highlightElement();
-        return ElementActionRetrier.doWithRetry(() -> getElement().getText());
+        return doWithRetry(() -> getElement().getText());
     }
 
     @Override
@@ -136,7 +135,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     public String getCssValue(final String propertyName, HighlightState highlightState) {
         logElementAction("loc.el.cssvalue", propertyName);
         getJsActions().highlightElement();
-        return ElementActionRetrier.doWithRetry(() -> getElement().getCssValue(propertyName));
+        return doWithRetry(() -> getElement().getCssValue(propertyName));
     }
 
     @Override

@@ -2,7 +2,6 @@ package aquality.selenium.elements;
 
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
@@ -52,7 +51,7 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void submit() {
-        ElementActionRetrier.doWithRetry(() -> getElement().submit());
+        doWithRetry(() -> getElement().submit());
     }
 
     @Override
@@ -62,18 +61,18 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void focus() {
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(""));
+        doWithRetry(() -> getElement().sendKeys(""));
     }
 
     @Override
     public void unfocus() {
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(Keys.TAB));
+        doWithRetry(() -> getElement().sendKeys(Keys.TAB));
     }
 
     private void type(final String value, final boolean maskValueInLog) {
         logElementAction(logTyping, maskValueInLog ? logMaskedValue : value);
         getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(value));
+        doWithRetry(() -> getElement().sendKeys(value));
     }
 
     private void clearAndType(final String value, final boolean maskValueInLog) {
@@ -81,7 +80,7 @@ public class TextBox extends Element implements ITextBox {
         logElementAction(logClearing);
         logElementAction(logTyping, maskValueInLog ? logMaskedValue : value);
         getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> {
+        doWithRetry(() -> {
             getElement().clear();
             getElement().sendKeys(value);
         });
