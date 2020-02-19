@@ -1,12 +1,11 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
-import theinternet.forms.FormAuthenticationForm;
 import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
@@ -18,6 +17,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
+import theinternet.forms.FormAuthenticationForm;
 
 import java.util.List;
 
@@ -84,7 +84,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
+                ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.isChecked();

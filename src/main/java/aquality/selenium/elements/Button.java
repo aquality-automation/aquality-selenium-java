@@ -1,5 +1,6 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
 import org.openqa.selenium.By;
 
@@ -13,6 +14,6 @@ public class Button extends Element implements IButton {
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.button");
+        return getLocalizationManager().getLocalizedMessage("loc.button");
     }
 }

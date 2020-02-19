@@ -3,7 +3,7 @@ package aquality.selenium.browser;
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CommandExecutor;

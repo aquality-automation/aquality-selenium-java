@@ -1,11 +1,9 @@
 package aquality.selenium.elements.actions;
 
 
-import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.browser.Browser;
 import aquality.selenium.elements.interfaces.IElement;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.interactions.Actions;
 
@@ -13,8 +11,6 @@ import java.util.function.UnaryOperator;
 
 public class MouseActions {
 
-    private static final String LOG_DELIMITER = "::";
-    private final Logger logger = Logger.getInstance();
     private IElement element;
     private String type;
     private String name;
@@ -73,24 +69,19 @@ public class MouseActions {
     private void performAction(UnaryOperator<Actions> function) {
         Actions actions = new Actions(getBrowser().getDriver()).moveToElement(element.getElement());
         ElementActionRetrier.doWithRetry(() ->
-                        function.apply(actions).build().perform());
+                function.apply(actions).build().perform());
     }
 
     /**
      * The implementation of a method for logging of MouseActions
      *
-     * @param message Message to display in the log
-     * @return Formatted message (containing the name and type of item)
+     * @param key key in localization resource of message to display in the log.
      */
-    private String formatActionMessage(final String message) {
-        return String.format("%1$s '%2$s' %3$s %4$s", type, name, LOG_DELIMITER, message);
-    }
-
     private void infoLoc(String key) {
-        logger.info(formatActionMessage(LocalizationManager.getInstance().getValue(key)));
+        AqualityServices.getLocalizedLogger().infoElementAction(type, name, key);
     }
 
-    private Browser getBrowser(){
+    private Browser getBrowser() {
         return AqualityServices.getBrowser();
     }
 }

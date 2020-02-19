@@ -2,7 +2,7 @@ package utils;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.WebDriverException;
 
 import java.io.File;

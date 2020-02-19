@@ -2,6 +2,10 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.IConfiguration;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.waitings.IConditionalWait;
+import aquality.selenium.elements.interfaces.IElementFactory;
 import com.google.inject.Injector;
 
 /**
@@ -97,5 +101,21 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
         if(container.get() != null){
             container.remove();
         }
+    }
+
+    public static Logger getLogger() {
+        return get(Logger.class);
+    }
+
+    public static ILocalizedLogger getLocalizedLogger() {
+        return get(ILocalizedLogger.class);
+    }
+
+    public static IConditionalWait getConditionalWait() {
+        return get(IConditionalWait.class);
+    }
+
+    public static IElementFactory getElementFactory() {
+        return get(IElementFactory.class);
     }
 }

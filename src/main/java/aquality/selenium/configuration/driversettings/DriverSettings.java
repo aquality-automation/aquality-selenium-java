@@ -3,7 +3,7 @@ package aquality.selenium.configuration.driversettings;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.MutableCapabilities;
 
 import java.io.File;

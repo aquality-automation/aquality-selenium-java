@@ -1,8 +1,7 @@
 package tests.usecases;
 
-import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.elements.ElementFactory;
+import aquality.selenium.browser.Browser;
 import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -36,7 +35,7 @@ public class BrowserConcurrencyTests {
     public void testShouldBePossibleToUseParallelStreams(){
         Browser browser = AqualityServices.getBrowser();
         browser.goTo(TheInternetPage.TABLES.getAddress());
-        List<ILabel> textBoxes = new ElementFactory().findElements(By.xpath("//td"), ElementType.LABEL);
+        List<ILabel> textBoxes = AqualityServices.getElementFactory().findElements(By.xpath("//td"), ElementType.LABEL);
         List<String> texts = new ArrayList<>();
         textBoxes.parallelStream().forEach(lbl -> {
             // set the same instance of browser for all threads

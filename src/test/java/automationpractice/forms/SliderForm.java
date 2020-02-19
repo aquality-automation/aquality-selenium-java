@@ -1,11 +1,11 @@
 package automationpractice.forms;
 
-import aquality.selenium.forms.Form;
-import aquality.selenium.elements.ElementsCount;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ILabel;
+import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 
@@ -23,11 +23,11 @@ public class SliderForm extends Form {
     }
 
     public List<ILabel> getListElements(ElementState state, ElementsCount elementsCount){
-        return getElementFactory().findElements(By.xpath(STR_LIST_ELEMENTS), ElementType.LABEL, state, elementsCount);
+        return getElementFactory().findElements(By.xpath(STR_LIST_ELEMENTS), ElementType.LABEL, elementsCount, state);
     }
 
     public Point getFormPointInViewPort(){
-        return getElementFactory().getLabel(locator, name).getJsActions().getViewPortCoordinates();
+        return getElementFactory().getLabel(getLocator(), getName()).getJsActions().getViewPortCoordinates();
     }
 
     public IButton getBtnAddToCart(ElementState elementState){

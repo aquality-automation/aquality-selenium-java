@@ -1,7 +1,7 @@
 package aquality.selenium.browser;
 
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 

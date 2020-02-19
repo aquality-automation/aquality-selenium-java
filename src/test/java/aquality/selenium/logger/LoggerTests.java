@@ -1,7 +1,11 @@
 package aquality.selenium.logger;
 
+import aquality.selenium.core.logging.Logger;
 import org.apache.log4j.*;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;

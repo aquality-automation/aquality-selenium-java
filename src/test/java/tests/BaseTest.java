@@ -1,8 +1,7 @@
 package tests;
 
-import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.elements.ElementFactory;
+import aquality.selenium.browser.Browser;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.Dimension;
 import org.testng.annotations.AfterMethod;
@@ -16,7 +15,7 @@ public abstract class BaseTest {
     protected final IElementFactory elementFactory;
 
     protected BaseTest() {
-        elementFactory = new ElementFactory();
+        elementFactory = AqualityServices.getElementFactory();
     }
 
     @BeforeMethod

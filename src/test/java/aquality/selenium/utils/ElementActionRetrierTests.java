@@ -1,7 +1,7 @@
 package aquality.selenium.utils;
 
 import aquality.selenium.configuration.Configuration;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;

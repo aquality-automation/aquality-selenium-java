@@ -24,7 +24,7 @@ public class ShoppingCartTest extends BaseTest {
         SoftAssert softAssert = new SoftAssert();
 
         SliderForm sliderForm = new SliderForm();
-        Assert.assertTrue(sliderForm.isFormDisplayed());
+        Assert.assertTrue(sliderForm.isDisplayed());
 
         sliderForm.clickBtnNext();
         sliderForm.clickBtnNext();
@@ -42,7 +42,7 @@ public class ShoppingCartTest extends BaseTest {
         softAssert.assertEquals(expectedQuantity, actualQuantity, "Quantity is not correct");
 
         shoppingCardSummaryForm.clickProceedToCheckoutBtn();
-        softAssert.assertTrue(new AuthenticationForm().isFormDisplayed());
+        softAssert.assertTrue(new AuthenticationForm().isDisplayed());
         CartMenuForm cartMenuForm = new CartMenuForm();
         cartMenuForm.openCartMenu();
         cartMenuForm.clickCheckoutBtn();

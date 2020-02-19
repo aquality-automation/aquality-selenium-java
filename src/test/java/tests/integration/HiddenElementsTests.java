@@ -1,8 +1,8 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.elements.ElementState;
-import aquality.selenium.elements.ElementsCount;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.SliderForm;
 import org.testng.Assert;

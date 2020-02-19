@@ -4,7 +4,7 @@ import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import aquality.selenium.waitings.ConditionalWait;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Alert;

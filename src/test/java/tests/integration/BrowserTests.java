@@ -177,7 +177,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().goTo(URL_AUTOMATIONPRACTICE);
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
-        int formHeight = sliderForm.getFormSize().getHeight();
+        int formHeight = sliderForm.getSize().getHeight();
         getBrowser().scrollWindowBy(0, formHeight);
         Assert.assertEquals(initialY - sliderForm.getFormPointInViewPort().getY(), formHeight);
     }

@@ -55,7 +55,7 @@ public class CheckBoxJsActions extends JsActions {
      * @param state value (true/false)
      */
     private void setState(boolean state) {
-        infoLoc(String.format("%1$s '%2$s'", localizationManager.getValue("loc.setting.value"), state));
+        infoLoc("loc.setting.value", state);
         if (state != getState()) {
             click();
         }

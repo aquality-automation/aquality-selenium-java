@@ -2,9 +2,9 @@ package automationpractice.forms;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -25,7 +25,7 @@ public class ProductListForm extends Form {
     }
 
     public List<ILabel> getProductContainerLabels(){
-        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
+        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
     }
 
     private ILabel getLblFirstProduct(){

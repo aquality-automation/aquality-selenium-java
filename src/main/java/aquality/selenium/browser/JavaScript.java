@@ -1,6 +1,6 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

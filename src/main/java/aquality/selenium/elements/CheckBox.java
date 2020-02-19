@@ -1,5 +1,6 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.actions.CheckBoxJsActions;
 import aquality.selenium.elements.interfaces.ICheckBox;
 import org.openqa.selenium.By;
@@ -14,7 +15,7 @@ public class CheckBox extends Element implements ICheckBox {
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.checkbox");
+        return getLocalizationManager().getLocalizedMessage("loc.checkbox");
     }
 
     @Override
@@ -48,14 +49,14 @@ public class CheckBox extends Element implements ICheckBox {
      * @param state value (true/false)
      */
     private void setState(boolean state) {
-        getLogger().info(String.format("%1$s '%2$s'", getLocManager().getValue("loc.setting.value"), state));
+        logElementAction("loc.setting.value", state);
         if (state != getState()) {
             click();
         }
     }
 
     private boolean getState() {
-        info(getLocManager().getValue("loc.checkbox.get.state"));
+        logElementAction("loc.checkbox.get.state");
         return getElement().isSelected();
     }
 }

@@ -1,5 +1,6 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 
@@ -10,7 +11,7 @@ public class Label extends Element implements ILabel {
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.label");
+        return getLocalizationManager().getLocalizedMessage("loc.label");
     }
 
 }

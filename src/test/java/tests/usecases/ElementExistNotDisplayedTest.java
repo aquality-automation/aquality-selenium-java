@@ -1,7 +1,7 @@
 package tests.usecases;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.SliderForm;

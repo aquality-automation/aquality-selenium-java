@@ -1,5 +1,6 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.IRadioButton;
 import org.openqa.selenium.By;
 
@@ -13,6 +14,6 @@ public class RadioButton extends Element implements IRadioButton {
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.radio");
+        return getLocalizationManager().getLocalizedMessage("loc.radio");
     }
 }
