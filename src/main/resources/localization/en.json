@@ -58,7 +58,7 @@
   "loc.wait.condition.cant.be.null": "Condition cannot be null",
   "loc.wait.timeout.condition": "Timed out after %1$s seconds during wait for condition '%2$s'",
   "loc.waitexists" : "Wait until element exists in DOM using \"locator\": %1$s",
-  "loc.waitinstate" : "Wait until is present in state %1$s using \"locator\": %1$s",
+  "loc.waitinstate" : "Wait until is present in state %1$s using \"locator\": %2$s",
   "loc.waitinvisible" : "Wait until element is not visible using \"locator\": %1$s",
   "loc.waitnotexists" : "Wait until element does not exist in DOM using \"locator\": %1$s",
   "loc.no.elements.found.in.state" : "No elements with locator '%1$s' found in state '%2$s'",

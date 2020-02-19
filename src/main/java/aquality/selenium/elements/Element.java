@@ -4,6 +4,7 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
+import aquality.selenium.core.configurations.ITimeoutConfiguration;
 import aquality.selenium.core.elements.CachedElementStateProvider;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
@@ -83,9 +84,12 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
             return super.getElement(timeout);
         } catch (NoSuchElementException e) {
             getLogger().error(e.getMessage());
+            long timeoutInSeconds = timeout == null
+                    ? AqualityServices.get(ITimeoutConfiguration.class).getCondition().getSeconds()
+                    : timeout.getSeconds();
             throw new NoSuchElementException(
                     String.format("element %s was not found in %d seconds in state %s by locator %s",
-                            getName(), timeout.getSeconds(), getElementState(), getLocator()));
+                            getName(), timeoutInSeconds, getElementState(), getLocator()));
         }
     }
 

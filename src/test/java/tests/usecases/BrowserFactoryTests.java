@@ -118,7 +118,7 @@ public class BrowserFactoryTests {
 
                 @Override
                 public Duration getPageLoad() {
-                    return Duration.ofSeconds(10);
+                    return Duration.ofSeconds(30);
                 }
 
                 @Override
