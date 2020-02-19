@@ -1,9 +1,10 @@
 package aquality.selenium.configuration.driversettings;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.core.utilities.ISettingsFile;
-import aquality.selenium.localization.LocalizationManager;
+import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.MutableCapabilities;
 
 import java.io.File;
@@ -84,7 +85,7 @@ abstract class DriverSettings implements IDriverSettings {
         try {
             return new File(path).getCanonicalPath();
         } catch (IOException e) {
-            String message = String.format(LocalizationManager.getInstance().getValue("loc.file.reading_exception"), path);
+            String message = String.format(AqualityServices.get(ILocalizationManager.class).getLocalizedMessage("loc.file.reading_exception"), path);
             getLogger().fatal(message, e);
             throw new IllegalArgumentException(message);
         }

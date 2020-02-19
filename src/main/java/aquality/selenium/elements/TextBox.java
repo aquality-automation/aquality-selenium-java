@@ -2,7 +2,6 @@ package aquality.selenium.elements;
 
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.localization.LocalizationManager;
 import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -22,7 +21,7 @@ public class TextBox extends Element implements ITextBox {
     }
 
     protected String getElementType() {
-        return LocalizationManager.getInstance().getValue("loc.text.field");
+        return getLocalizationManager().getLocalizedMessage("loc.text.field");
     }
 
     @Override

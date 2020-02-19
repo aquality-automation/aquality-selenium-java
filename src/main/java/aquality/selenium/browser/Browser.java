@@ -3,9 +3,9 @@ package aquality.selenium.browser;
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.core.logging.Logger;
-import aquality.selenium.waitings.ConditionalWait;
+import aquality.selenium.core.localization.ILocalizationManager;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.waitings.IConditionalWait;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Dimension;
@@ -14,6 +14,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,11 +23,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class Browser implements IApplication {
-    private final Logger logger = Logger.getInstance();
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;
     private Duration timeoutImpl;
-    private IConfiguration configuration;
+    private final IConfiguration configuration;
+    private final IConditionalWait conditionalWait;
+    private final ILocalizationManager localizationManager;
+    private final ILocalizedLogger localizedLogger;
 
 
     public Browser(RemoteWebDriver remoteWebDriver, IConfiguration configuration) {
@@ -37,13 +40,16 @@ public class Browser implements IApplication {
         getDriver().manage().timeouts().implicitlyWait(timeoutImpl.getSeconds(), TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
+        conditionalWait = AqualityServices.getConditionalWait();
+        localizationManager = AqualityServices.get(ILocalizationManager.class);
+        localizedLogger = AqualityServices.getLocalizedLogger();
     }
 
     /**
      * Executes browser quit, closes all windows and dispose session
      */
     public void quit() {
-        logger.info(getLocManager().getValue("loc.browser.driver.quit"));
+        localizedLogger.info("loc.browser.driver.quit");
         if (getDriver() != null) {
             getDriver().quit();
         }
@@ -51,6 +57,7 @@ public class Browser implements IApplication {
 
     /**
      * Provides Selenium WebDriver instance for current browser session
+     *
      * @return web driver instance
      */
     public RemoteWebDriver getDriver() {
@@ -64,6 +71,7 @@ public class Browser implements IApplication {
 
     /**
      * Executes navigating by passed URL
+     *
      * @param url URL where you wish to navigate
      */
     public void goTo(String url) {
@@ -88,16 +96,17 @@ public class Browser implements IApplication {
      * Executes browser window maximizing
      */
     public void maximize() {
-        logger.info(getLocManager().getValue("loc.browser.maximize"));
+        localizedLogger.info("loc.browser.maximize");
         getDriver().manage().window().maximize();
     }
 
     /**
      * Returns current page's URL
+     *
      * @return current page's URL
      */
     public String getCurrentUrl() {
-        logger.info(getLocManager().getValue("loc.browser.getUrl"));
+        localizedLogger.info("loc.browser.getUrl");
         return getDriver().getCurrentUrl();
     }
 
@@ -110,6 +119,7 @@ public class Browser implements IApplication {
 
     /**
      * Refreshes the page and process alert that apears after refreshing
+     *
      * @param alertAction accept or decline alert
      */
     public void refreshPageWithAlert(AlertActions alertAction) {
@@ -118,17 +128,18 @@ public class Browser implements IApplication {
     }
 
 
-    private Navigation navigate(){
+    private Navigation navigate() {
         return new BrowserNavigation(getDriver());
     }
 
     /**
      * Sets page load timeout (Will be ignored for Safari https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687)
+     *
      * @param timeout seconds to wait
      */
     public void setPageLoadTimeout(Duration timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.page.load.timeout"), timeout.getSeconds()));
-        if(!getBrowserName().equals(BrowserName.SAFARI)){
+        localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
+        if (!getBrowserName().equals(BrowserName.SAFARI)) {
             getDriver().manage().timeouts().pageLoadTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
         }
     }
@@ -136,11 +147,12 @@ public class Browser implements IApplication {
     /**
      * Sets web driver implicit wait timeout
      * Be careful with using this method. Implicit timeout can affect to duration of driver operations
+     *
      * @param timeout duration of time to wait
      */
     public void setImplicitWaitTimeout(Duration timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.implicit.timeout"), timeout.getSeconds()));
-        if(!timeout.equals(getImplicitWaitTimeout())){
+        localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
+        if (!timeout.equals(getImplicitWaitTimeout())) {
             getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
             timeoutImpl = timeout;
         }
@@ -148,13 +160,13 @@ public class Browser implements IApplication {
 
     /**
      * Sets timeout to async javascript executions
+     *
      * @param timeout timeout in seconds
      */
     public void setScriptTimeout(Duration timeout) {
-        logger.debug(String.format(getLocManager().getValue("loc.browser.script.timeout"), timeout.getSeconds()));
+        localizedLogger.debug("loc.browser.script.timeout", timeout.getSeconds());
         getDriver().manage().timeouts().setScriptTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
     }
-
 
     /**
      * Waits until page is loaded
@@ -167,20 +179,20 @@ public class Browser implements IApplication {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
         };
-        ConditionalWait.waitFor(condition,
-                timeouts.getPageLoad().getSeconds(),
-                timeouts.getPollingInterval().toMillis(),
-                String.format(getLocManager().getValue("loc.browser.page.is.not.loaded"), timeouts.getPageLoad()));
+        conditionalWait.waitFor(condition,
+                timeouts.getPageLoad(),
+                timeouts.getPollingInterval(),
+                localizationManager.getLocalizedMessage("loc.browser.page.is.not.loaded", timeouts.getPageLoad()));
     }
 
     /**
      * Makes screenshot of the current page
+     *
      * @return screenshot as array of bytes
      */
     public byte[] getScreenshot() {
         return getDriver().getScreenshotAs(OutputType.BYTES);
     }
-
 
     /**
      * Executes JS (jQuery) script asynchronous.
@@ -211,8 +223,8 @@ public class Browser implements IApplication {
      *
      * @param file      Java Script file
      * @param arguments Arguments for the script (web elements, values etc.
-     * @throws IOException in case of problems with the File
      * @return Result object of script execution
+     * @throws IOException in case of problems with the File
      */
     public Object executeAsyncScript(final File file, Object... arguments) throws IOException {
         return executeAsyncScript(IOUtils.toString(file.toURI(), StandardCharsets.UTF_8.name()), arguments);
@@ -229,7 +241,7 @@ public class Browser implements IApplication {
         return executeJavaScript(() -> getDriver().executeScript(script, arguments));
     }
 
-    private Object executeJavaScript(Supplier<Object> executeScriptFunc){
+    private Object executeJavaScript(Supplier<Object> executeScriptFunc) {
         Object result = executeScriptFunc.get();
         return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
     }
@@ -252,8 +264,8 @@ public class Browser implements IApplication {
      *
      * @param file      Java Script file
      * @param arguments Arguments for the script (web elements, values etc.
-     * @throws IOException in case of problems with the File
      * @return Result object of script execution
+     * @throws IOException in case of problems with the File
      */
     public Object executeScript(final File file, Object... arguments) throws IOException {
         return executeScript(IOUtils.toString(file.toURI(), StandardCharsets.UTF_8.name()), arguments);
@@ -261,6 +273,7 @@ public class Browser implements IApplication {
 
     /**
      * Accepts or declines appeared alert
+     *
      * @param alertAction accept or decline
      */
     public void handleAlert(AlertActions alertAction) {
@@ -270,15 +283,16 @@ public class Browser implements IApplication {
                 alert.accept();
             else alert.dismiss();
         } catch (NoAlertPresentException exception) {
-            logger.fatal(getLocManager().getValue("loc.browser.alert.fail"), exception);
+            localizedLogger.fatal("loc.browser.alert.fail", exception);
             throw exception;
         }
     }
 
     /**
      * Accepts or declines prompt with sending message
+     *
      * @param alertAction accept or decline
-     * @param text message to send
+     * @param text        message to send
      */
     public void handlePromptAlert(AlertActions alertAction, String text) {
         try {
@@ -288,13 +302,14 @@ public class Browser implements IApplication {
                 alert.accept();
             else alert.dismiss();
         } catch (NoAlertPresentException exception) {
-            logger.fatal(getLocManager().getValue("loc.browser.alert.fail"), exception);
+            localizedLogger.fatal("loc.browser.alert.fail", exception);
             throw exception;
         }
     }
 
     /**
      * Executes scrolling of the page to given coordinates x and y
+     *
      * @param x coordinate x
      * @param y coordinate y
      */
@@ -304,16 +319,18 @@ public class Browser implements IApplication {
 
     /**
      * Sets given window size
-     * @param width desired window width
+     *
+     * @param width  desired window width
      * @param height desired window height
      */
-    public void setWindowSize(int width, int height){
+    public void setWindowSize(int width, int height) {
         getDriver().manage().window().setSize(new Dimension(width, height));
     }
 
     /**
      * Returns path to download directory
      * Path is configured during web driver setup by value from settings.json
+     *
      * @return path to download directory
      */
     public String getDownloadDirectory() {
@@ -322,6 +339,7 @@ public class Browser implements IApplication {
 
     /**
      * Returns name of current browser
+     *
      * @return name
      */
     public final BrowserName getBrowserName() {
@@ -331,9 +349,4 @@ public class Browser implements IApplication {
     private Duration getImplicitWaitTimeout() {
         return timeoutImpl;
     }
-
-    private LocalizationManager getLocManager(){
-        return LocalizationManager.getInstance();
-    }
 }
-

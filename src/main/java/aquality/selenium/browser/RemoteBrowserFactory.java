@@ -2,8 +2,6 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.core.logging.Logger;
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -40,8 +38,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
     }
 
     private RemoteWebDriver createRemoteDriver(Capabilities capabilities){
-        Logger logger = Logger.getInstance();
-        logger.info(LocalizationManager.getInstance().getValue("loc.browser.grid"));
+        AqualityServices.getLocalizedLogger().info("loc.browser.grid");
 
         ClientFactory clientFactory = new ClientFactory();
         CommandExecutor commandExecutor = new HttpCommandExecutor(

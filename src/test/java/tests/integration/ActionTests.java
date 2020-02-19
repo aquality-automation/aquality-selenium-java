@@ -5,7 +5,6 @@ import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.ProductForm;
 import automationpractice.forms.ProductListForm;
 import org.openqa.selenium.Keys;
@@ -52,7 +51,7 @@ public class ActionTests extends BaseTest {
     public void testMoveMouseFromElement() {
         ProductListForm productListForm = new ProductListForm();
 
-        Assert.assertTrue(ConditionalWait.waitFor(() -> {
+        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() -> {
             IButton button = productListForm.getBtnLastProductMoreFocused();
             return button.getText().contains("More");
         }, "element is not focused after moveMouseToElement()"));

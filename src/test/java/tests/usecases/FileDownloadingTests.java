@@ -2,7 +2,6 @@ package tests.usecases;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
-import aquality.selenium.waitings.ConditionalWait;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,6 +35,6 @@ public class FileDownloadingTests extends BaseTest {
         downloaderForm.getLnkDownload(fileName).getJsActions().clickAndWait();
 
         AqualityServices.getBrowser().getDriver().switchTo().window(tabs.get(0));
-        Assert.assertTrue(ConditionalWait.waitFor(() -> FileUtil.isFileDownloaded(fileAddress, lblFileContent), String.format("File %1$s should be downloaded", fileAddress)));
+        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() -> FileUtil.isFileDownloaded(fileAddress, lblFileContent), String.format("File %1$s should be downloaded", fileAddress)));
     }
 }

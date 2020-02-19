@@ -15,7 +15,6 @@ import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
-import aquality.selenium.waitings.ConditionalWait;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.InvalidArgumentException;
@@ -89,7 +88,8 @@ public class BrowserFactoryTests {
 
         AqualityServices.getBrowser().goTo(urlXlsSample);
         File fileDownloaded = new File(downloadDirFactoryInitialized + fileName);
-        boolean isFileDownloaded = ConditionalWait.waitFor(driver -> fileDownloaded.exists(), 120, 300, "File should be downloaded");
+        boolean isFileDownloaded = AqualityServices.getConditionalWait().waitFor(driver -> fileDownloaded.exists(),
+                Duration.ofSeconds(120), Duration.ofMillis(300), "File should be downloaded");
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
 
