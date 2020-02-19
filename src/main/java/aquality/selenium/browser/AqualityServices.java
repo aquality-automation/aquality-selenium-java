@@ -1,6 +1,6 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.Configuration;
+import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.IConfiguration;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
@@ -55,9 +55,8 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * Sets default(local {@link LocalBrowserFactory} or remote {@link RemoteBrowserFactory}) browser factory.
      */
     public static void setDefaultBrowserFactory(){
-        IConfiguration configuration = Configuration.getInstance();
-        IBrowserFactory browserFactory = Configuration.getInstance().getBrowserProfile().isRemote()
-                ? new RemoteBrowserFactory(configuration) : new LocalBrowserFactory(configuration);
+        IBrowserFactory browserFactory = getBrowserProfile().isRemote()
+                ? new RemoteBrowserFactory() : new LocalBrowserFactory();
         setBrowserFactory(browserFactory);
     }
 
@@ -117,5 +116,13 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
 
     public static IElementFactory getElementFactory() {
         return get(IElementFactory.class);
+    }
+
+    public static IBrowserProfile getBrowserProfile() {
+        return get(IBrowserProfile.class);
+    }
+
+    public static IConfiguration getConfiguration() {
+        return get(IConfiguration.class);
     }
 }

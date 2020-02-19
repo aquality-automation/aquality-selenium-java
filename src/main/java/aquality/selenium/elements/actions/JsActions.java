@@ -3,7 +3,6 @@ package aquality.selenium.elements.actions;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.JavaScript;
-import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IElement;
@@ -53,7 +52,7 @@ public class JsActions {
      * Highlights the element.
      */
     public void highlightElement(HighlightState highlightState) {
-        if (AqualityServices.get(IBrowserProfile.class).isElementHighlightEnabled() || highlightState.equals(HighlightState.HIGHLIGHT)) {
+        if (AqualityServices.getBrowserProfile().isElementHighlightEnabled() || highlightState.equals(HighlightState.HIGHLIGHT)) {
             executeScript(JavaScript.BORDER_ELEMENT, element);
         }
     }

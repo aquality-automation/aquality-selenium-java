@@ -1,8 +1,8 @@
 package tests.integration;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.JavaScript;
-import aquality.selenium.configuration.Configuration;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
 import automationpractice.forms.SliderForm;
@@ -128,7 +128,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().goTo(url);
         getBrowser().waitForPageToLoad();
 
-        long expectedDurationInSeconds = Configuration.getInstance().getTimeoutConfiguration().getScript().getSeconds() + 1;
+        long expectedDurationInSeconds = AqualityServices.getConfiguration().getTimeoutConfiguration().getScript().getSeconds() + 1;
         getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
     }
 

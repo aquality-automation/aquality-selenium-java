@@ -1,6 +1,6 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.IConfiguration;
+import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.localization.ILocalizationManager;
@@ -26,23 +26,23 @@ public class Browser implements IApplication {
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;
     private Duration timeoutImpl;
-    private final IConfiguration configuration;
+    private final IBrowserProfile browserProfile;
     private final IConditionalWait conditionalWait;
     private final ILocalizationManager localizationManager;
     private final ILocalizedLogger localizedLogger;
 
 
-    public Browser(RemoteWebDriver remoteWebDriver, IConfiguration configuration) {
+    public Browser(RemoteWebDriver remoteWebDriver) {
+        conditionalWait = AqualityServices.getConditionalWait();
+        localizationManager = AqualityServices.get(ILocalizationManager.class);
+        localizedLogger = AqualityServices.getLocalizedLogger();
+        this.browserProfile = AqualityServices.getBrowserProfile();
+        this.timeouts = AqualityServices.get(ITimeoutConfiguration.class);
         webDriver = remoteWebDriver;
-        this.configuration = configuration;
-        this.timeouts = configuration.getTimeoutConfiguration();
         this.timeoutImpl = timeouts.getImplicit();
         getDriver().manage().timeouts().implicitlyWait(timeoutImpl.getSeconds(), TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
-        conditionalWait = AqualityServices.getConditionalWait();
-        localizationManager = AqualityServices.get(ILocalizationManager.class);
-        localizedLogger = AqualityServices.getLocalizedLogger();
     }
 
     /**
@@ -334,7 +334,7 @@ public class Browser implements IApplication {
      * @return path to download directory
      */
     public String getDownloadDirectory() {
-        return configuration.getBrowserProfile().getDriverSettings().getDownloadDir();
+        return browserProfile.getDriverSettings().getDownloadDir();
     }
 
     /**
@@ -343,7 +343,7 @@ public class Browser implements IApplication {
      * @return name
      */
     public final BrowserName getBrowserName() {
-        return configuration.getBrowserProfile().getBrowserName();
+        return browserProfile.getBrowserName();
     }
 
     private Duration getImplicitWaitTimeout() {

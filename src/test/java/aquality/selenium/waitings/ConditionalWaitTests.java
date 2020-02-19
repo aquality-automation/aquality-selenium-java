@@ -1,7 +1,6 @@
 package aquality.selenium.waitings;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.configuration.Configuration;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -14,6 +13,7 @@ import utils.Timer;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.TimeoutException;
+
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -278,6 +278,6 @@ public class ConditionalWaitTests {
     }
 
     private ITimeoutConfiguration getTimeoutConfig() {
-        return Configuration.getInstance().getTimeoutConfiguration();
+        return AqualityServices.getConfiguration().getTimeoutConfiguration();
     }
 }

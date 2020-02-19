@@ -1,7 +1,6 @@
 package aquality.selenium.utils;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.configuration.Configuration;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import org.openqa.selenium.InvalidArgumentException;
@@ -22,8 +21,8 @@ import static org.testng.Assert.assertTrue;
 
 public class ElementActionRetrierTests {
 
-    private static final int retriesCount = Configuration.getInstance().getRetryConfiguration().getNumber();
-    private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval().toMillis();
+    private static final int retriesCount = AqualityServices.getConfiguration().getRetryConfiguration().getNumber();
+    private static final long pollingInterval = AqualityServices.getConfiguration().getRetryConfiguration().getPollingInterval().toMillis();
 
 
     @DataProvider

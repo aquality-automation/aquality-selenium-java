@@ -19,5 +19,6 @@ public class BrowserModule extends AqualityModule<Browser> implements IConfigura
         bind(ITimeoutConfiguration.class).to(getTimeoutConfigurationImplementation()).in(Singleton.class);
         bind(IBrowserProfile.class).to(getBrowserProfileImplementation()).in(Singleton.class);
         bind(IElementFactory.class).to(getElementFactoryImplementation());
+        bind(IConfiguration.class).to(getConfigurationImplementation());
     }
 }

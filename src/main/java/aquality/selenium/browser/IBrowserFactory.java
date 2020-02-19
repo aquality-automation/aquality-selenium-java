@@ -1,7 +1,7 @@
 package aquality.selenium.browser;
 
 /**
- * Factory that creates instance of desired Browser based on {@link aquality.selenium.configuration.IConfiguration}
+ * Factory that creates instance of desired Browser based on {@link aquality.selenium.configuration.IBrowserProfile}
  */
 public interface IBrowserFactory {
 

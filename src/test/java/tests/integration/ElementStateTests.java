@@ -1,7 +1,6 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.configuration.Configuration;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
@@ -42,7 +41,7 @@ public class ElementStateTests extends BaseTest {
     @Test
     public void testElementShouldWaitForEnabledWithDefaultTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition().getSeconds();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
 
         Timer timer = new Timer();
         timer.start();
@@ -84,7 +83,7 @@ public class ElementStateTests extends BaseTest {
     @Test
     public void testElementShouldWaitForNotEnabledWithDefaultTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition().getSeconds();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
 
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
         dynamicControlsForm.getBtnEnable().click();
@@ -138,7 +137,7 @@ public class ElementStateTests extends BaseTest {
     public void testShouldBePossibleToWaitElementNotExists(){
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition().getSeconds();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
         dynamicControlsForm.getBtnRemove().click();
 
         Timer timer = new Timer();

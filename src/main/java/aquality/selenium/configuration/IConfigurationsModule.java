@@ -19,4 +19,11 @@ public interface IConfigurationsModule extends aquality.selenium.core.configurat
     default Class<? extends ITimeoutConfiguration> getTimeoutConfigurationImplementation() {
         return TimeoutConfiguration.class;
     }
+
+    /**
+     * @return class which implements {@link IConfiguration}
+     */
+    default Class<? extends IConfiguration> getConfigurationImplementation() {
+        return Configuration.class;
+    }
 }
