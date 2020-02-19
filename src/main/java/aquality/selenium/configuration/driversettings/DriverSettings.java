@@ -29,12 +29,14 @@ abstract class DriverSettings implements IDriverSettings {
 
     @Override
     public String getWebDriverVersion() {
-        return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath(getBrowserName()) + "/webDriverVersion"));
+        return String.valueOf(getSettingsFile().getValueOrDefault(
+                getDriverSettingsPath(getBrowserName()) + "/webDriverVersion", "Latest"));
     }
 
     @Override
     public String getSystemArchitecture() {
-        return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath(getBrowserName()) + "/systemArchitecture"));
+        return String.valueOf(getSettingsFile().getValueOrDefault(
+                getDriverSettingsPath(getBrowserName()) + "/systemArchitecture", "Auto"));
     }
 
     private String getDriverSettingsPath(BrowserName browserName, CapabilityType capabilityType){

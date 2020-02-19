@@ -28,7 +28,7 @@ public class MouseActions {
     public void click() {
         infoLoc("loc.clicking");
         new JsActions(element, type).highlightElement();
-        performAction(actions -> actions.click());
+        performAction(Actions::click);
     }
 
     /**
@@ -44,8 +44,7 @@ public class MouseActions {
      */
     public void moveMouseToElement() {
         infoLoc("loc.moving");
-        element.getElement().getCoordinates().inViewPort();
-        performAction(actions -> actions.moveToElement(element.getElement()));
+        performAction(actions -> actions);
     }
 
     /**

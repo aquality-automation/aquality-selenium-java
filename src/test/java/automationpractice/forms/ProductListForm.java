@@ -33,7 +33,7 @@ public class ProductListForm extends Form {
     }
 
     public ILabel getLblLastProduct(){
-        return getElementFactory().getLabel(By.id("homefeatured"), "home featured").findChildElement(By.xpath("//li".concat("[last()]")), ILabel.class);
+        return getElementFactory().getLabel(By.id("homefeatured"), "home featured").findChildElement(By.xpath(".//li".concat("[last()]")), ILabel.class);
     }
 
     public IButton getBtnLastProductMoreFocused() {
