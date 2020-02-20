@@ -1,5 +1,6 @@
 package aquality.selenium.configuration;
 
+import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
 
@@ -35,4 +36,11 @@ public interface IConfiguration {
      * @return Configuration of logger.
      */
     ILoggerConfiguration getLoggerConfiguration();
+
+    /**
+     * Gets configuration of element caching.
+     *
+     * @return Configuration of element caching.
+     */
+    IElementCacheConfiguration getElementCacheConfiguration();
 }
