@@ -32,7 +32,7 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * @return Instance of desired browser.
      */
     public static Browser getBrowser(){
-        return getInstance().getApp(AqualityServices::startBrowser);
+        return getInstance().getApp(injector -> AqualityServices.startBrowser());
     }
 
     /**
@@ -65,13 +65,14 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * @param browserFactory Custom implementation of {@link IBrowserFactory}
      */
     public static void setBrowserFactory(IBrowserFactory browserFactory) {
-        remove(factoryContainer);
+        if((factoryContainer).get() != null) {
+            factoryContainer.remove();
+        }
         AqualityServices.factoryContainer.set(browserFactory);
     }
 
-    private static Browser startBrowser(Injector injector) {
+    private static Browser startBrowser() {
         if(factoryContainer.get() == null){
-            // todo: pass this parameter into the next method
             setDefaultBrowserFactory();
         }
 
@@ -92,36 +93,62 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * @param module {@link BrowserModule} object with custom or overriden services.
      */
     public static void initInjector(BrowserModule module) {
-        remove(INSTANCE_CONTAINER);
+        if((INSTANCE_CONTAINER).get() != null){
+            INSTANCE_CONTAINER.remove();
+        }
         INSTANCE_CONTAINER.set(new AqualityServices(module));
     }
 
-    private static void remove(ThreadLocal<?> container){
-        if(container.get() != null){
-            container.remove();
-        }
-    }
-
+    /**
+     * Gets logger.
+     *
+     * @return instance of logger.
+     */
     public static Logger getLogger() {
         return get(Logger.class);
     }
 
+    /**
+     * Gets logger which logs messages in current language.
+     *
+     * @return instance of localized logger.
+     */
     public static ILocalizedLogger getLocalizedLogger() {
         return get(ILocalizedLogger.class);
     }
 
+    /**
+     * Provides the utility used to wait for some condition.
+     *
+     * @return instance of conditional wait.
+     */
     public static IConditionalWait getConditionalWait() {
         return get(IConditionalWait.class);
     }
 
+    /**
+     * Gets factory to create elements.
+     *
+     * @return Factory of elements.
+     */
     public static IElementFactory getElementFactory() {
         return get(IElementFactory.class);
     }
 
+    /**
+     * Gets current profile of browser settings.
+     *
+     * @return current browser profile.
+     */
     public static IBrowserProfile getBrowserProfile() {
         return get(IBrowserProfile.class);
     }
 
+    /**
+     * Provides interface to access all described configurations.
+     *
+     * @return configuration.
+     */
     public static IConfiguration getConfiguration() {
         return get(IConfiguration.class);
     }

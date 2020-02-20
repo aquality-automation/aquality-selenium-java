@@ -12,6 +12,7 @@ import java.time.Duration;
 
 public class ElementStateProvider extends DefaultElementStateProvider {
 
+    private static final String WAIT_FOR_STATE_KEY = "loc.waitinstate";
     private final By locator;
 
     public ElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder) {
@@ -30,13 +31,13 @@ public class ElementStateProvider extends DefaultElementStateProvider {
 
     @Override
     public void waitForClickable(Duration timeout) {
-        logLocInfo("loc.waitinstate", elementClickable().getStateName(), locator);
+        logLocInfo(WAIT_FOR_STATE_KEY, elementClickable().getStateName(), locator);
         super.waitForClickable(timeout);
     }
 
     @Override
     public boolean waitForDisplayed(Duration timeout) {
-        logLocInfo("loc.waitinstate", ElementState.DISPLAYED, locator);
+        logLocInfo(WAIT_FOR_STATE_KEY, ElementState.DISPLAYED, locator);
         return super.waitForDisplayed(timeout);
     }
 
@@ -60,13 +61,13 @@ public class ElementStateProvider extends DefaultElementStateProvider {
 
     @Override
     public boolean waitForEnabled(Duration timeout) {
-        logLocInfo("loc.waitinstate", elementEnabled().getStateName(), locator);
+        logLocInfo(WAIT_FOR_STATE_KEY, elementEnabled().getStateName(), locator);
         return super.waitForEnabled(timeout);
     }
 
     @Override
     public boolean waitForNotEnabled(Duration timeout) {
-        logLocInfo("loc.waitinstate", elementNotEnabled().getStateName(), locator);
+        logLocInfo(WAIT_FOR_STATE_KEY, elementNotEnabled().getStateName(), locator);
         return super.waitForNotEnabled(timeout);
     }
 }

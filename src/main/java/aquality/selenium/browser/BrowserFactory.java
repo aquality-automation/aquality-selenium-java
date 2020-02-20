@@ -3,7 +3,7 @@ package aquality.selenium.browser;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 
-abstract class BrowserFactory implements IBrowserFactory {
+public abstract class BrowserFactory implements IBrowserFactory {
 
     IllegalArgumentException getLoggedWrongBrowserNameException() {
         String message = AqualityServices.get(ILocalizationManager.class).getLocalizedMessage("loc.browser.name.wrong");

@@ -1,6 +1,5 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -9,7 +8,6 @@ import java.net.URL;
 class BrowserNavigation implements Navigation {
 
     private final RemoteWebDriver driver;
-    private final Logger logger = Logger.getInstance();
 
     BrowserNavigation(RemoteWebDriver driver){
         this.driver = driver;

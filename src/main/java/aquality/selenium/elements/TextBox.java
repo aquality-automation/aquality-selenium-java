@@ -10,10 +10,10 @@ import org.openqa.selenium.Keys;
  */
 public class TextBox extends Element implements ITextBox {
 
-    private final String logTyping = "loc.text.typing";
-    private final String logClearing = "loc.text.clearing";
-    private final String logSendingKeys = "loc.text.sending.keys";
-    private final String logMaskedValue = "loc.text.masked_value";
+    private static final String LOG_TYPING = "loc.text.typing";
+    private static final String LOG_CLEARING = "loc.text.clearing";
+    private static final String LOG_SENDING_KEYS = "loc.text.sending.keys";
+    private static final String LOG_MASKED_VALUE = "loc.text.masked_value";
 
     protected TextBox(final By locator, final String name, final ElementState state) {
         super(locator, name, state);
@@ -35,7 +35,7 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void sendKeys(final Keys keys) {
-        logElementAction(logSendingKeys, keys.toString());
+        logElementAction(LOG_SENDING_KEYS, keys.toString());
         super.sendKeys(keys);
     }
 
@@ -70,15 +70,15 @@ public class TextBox extends Element implements ITextBox {
     }
 
     private void type(final String value, final boolean maskValueInLog) {
-        logElementAction(logTyping, maskValueInLog ? logMaskedValue : value);
+        logElementAction(LOG_TYPING, maskValueInLog ? LOG_MASKED_VALUE : value);
         getJsActions().highlightElement();
         doWithRetry(() -> getElement().sendKeys(value));
     }
 
     private void clearAndType(final String value, final boolean maskValueInLog) {
         getJsActions().highlightElement();
-        logElementAction(logClearing);
-        logElementAction(logTyping, maskValueInLog ? logMaskedValue : value);
+        logElementAction(LOG_CLEARING);
+        logElementAction(LOG_TYPING, maskValueInLog ? LOG_MASKED_VALUE : value);
         getJsActions().highlightElement();
         doWithRetry(() -> {
             getElement().clear();

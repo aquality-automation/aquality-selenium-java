@@ -21,7 +21,7 @@ public class TimeoutConfiguration extends aquality.selenium.core.configurations.
     }
 
     private Duration getDurationFromSeconds(TIMEOUT timeout) {
-        long seconds = Long.valueOf(settingsFile.getValue("/timeouts/" + timeout.getKey()).toString());
+        long seconds = Long.parseLong(settingsFile.getValue("/timeouts/" + timeout.getKey()).toString());
         return Duration.ofSeconds(seconds);
     }
 
