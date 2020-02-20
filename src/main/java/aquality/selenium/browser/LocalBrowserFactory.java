@@ -18,11 +18,11 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import java.util.Arrays;
 
-public class LocalBrowserFactory extends BrowserFactory {
+public class LocalBrowserFactory implements BrowserFactory {
 
     private final IBrowserProfile browserProfile;
 
-    public LocalBrowserFactory(){
+    public LocalBrowserFactory() {
         this.browserProfile = AqualityServices.getBrowserProfile();
     }
 

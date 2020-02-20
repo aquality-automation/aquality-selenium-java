@@ -17,7 +17,7 @@ import java.net.URL;
 import java.time.Duration;
 
 
-public class RemoteBrowserFactory extends BrowserFactory {
+public class RemoteBrowserFactory implements BrowserFactory {
 
     private final IBrowserProfile browserProfile;
     private final ITimeoutConfiguration timeoutConfiguration;
@@ -28,7 +28,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
     }
 
     @Override
-    public Browser getBrowser(){
+    public Browser getBrowser() {
         BrowserName browserName = browserProfile.getBrowserName();
         IDriverSettings driverSettings = browserProfile.getDriverSettings();
         logBrowserIsReady(browserName);
@@ -36,7 +36,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
         return new Browser(driver);
     }
 
-    private RemoteWebDriver createRemoteDriver(Capabilities capabilities){
+    private RemoteWebDriver createRemoteDriver(Capabilities capabilities) {
         AqualityServices.getLocalizedLogger().info("loc.browser.grid");
 
         ClientFactory clientFactory = new ClientFactory();
@@ -51,7 +51,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
         return driver;
     }
 
-    class ClientFactory implements Factory{
+    class ClientFactory implements Factory {
         private final Factory defaultClientFactory = Factory.createDefault();
         private final Duration timeoutCommand = timeoutConfiguration.getCommand();
 
