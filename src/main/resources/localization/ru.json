@@ -64,5 +64,8 @@
   "loc.no.elements.found.in.state" : "Не удалось найти элементов по локатору '%1$s' в состоянии '%2$s'",
   "loc.no.elements.found.by.locator" : "Не удалось найти элементов по локатору '%1$s'",
   "loc.elements.were.found.but.not.in.state" :  "Удалось найти элементы по локатору '%1$s',но они не в желаемом состоянии. %2$s",
-  "loc.elements.found.but.should.not": "Не должно быть найдено элементов по локатору '%1$s'"
+  "loc.elements.found.but.should.not": "Не должно быть найдено элементов по локатору '%1$s'",
+  "loc.search.of.elements.failed":  "Поиск элемента по локатору '%1$s' прошел неудачно",
+  "loc.element.not.in.state": "Элемент %1$s не стал %2$s после таймаута %3$s",
+  "loc.get.page.source.failed": "Произошла ошибка во время получения разметки страницы"
 }
