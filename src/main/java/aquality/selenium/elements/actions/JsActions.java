@@ -3,7 +3,6 @@ package aquality.selenium.elements.actions;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.JavaScript;
-import aquality.selenium.core.logging.Logger;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IElement;
 import org.openqa.selenium.Point;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 public class JsActions {
 
-    protected final Logger logger = Logger.getInstance();
     protected IElement element;
     protected String type;
     protected String name;
@@ -28,7 +26,7 @@ public class JsActions {
      * Click via JS.
      */
     public void click() {
-        infoLoc("loc.clicking.js");
+        logElementAction("loc.clicking.js");
         highlightElement();
         executeScript(JavaScript.CLICK_ELEMENT, element);
     }
@@ -61,7 +59,7 @@ public class JsActions {
      * Scrolling to element
      */
     public void scrollIntoView() {
-        infoLoc("loc.scrolling.js");
+        logElementAction("loc.scrolling.js");
         executeScript(JavaScript.SCROLL_TO_ELEMENT, element, true);
     }
 
@@ -72,7 +70,7 @@ public class JsActions {
      * @param y vertical coordinate
      */
     public void scrollBy(int x, int y) {
-        infoLoc("loc.scrolling.js");
+        logElementAction("loc.scrolling.js");
         executeScript(JavaScript.SCROLL_BY, element, x, y);
     }
 
@@ -80,7 +78,7 @@ public class JsActions {
      * Scrolling to element's center
      */
     public void scrollToTheCenter() {
-        infoLoc("loc.scrolling.center.js");
+        logElementAction("loc.scrolling.center.js");
         executeScript(JavaScript.SCROLL_TO_ELEMENT_CENTER, element);
     }
 
@@ -90,7 +88,7 @@ public class JsActions {
      * @param value Value
      */
     public void setValue(final String value) {
-        infoLoc("loc.setting.value", value);
+        logElementAction("loc.setting.value", value);
         executeScript(JavaScript.SET_VALUE, element, value);
     }
 
@@ -98,7 +96,7 @@ public class JsActions {
      * Focusing element
      */
     public void setFocus() {
-        infoLoc("loc.focusing");
+        logElementAction("loc.focusing");
         executeScript(JavaScript.SET_FOCUS, element);
     }
 
@@ -108,7 +106,7 @@ public class JsActions {
      * @return true if is on screen, false otherwise
      */
     public boolean isElementOnScreen() {
-        infoLoc("loc.is.present.js");
+        logElementAction("loc.is.present.js");
         return (boolean) executeScript(JavaScript.ELEMENT_IS_ON_SCREEN, element);
     }
 
@@ -118,7 +116,7 @@ public class JsActions {
      * @return element's text
      */
     public String getElementText() {
-        infoLoc("loc.get.text.js");
+        logElementAction("loc.get.text.js");
         return (String) executeScript(JavaScript.GET_ELEMENT_TEXT, element);
     }
 
@@ -126,7 +124,7 @@ public class JsActions {
      * Hover mouse over element
      */
     public void hoverMouse() {
-        infoLoc("loc.hover.js");
+        logElementAction("loc.hover.js");
         executeScript(JavaScript.MOUSE_HOVER, element);
     }
 
@@ -146,6 +144,7 @@ public class JsActions {
      * @return element's XPath locator
      */
     public String getXPath() {
+        logElementAction("loc.get.xpath.js");
         return (String) executeScript(JavaScript.GET_ELEMENT_XPATH, element);
     }
 
@@ -162,7 +161,7 @@ public class JsActions {
      *
      * @param key key in localization resource of message to display in the log.
      */
-    protected void infoLoc(String key, Object... args) {
+    protected void logElementAction(String key, Object... args) {
         AqualityServices.getLocalizedLogger().infoElementAction(type, name, key, args);
     }
 

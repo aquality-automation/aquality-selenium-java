@@ -17,6 +17,7 @@ public class ComboBoxJsActions extends JsActions {
      * @return texts of options from ComboBox
      */
     public List<String> getTexts() {
+        logElementAction("loc.combobox.get.texts.js");
         return (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
     }
 
@@ -26,6 +27,7 @@ public class ComboBoxJsActions extends JsActions {
      * @return text of selected element
      */
     public String getSelectedText() {
+        logElementAction("loc.combobox.get.text.js");
         return (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
     }
 
@@ -35,6 +37,7 @@ public class ComboBoxJsActions extends JsActions {
      * @param text target option
      */
     public void selectValueByText(final String text) {
+        logElementAction("loc.combobox.select.by.text.js", text);
         executeScript(JavaScript.SELECT_COMBOBOX_VALUE_BY_TEXT, element, text);
     }
 }

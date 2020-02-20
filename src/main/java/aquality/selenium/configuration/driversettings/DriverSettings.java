@@ -28,6 +28,13 @@ abstract class DriverSettings implements IDriverSettings {
         return getSettingsFile().getList(getDriverSettingsPath(browserName, CapabilityType.START_ARGS));
     }
 
+    void logStartArguments() {
+        List<String> startArguments = getBrowserStartArguments(getBrowserName());
+        if (!startArguments.isEmpty()) {
+            AqualityServices.getLocalizedLogger().info("loc.browser.arguments.setting", String.join(" ", startArguments));
+        }
+    }
+
     @Override
     public String getWebDriverVersion() {
         return String.valueOf(getSettingsFile().getValueOrDefault(

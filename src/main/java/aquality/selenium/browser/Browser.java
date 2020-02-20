@@ -127,7 +127,6 @@ public class Browser implements IApplication {
         handleAlert(alertAction);
     }
 
-
     private Navigation navigate() {
         return new BrowserNavigation(getDriver());
     }
@@ -182,7 +181,7 @@ public class Browser implements IApplication {
         conditionalWait.waitFor(condition,
                 timeouts.getPageLoad(),
                 timeouts.getPollingInterval(),
-                localizationManager.getLocalizedMessage("loc.browser.page.is.not.loaded", timeouts.getPageLoad()));
+                localizationManager.getLocalizedMessage("loc.browser.page.timeout"));
     }
 
     /**
@@ -277,15 +276,7 @@ public class Browser implements IApplication {
      * @param alertAction accept or decline
      */
     public void handleAlert(AlertActions alertAction) {
-        try {
-            Alert alert = getDriver().switchTo().alert();
-            if (alertAction.equals(AlertActions.ACCEPT))
-                alert.accept();
-            else alert.dismiss();
-        } catch (NoAlertPresentException exception) {
-            localizedLogger.fatal("loc.browser.alert.fail", exception);
-            throw exception;
-        }
+        handlePromptAlert(alertAction, null);
     }
 
     /**
@@ -297,10 +288,14 @@ public class Browser implements IApplication {
     public void handlePromptAlert(AlertActions alertAction, String text) {
         try {
             Alert alert = getDriver().switchTo().alert();
-            getDriver().switchTo().alert().sendKeys(text);
-            if (alertAction.equals(AlertActions.ACCEPT))
+            if (text != null && !text.isEmpty()) {
+                getDriver().switchTo().alert().sendKeys(text);
+            }
+            if (alertAction.equals(AlertActions.ACCEPT)) {
                 alert.accept();
-            else alert.dismiss();
+            } else {
+                alert.dismiss();
+            }
         } catch (NoAlertPresentException exception) {
             localizedLogger.fatal("loc.browser.alert.fail", exception);
             throw exception;

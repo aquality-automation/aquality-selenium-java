@@ -76,7 +76,6 @@ public class TextBox extends Element implements ITextBox {
     }
 
     private void clearAndType(final String value, final boolean maskValueInLog) {
-        getJsActions().highlightElement();
         logElementAction(LOG_CLEARING);
         logElementAction(LOG_TYPING, maskValueInLog ? LOG_MASKED_VALUE : value);
         getJsActions().highlightElement();

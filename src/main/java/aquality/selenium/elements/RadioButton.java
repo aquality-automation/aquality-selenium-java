@@ -16,4 +16,9 @@ public class RadioButton extends Element implements IRadioButton {
     protected String getElementType() {
         return getLocalizationManager().getLocalizedMessage("loc.radio");
     }
+
+    @Override
+    public boolean isChecked() {
+        return doWithRetry(() -> getElement().isSelected());
+    }
 }
