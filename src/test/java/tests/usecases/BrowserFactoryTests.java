@@ -46,7 +46,7 @@ public class BrowserFactoryTests {
         return () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
             WebDriverManager.firefoxdriver().setup();
-            FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities());
+            FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities().setHeadless(true));
             return new Browser(driver);
         };
     }
