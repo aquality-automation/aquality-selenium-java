@@ -17,7 +17,7 @@ public class FirefoxSettings extends DriverSettings {
     @Override
     public FirefoxOptions getCapabilities() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-        setCapabilities(firefoxOptions, getBrowserName());
+        setCapabilities(firefoxOptions);
         setFirefoxPrefs(firefoxOptions);
         setFirefoxArgs(firefoxOptions);
         return firefoxOptions;
@@ -39,7 +39,7 @@ public class FirefoxSettings extends DriverSettings {
     }
 
     private void setFirefoxPrefs(FirefoxOptions options) {
-        Map<String, Object> configOptions = getBrowserOptions(getBrowserName());
+        Map<String, Object> configOptions = getBrowserOptions();
         configOptions.forEach((key, value) -> {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 options.addPreference(key, getDownloadDir());
@@ -56,7 +56,7 @@ public class FirefoxSettings extends DriverSettings {
 
     private void setFirefoxArgs(FirefoxOptions options) {
         logStartArguments();
-        for (String arg : getBrowserStartArguments(getBrowserName())) {
+        for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }
     }

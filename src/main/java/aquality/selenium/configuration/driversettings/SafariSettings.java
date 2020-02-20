@@ -15,7 +15,7 @@ public class SafariSettings extends DriverSettings {
     @Override
     public SafariOptions getCapabilities() {
         SafariOptions safariOptions = new SafariOptions();
-        setCapabilities(safariOptions, getBrowserName());
+        setCapabilities(safariOptions);
         return safariOptions;
     }
 
@@ -25,7 +25,7 @@ public class SafariSettings extends DriverSettings {
     }
 
     @Override
-    String getDownloadDirectory(BrowserName browserName) {
+    public String getDownloadDir() {
         return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath(getBrowserName()) + "/downloadDir"));
     }
 

@@ -16,20 +16,20 @@ abstract class DriverSettings implements IDriverSettings {
 
     abstract ISettingsFile getSettingsFile();
 
-    Map<String, Object> getBrowserOptions(BrowserName browserName) {
-        return getSettingsFile().getMap(getDriverSettingsPath(browserName, CapabilityType.OPTIONS));
+    Map<String, Object> getBrowserOptions() {
+        return getSettingsFile().getMap(getDriverSettingsPath(getBrowserName(), CapabilityType.OPTIONS));
     }
 
-    private Map<String, Object> getBrowserCapabilities(BrowserName browserName) {
-        return getSettingsFile().getMap(getDriverSettingsPath(browserName, CapabilityType.CAPABILITIES));
+    private Map<String, Object> getBrowserCapabilities() {
+        return getSettingsFile().getMap(getDriverSettingsPath(getBrowserName(), CapabilityType.CAPABILITIES));
     }
 
-    List<String> getBrowserStartArguments(BrowserName browserName) {
-        return getSettingsFile().getList(getDriverSettingsPath(browserName, CapabilityType.START_ARGS));
+    List<String> getBrowserStartArguments() {
+        return getSettingsFile().getList(getDriverSettingsPath(getBrowserName(), CapabilityType.START_ARGS));
     }
 
     void logStartArguments() {
-        List<String> startArguments = getBrowserStartArguments(getBrowserName());
+        List<String> startArguments = getBrowserStartArguments();
         if (!startArguments.isEmpty()) {
             AqualityServices.getLocalizedLogger().info("loc.browser.arguments.setting", String.join(" ", startArguments));
         }
@@ -48,31 +48,28 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     private String getDriverSettingsPath(BrowserName browserName, CapabilityType capabilityType){
-        return getDriverSettingsPath(browserName) + "/" + capabilityType.getKey();
+        return getDriverSettingsPath(getBrowserName()) + "/" + capabilityType.getKey();
     }
 
-    protected String getDriverSettingsPath(BrowserName browserName){
+    String getDriverSettingsPath(BrowserName browserName){
         return String.format("/driverSettings/%1$s", browserName.toString().toLowerCase());
     }
 
-    void setCapabilities(MutableCapabilities options, BrowserName browserName){
-        Map<String, Object> capabilities = getBrowserCapabilities(browserName);
+    void setCapabilities(MutableCapabilities options){
+        Map<String, Object> capabilities = getBrowserCapabilities();
         capabilities.forEach(options::setCapability);
     }
 
+    @Override
     public String getDownloadDir() {
-        return getDownloadDirectory(getBrowserName());
-    }
-
-    String getDownloadDirectory(BrowserName browserName) {
-        Map<String, Object> options = getBrowserOptions(browserName);
+        Map<String, Object> options = getBrowserOptions();
         String key = getDownloadDirCapabilityKey();
 
         if(options.containsKey(key)){
             String pathInConfiguration = String.valueOf(options.get(key));
             return pathInConfiguration.contains(".") ? getAbsolutePath(pathInConfiguration) : pathInConfiguration;
         }
-        throw new IllegalArgumentException(String.format("failed to find %s profiles option for %s", key, browserName));
+        throw new IllegalArgumentException(String.format("failed to find %s profiles option for %s", key, getBrowserName()));
     }
 
     private enum CapabilityType {

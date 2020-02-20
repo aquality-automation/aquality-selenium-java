@@ -15,13 +15,8 @@ public class EdgeSettings extends DriverSettings {
     @Override
     public EdgeOptions getCapabilities() {
         EdgeOptions edgeOptions = new EdgeOptions();
-        setCapabilities(edgeOptions, getBrowserName());
+        setCapabilities(edgeOptions);
         return edgeOptions;
-    }
-
-    @Override
-    public String getDownloadDir() {
-        return getDownloadDirectory(getBrowserName());
     }
 
     @Override

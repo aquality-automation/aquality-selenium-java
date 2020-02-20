@@ -15,7 +15,7 @@ public class IExplorerSettings extends DriverSettings {
     @Override
     public InternetExplorerOptions getCapabilities() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
-        setCapabilities(internetExplorerOptions, getBrowserName());
+        setCapabilities(internetExplorerOptions);
         return internetExplorerOptions;
     }
 

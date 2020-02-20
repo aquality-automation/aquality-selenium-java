@@ -19,14 +19,14 @@ public class ChromeSettings extends DriverSettings {
     public ChromeOptions getCapabilities() {
         ChromeOptions chromeOptions = new ChromeOptions();
         setChromePrefs(chromeOptions);
-        setCapabilities(chromeOptions, getBrowserName());
+        setCapabilities(chromeOptions);
         setChromeArgs(chromeOptions);
         return chromeOptions;
     }
 
     private void setChromePrefs(ChromeOptions options){
         HashMap<String, Object> chromePrefs = new HashMap<>();
-        Map<String, Object> configOptions = getBrowserOptions(getBrowserName());
+        Map<String, Object> configOptions = getBrowserOptions();
         configOptions.forEach((key, value) -> {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 chromePrefs.put(key, getDownloadDir());
@@ -39,7 +39,7 @@ public class ChromeSettings extends DriverSettings {
 
     private void setChromeArgs(ChromeOptions options) {
         logStartArguments();
-        for (String arg : getBrowserStartArguments(getBrowserName())) {
+        for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }
     }
