@@ -6,6 +6,7 @@ import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class YourPersonalInfoForm extends Form {
 
     public void setFirstName(String firstName){
         txbFirstName.type(firstName);
+        txbFirstName.sendKeys(Keys.ENTER);
     }
 
     public Integer getNumOfDays(){
