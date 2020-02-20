@@ -36,7 +36,9 @@ public class BrowserFactoryTests {
 
     @Test
     public void testShouldBePossibleToSetFactory() {
-        AqualityServices.setBrowserFactory(getCustomFactory());
+        IBrowserFactory customFactory = getCustomFactory();
+        AqualityServices.setBrowserFactory(customFactory);
+        Assert.assertEquals(customFactory, AqualityServices.getBrowserFactory());
         Assert.assertEquals(AqualityServices.getBrowser().getDriver().getCapabilities().getBrowserName(), "firefox");
     }
 
@@ -76,7 +78,7 @@ public class BrowserFactoryTests {
 
     private class CustomBrowserModule extends BrowserModule {
 
-        public CustomBrowserModule(Provider<Browser> applicationProvider) {
+        CustomBrowserModule(Provider<Browser> applicationProvider) {
             super(applicationProvider);
         }
 

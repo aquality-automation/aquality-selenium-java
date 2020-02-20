@@ -13,13 +13,13 @@ import com.google.inject.Injector;
  */
 public class AqualityServices extends aquality.selenium.core.applications.AqualityServices<Browser> {
     private static final ThreadLocal<AqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(AqualityServices::new);
-    private static final ThreadLocal<IBrowserFactory> factoryContainer = new ThreadLocal<>();
+    private IBrowserFactory browserFactory;
 
-    private AqualityServices(){
+    private AqualityServices() {
         super(AqualityServices::getBrowser, () -> new BrowserModule(AqualityServices::getBrowser));
     }
 
-    private AqualityServices(BrowserModule module){
+    private AqualityServices(BrowserModule module) {
         super(AqualityServices::getBrowser, () -> module);
     }
 
@@ -29,10 +29,20 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
 
     /**
      * Gets instance of browser.
+     *
      * @return Instance of desired browser.
      */
-    public static Browser getBrowser(){
+    public static Browser getBrowser() {
         return getInstance().getApp(injector -> AqualityServices.startBrowser());
+    }
+
+    /**
+     * Check if browser already started or not.
+     *
+     * @return true if browser started and false otherwise.
+     */
+    public static boolean isBrowserStarted() {
+        return getInstance().isAppStarted();
     }
 
     /**
@@ -40,7 +50,7 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * Note that the service should be binded in {@link BrowserModule}.
      *
      * @param type class of required service.
-     * @param <T> type of required service.
+     * @param <T>  type of required service.
      * @return required service.
      */
     public static <T> T get(Class<T> type) {
@@ -54,33 +64,41 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
     /**
      * Sets default(local {@link LocalBrowserFactory} or remote {@link RemoteBrowserFactory}) browser factory.
      */
-    public static void setDefaultBrowserFactory(){
+    public static void setDefaultBrowserFactory() {
         IBrowserFactory browserFactory = getBrowserProfile().isRemote()
                 ? new RemoteBrowserFactory() : new LocalBrowserFactory();
         setBrowserFactory(browserFactory);
     }
 
     /**
-     * Sets custom browser factory.
-     * @param browserFactory Custom implementation of {@link IBrowserFactory}
+     * Gets factory for browser creation.
+     *
+     * @return current instance of browser factory.
      */
-    public static void setBrowserFactory(IBrowserFactory browserFactory) {
-        if((factoryContainer).get() != null) {
-            factoryContainer.remove();
-        }
-        AqualityServices.factoryContainer.set(browserFactory);
-    }
-
-    private static Browser startBrowser() {
-        if(factoryContainer.get() == null){
+    public static IBrowserFactory getBrowserFactory() {
+        if (getInstance().browserFactory == null) {
             setDefaultBrowserFactory();
         }
 
-        return factoryContainer.get().getBrowser();
+        return getInstance().browserFactory;
+    }
+
+    /**
+     * Sets custom browser factory.
+     *
+     * @param browserFactory Custom implementation of {@link IBrowserFactory}
+     */
+    public static void setBrowserFactory(IBrowserFactory browserFactory) {
+        getInstance().browserFactory = browserFactory;
+    }
+
+    private static Browser startBrowser() {
+        return getBrowserFactory().getBrowser();
     }
 
     /**
      * Sets instance of browser.
+     *
      * @param browser Instance of desired browser.
      */
     public static void setBrowser(Browser browser) {
@@ -93,7 +111,7 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      * @param module {@link BrowserModule} object with custom or overriden services.
      */
     public static void initInjector(BrowserModule module) {
-        if((INSTANCE_CONTAINER).get() != null){
+        if (INSTANCE_CONTAINER.get() != null) {
             INSTANCE_CONTAINER.remove();
         }
         INSTANCE_CONTAINER.set(new AqualityServices(module));

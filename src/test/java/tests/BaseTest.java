@@ -25,15 +25,17 @@ public abstract class BaseTest {
     }
 
     @AfterMethod
-    public void afterTest(){
-        AqualityServices.getBrowser().quit();
+    public void afterTest() {
+        if (AqualityServices.isBrowserStarted()) {
+            AqualityServices.getBrowser().quit();
+        }
     }
 
     protected void navigate(TheInternetPage page) {
         getBrowser().goTo(page.getAddress());
     }
 
-    protected Browser getBrowser(){
+    protected Browser getBrowser() {
         return AqualityServices.getBrowser();
     }
 }
