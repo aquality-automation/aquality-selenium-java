@@ -359,7 +359,7 @@ String url = environment.getValue("/url").toString();
 ```
 ### **8. CONDITIONAL WAIT**
 
-If you need to wait for any condition to be met, you can use the [ConditionalWait](./src/main/java/aquality/selenium/waitings/ConditionalWait.java) class provided by Aquality Selenium.
+If you need to wait for any condition to be met, you can use the [ConditionalWait](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/src/main/java/aquality/selenium/core/waitings/ConditionalWait.java) class provided by Aquality Selenium.
 ```java 
 File fileDownloaded = new File(downloadDirInitialized + fileName);
 AqualityServices.getConditionalWait().waitForTrue(() -> fileDownloaded.exists(),
