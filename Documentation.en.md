@@ -285,7 +285,7 @@ ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "Username");
 #### 4.2. CUSTOM ELEMENTS
 
 User has abilities to create his own type of element by implementing interface or using inheritance.
-For this goal `ElementFactory` provides method \&lt;T extends IElement\&gt; T getCustomElement. 
+For this goal `ElementFactory` provides method `<T extends IElement> T getCustomElement`. 
 Example of creating custom element here [CustomElementTests](./src/test/java/tests/usecases/CustomElementTests.java).
 
 #### 4.3. LIST OF ELEMENTS
