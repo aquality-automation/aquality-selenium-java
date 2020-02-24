@@ -25,7 +25,7 @@ The main benefits from using Aquality Selenium:
     - <a href='#29-access-from-the-code'>2.9. ACCESS FROM THE CODE</a>
  - <a href='#3-browser'>3. BROWSER</a>
     - <a href='#31-parallel-runs'>3.1. PARALLEL RUNS</a>
-    - <a href='#32-browser-manager'>3.2. BROWSER MANAGER</a>
+    - <a href='#32-aquality-services'>3.2. AQUALITY SERVICES</a>
     - <a href='#33-browser-factory'>3.3. BROWSER FACTORY</a>
     - <a href='#34-driver-capabilities'>3.4. DRIVER CAPABILITIES</a>
     - <a href='#35-download-directory'>3.5. DOWNLOAD DIRECTORY</a>
@@ -90,7 +90,7 @@ There are some niceties with using InternetExplorer browser. We tried to describ
 
 [settings.json](./src/main/resources/settings.json) contains section `timeouts`. It includes list of timeout parameters that are used in the Aquality.
 
-All parameters are used to initialise [TimeoutConfiguration](./src/main/java/aquality/selenium/configuration/TimeoutConfiguration.java) class instance. After initialising parameters can be fetched by call `Configuration.getInstance().getTimeoutConfiguration()`.
+All parameters are used to initialise [TimeoutConfiguration](./src/main/java/aquality/selenium/configuration/TimeoutConfiguration.java) class instance. After initialising parameters can be fetched by call `AqualityServices.getConfiguration().getTimeoutConfiguration()`.
 
 Below is a description of timeouts:
 
@@ -110,10 +110,10 @@ It is not recommended to use implicit and explicit waits together.
 `retry` section of [settings.json](./src/main/resources/settings.json) is responsible to configure number of attempts of manipulations with element (click, type, focus and etc.)
 All the operations can be executed several times if they failed at first attempt.
 
-This logic is implemented in the [ElementActionRetrier](./src/main/java/aquality/selenium/utils/ElementActionRetrier.java) class. This class is used for any manipulations with elements.
+This logic is implemented in the [ElementActionRetrier](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/src/main/java/aquality/selenium/core/utilities/ElementActionRetrier.java) class. This class is used for any manipulations with elements.
 `number` parameter keeps value of number of attempts. An exception will be thrown if attempts are over.
 `pollingInterval` keeps value of interval in **milliseconds** between attempts.
-[ElementActionRetrier](./src/main/java/aquality/selenium/utils/ElementActionRetrier.java) catches StaleElementReferenceException and InvalidElementStateException by default. 
+[ElementActionRetrier](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/src/main/java/aquality/selenium/core/utilities/ElementActionRetrier.java) catches StaleElementReferenceException and InvalidElementStateException by default. 
 
 #### 2.6. LOGGING
 Aquality logs operations that executes (interaction with browser, elements of the pages). Example of some log:
@@ -139,12 +139,18 @@ If parameter has value `true` user will be able to see actions more explicit (re
 
 #### 2.9. ACCESS FROM THE CODE
 
-Sometimes you need access to values from settings file from the code. To get it use [Configuration](./src/main/java/aquality/selenium/configuration/Configuration.java) class instance.
+Sometimes you need access to values from settings file from the code. To get it you can use [Configuration](./src/main/java/aquality/selenium/configuration/IConfiguration.java) class instance.
 Example of usage:  
 ```
-Configuration.getInstance().getBrowserProfile().getBrowserName()
+AqualityServices.getConfiguration().getBrowserProfile().getBrowserName()
 ```
 returns value of parameter "browser".
+
+You can also resolve the needed configuration from the AqualityServices directly:
+```java
+AqualityServices.get(IRetryConfiguration.class).getNumber(); // returns number of retry attempts for element actions, e.g. clicking.
+AqualityServices.getBrowserProfile(); // returns currently used set of browser settings.
+```
 
 ### **3. BROWSER**
 
@@ -161,27 +167,32 @@ Examples of using Aquality Selenium in multi-thread mode are here [BrowserConcur
 
 Test runners like TestNG, JUnit and etc. start each test in the separate thread from the box. So users do not need to do additional work if they are using such runners.
 
-To use parallel streams that provided by Java from 8th version it is necessary to use BrowserManager to pass correct instance of Browser to stream function. Else parallel stream will create new Browser instances for each thread.
+To use parallel streams that provided by Java from 8th version it is necessary to use AqualityServices to pass correct instance of Browser to stream function. Else parallel stream will create new Browser instances for each thread.
 The example of usage parallel streams is here [testShouldBePossibleToUseParallelStreams](./src/test/java/tests/usecases/BrowserConcurrencyTests.java).
 
-#### 3.2. BROWSER MANAGER
+#### 3.2. AQUALITY SERVICES
+Class [AqualityServices](https://github.com/aquality-automation/aquality-selenium-java/blob/Feature/Reference-aquality.selenium.core/src/main/java/aquality/selenium/browser/AqualityServices.java) provides static methods to access Browser and other utilities included in the library.
+
+Usage of AqualityServices is thread-safe. Inside AqualityServices uses DI container Guice.
+
+You can override any service implementation in the class extended from [BrowserModule](https://github.com/aquality-automation/aquality-selenium-java/blob/Feature/Reference-aquality.selenium.core/src/main/java/aquality/selenium/browser/BrowserModule.java), and then re-initialize AqualityServices in your code using the method ```AqualityServices.initInjector(customModule)```. 
+Take a look at example of custom module implementation here: [BrowserFactoryTests](https://github.com/aquality-automation/aquality-selenium-java/blob/Feature/Reference-aquality.selenium.core/src/test/java/tests/usecases/BrowserFactoryTests.java)
+
+#### 3.3. BROWSER FACTORY
 
 There are several ways to create instance of class Browser.
-The main approach based on the usage of `BrowserManager` class and it's static methods. Below are options of `BrowserManager` usage.
+The main approach based on the usage of `AqualityServices` class and it's static methods. Below are options of `AqualityServices` usage.
 
 For most cases users need to get Browser instance based on data from the settings file. To get Browser in this case use following:
 
 ```
-Browser browser = BrowserManager.getBrowser()
+Browser browser = AqualityServices.getBrowser()
 ```
 
 The first call of `getBrowser()` method will create instance of Browser with WebDriver inside (browser window will be opened).
 The next calls of `getBrowser()` in the same thread will return the same instance.
 
-
-#### 3.3. BROWSER FACTORY
-
-Implicitly for users `BrowserManager` provides `Browser` through calls to browser factories.
+Implicitly for users `AqualityServices` provides `Browser` through calls to browser factories.
 Aquality Selenium implements following factories:
 
 - [LocalBrowserFactory](./src/main/java/aquality/selenium/browser/LocalBrowserFactory.java) - to creating Browser on local machine (parameter `isRemote=false`)
@@ -190,19 +201,18 @@ Aquality Selenium implements following factories:
 Each factory implementation implements interface `IBrowserFactory` with the single method `Browser` `getBrowser()`.
 Users are allowed to create their on implementations if necessary.
 
-To use custom factory implementation users should set it into `BrowserManager` before first call of `getBrowser()` method:
+To use custom factory implementation users should set it into `AqualityServices` before first call of `getBrowser()` method:
 ```
-BrowserManager.setFactory(IBrowserFactory browserFactory)
+AqualityServices.setFactory(IBrowserFactory browserFactory)
 ```
 The examples of usages custom factories can be found here [BrowserFactoryTests](./src/test/java/tests/usecases/BrowserFactoryTests.java)
 
-If there are reasons to not to use factories user is able to create Browser instance using constructor and then put it into BrowserManager:
+If there are reasons to not to use factories user is able to create Browser instance using constructor and then put it into AqualityServices:
 ```
-BrowserManager.setBrowser(Browser browser)
+AqualityServices.setBrowser(Browser browser)
 ```
  
-Browser class has public constructor with the signature: `Browser(RemoteWebDriver remoteWebDriver, IСonfiguration configuration)`.
-User should implement his own implementation of `IConfiguration` - but existing IConfiguration implementation can be used, inherited, used partially(`IDriverSettings`, `ITimeoutConfiguration` and etc.)
+Browser class has public constructor with the signature: `Browser(RemoteWebDriver remoteWebDriver)`. Other needed services are resolved from the DI container. For example, user could implement his own implementation of `IConfiguration` - but existing IConfiguration implementation can be used, inherited, used partially(`IDriverSettings`, `ITimeoutConfiguration` and etc.)
 
 #### 3.4. DRIVER CAPABILITIES
 
@@ -242,7 +252,7 @@ But there are no restrictions to add your own implementation.
 `Browser` class provides methods to work with alerts and prompts dialogs:
 
 ```
-BrowserManager.getBrowser().handleAlert(AlertActions.ACCEPT);
+AqualityServices.getBrowser().handleAlert(AlertActions.ACCEPT);
 ```
 
 More examples here: [AlertTests.java](./src/test/java/tests/integration/AlertTests.java).
@@ -251,7 +261,7 @@ More examples here: [AlertTests.java](./src/test/java/tests/integration/AlertTes
 
 To take a screenshot of the page there is the method:
 ```
-BrowserManager.getBrowser().getScreenshot()
+AqualityServices.getBrowser().getScreenshot()
 ```
 
 Example of taking screenshots here: [testShouldBePossibleToMakeScreenshot](./src/test/java/tests/integration/BrowserTests.java)
@@ -266,7 +276,7 @@ When Browser instantiated and navigation to necessary page is done user can begi
 Below is an example of getting ITextBox element:
 
 ```
-ElementFactory elementFactory = new ElementFactory();
+IElementFactory elementFactory = AqualityServices.getElementFactory();
 ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "Username");
 ```
 `ElementFactory` is able to build elements of any types that implements `IElement` interface.
@@ -275,7 +285,7 @@ ITextBox txbUsername = elementFactory.getTextBox(By.id("username"), "Username");
 #### 4.2. CUSTOM ELEMENTS
 
 User has abilities to create his own type of element by implementing interface or using inheritance.
-For this goal `ElementFactory` provides method \&lt;T extends IElement\&gt; T getCustomElement.
+For this goal `ElementFactory` provides method <T extends IElement> T getCustomElement. 
 Example of creating custom element here [CustomElementTests](./src/test/java/tests/usecases/CustomElementTests.java).
 
 #### 4.3. LIST OF ELEMENTS
@@ -340,16 +350,21 @@ There are several overrided methods that takes scripts as String, File or JavaSc
 
 ### **7. JSON FILE**
 
-Aquality Selenium uses [JsonFile](./src/main/java/aquality/selenium/utils/JsonFile.java) class to process the JSON files.
+Aquality Selenium uses [JsonSettingsFile](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/src/main/java/aquality/selenium/core/utilities/JsonSettingsFile.java) class to process the JSON files.
 Users can use this class to process JSON files from their own project.
 For example, if user wants to keep URL to web site that is automating he can put this URL in some JSON file and read value with mentioned class:
 ```
-JsonFile environment = new JsonFile("settings.json")
+ISettingsFile environment = new JsonSettingsFile("settings.json")
 String url = environment.getValue("/url").toString();
 ```
 ### **8. CONDITIONAL WAIT**
 
 If you need to wait for any condition to be met, you can use the [ConditionalWait](./src/main/java/aquality/selenium/waitings/ConditionalWait.java) class provided by Aquality Selenium.
+```java 
+File fileDownloaded = new File(downloadDirInitialized + fileName);
+AqualityServices.getConditionalWait().waitForTrue(() -> fileDownloaded.exists(),
+                Duration.ofSeconds(120), Duration.ofMillis(300), "File should be downloaded");
+```
 All class methods wait for the condition to be met, but return values and handle exceptions ​​differently: 
 1. ```waitForTrue``` - throws an exception if the condition is not met, returns nothing.
 2. ```boolean waitFor``` - returns true if the condition is fulfilled or false otherwise. Method does not throw any exception.
