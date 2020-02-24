@@ -24,7 +24,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 
 2. Create instance of Browser in your test method:
 ```java
-Browser browser = BrowserManager.getBrowser();
+Browser browser = AqualityServices.getBrowser();
 ```
 
 3. Use Browser's methods directly for general actions, such as navigation, window resize, scrolling and alerts handling:
@@ -36,7 +36,7 @@ browser.waitForPageToLoad();
 
 4. Use ElementFactory class's methods to get an instance of each element.
 ```java
-ITextBox txbSearch = new ElementFactory().getTextBox(By.id("searchInput"), "Search");
+ITextBox txbSearch = AqualityServices.getElementFactory().getTextBox(By.id("searchInput"), "Search");
 ```
 
 5. Call element's methods to perform action with element: 
