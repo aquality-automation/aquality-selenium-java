@@ -1,21 +1,21 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class IExplorerSettings extends DriverSettings {
 
-    private final JsonFile jsonFile;
+    private final ISettingsFile settingsFile;
 
-    public IExplorerSettings(JsonFile jsonFile){
-        this.jsonFile = jsonFile;
+    public IExplorerSettings(ISettingsFile settingsFile){
+        this.settingsFile = settingsFile;
     }
 
     @Override
     public InternetExplorerOptions getCapabilities() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
-        setCapabilities(internetExplorerOptions, getBrowserName());
+        setCapabilities(internetExplorerOptions);
         return internetExplorerOptions;
     }
 
@@ -30,7 +30,7 @@ public class IExplorerSettings extends DriverSettings {
     }
 
     @Override
-    public JsonFile getSettingsFile() {
-        return jsonFile;
+    protected ISettingsFile getSettingsFile() {
+        return settingsFile;
     }
 }

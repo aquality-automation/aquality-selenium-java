@@ -1,8 +1,7 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
@@ -11,17 +10,17 @@ import org.openqa.selenium.Keys;
  */
 public class TextBox extends Element implements ITextBox {
 
-    private final String logTyping = getLocManager().getValue("loc.text.typing");
-    private final String logClearing = getLocManager().getValue("loc.text.clearing");
-    private final String logSendingKeys = getLocManager().getValue("loc.text.sending.keys");
-    private final String logMaskedValue = getLocManager().getValue("loc.text.masked_value");
+    private static final String LOG_TYPING = "loc.text.typing";
+    private static final String LOG_CLEARING = "loc.text.clearing";
+    private static final String LOG_SENDING_KEYS = "loc.text.sending.keys";
+    private static final String LOG_MASKED_VALUE = "loc.text.masked_value";
 
     protected TextBox(final By locator, final String name, final ElementState state) {
         super(locator, name, state);
     }
 
     protected String getElementType() {
-        return LocalizationManager.getInstance().getValue("loc.text.field");
+        return getLocalizationManager().getLocalizedMessage("loc.text.field");
     }
 
     @Override
@@ -36,7 +35,7 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void sendKeys(final Keys keys) {
-        info(String.format(logSendingKeys, keys.toString()));
+        logElementAction(LOG_SENDING_KEYS, keys.toString());
         super.sendKeys(keys);
     }
 
@@ -52,7 +51,7 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void submit() {
-        ElementActionRetrier.doWithRetry(() -> getElement().submit());
+        doWithRetry(() -> getElement().submit());
     }
 
     @Override
@@ -62,26 +61,25 @@ public class TextBox extends Element implements ITextBox {
 
     @Override
     public void focus() {
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(""));
+        doWithRetry(() -> getElement().sendKeys(""));
     }
 
     @Override
     public void unfocus() {
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(Keys.TAB));
+        doWithRetry(() -> getElement().sendKeys(Keys.TAB));
     }
 
     private void type(final String value, final boolean maskValueInLog) {
-        info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
+        logElementAction(LOG_TYPING, maskValueInLog ? LOG_MASKED_VALUE : value);
         getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> getElement().sendKeys(value));
+        doWithRetry(() -> getElement().sendKeys(value));
     }
 
     private void clearAndType(final String value, final boolean maskValueInLog) {
+        logElementAction(LOG_CLEARING);
+        logElementAction(LOG_TYPING, maskValueInLog ? LOG_MASKED_VALUE : value);
         getJsActions().highlightElement();
-        info(logClearing);
-        info(String.format(logTyping, maskValueInLog ? logMaskedValue : value));
-        getJsActions().highlightElement();
-        ElementActionRetrier.doWithRetry(() -> {
+        doWithRetry(() -> {
             getElement().clear();
             getElement().sendKeys(value);
         });

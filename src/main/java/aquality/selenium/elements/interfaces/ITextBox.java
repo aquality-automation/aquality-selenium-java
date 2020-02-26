@@ -44,6 +44,7 @@ public interface ITextBox extends IElement {
     /**
      * Focuses on the element using send keys
      */
+    @Override
     void focus();
 
     /**

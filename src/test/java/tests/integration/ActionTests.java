@@ -1,11 +1,10 @@
 package tests.integration;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ITextBox;
-import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.ProductForm;
 import automationpractice.forms.ProductListForm;
 import org.openqa.selenium.Keys;
@@ -21,9 +20,9 @@ public class ActionTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        BrowserManager.getBrowser().getDriver().manage().window().maximize();
-        if (!BrowserManager.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
-            BrowserManager.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        AqualityServices.getBrowser().getDriver().manage().window().maximize();
+        if (!AqualityServices.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
+            AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
         }
     }
 
@@ -36,7 +35,7 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testScrollIntoView() {
-        BrowserManager.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
+        AqualityServices.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
         JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
         jsActions.scrollIntoView();
         Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollIntoView()");
@@ -52,7 +51,7 @@ public class ActionTests extends BaseTest {
     public void testMoveMouseFromElement() {
         ProductListForm productListForm = new ProductListForm();
 
-        Assert.assertTrue(ConditionalWait.waitFor(() -> {
+        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() -> {
             IButton button = productListForm.getBtnLastProductMoreFocused();
             return button.getText().contains("More");
         }, "element is not focused after moveMouseToElement()"));

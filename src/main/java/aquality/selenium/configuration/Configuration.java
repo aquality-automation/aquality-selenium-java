@@ -1,25 +1,27 @@
 package aquality.selenium.configuration;
 
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.configurations.IElementCacheConfiguration;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
+import aquality.selenium.core.configurations.IRetryConfiguration;
+import com.google.inject.Inject;
 
-public class Configuration implements IConfiguration{
+public class Configuration implements IConfiguration {
 
-    private static ThreadLocal<Configuration> instance = ThreadLocal.withInitial(Configuration::new);
     private final ITimeoutConfiguration timeoutConfiguration;
     private final IRetryConfiguration retryConfiguration;
     private final IBrowserProfile browserProfile;
     private final ILoggerConfiguration loggerConfiguration;
+    private final IElementCacheConfiguration elementCacheConfiguration;
 
-    private Configuration() {
-        JsonFile settings = getSettings();
-        timeoutConfiguration = new TimeoutConfiguration(settings);
-        retryConfiguration = new RetryConfiguration(settings);
-        browserProfile = new BrowserProfile(settings);
-        loggerConfiguration = new LoggerConfiguration(settings);
-    }
-
-    public static Configuration getInstance() {
-        return instance.get();
+    @Inject
+    public Configuration(ITimeoutConfiguration timeoutConfiguration, IRetryConfiguration retryConfiguration,
+                         IBrowserProfile browserProfile, ILoggerConfiguration loggerConfiguration,
+                         IElementCacheConfiguration elementCacheConfiguration) {
+        this.timeoutConfiguration = timeoutConfiguration;
+        this.retryConfiguration = retryConfiguration;
+        this.browserProfile = browserProfile;
+        this.loggerConfiguration = loggerConfiguration;
+        this.elementCacheConfiguration = elementCacheConfiguration;
     }
 
     @Override
@@ -42,8 +44,8 @@ public class Configuration implements IConfiguration{
         return loggerConfiguration;
     }
 
-    private JsonFile getSettings() {
-        String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
-        return new JsonFile(settingsProfile);
+    @Override
+    public IElementCacheConfiguration getElementCacheConfiguration() {
+        return elementCacheConfiguration;
     }
 }

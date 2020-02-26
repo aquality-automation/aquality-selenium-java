@@ -1,5 +1,6 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ILink;
 import org.openqa.selenium.By;
 
@@ -13,7 +14,7 @@ public class Link extends Element implements ILink {
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.link");
+        return getLocalizationManager().getLocalizedMessage("loc.link");
     }
 
     @Override

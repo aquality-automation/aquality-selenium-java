@@ -1,8 +1,8 @@
 package utils;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.WebDriverException;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class FileUtil {
 
     public static boolean isFileDownloaded(String fileAddress, ILabel lblFileContent) {
         try {
-            BrowserManager.getBrowser().goTo(fileAddress);
+            AqualityServices.getBrowser().goTo(fileAddress);
             return lblFileContent.state().isDisplayed();
         } catch (WebDriverException e) {
             Logger.getInstance().warn(e.getMessage());
@@ -42,7 +42,7 @@ public class FileUtil {
     }
 
     public static String getTargetFilePath(String fileName) {
-        String downloadDirectory = BrowserManager.getBrowser().getDownloadDirectory();
+        String downloadDirectory = AqualityServices.getBrowser().getDownloadDirectory();
 
         // below is workaround for case when local FS is different from remote (e.g. local machine runs on Windows but remote runs on Linux)
         if(downloadDirectory.contains("/") && !downloadDirectory.endsWith("/")) {

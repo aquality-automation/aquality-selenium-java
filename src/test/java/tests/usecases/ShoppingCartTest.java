@@ -1,6 +1,6 @@
 package tests.usecases;
 
-import aquality.selenium.browser.BrowserManager;
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.*;
 import automationpractice.modals.ProceedToCheckoutModal;
@@ -20,11 +20,11 @@ public class ShoppingCartTest extends BaseTest {
 
     @Test
     public void testShoppingCart() {
-        BrowserManager.getBrowser().getDriver().navigate().to(URL_AUTOMATIONPRACTICE);
+        AqualityServices.getBrowser().getDriver().navigate().to(URL_AUTOMATIONPRACTICE);
         SoftAssert softAssert = new SoftAssert();
 
         SliderForm sliderForm = new SliderForm();
-        Assert.assertTrue(sliderForm.isFormDisplayed());
+        Assert.assertTrue(sliderForm.isDisplayed());
 
         sliderForm.clickBtnNext();
         sliderForm.clickBtnNext();
@@ -42,7 +42,7 @@ public class ShoppingCartTest extends BaseTest {
         softAssert.assertEquals(expectedQuantity, actualQuantity, "Quantity is not correct");
 
         shoppingCardSummaryForm.clickProceedToCheckoutBtn();
-        softAssert.assertTrue(new AuthenticationForm().isFormDisplayed());
+        softAssert.assertTrue(new AuthenticationForm().isDisplayed());
         CartMenuForm cartMenuForm = new CartMenuForm();
         cartMenuForm.openCartMenu();
         cartMenuForm.clickCheckoutBtn();

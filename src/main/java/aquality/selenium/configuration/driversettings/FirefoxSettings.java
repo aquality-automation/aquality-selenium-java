@@ -1,23 +1,23 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.util.Map;
 
 public class FirefoxSettings extends DriverSettings {
 
-    private final JsonFile jsonFile;
+    private final ISettingsFile settingsFile;
 
-    public FirefoxSettings(JsonFile jsonFile){
-        this.jsonFile = jsonFile;
+    public FirefoxSettings(ISettingsFile settingsFile){
+        this.settingsFile = settingsFile;
     }
 
     @Override
     public FirefoxOptions getCapabilities() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-        setCapabilities(firefoxOptions, getBrowserName());
+        setCapabilities(firefoxOptions);
         setFirefoxPrefs(firefoxOptions);
         setFirefoxArgs(firefoxOptions);
         return firefoxOptions;
@@ -34,12 +34,12 @@ public class FirefoxSettings extends DriverSettings {
     }
 
     @Override
-    public JsonFile getSettingsFile() {
-        return jsonFile;
+    protected ISettingsFile getSettingsFile() {
+        return settingsFile;
     }
 
     private void setFirefoxPrefs(FirefoxOptions options) {
-        Map<String, Object> configOptions = getBrowserOptions(getBrowserName());
+        Map<String, Object> configOptions = getBrowserOptions();
         configOptions.forEach((key, value) -> {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 options.addPreference(key, getDownloadDir());
@@ -55,7 +55,8 @@ public class FirefoxSettings extends DriverSettings {
     }
 
     private void setFirefoxArgs(FirefoxOptions options) {
-        for (String arg : getBrowserStartArguments(getBrowserName())) {
+        logStartArguments();
+        for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }
     }

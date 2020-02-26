@@ -1,17 +1,15 @@
 package aquality.selenium.elements;
 
-import aquality.selenium.elements.interfaces.IElement;
-
-import java.util.Arrays;
+import aquality.selenium.elements.interfaces.*;
 
 public enum ElementType {
-    BUTTON(Button.class),
-    CHECKBOX(CheckBox.class),
-    COMBOBOX(ComboBox.class),
-    LABEL(Label.class),
-    LINK(Link.class),
-    RADIOBUTTON(RadioButton.class),
-    TEXTBOX(TextBox.class);
+    BUTTON(IButton.class),
+    CHECKBOX(ICheckBox.class),
+    COMBOBOX(IComboBox.class),
+    LABEL(ILabel.class),
+    LINK(ILink.class),
+    RADIOBUTTON(IRadioButton.class),
+    TEXTBOX(ITextBox.class);
 
     private Class<? extends IElement> clazz;
 
@@ -19,12 +17,7 @@ public enum ElementType {
         this.clazz = clazz;
     }
 
-    Class<? extends IElement> getClazz() {
-        return clazz;
-    }
-
-    static ElementType getTypeByClass(Class<? extends IElement> clazz){
-        return Arrays.stream(values()).filter(elementType -> clazz.isAssignableFrom(elementType.getClazz())).findAny()
-                .orElseThrow(IllegalArgumentException::new);
+    public <T extends IElement> Class<T> getClazz() {
+        return (Class<T>) clazz;
     }
 }

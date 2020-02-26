@@ -1,13 +1,11 @@
 package tests.integration;
 
-import aquality.selenium.browser.BrowserManager;
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.*;
-import theinternet.forms.FormAuthenticationForm;
-import aquality.selenium.waitings.ConditionalWait;
 import automationpractice.forms.DropDownForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -18,6 +16,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
+import theinternet.forms.FormAuthenticationForm;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class ElementTests extends BaseTest {
 
         String selectedText = comboBox.getSelectedText();
         comboBox.selectByText("Option 2");
-        ConditionalWait.waitFor(y -> !selectedText.equals(comboBox.getSelectedText()), "Combobox should not be equal to " + selectedText);
+        AqualityServices.getConditionalWait().waitFor(y -> !selectedText.equals(comboBox.getSelectedText()), "Combobox should not be equal to " + selectedText);
         Assert.assertEquals(comboBox.getJsActions().getSelectedText(), texts.get(2));
     }
 
@@ -84,7 +83,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
+                ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.isChecked();
@@ -96,7 +95,7 @@ public class ElementTests extends BaseTest {
         checkBox2.uncheck();
         Assert.assertFalse(checkBox2.isChecked());
 
-        BrowserManager.getBrowser().refresh();
+        AqualityServices.getBrowser().refresh();
         checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ElementType.CHECKBOX);
         checkBox1 = checkBoxes.get(0);
         checkBox2 = checkBoxes.get(1);
@@ -111,19 +110,19 @@ public class ElementTests extends BaseTest {
         String href = link.getHref();
         link.click();
         String expectedUrl = TheInternetPage.STATUS_CODES.getAddress();
-        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> BrowserManager.getBrowser().getCurrentUrl().equalsIgnoreCase(expectedUrl);
-        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
+        ExpectedCondition<Boolean> statusCodesExpectedCondition = webDriver -> AqualityServices.getBrowser().getCurrentUrl().equalsIgnoreCase(expectedUrl);
+        AqualityServices.getConditionalWait().waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
+        Assert.assertEquals(AqualityServices.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
-        BrowserManager.getBrowser().goBack();
+        AqualityServices.getBrowser().goBack();
         link = elementFactory.getLink(By.id("redirect"), "Link", ElementState.DISPLAYED);
         link.click();
-        ConditionalWait.waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
+        AqualityServices.getConditionalWait().waitFor(statusCodesExpectedCondition, "Current url should be equal to " + expectedUrl);
+        Assert.assertEquals(AqualityServices.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
 
-        BrowserManager.getBrowser().getDriver().navigate().to(href);
-        ConditionalWait.waitFor(statusCodesExpectedCondition,"Current url should be equal to " + expectedUrl);
-        Assert.assertEquals(BrowserManager.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
+        AqualityServices.getBrowser().getDriver().navigate().to(href);
+        AqualityServices.getConditionalWait().waitFor(statusCodesExpectedCondition,"Current url should be equal to " + expectedUrl);
+        Assert.assertEquals(AqualityServices.getBrowser().getCurrentUrl(), TheInternetPage.STATUS_CODES.getAddress());
     }
 
     @Test
@@ -143,7 +142,7 @@ public class ElementTests extends BaseTest {
 
         txbPass.submit();
         String expectedValue = "";
-        boolean result = ConditionalWait.waitFor(() -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
+        boolean result = AqualityServices.getConditionalWait().waitFor(() -> txbPass.getValue().equalsIgnoreCase(expectedValue), "Value of textbox should be equal " + expectedValue);
         softAssert.assertTrue(result);
         softAssert.assertAll();
     }
@@ -165,7 +164,7 @@ public class ElementTests extends BaseTest {
 
     @Test
     public void testRightClick() {
-        BrowserManager.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+        AqualityServices.getBrowser().getDriver().navigate().to("https://swisnl.github.io/jQuery-contextMenu/demo.html");
         ILabel label = elementFactory.getLabel(By.xpath("//span[contains(@class, 'context')]"), "Right click");
         label.getMouseActions().rightClick();
         boolean present = elementFactory.getLabel(By.xpath("//ul[contains(@class, 'context-menu-list')]"), "List", ElementState.DISPLAYED).state().waitForDisplayed();

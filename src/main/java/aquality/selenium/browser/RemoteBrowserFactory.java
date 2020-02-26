@@ -1,9 +1,8 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.configuration.IConfiguration;
+import aquality.selenium.configuration.IBrowserProfile;
+import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.logger.Logger;
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -11,40 +10,39 @@ import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.HttpClient;
+import org.openqa.selenium.remote.http.HttpClient.Builder;
+import org.openqa.selenium.remote.http.HttpClient.Factory;
 
 import java.net.URL;
 import java.time.Duration;
 
 
-public class RemoteBrowserFactory extends BrowserFactory {
+public class RemoteBrowserFactory implements BrowserFactory {
 
-    private final IConfiguration configuration;
+    private final IBrowserProfile browserProfile;
+    private final ITimeoutConfiguration timeoutConfiguration;
 
-    public RemoteBrowserFactory(IConfiguration configuration){
-        this.configuration = configuration;
+    public RemoteBrowserFactory() {
+        browserProfile = AqualityServices.getBrowserProfile();
+        timeoutConfiguration = AqualityServices.get(ITimeoutConfiguration.class);
     }
 
     @Override
-    public Browser getBrowser(){
-        BrowserName browserName = getBrowserName();
-        IDriverSettings driverSettings = configuration.getBrowserProfile().getDriverSettings();
+    public Browser getBrowser() {
+        BrowserName browserName = browserProfile.getBrowserName();
+        IDriverSettings driverSettings = browserProfile.getDriverSettings();
         logBrowserIsReady(browserName);
         RemoteWebDriver driver = createRemoteDriver(driverSettings.getCapabilities());
-        return new Browser(driver, configuration);
+        return new Browser(driver);
     }
 
-    private BrowserName getBrowserName() {
-        return configuration.getBrowserProfile().getBrowserName();
-    }
-
-    private RemoteWebDriver createRemoteDriver(Capabilities capabilities){
-        Logger logger = Logger.getInstance();
-        logger.info(LocalizationManager.getInstance().getValue("loc.browser.grid"));
+    private RemoteWebDriver createRemoteDriver(Capabilities capabilities) {
+        AqualityServices.getLocalizedLogger().info("loc.browser.grid");
 
         ClientFactory clientFactory = new ClientFactory();
         CommandExecutor commandExecutor = new HttpCommandExecutor(
                 ImmutableMap.of(),
-                configuration.getBrowserProfile().getRemoteConnectionUrl(),
+                browserProfile.getRemoteConnectionUrl(),
                 clientFactory);
 
         RemoteWebDriver driver = new RemoteWebDriver(commandExecutor, capabilities);
@@ -53,12 +51,12 @@ public class RemoteBrowserFactory extends BrowserFactory {
         return driver;
     }
 
-    class ClientFactory implements org.openqa.selenium.remote.http.HttpClient.Factory{
-        private final HttpClient.Factory defaultClientFactory = HttpClient.Factory.createDefault();
-        private final Duration timeoutCommand = Duration.ofSeconds(configuration.getTimeoutConfiguration().getCommand());
+    class ClientFactory implements Factory {
+        private final Factory defaultClientFactory = Factory.createDefault();
+        private final Duration timeoutCommand = timeoutConfiguration.getCommand();
 
         @Override
-        public HttpClient.Builder builder() {
+        public Builder builder() {
             return defaultClientFactory.builder().readTimeout(timeoutCommand);
         }
 

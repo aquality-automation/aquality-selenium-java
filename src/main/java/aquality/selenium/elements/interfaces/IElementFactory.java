@@ -1,8 +1,8 @@
 package aquality.selenium.elements.interfaces;
 
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementsCount;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -10,11 +10,12 @@ import java.util.List;
 /**
  * Defines the interface used to create the elements.
  */
-public interface IElementFactory {
+public interface IElementFactory extends aquality.selenium.core.elements.interfaces.IElementFactory {
     /**
      * Creates element that implements IButton interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements IButton interface
      */
     default IButton getButton(By locator, String name) {
@@ -23,17 +24,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements IButton interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements IButton interface
      */
-    IButton getButton(By locator, String name, ElementState state);
+    default IButton getButton(By locator, String name, ElementState state) {
+        return get(ElementType.BUTTON, locator, name, state);
+    }
 
     /**
      * Creates element that implements ICheckBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements ICheckBox interface
      */
     default ICheckBox getCheckBox(By locator, String name) {
@@ -42,17 +47,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements ICheckBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements ICheckBox interface
      */
-    ICheckBox getCheckBox(By locator, String name, ElementState state);
+    default ICheckBox getCheckBox(By locator, String name, ElementState state) {
+        return get(ElementType.CHECKBOX, locator, name, state);
+    }
 
     /**
      * Creates element that implements IComboBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements IComboBox interface
      */
     default IComboBox getComboBox(By locator, String name) {
@@ -61,17 +70,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements IComboBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements IComboBox interface
      */
-    IComboBox getComboBox(By locator, String name, ElementState state);
+    default IComboBox getComboBox(By locator, String name, ElementState state) {
+        return get(ElementType.COMBOBOX, locator, name, state);
+    }
 
     /**
      * Creates element that implements ILabel interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements ILabel interface
      */
     default ILabel getLabel(By locator, String name) {
@@ -80,17 +93,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements ILabel interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements ILabel interface
      */
-    ILabel getLabel(By locator, String name, ElementState state);
+    default ILabel getLabel(By locator, String name, ElementState state) {
+        return get(ElementType.LABEL, locator, name, state);
+    }
 
     /**
      * Creates element that implements ILink interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements ILink interface
      */
     default ILink getLink(By locator, String name) {
@@ -99,17 +116,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements ILink interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements ILink interface
      */
-    ILink getLink(By locator, String name, ElementState state);
+    default ILink getLink(By locator, String name, ElementState state) {
+        return get(ElementType.LINK, locator, name, state);
+    }
 
     /**
      * Creates element that implements IRadioButton interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements IRadioButton interface
      */
     default IRadioButton getRadioButton(By locator, String name) {
@@ -118,17 +139,21 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements IRadioButton interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements IRadioButton interface
      */
-    IRadioButton getRadioButton(By locator, String name, ElementState state);
+    default IRadioButton getRadioButton(By locator, String name, ElementState state) {
+        return get(ElementType.RADIOBUTTON, locator, name, state);
+    }
 
     /**
      * Creates element that implements ITextBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
+     * @param name    Element name
      * @return Instance of element that implements ITextBox interface
      */
     default ITextBox getTextBox(By locator, String name) {
@@ -137,149 +162,181 @@ public interface IElementFactory {
 
     /**
      * Creates element that implements ITextBox interface.
+     *
      * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
+     * @param name    Element name
+     * @param state   Element state
      * @return Instance of element that implements ITextBox interface
      */
-    ITextBox getTextBox(By locator, String name, ElementState state);
-
-    /**
-     * Creates an instance of custom element that implements IElement interface.
-     * @param supplier Delegate that defines constructor of element
-     * @param locator Element locator
-     * @param name Element name
-     * @param <T> Type of custom element that has to implement IElement
-     * @return Instance of custom element that implements IElement interface
-     */
-    default <T extends IElement> T getCustomElement(IElementSupplier<T> supplier, By locator, String name) {
-        return getCustomElement(supplier, locator, name, ElementState.DISPLAYED);
+    default ITextBox getTextBox(By locator, String name, ElementState state) {
+        return get(ElementType.TEXTBOX, locator, name, state);
     }
 
     /**
-     * Creates an instance of custom element that implements IElement interface.
-     * @param supplier Delegate that defines constructor of element
-     * @param locator Element locator
-     * @param name Element name
-     * @param state Element state
-     * @param <T> Type of custom element that has to implement IElement
-     * @return Instance of custom element that implements IElement interface
+     * Create element according to passed parameters.
+     *
+     * @param type    Type of the element to be obtained
+     * @param locator Locator of the target element.
+     * @param name    Name of the target element.
+     * @param state   Visibility state of the target element.
+     * @param <T>     Type of the target element.
+     * @return Instance of custom element.
      */
-    <T extends IElement> T getCustomElement(IElementSupplier<T> supplier, By locator, String name, ElementState state);
+    default <T extends IElement> T get(ElementType type, By locator, String name, ElementState state) {
+        return getCustomElement(type.getClazz(), locator, name, state);
+    }
+
+    /**
+     * Create element according to passed parameters.
+     *
+     * @param type    Type of the element to be obtained
+     * @param locator Locator of the target element.
+     * @param name    Name of the target element.
+     * @param <T>     Type of the target element.
+     * @return Instance of custom element.
+     */
+    default <T extends IElement> T get(ElementType type, By locator, String name) {
+        return get(type, locator, name, ElementState.DISPLAYED);
+    }
 
     /**
      * Find an element in the parent element
      *
-     * @param childLoc Child element locator
-     * @param clazz class or interface of the element to be obtained
+     * @param childLoc      Child element locator
+     * @param type          Type of the element to be obtained
+     * @param name          Child element name.
      * @param parentElement parent element for relative search of child element
-     * @param state visibility state of target element
+     * @param state         visibility state of target elements
+     * @param <T>           Type of the target element.
      * @return found child element
      */
-    <T extends IElement> T findChildElement(IElement parentElement, By childLoc,
-                                            Class<? extends IElement> clazz, ElementState state);
+    default <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name, ElementType type,
+                                                    ElementState state) {
+        return findChildElement(parentElement, childLoc, name, type.getClazz(), state);
+    }
 
     /**
-     * Find an element in the parent element
+     * Finds child element in any state by its locator relative to parent element.
      *
-     * @param childLoc Child element locator
-     * @param supplier required element's supplier
-     * @param parentElement parent element for relative search of child element
-     * @param state visibility state of target element
-     * @return found child element
+     * @param childLoc      Locator of child element relative to its parent.
+     * @param type          Type of the element to be obtained
+     * @param name          Child element name.
+     * @param parentElement Parent element for relative search of child element.
+     * @param <T>           Type of the target element.
+     * @return Child element.
      */
-    <T extends IElement> T findChildElement(IElement parentElement, By childLoc,
-                                            IElementSupplier<T> supplier, ElementState state);
+    default <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name,
+                                                    ElementType type) {
+        return findChildElement(parentElement, childLoc, name, type, ElementState.EXISTS_IN_ANY_STATE);
+    }
 
     /**
-     * Find an element in the parent element
+     * Finds child element by its locator relative to parent element.
      *
-     * @param childLoc Child element locator
-     * @param type the type of the element to be obtained
-     * @param parentElement parent element for relative search of child element
-     * @param state visibility state of target elements
-     * @return found child element
-
+     * @param childLoc      Locator of child element relative to its parent.
+     * @param type          Type of the element to be obtained
+     * @param parentElement Parent element for relative search of child element.
+     * @param state         Visibility state of child element.
+     * @param <T>           Type of the target element.
+     * @return Child element.
      */
-    <T extends IElement> T findChildElement(IElement parentElement, By childLoc, ElementType type,
-                                            ElementState state);
-
-    /**
-     * Find list of elements
-     *
-     * @param locator Elements selector
-     * @param supplier required elements' supplier
-     * @param count type of expected count of elements
-     * @param state visibility state of target elements
-     * @return list of elements
-     */
-    <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
-                                              ElementState state);
+    default <T extends IElement> T findChildElement(IElement parentElement, By childLoc,
+                                                    ElementType type, ElementState state) {
+        return findChildElement(parentElement, childLoc, null, type, state);
+    }
 
     /**
-     * Find list of elements
+     * Finds child element existing in any state by its locator relative to parent element.
      *
-     * @param locator Elements selector
-     * @param clazz class or interface of the element to be obtained
-     * @param count type of expected count of elements
-     * @return list of elements
+     * @param childLoc      Locator of child element relative to its parent.
+     * @param type          Type of the element to be obtained
+     * @param parentElement Parent element for relative search of child element.
+     * @param <T>           Type of the target element.
+     * @return Child element.
      */
-    <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementState state, ElementsCount count);
-
-    /**
-     * Find list of elements
-     *
-     * @param locator Elements selector
-     * @param type the type of elements to be obtained
-     * @param state visibility state of target elements
-     * @param count type of expected count of elements
-     * @return list of elements
-     */
-    <T extends IElement> List<T> findElements(By locator, ElementType type, ElementState state, ElementsCount count);
-
-    /**
-     * Find list of elements
-     *
-     * @param locator Elements selector
-     * @param clazz class or interface of elements to be obtained
-     * @return list of elements
-     */
-    default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz) {
-        return findElements(locator, clazz, ElementState.DISPLAYED, ElementsCount.MORE_THEN_ZERO);
+    default <T extends IElement> T findChildElement(IElement parentElement, By childLoc, ElementType type) {
+        return findChildElement(parentElement, childLoc, null, type, ElementState.EXISTS_IN_ANY_STATE);
     }
 
     /**
      * Find list of elements
      *
      * @param locator Elements selector
-     * @param clazz class or interface of elements to be obtained
-     * @param count type of expected count of elements
+     * @param name    elements' name.
+     * @param type    Type of elements to be obtained
+     * @param state   visibility state of target elements
+     * @param count   type of expected count of elements
      * @return list of elements
      */
-    default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz, ElementsCount count) {
-        return findElements(locator, clazz, ElementState.DISPLAYED, count);
+    default <T extends IElement> List<T> findElements(By locator, String name, ElementType type, ElementsCount count,
+                                                      ElementState state) {
+        return findElements(locator, name, type.getClazz(), count, state);
     }
 
     /**
-     * Find list of elements
+     * Find list of elements.
      *
-     * @param locator Elements selector
-     * @param type the type of elements to be obtained
-     * @return list of elements
+     * @param locator Elements selector.
+     * @param type    Type of elements to be obtained
+     * @param count   Expected number of elements that have to be found (zero, more then zero, any).
+     * @param state   Visibility state of target elements.
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, ElementType type, ElementsCount count,
+                                                      ElementState state) {
+        return findElements(locator, null, type, count, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
+     * @param type    Type of elements to be obtained
+     * @param <T>     Type of the target element.
+     * @return List of elements.
      */
     default <T extends IElement> List<T> findElements(By locator, ElementType type) {
-        return findElements(locator, type, ElementsCount.MORE_THEN_ZERO);
+        return findElements(locator, type, ElementsCount.ANY, ElementState.DISPLAYED);
     }
 
     /**
-     * Find list of elements
+     * Find list of elements.
      *
-     * @param locator Elements selector
-     * @param type the type of elements to be obtained
-     * @param count type of expected count of elements
-     * @return list of elements
+     * @param locator Elements selector.
+     * @param type    Type of elements to be obtained
+     * @param name    Child element name.
+     * @param count   Expected number of elements that have to be found (zero, more then zero, any).
+     * @param <T>     Type of the target element.
+     * @return List of elements.
      */
-    default  <T extends IElement> List<T> findElements(By locator, ElementType type, ElementsCount count) {
-        return findElements(locator, type, ElementState.DISPLAYED, count);
+    default <T extends IElement> List<T> findElements(By locator, String name, ElementType type, ElementsCount count) {
+        return findElements(locator, name, type, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
+     * @param name    Child element name.
+     * @param type    Type of elements to be obtained
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, ElementType type) {
+        return findElements(locator, name, type, ElementsCount.ANY);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
+     * @param type    Type of elements to be obtained
+     * @param count   Expected number of elements that have to be found (zero, more then zero, any).
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, ElementType type, ElementsCount count) {
+        return findElements(locator, type, count, ElementState.DISPLAYED);
     }
 }

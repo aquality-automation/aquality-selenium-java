@@ -1,9 +1,8 @@
 package aquality.selenium.elements;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.actions.ComboBoxJsActions;
 import aquality.selenium.elements.interfaces.IComboBox;
-import aquality.selenium.localization.LocalizationManager;
-import aquality.selenium.utils.ElementActionRetrier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.WebElement;
@@ -19,26 +18,26 @@ import java.util.stream.Collectors;
  */
 public class ComboBox extends Element implements IComboBox {
 
-    private static final String LOG_SELECTING_VALUE = LocalizationManager.getInstance().getValue("loc.selecting.value");
+    private static final String LOG_SELECTING_VALUE = "loc.selecting.value";
 
     protected ComboBox(final By locator, final String name, final ElementState state) {
         super(locator, name, state);
     }
 
     protected String getElementType() {
-        return getLocManager().getValue("loc.combobox");
+        return getLocalizationManager().getLocalizedMessage("loc.combobox");
     }
 
     @Override
     public void selectByIndex(int index) {
-        info(LOG_SELECTING_VALUE);
-        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByIndex(index));
+        logElementAction(LOG_SELECTING_VALUE);
+        doWithRetry(() -> new Select(getElement()).selectByIndex(index));
     }
 
     @Override
     public void selectByText(String value) {
-        getLogger().info(getLocManager().getValue("loc.combobox.select.by.text"), value);
-        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByVisibleText(value));
+        logElementAction("loc.combobox.select.by.text", value);
+        doWithRetry(() -> new Select(getElement()).selectByVisibleText(value));
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public void selectByContainingText(String text) {
-        info(LOG_SELECTING_VALUE);
+        logElementAction(LOG_SELECTING_VALUE);
         selectOptionThatContains(WebElement::getText,
                 Select::selectByVisibleText,
                 text);
@@ -57,14 +56,14 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public void selectByContainingValue(String value) {
-        info(LOG_SELECTING_VALUE);
+        logElementAction(LOG_SELECTING_VALUE);
         selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
                 Select::selectByValue,
                 value);
     }
 
     private void selectOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
-        ElementActionRetrier.doWithRetry(() -> {
+        doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
             boolean isSelected = false;
@@ -77,15 +76,16 @@ public class ComboBox extends Element implements IComboBox {
                 }
             }
             if (!isSelected){
-                throw new InvalidElementStateException(String.format(getLocManager().getValue("loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
+                throw new InvalidElementStateException(String.format(getLocalizationManager().getLocalizedMessage(
+                        "loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
             }
         });
     }
 
     @Override
     public void selectByValue(String value) {
-        info(LOG_SELECTING_VALUE);
-        ElementActionRetrier.doWithRetry(() -> new Select(getElement()).selectByValue(value));
+        logElementAction(LOG_SELECTING_VALUE);
+        doWithRetry(() -> new Select(getElement()).selectByValue(value));
     }
 
     @Override
@@ -96,19 +96,19 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public String getSelectedValue() {
-        return ElementActionRetrier.doWithRetry(
+        return doWithRetry(
                 () -> new Select(getElement()).getFirstSelectedOption().getAttribute(Attributes.VALUE.toString()));
     }
 
     @Override
     public String getSelectedText() {
-        return ElementActionRetrier.doWithRetry(() -> new Select(getElement()).getFirstSelectedOption().getText());
+        return doWithRetry(() -> new Select(getElement()).getFirstSelectedOption().getText());
     }
 
     @Override
     public List<String> getValues() {
-        getLogger().info(getLocManager().getValue("loc.combobox.get.values"));
-        return ElementActionRetrier.doWithRetry(() ->
+        logElementAction("loc.combobox.get.values");
+        return doWithRetry(() ->
                 new Select(getElement()).getOptions()
                         .stream()
                         .map(option -> option.getAttribute(Attributes.VALUE.toString()))
@@ -117,8 +117,8 @@ public class ComboBox extends Element implements IComboBox {
 
     @Override
     public List<String> getTexts() {
-        getLogger().info(getLocManager().getValue("loc.combobox.get.texts"));
-        return ElementActionRetrier.doWithRetry(() ->
+        logElementAction("loc.combobox.get.texts");
+        return doWithRetry(() ->
                 new Select(getElement()).getOptions()
                         .stream()
                         .map(WebElement::getText)

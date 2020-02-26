@@ -1,7 +1,7 @@
 package tests.integration;
 
-import aquality.selenium.configuration.Configuration;
-import aquality.selenium.elements.ElementFactory;
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.elements.interfaces.IElementFactory;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -14,18 +14,20 @@ import theinternet.forms.DynamicLoadingForm;
 import utils.DurationSample;
 import utils.Timer;
 
+import java.time.Duration;
+
 public class ElementStateTests extends BaseTest {
 
-    private final long customWaitTime = 2L;
+    private final Duration customWaitTime = Duration.ofSeconds(2L);
     private final double customDeviation = 2;
     private final double defaultDeviation = 7;
-    private final ElementFactory elementFactory = new ElementFactory();
+    private final IElementFactory elementFactory = AqualityServices.get(IElementFactory.class);
     private final ILabel lblNotExists = elementFactory.getLabel(By.xpath("//div[@class='not exist element']"), "not exist element");
 
     @Test
     public void testElementShouldWaitForEnabledWithCustomTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = customWaitTime;
+        Duration waitTime = customWaitTime;
 
         Timer timer = new Timer();
         timer.start();
@@ -39,7 +41,7 @@ public class ElementStateTests extends BaseTest {
     @Test
     public void testElementShouldWaitForEnabledWithDefaultTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
 
         Timer timer = new Timer();
         timer.start();
@@ -53,7 +55,7 @@ public class ElementStateTests extends BaseTest {
     @Test
     public void testElementShouldWaitForNotEnabledWithCustomTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = customWaitTime;
+        Duration waitTime = customWaitTime;
 
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
         dynamicControlsForm.getBtnEnable().click();
@@ -81,7 +83,7 @@ public class ElementStateTests extends BaseTest {
     @Test
     public void testElementShouldWaitForNotEnabledWithDefaultTimeout() {
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
 
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
         dynamicControlsForm.getBtnEnable().click();
@@ -119,7 +121,7 @@ public class ElementStateTests extends BaseTest {
     public void testShouldBePossibleToWaitElementNotExistsCustom(){
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
-        long waitTime = customWaitTime;
+        Duration waitTime = customWaitTime;
         dynamicControlsForm.getBtnRemove().click();
 
         Timer timer = new Timer();
@@ -135,7 +137,7 @@ public class ElementStateTests extends BaseTest {
     public void testShouldBePossibleToWaitElementNotExists(){
         navigate(TheInternetPage.DYNAMIC_CONTROLS);
         DynamicControlsForm dynamicControlsForm = new DynamicControlsForm();
-        long waitTime = Configuration.getInstance().getTimeoutConfiguration().getCondition();
+        long waitTime = AqualityServices.getConfiguration().getTimeoutConfiguration().getCondition().getSeconds();
         dynamicControlsForm.getBtnRemove().click();
 
         Timer timer = new Timer();

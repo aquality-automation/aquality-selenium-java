@@ -2,7 +2,8 @@ package aquality.selenium.configuration;
 
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.configuration.driversettings.*;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
+import com.google.inject.Inject;
 import org.openqa.selenium.InvalidArgumentException;
 
 import java.net.MalformedURLException;
@@ -10,9 +11,10 @@ import java.net.URL;
 
 public class BrowserProfile implements IBrowserProfile {
 
-   private final JsonFile settingsFile;
+   private final ISettingsFile settingsFile;
 
-    public BrowserProfile(JsonFile settingsFile) {
+   @Inject
+    public BrowserProfile(ISettingsFile settingsFile) {
         this.settingsFile = settingsFile;
     }
 
@@ -62,7 +64,7 @@ public class BrowserProfile implements IBrowserProfile {
         try {
             return new URL(String.valueOf(settingsFile.getValue("/" + key)));
         } catch (MalformedURLException e) {
-            throw new InvalidArgumentException(String.format("Key %1$s was not found in file %2$s", key, settingsFile.getFileCanonicalPath()));
+            throw new InvalidArgumentException(String.format("Parameter %1$s was not correct in settings", key));
         }
     }
 }

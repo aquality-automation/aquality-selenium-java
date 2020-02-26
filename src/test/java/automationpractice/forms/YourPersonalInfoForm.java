@@ -1,11 +1,12 @@
 package automationpractice.forms;
 
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.ElementType;
-import aquality.selenium.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.*;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import java.util.List;
 
@@ -30,10 +31,11 @@ public class YourPersonalInfoForm extends Form {
 
     public void setFirstName(String firstName){
         txbFirstName.type(firstName);
+        txbFirstName.sendKeys(Keys.ENTER);
     }
 
     public Integer getNumOfDays(){
-        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementState.EXISTS_IN_ANY_STATE, ElementsCount.MORE_THEN_ZERO);
+        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementsCount.MORE_THEN_ZERO, ElementState.EXISTS_IN_ANY_STATE);
         return lblDays.size();
     }
 

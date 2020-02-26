@@ -1,8 +1,8 @@
 package tests.integration;
 
-import aquality.selenium.browser.BrowserManager;
-import aquality.selenium.elements.ElementState;
-import aquality.selenium.elements.ElementsCount;
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.SliderForm;
 import org.testng.Assert;
@@ -19,7 +19,7 @@ public class HiddenElementsTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        BrowserManager.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
     }
 
     @Test

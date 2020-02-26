@@ -5,9 +5,11 @@ import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 
+import java.time.Duration;
+
 public class DynamicLoadingForm extends Form {
 
-    private static final long DEFAULT_LOADING_TIMEOUT = 5L;
+    private static final Duration DEFAULT_LOADING_TIMEOUT = Duration.ofSeconds(5L);
 
     private final IButton btnStart = getElementFactory().getButton(By.xpath("//div[@id='start']/button"), "Start");
     private final ILabel lblLoading = getElementFactory().getLabel(By.id("loading"), "loading");
@@ -25,7 +27,7 @@ public class DynamicLoadingForm extends Form {
         return btnStart;
     }
 
-    public long getTimeout() {
+    public Duration getTimeout() {
         return DEFAULT_LOADING_TIMEOUT;
     }
 

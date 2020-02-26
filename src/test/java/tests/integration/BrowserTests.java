@@ -1,9 +1,10 @@
 package tests.integration;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.JavaScript;
-import aquality.selenium.configuration.Configuration;
-import aquality.selenium.utils.JsonFile;
+import aquality.selenium.core.utilities.ISettingsFile;
+import aquality.selenium.core.utilities.JsonSettingsFile;
 import automationpractice.forms.SliderForm;
 import org.openqa.selenium.*;
 import org.testng.Assert;
@@ -17,6 +18,7 @@ import utils.Timer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
@@ -80,7 +82,7 @@ public class BrowserTests extends BaseTest {
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testShouldBePossibleToSetPageLoadTimeout(){
-        getBrowser().setPageLoadTimeout(1L);
+        getBrowser().setPageLoadTimeout(Duration.ofSeconds(1L));
         String urlAquality = "https://github.com/aquality-automation";
         getBrowser().goTo(urlAquality);
     }
@@ -126,7 +128,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().goTo(url);
         getBrowser().waitForPageToLoad();
 
-        long expectedDurationInSeconds = Configuration.getInstance().getTimeoutConfiguration().getScript() + 1;
+        long expectedDurationInSeconds = AqualityServices.getConfiguration().getTimeoutConfiguration().getScript().getSeconds() + 1;
         getBrowser().executeAsyncScript(getAsyncTimeoutJavaScript(expectedDurationInSeconds));
     }
 
@@ -175,7 +177,7 @@ public class BrowserTests extends BaseTest {
         getBrowser().goTo(URL_AUTOMATIONPRACTICE);
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
-        int formHeight = sliderForm.getFormSize().getHeight();
+        int formHeight = sliderForm.getSize().getHeight();
         getBrowser().scrollWindowBy(0, formHeight);
         Assert.assertEquals(initialY - sliderForm.getFormPointInViewPort().getY(), formHeight);
     }
@@ -189,7 +191,7 @@ public class BrowserTests extends BaseTest {
     @Test
     public void testShouldBePossibleToSetImplicitWait(){
         long waitTime = 5L;
-        getBrowser().setImplicitWaitTimeout(waitTime);
+        getBrowser().setImplicitWaitTimeout(Duration.ofSeconds(waitTime));
 
         Timer timer = new Timer();
         timer.start();
@@ -199,6 +201,7 @@ public class BrowserTests extends BaseTest {
         }catch (NoSuchElementException e){
             durationSample = new DurationSample(timer.duration(), waitTime, defaultDeviation);
         }
+        Assert.assertNotNull(durationSample);
         Assert.assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }
 
@@ -207,10 +210,10 @@ public class BrowserTests extends BaseTest {
         Assert.assertFalse(getBrowser().getDownloadDirectory().isEmpty(), "Browser download directory should not be empty " + getBrowser().getDownloadDirectory());
     }
 
-    private JsonFile getSettings() {
+    private ISettingsFile getSettings() {
         String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
         try {
-            return new JsonFile(getResourceFileByName(settingsProfile));
+            return new JsonSettingsFile(getResourceFileByName(settingsProfile));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

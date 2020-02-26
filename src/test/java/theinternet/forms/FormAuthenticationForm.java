@@ -1,9 +1,11 @@
 package theinternet.forms;
 
-import aquality.selenium.elements.ElementState;
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.elements.interfaces.ITextBox;
 import org.openqa.selenium.By;
+
+import java.time.Duration;
 
 public class FormAuthenticationForm extends TheInternetForm {
 
@@ -11,7 +13,7 @@ public class FormAuthenticationForm extends TheInternetForm {
         super(By.id("login"), "login");
     }
 
-    private static final long DEFAULT_LOADING_TIMEOUT = 5L;
+    private static final Duration DEFAULT_LOADING_TIMEOUT = Duration.ofSeconds(5L);
     private static final String XPATH_FORM_LOGIN = "//form[@id='login']";
 
     private final ITextBox txbUsername = getElementFactory().getTextBox(By.id("username"), "username");
@@ -34,7 +36,7 @@ public class FormAuthenticationForm extends TheInternetForm {
         return txbPassword;
     }
 
-    public long getTimeout() {
+    public Duration getTimeout() {
         return DEFAULT_LOADING_TIMEOUT;
     }
 

@@ -1,8 +1,7 @@
 package tests;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
-import aquality.selenium.browser.BrowserManager;
-import aquality.selenium.elements.ElementFactory;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.Dimension;
 import org.testng.annotations.AfterMethod;
@@ -16,7 +15,7 @@ public abstract class BaseTest {
     protected final IElementFactory elementFactory;
 
     protected BaseTest() {
-        elementFactory = new ElementFactory();
+        elementFactory = AqualityServices.getElementFactory();
     }
 
     @BeforeMethod
@@ -26,15 +25,17 @@ public abstract class BaseTest {
     }
 
     @AfterMethod
-    public void afterTest(){
-        BrowserManager.getBrowser().quit();
+    public void afterTest() {
+        if (AqualityServices.isBrowserStarted()) {
+            AqualityServices.getBrowser().quit();
+        }
     }
 
     protected void navigate(TheInternetPage page) {
         getBrowser().goTo(page.getAddress());
     }
 
-    protected Browser getBrowser(){
-        return BrowserManager.getBrowser();
+    protected Browser getBrowser() {
+        return AqualityServices.getBrowser();
     }
 }

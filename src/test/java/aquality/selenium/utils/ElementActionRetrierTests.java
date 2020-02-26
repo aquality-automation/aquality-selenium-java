@@ -1,7 +1,8 @@
 package aquality.selenium.utils;
 
-import aquality.selenium.configuration.Configuration;
-import aquality.selenium.logger.Logger;
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.IElementActionRetrier;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -9,9 +10,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import utils.DurationSample;
 import utils.Timer;
+import utils.Timer.TimeUnit;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,8 +21,8 @@ import static org.testng.Assert.assertTrue;
 
 public class ElementActionRetrierTests {
 
-    private static final int retriesCount = Configuration.getInstance().getRetryConfiguration().getNumber();
-    private static final long pollingInterval = Configuration.getInstance().getRetryConfiguration().getPollingInterval();
+    private static final int retriesCount = AqualityServices.getConfiguration().getRetryConfiguration().getNumber();
+    private static final long pollingInterval = AqualityServices.getConfiguration().getRetryConfiguration().getPollingInterval().toMillis();
 
 
     @DataProvider
@@ -36,16 +36,16 @@ public class ElementActionRetrierTests {
     @Test
     public void testRetrierShouldWorkOnceIfMethodSucceeded() {
         Date startTime = new Date();
-        ElementActionRetrier.doWithRetry(() -> true);
+        getElementActionRetrier().doWithRetry(() -> true);
         assertTrue(new Date().getTime() - startTime.getTime() < pollingInterval);
     }
 
     @Test(dataProvider = "handledExceptions")
     public void testRetrierShouldWaitPollingTimeBetweenMethodsCall(RuntimeException handledException) {
-        Timer timer = new Timer(Timer.TimeUnit.MILLISECONDS);
+        Timer timer = new Timer(TimeUnit.MILLISECONDS);
         timer.start();
         AtomicBoolean isThrowException = new AtomicBoolean(true);
-        ElementActionRetrier.doWithRetry(() -> {
+        getElementActionRetrier().doWithRetry(() -> {
             if (isThrowException.get()) {
                 isThrowException.set(false);
                 throw handledException;
@@ -58,7 +58,7 @@ public class ElementActionRetrierTests {
 
     @Test(expectedExceptions = InvalidArgumentException.class)
     public void testRetrierShouldThrowUnhandledException() {
-        ElementActionRetrier.doWithRetry(() -> {
+        getElementActionRetrier().doWithRetry(() -> {
             throw new InvalidArgumentException("");
         });
     }
@@ -67,7 +67,7 @@ public class ElementActionRetrierTests {
     public void testRetrierShouldWorkCorrectTimes(RuntimeException handledException) {
         AtomicInteger actualAttempts = new AtomicInteger(0);
         try {
-            ElementActionRetrier.doWithRetry(() -> {
+            getElementActionRetrier().doWithRetry(() -> {
                 Logger.getInstance().info("current attempt is " + actualAttempts.incrementAndGet());
                 throw handledException;
             });
@@ -77,28 +77,16 @@ public class ElementActionRetrierTests {
         assertEquals(actualAttempts.get(), retriesCount + 1, "actual attempts count is not match to expected");
     }
 
-    @Test(expectedExceptions = IllegalAccessException.class)
-    public void testShouldNotBePossibleInstantiateRetrier() throws IllegalAccessException, InstantiationException {
-        ElementActionRetrier.class.newInstance();
-    }
-
-    @Test(expectedExceptions = InvocationTargetException.class)
-    public void testShouldNotBePossibleInstantiateRetrierEvenIfUsingReflection() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        Constructor<ElementActionRetrier> constructor = ElementActionRetrier.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
     @Test
     public void testRetrierShouldReturnValue() {
         Object obj = new Object();
-        assertEquals(ElementActionRetrier.doWithRetry(() -> obj), obj);
+        assertEquals(getElementActionRetrier().doWithRetry(() -> obj), obj);
     }
 
     @Test(dataProvider = "handledExceptions", timeOut = 10000)
     public void testRetrierShouldNotThrowExceptionOnInterruption(RuntimeException handledException) throws InterruptedException {
         AtomicBoolean isRetrierPaused = new AtomicBoolean(false);
-        Thread thread = new Thread(() -> ElementActionRetrier.doWithRetry(() -> {
+        Thread thread = new Thread(() -> getElementActionRetrier().doWithRetry(() -> {
             isRetrierPaused.set(true);
             throw handledException;
         }));
@@ -108,6 +96,10 @@ public class ElementActionRetrierTests {
         }
         Thread.sleep(pollingInterval / 3);
         thread.interrupt();
+    }
+
+    private IElementActionRetrier getElementActionRetrier() {
+        return AqualityServices.get(IElementActionRetrier.class);
     }
 
 }

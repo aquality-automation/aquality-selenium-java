@@ -1,8 +1,8 @@
 package aquality.selenium.browser;
 
+import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.driversettings.EdgeSettings;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
-import aquality.selenium.configuration.IConfiguration;
 import io.github.bonigarcia.wdm.Architecture;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,19 +18,19 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import java.util.Arrays;
 
-public class LocalBrowserFactory extends BrowserFactory {
+public class LocalBrowserFactory implements BrowserFactory {
 
-    private final IConfiguration configuration;
+    private final IBrowserProfile browserProfile;
 
-    public LocalBrowserFactory(IConfiguration configuration){
-        this.configuration = configuration;
+    public LocalBrowserFactory() {
+        this.browserProfile = AqualityServices.getBrowserProfile();
     }
 
     @Override
     public Browser getBrowser() {
-        BrowserName browserName = configuration.getBrowserProfile().getBrowserName();
+        BrowserName browserName = browserProfile.getBrowserName();
         RemoteWebDriver driver;
-        IDriverSettings driverSettings = configuration.getBrowserProfile().getDriverSettings();
+        IDriverSettings driverSettings = browserProfile.getDriverSettings();
         String webDriverVersion = driverSettings.getWebDriverVersion();
         Architecture systemArchitecture = Arrays.stream(Architecture.values())
                 .filter(value -> value.name().equals(driverSettings.getSystemArchitecture()))
@@ -61,6 +61,6 @@ public class LocalBrowserFactory extends BrowserFactory {
         }
         logBrowserIsReady(browserName);
 
-        return new Browser(driver, configuration);
+        return new Browser(driver);
     }
 }

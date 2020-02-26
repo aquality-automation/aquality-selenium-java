@@ -1,7 +1,7 @@
 package automationpractice.forms;
 
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.elements.Attributes;
-import aquality.selenium.elements.ElementState;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.forms.Form;
