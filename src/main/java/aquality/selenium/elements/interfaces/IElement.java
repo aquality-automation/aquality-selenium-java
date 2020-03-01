@@ -15,9 +15,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
      *
      * @param key key for sending.
      */
-    default void sendKeys(Keys key) {
-        sendKeys(key.toString());
-    }
+    void sendKeys(Keys key);
 
     /**
      * Click on an item and wait for the page is loaded

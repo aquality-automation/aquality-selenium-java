@@ -12,7 +12,6 @@ public class TextBox extends Element implements ITextBox {
 
     private static final String LOG_TYPING = "loc.text.typing";
     private static final String LOG_CLEARING = "loc.text.clearing";
-    private static final String LOG_SENDING_KEYS = "loc.text.sending.keys";
     private final String logMaskedValue = getLocalizationManager().getLocalizedMessage("loc.text.masked_value");
 
     protected TextBox(final By locator, final String name, final ElementState state) {
@@ -31,12 +30,6 @@ public class TextBox extends Element implements ITextBox {
     @Override
     public void typeSecret(final String value) {
         type(value, true);
-    }
-
-    @Override
-    public void sendKeys(final Keys keys) {
-        logElementAction(LOG_SENDING_KEYS, keys.toString());
-        super.sendKeys(keys);
     }
 
     @Override
