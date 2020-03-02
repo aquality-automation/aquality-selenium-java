@@ -18,6 +18,7 @@ import aquality.selenium.elements.actions.MouseActions;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -30,8 +31,8 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     /**
      * The main constructor
      *
-     * @param loc    By Locator
-     * @param nameOf Output in logs
+     * @param loc     By Locator
+     * @param nameOf  Output in logs
      * @param stateOf desired ElementState
      */
     protected Element(final By loc, final String nameOf, final ElementState stateOf) {
@@ -145,7 +146,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
         getBrowser().executeScript(JavaScript.SET_INNER_HTML, getElement(), value);
     }
 
-    private Browser getBrowser(){
+    private Browser getBrowser() {
         return AqualityServices.getBrowser();
     }
 
@@ -162,5 +163,11 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public <T extends IElement> T findChildElement(By childLoc, String name, ElementType elementType, ElementState state) {
         return getElementFactory().findChildElement(this, childLoc, name, elementType, state);
+    }
+
+    @Override
+    public void sendKeys(Keys key) {
+        logElementAction("loc.text.sending.keys", Keys.class.getSimpleName().concat(".").concat(key.name()));
+        doWithRetry(() -> getElement().sendKeys(key));
     }
 }

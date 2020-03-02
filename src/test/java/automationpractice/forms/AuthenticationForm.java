@@ -15,7 +15,7 @@ public class AuthenticationForm extends Form {
     }
 
     public void setEmail(String email){
-        txbEmail.type(email);
+        txbEmail.typeSecret(email);
         txbEmail.clearAndType(email);
     }
 
