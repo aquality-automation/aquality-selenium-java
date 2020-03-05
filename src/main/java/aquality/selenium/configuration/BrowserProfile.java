@@ -25,12 +25,12 @@ public class BrowserProfile implements IBrowserProfile {
 
     @Override
     public boolean isRemote() {
-        return (Boolean) settingsFile.getValue("/isRemote");
+        return Boolean.valueOf(settingsFile.getValue("/isRemote").toString());
     }
 
     @Override
     public boolean isElementHighlightEnabled() {
-        return (Boolean) (settingsFile.getValue("/isElementHighlightEnabled"));
+        return Boolean.valueOf(settingsFile.getValue("/isElementHighlightEnabled").toString());
     }
 
     @Override

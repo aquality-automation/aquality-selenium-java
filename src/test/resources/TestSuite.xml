@@ -25,6 +25,7 @@
     </test>
     <test name="Non-threadsafe tests" parallel="classes">
         <classes>
+            <class name="aquality.selenium.browser.BrowserProfileTests"/>
             <class name="aquality.selenium.logger.LoggerTests"/>
             <class name="aquality.selenium.waitings.ConditionalWaitTests"/>
             <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
