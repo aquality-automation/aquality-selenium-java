@@ -1,5 +1,6 @@
 [![Build Status](https://dev.azure.com/aquality-automation/aquality-automation/_apis/build/status/aquality-automation.aquality-selenium-java?branchName=master)](https://dev.azure.com/aquality-automation/aquality-automation/_build/latest?definitionId=2&branchName=master)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=aquality-automation_aquality-selenium-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=aquality-automation_aquality-selenium-java)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.aquality-automation/aquality-selenium/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.aquality-automation/aquality-selenium)
 
 ### Overview
 
