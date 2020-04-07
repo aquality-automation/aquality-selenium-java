@@ -16,9 +16,9 @@ steps:
       extraProperties: |
         sonar.coverage.exclusions=**/**
 
-  - task: ScreenResolutionUtility@1
-    inputs:
-      displaySettings: 'optimal'
+  #- task: ScreenResolutionUtility@1
+  #  inputs:
+  #    displaySettings: 'optimal'
 
   - task: Maven@3
     inputs:
