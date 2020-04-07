@@ -1,6 +1,6 @@
 {
   "browserName" : "chrome",
-  "isRemote": true,
+  "isRemote": false,
   "remoteConnectionUrl": "http://qa-auto-nexus:4444/wd/hub",
   "isElementHighlightEnabled" : true,
 
@@ -16,18 +16,19 @@
         "profile.default_content_settings.popups": "0",
         "disable-popup-blocking": "true",
         "download.prompt_for_download": "false",
-        "download.default_directory": "//home//selenium//downloads"
+        "download.default_directory": ".//target//downloads//"
       },
       "startArguments": []
     },
     "firefox": {
       "webDriverVersion": "latest",
+      "systemArchitecture": "X32",
       "capabilities": {
         "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
-        "browser.download.dir": "//home//selenium//downloads",
+        "browser.download.dir": ".//target//downloads//",
         "browser.download.folderList": 2,
         "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream, application/x-debian-package, application/x-www-form-urlencod, application/json, application/x-compressed, application/x-zip-compressed, application/zip, multipart/x-zip, text/plain, text/csv",
         "browser.helperApps.alwaysAsk.force": false,
@@ -44,7 +45,6 @@
     },
     "iexplorer": {
       "webDriverVersion": "latest",
-      "systemArchitecture": "X32",
       "capabilities": {
         "ignoreProtectedModeSettings": true
       }
@@ -55,9 +55,9 @@
   },
   "timeouts": {
     "timeoutImplicit" : 0,
-    "timeoutCondition" : 25,
+    "timeoutCondition" : 30,
     "timeoutScript" : 10,
-    "timeoutPageLoad" : 60,
+    "timeoutPageLoad" : 30,
     "timeoutPollingInterval": 300,
     "timeoutCommand": 120
   },

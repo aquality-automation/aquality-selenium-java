@@ -7,15 +7,6 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'aqualityautomation'
-      scannerMode: 'CLI'
-      configMode: 'file'
-      extraProperties: |
-        sonar.coverage.exclusions=**/**
-
   - task: ScreenResolutionUtility@1
     inputs:
       displaySettings: 'optimal'
@@ -30,9 +21,3 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean test -Dprofile=local'
-
-  - task: SonarCloudAnalyze@1
-
-  - task: SonarCloudPublish@1
-    inputs:
-      pollingTimeoutSec: '300'
