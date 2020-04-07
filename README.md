@@ -18,7 +18,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>2.0.2</version>
+    <version>LATEST</version>
 </dependency>
 ```
 
@@ -55,5 +55,5 @@ See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:
-- [In English](./Documentation.en.md)
-- [In Russian](./Documentation.ru.md)
+- [In English](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(English))
+- [In Russian](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(Russian))
