@@ -1,5 +1,6 @@
 [![Build Status](https://dev.azure.com/aquality-automation/aquality-automation/_apis/build/status/aquality-automation.aquality-selenium-java?branchName=master)](https://dev.azure.com/aquality-automation/aquality-automation/_build/latest?definitionId=2&branchName=master)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=aquality-automation_aquality-selenium-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=aquality-automation_aquality-selenium-java)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.aquality-automation/aquality-selenium/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.aquality-automation/aquality-selenium)
 
 ### Overview
 
@@ -18,7 +19,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>2.0.2</version>
+    <version>LATEST</version>
 </dependency>
 ```
 
@@ -55,5 +56,5 @@ See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:
-- [In English](./Documentation.en.md)
-- [In Russian](./Documentation.ru.md)
+- [In English](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(English))
+- [In Russian](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(Russian))
