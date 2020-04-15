@@ -3,6 +3,7 @@ package aquality.selenium.browser;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -10,10 +11,6 @@ import static java.lang.String.format;
 class BrowserTabNavigation implements IBrowserTabNavigation {
 
     private final RemoteWebDriver driver;
-
-    private void infoLoc(String key, Object... args) {
-        AqualityServices.getLocalizedLogger().info(key, args);
-    }
 
     BrowserTabNavigation(RemoteWebDriver driver) {
         this.driver = driver;
@@ -32,7 +29,7 @@ class BrowserTabNavigation implements IBrowserTabNavigation {
     }
 
     @Override
-    public void switchToTab(String tabHandle, boolean closeCurrent) {
+    public void switchToTab(final String tabHandle, boolean closeCurrent) {
         infoLoc("loc.browser.switch.to.tab.handle", tabHandle);
         closeAndSwitch(tabHandle, closeCurrent);
     }
@@ -40,7 +37,7 @@ class BrowserTabNavigation implements IBrowserTabNavigation {
     @Override
     public void switchToTab(int index, boolean closeCurrent) {
         infoLoc("loc.browser.switch.to.tab.index", index);
-        ArrayList<String> handles = new ArrayList<>(getTabHandles());
+        List<String> handles = new ArrayList<>(getTabHandles());
         if (index < 0 || handles.size() <= index) {
             throw new IndexOutOfBoundsException(format("Index of browser tab '%1$s' you provided is out of range 0..%2$s", index, handles.size()));
         }
@@ -52,7 +49,7 @@ class BrowserTabNavigation implements IBrowserTabNavigation {
     @Override
     public void switchToLastTab(boolean closeCurrent) {
         infoLoc("loc.browser.switch.to.new.tab");
-        ArrayList<String> handles = new ArrayList<>(getTabHandles());
+        List<String> handles = new ArrayList<>(getTabHandles());
         closeAndSwitch(handles.get(handles.size() - 1), closeCurrent);
     }
 
@@ -72,7 +69,7 @@ class BrowserTabNavigation implements IBrowserTabNavigation {
     }
 
     @Override
-    public void openInNewTab(String url) {
+    public void openInNewTab(final String url) {
         AqualityServices.getBrowser().executeScript(JavaScript.OPEN_IN_NEW_TAB, url);
     }
 
@@ -80,11 +77,15 @@ class BrowserTabNavigation implements IBrowserTabNavigation {
         return driver;
     }
 
-    private void closeAndSwitch(String name, boolean closeCurrent) {
+    private void closeAndSwitch(final String name, boolean closeCurrent) {
         if (closeCurrent) {
             closeTab();
         }
 
         getDriver().switchTo().window(name);
+    }
+
+    private void infoLoc(String key, Object... args) {
+        AqualityServices.getLocalizedLogger().info(key, args);
     }
 }

@@ -9,6 +9,7 @@ import tests.BaseTest;
 import theinternet.forms.WelcomeForm;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
@@ -135,7 +136,7 @@ public class BrowserTabsTests extends BaseTest {
     }
 
     private String getLastTab() {
-        ArrayList<String> tabs = new ArrayList<>(AqualityServices.getBrowser().tabs().getTabHandles());
+        List<String> tabs = new ArrayList<>(AqualityServices.getBrowser().tabs().getTabHandles());
         return tabs.get(tabs.size() - 1);
     }
 }

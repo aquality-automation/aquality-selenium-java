@@ -12,6 +12,7 @@ import utils.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileDownloadingTests extends BaseTest {
     @Test
@@ -28,7 +29,7 @@ public class FileDownloadingTests extends BaseTest {
         Assert.assertFalse(FileUtil.isFileDownloaded(fileAddress, lblFileContent), "file should not exist before downloading");
 
         AqualityServices.getBrowser().executeScript(String.format("window.open('%s', '_blank')", TheInternetPage.DOWNLOAD.getAddress()));
-        ArrayList<String> tabs = new ArrayList<>(AqualityServices.getBrowser().getDriver().getWindowHandles());
+        List<String> tabs = new ArrayList<>(AqualityServices.getBrowser().getDriver().getWindowHandles());
 
         AqualityServices.getBrowser().getDriver().switchTo().window(tabs.get(1));
         AqualityServices.getBrowser().goTo(TheInternetPage.DOWNLOAD.getAddress());
