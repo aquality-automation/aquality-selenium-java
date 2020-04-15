@@ -68,5 +68,12 @@
   "loc.elements.found.but.should.not": "Не должно быть найдено элементов по локатору '%1$s' в %2$s состоянии",
   "loc.search.of.elements.failed":  "Поиск элемента по локатору '%1$s' прошел неудачно",
   "loc.element.not.in.state": "Элемент %1$s не стал %2$s после таймаута %3$s",
-  "loc.get.page.source.failed": "Произошла ошибка во время получения разметки страницы"
+  "loc.get.page.source.failed": "Произошла ошибка во время получения разметки страницы",
+  "loc.browser.switch.to.tab.handle": "Переключение на новую вкладку по дескриптору '%1$s'",
+  "loc.browser.switch.to.tab.index": "Переключение на новую вкладку по индексу '%1$s'",
+  "loc.browser.switch.to.new.tab": "Переключение на новую вкладку",
+  "loc.browser.get.tab.handles": "Получение списка дескрипторов открытых вкладок",
+  "loc.browser.get.tab.handle": "Получение дескриптора текущей вкладки",
+  "loc.browser.tab.open.new": "Открытие новой вкладки",
+  "loc.browser.tab.close": "Закрытие вкладки"
 }
