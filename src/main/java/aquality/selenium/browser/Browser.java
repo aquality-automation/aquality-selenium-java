@@ -132,6 +132,14 @@ public class Browser implements IApplication {
     }
 
     /**
+     * Provides interface to manage of browser tabs.
+     * @return Instance of IBrowserTabNavigation.
+     */
+    public IBrowserTabNavigation tabs() {
+        return new BrowserTabNavigation(getDriver());
+    }
+
+    /**
      * Sets page load timeout (Will be ignored for Safari https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687)
      *
      * @param timeout seconds to wait

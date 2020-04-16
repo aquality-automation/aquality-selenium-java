@@ -68,5 +68,12 @@
   "loc.elements.found.but.should.not": "Не павінна быць знойдзена элементаў па лакатару '%1$s' у %2$s стане",
   "loc.search.of.elements.failed": "Пошук элемента па лакатару '%1$s' прайшоў няўдала",
   "loc.element.not.in.state": "Элемент %1$s не стаў %2$s пасля таймаўта %3$s",
-  "loc.get.page.source.failed": "Адбылася памылка ў час атрымання разметкі старонкі"
+  "loc.get.page.source.failed": "Адбылася памылка ў час атрымання разметкі старонкі",
+  "loc.browser.switch.to.tab.handle": "Пераключэнне на новую ўкладку па дэскрыптару '%1$s'",
+  "loc.browser.switch.to.tab.index": "Пераключэнне на новую ўкладку па індэксе '%1$s'",
+  "loc.browser.switch.to.new.tab": "Пераключэнне на новую ўкладку",
+  "loc.browser.get.tab.handles": "Атрыманне спісу дэскрыптараў адкрытых укладак",
+  "loc.browser.get.tab.handle": "Атрыманне дэскрыптара бягучай укладкі",
+  "loc.browser.tab.open.new": "Адкрыццё новай укладкі",
+  "loc.browser.tab.close": "Закрыццё ўкладкі"
 }
