@@ -68,5 +68,12 @@
   "loc.elements.found.but.should.not": "No elements should be found by locator '%1$s' in %2$s state",
   "loc.search.of.elements.failed": "Search of element by locator '%1$s' failed",
   "loc.element.not.in.state": "Element %1$s has not become %2$s after timeout %3$s",
-  "loc.get.page.source.failed": "An exception occurred while tried to save the page source"
+  "loc.get.page.source.failed": "An exception occurred while tried to save the page source",
+  "loc.browser.switch.to.tab.handle": "Switching to tab by handle '%1$s'",
+  "loc.browser.switch.to.tab.index": "Switching to tab by index '%1$s'",
+  "loc.browser.switch.to.new.tab": "Switching to new tab",
+  "loc.browser.get.tab.handles": "Getting tab handles",
+  "loc.browser.get.tab.handle": "Getting current tab handle",
+  "loc.browser.tab.open.new": "Opening new tab",
+  "loc.browser.tab.close": "Closing tab"
 }

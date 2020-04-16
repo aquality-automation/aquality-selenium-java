@@ -38,7 +38,9 @@ public enum JavaScript {
     SCROLL_WINDOW_BY("scrollWindowBy.js"),
     SET_INNER_HTML("setInnerHTML.js"),
     GET_VIEWPORT_COORDINATES("getViewPortCoordinates.js"),
-    GET_SCREEN_OFFSET("getScreenOffset.js");
+    GET_SCREEN_OFFSET("getScreenOffset.js"),
+    OPEN_IN_NEW_TAB("openInNewTab.js"),
+    OPEN_NEW_TAB("openNewTab.js");
 
     private final String filename;
 

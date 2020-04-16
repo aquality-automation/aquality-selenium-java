@@ -6,6 +6,7 @@
             <class name="tests.integration.ActionTests"/>
             <class name="tests.integration.AlertTests"/>
             <class name="tests.integration.BrowserTests"/>
+            <class name="tests.integration.BrowserTabsTests"/>
             <class name="tests.integration.ElementTests"/>
             <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.HiddenElementsTests"/>
