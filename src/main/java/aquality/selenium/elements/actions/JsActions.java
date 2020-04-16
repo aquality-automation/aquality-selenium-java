@@ -9,6 +9,7 @@ import aquality.selenium.elements.interfaces.IElement;
 import org.openqa.selenium.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsActions {
 
@@ -135,7 +136,7 @@ public class JsActions {
      */
     @SuppressWarnings("unchecked")
     public Point getViewPortCoordinates() {
-        ArrayList<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES, element);
+        List<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES, element);
         return new Point(Math.round(coordinates.get(0).floatValue()), Math.round(coordinates.get(1).floatValue()));
     }
 
