@@ -1,5 +1,3 @@
-# Maven
-
 trigger:
   - master
 
@@ -36,3 +34,21 @@ steps:
   - task: SonarCloudPublish@1
     inputs:
       pollingTimeoutSec: '300'
+
+  - task: MavenAuthenticate@0
+    inputs:
+      artifactsFeeds: 'aquality-automation'
+      mavenServiceConnections: 'OSSRH'
+    condition: succeeded()
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'deploy'
+    condition: succeeded()
