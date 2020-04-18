@@ -8,6 +8,7 @@ import aquality.selenium.elements.interfaces.IElement;
 import org.openqa.selenium.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsActions {
 
@@ -48,6 +49,8 @@ public class JsActions {
 
     /**
      * Highlights the element.
+     *
+     * @param highlightState   Desired highlight state.
      */
     public void highlightElement(HighlightState highlightState) {
         if (AqualityServices.getBrowserProfile().isElementHighlightEnabled() || highlightState.equals(HighlightState.HIGHLIGHT)) {
@@ -133,8 +136,9 @@ public class JsActions {
      *
      * @return Point object
      */
+    @SuppressWarnings("unchecked")
     public Point getViewPortCoordinates() {
-        ArrayList<Number> coordinates = (ArrayList<Number>) getBrowser().executeScript(JavaScript.GET_VIEWPORT_COORDINATES.getScript(), element.getElement());
+        List<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES, element);
         return new Point(Math.round(coordinates.get(0).floatValue()), Math.round(coordinates.get(1).floatValue()));
     }
 
@@ -159,7 +163,8 @@ public class JsActions {
     /**
      * The implementation of a method for logging of Javascript actions
      *
-     * @param key key in localization resource of message to display in the log.
+     * @param key   key in localization resource of message to display in the log.
+     * @param args  arguments for String.format.
      */
     protected void logElementAction(String key, Object... args) {
         AqualityServices.getLocalizedLogger().infoElementAction(type, name, key, args);

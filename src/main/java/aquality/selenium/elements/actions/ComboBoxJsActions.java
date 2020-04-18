@@ -16,6 +16,7 @@ public class ComboBoxJsActions extends JsActions {
      *
      * @return texts of options from ComboBox
      */
+    @SuppressWarnings("unchecked")
     public List<String> getTexts() {
         logElementAction("loc.combobox.get.texts.js");
         return (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);

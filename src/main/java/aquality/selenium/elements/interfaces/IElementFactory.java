@@ -261,11 +261,12 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Find list of elements
      *
+     * @param <T>     Type of the desired element.
      * @param locator Elements selector
      * @param name    elements' name.
      * @param type    Type of elements to be obtained
-     * @param state   visibility state of target elements
      * @param count   type of expected count of elements
+     * @param state   visibility state of target elements
      * @return list of elements
      */
     default <T extends IElement> List<T> findElements(By locator, String name, ElementType type, ElementsCount count,

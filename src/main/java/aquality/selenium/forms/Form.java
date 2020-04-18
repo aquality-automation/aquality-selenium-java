@@ -7,7 +7,6 @@ import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 
-
 public abstract class Form {
     /**
      * Locator for specified form
@@ -20,6 +19,9 @@ public abstract class Form {
 
     /**
      * Constructor with parameters
+     *
+     * @param locator   Locator that identifies Form.
+     * @param name      Name that identifies Form.
      */
     protected Form(By locator, String name) {
         this.locator = locator;
