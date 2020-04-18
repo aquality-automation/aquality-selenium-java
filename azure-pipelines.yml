@@ -35,11 +35,11 @@ steps:
     inputs:
       pollingTimeoutSec: '300'
 
-  - task: MavenAuthenticate@0
-    inputs:
-      artifactsFeeds: 'aquality-automation'
-      mavenServiceConnections: 'OSSRH'
-    condition: succeeded()
+  #- task: MavenAuthenticate@0
+  #  inputs:
+  #    artifactsFeeds: 'aquality-automation'
+  #    mavenServiceConnections: 'OSSRH'
+  #  condition: succeeded()
 
   - task: Maven@3
     inputs:
@@ -50,5 +50,5 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'deploy'
+      goals: '-s settings.xml deploy -Dmaven.test.skip.exec=true'
     condition: succeeded()
