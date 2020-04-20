@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.github.aquality-automation</groupId>
             <artifactId>aquality-selenium-core</artifactId>
-            <version>LATEST</version>
+            <version>0.0.3</version>
         </dependency>
 
         <dependency>

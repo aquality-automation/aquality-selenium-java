@@ -20,6 +20,9 @@ public abstract class Form {
 
     /**
      * Constructor with parameters
+     *
+     * @param locator   Locator that identifies Form.
+     * @param name      Name that identifies Form.
      */
     protected Form(By locator, String name) {
         this.locator = locator;

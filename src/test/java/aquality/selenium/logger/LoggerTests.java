@@ -33,6 +33,7 @@ public class LoggerTests {
         Logger.getInstance().addAppender(appender);
     }
 
+    @SuppressWarnings("unchecked")
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);

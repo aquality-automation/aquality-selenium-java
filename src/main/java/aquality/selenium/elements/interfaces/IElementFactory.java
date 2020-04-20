@@ -261,6 +261,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Find list of elements
      *
+     * @param <T>     Type of the desired element.
      * @param locator Elements selector
      * @param name    elements' name.
      * @param type    Type of elements to be obtained
