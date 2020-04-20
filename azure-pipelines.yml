@@ -26,6 +26,7 @@ steps:
       script: |
         git status
         echo $(Build.SourceBranch)
+        echo $(System.PullRequest.SourceBranch)
 
   #- task: SonarCloudPrepare@1
   #  displayName: 'Prepare SonarCloud analysis'
