@@ -23,43 +23,45 @@ steps:
 
   - task: CmdLine@2
     inputs:
-      script: 'git status'
+      script: |
+        git status
+        echo $(Build.SourceBranch)
 
-  - task: SonarCloudPrepare@1
-    displayName: 'Prepare SonarCloud analysis'
-    inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'aqualityautomation'
-      scannerMode: 'CLI'
-      configMode: 'file'
-      extraProperties: |
-        sonar.coverage.exclusions=**/**
+  #- task: SonarCloudPrepare@1
+  #  displayName: 'Prepare SonarCloud analysis'
+  #  inputs:
+  #    SonarCloud: 'SonarCloud'
+  #    organization: 'aqualityautomation'
+  #    scannerMode: 'CLI'
+  #    configMode: 'file'
+  #    extraProperties: |
+  #      sonar.coverage.exclusions=**/**
 
-  - task: ScreenResolutionUtility@1
-    displayName: 'Set up optimal screen resolution'
-    inputs:
-      displaySettings: 'optimal'
+  #- task: ScreenResolutionUtility@1
+  #  displayName: 'Set up optimal screen resolution'
+  #  inputs:
+  #    displaySettings: 'optimal'
 
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean -Dmaven.test.skip.exec=true'  #'clean test -Dprofile=local'
+  #- task: Maven@3
+  #  inputs:
+  #    mavenPomFile: 'pom.xml'
+  #    mavenOptions: '-Xmx3072m'
+  #    javaHomeOption: 'JDKVersion'
+  #    jdkVersionOption: '1.8'
+  #    jdkArchitectureOption: 'x64'
+  #    publishJUnitResults: true
+  #    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+  #    goals: 'clean -Dmaven.test.skip.exec=true'  #'clean test -Dprofile=local'
 
-  - task: SonarCloudAnalyze@1
-    displayName: 'Run SonarCloud code analysis'
-    continueOnError: true
+  #- task: SonarCloudAnalyze@1
+  #  displayName: 'Run SonarCloud code analysis'
+  #  continueOnError: true
 
-  - task: SonarCloudPublish@1
-    displayName: 'Publish SonarCloud quality gate results'
-    continueOnError: true
-    inputs:
-      pollingTimeoutSec: '300'
+  #- task: SonarCloudPublish@1
+  #  displayName: 'Publish SonarCloud quality gate results'
+  #  continueOnError: true
+  #  inputs:
+  #    pollingTimeoutSec: '300'
 
   - task: GitHubRelease@0
     displayName: 'Create tag on GitHub'
