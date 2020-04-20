@@ -25,8 +25,9 @@ steps:
     inputs:
       script: |
         git status
-        echo $(Build.SourceBranch)
-        echo $(System.PullRequest.SourceBranch)
+        git add pom.xml
+        git commit -m "Update library version [skip ci]"
+        git push origin $(System.PullRequest.SourceBranch)
 
   #- task: SonarCloudPrepare@1
   #  displayName: 'Prepare SonarCloud analysis'
