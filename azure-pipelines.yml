@@ -25,6 +25,8 @@ steps:
     inputs:
       script: |
         git status
+        git config --global user.name "Pavel Anihimovsky"
+        git config --global user.email "pavel.ahimovsky@gmail.com"
         git add pom.xml
         git commit -m "Update library version [skip ci]"
         git push origin $(System.PullRequest.SourceBranch)
