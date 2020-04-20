@@ -29,7 +29,7 @@ steps:
         git config --global user.email "pavel.anihimovsky@gmail.com"
         git add pom.xml
         git commit -m "Update library version [skip ci]"
-        git push https://$(GITHUB_PAT)@github.com/aquality-automation/aquality-selenium-java.git
+        git push https://$(GITHUB_PAT)@github.com/aquality-automation/aquality-selenium-java.git $(System.PullRequest.SourceBranch)
 
   #- task: SonarCloudPrepare@1
   #  displayName: 'Prepare SonarCloud analysis'
