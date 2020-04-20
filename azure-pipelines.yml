@@ -20,6 +20,7 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'versions:set -DnewVersion=$(GitVersion.NuGetVersion) -Dmaven.test.skip.exec=true'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - task: CmdLine@2
     inputs:
@@ -28,8 +29,9 @@ steps:
         git config --global user.name "Pavel Anihimovsky"
         git config --global user.email "pavel.anihimovsky@gmail.com"
         git add pom.xml
-        git commit -m "Update library version [skip ci]"
-        git push https://$(GITHUB_PAT)@github.com/aquality-automation/aquality-selenium-java.git $(System.PullRequest.SourceBranch)
+        git commit -m "[Azure DevOps] Update library version [skip ci]"
+        git branch -vv
+  #git push https://$(GITHUB_PAT)@github.com/aquality-automation/aquality-selenium-java.git $(System.PullRequest.SourceBranch)
 
   #- task: SonarCloudPrepare@1
   #  displayName: 'Prepare SonarCloud analysis'
