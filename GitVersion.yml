@@ -1,0 +1,6 @@
+next-version: 1.0.0
+mode: Mainline
+increment: Inherit
+branches: {}
+ignore:
+  sha: []
