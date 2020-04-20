@@ -10,32 +10,26 @@ steps:
     inputs:
       runtime: 'core'
 
-  - task: GitHubComment@0
+  - task: Maven@3
     inputs:
-      gitHubConnection: 'GitHub'
-      repositoryName: 'aquality-automation/aquality-selenium-java'
-      comment: 'Test comment'
-      
-  #- task: Maven@3
-  #  inputs:
-  #    mavenPomFile: 'pom.xml'
-  #    mavenOptions: '-Xmx3072m'
-  #    javaHomeOption: 'JDKVersion'
-  #    jdkVersionOption: '1.8'
-  #    jdkArchitectureOption: 'x64'
-  #    publishJUnitResults: true
-  #    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-  #    goals: 'versions:set -DnewVersion=$(GitVersion.NuGetVersion) -Dmaven.test.skip.exec=true'
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'versions:set -DnewVersion=$(GitVersion.NuGetVersion) -Dmaven.test.skip.exec=true'
 
-  #- task: CmdLine@2
-  #  inputs:
-  #    script: |
-  #      git status
-  #      git config --global user.name "Pavel Anihimovsky"
-  #      git config --global user.email "pavel.anihimovsky@gmail.com"
-  #      git add pom.xml
-  #      git commit -m "Update library version [skip ci]"
-  #      git push origin $(System.PullRequest.SourceBranch)
+  - task: CmdLine@2
+    inputs:
+      script: |
+        git status
+        git config --global user.name "Pavel Anihimovsky"
+        git config --global user.email "pavel.anihimovsky@gmail.com"
+        git add pom.xml
+        git commit -m "Update library version [skip ci]"
+        git push https://$(GITHUB_PAT)@github.com/aquality-automation/aquality-selenium-java.git
 
   #- task: SonarCloudPrepare@1
   #  displayName: 'Prepare SonarCloud analysis'
