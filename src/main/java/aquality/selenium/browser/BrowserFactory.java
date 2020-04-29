@@ -2,6 +2,13 @@ package aquality.selenium.browser;
 
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.IActionRetrier;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 interface BrowserFactory extends IBrowserFactory {
 
@@ -14,5 +21,24 @@ interface BrowserFactory extends IBrowserFactory {
 
     default void logBrowserIsReady(BrowserName browserName) {
         AqualityServices.getLocalizedLogger().info("loc.browser.ready", browserName.toString());
+    }
+
+    default <TDriver extends RemoteWebDriver> TDriver getDriver(Class<TDriver> driverClass, Capabilities capabilities) {
+        return getDriver(driverClass, null, capabilities);
+    }
+
+    default <TDriver extends RemoteWebDriver> TDriver getDriver(Class<TDriver> driverClass, CommandExecutor commandExecutor, Capabilities capabilities) {
+        return AqualityServices.get(IActionRetrier.class).doWithRetry(() -> {
+            try {
+                if(commandExecutor != null){
+                    return driverClass.getDeclaredConstructor(CommandExecutor.class, Capabilities.class).newInstance(commandExecutor, capabilities);
+                }
+
+                return driverClass.getDeclaredConstructor(Capabilities.class).newInstance(capabilities);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new UnsupportedOperationException(
+                        String.format("Cannot instantiate driver with type '%1$s'.%2$sError: '%3$s'", driverClass, System.getProperty("line.separator"), e.getCause()));
+            }
+        }, Collections.emptyList());
     }
 }

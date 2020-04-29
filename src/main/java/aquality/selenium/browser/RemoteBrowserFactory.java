@@ -45,8 +45,7 @@ public class RemoteBrowserFactory implements BrowserFactory {
                 browserProfile.getRemoteConnectionUrl(),
                 clientFactory);
 
-        RemoteWebDriver driver = new RemoteWebDriver(commandExecutor, capabilities);
-
+        RemoteWebDriver driver = getDriver(RemoteWebDriver.class, commandExecutor, capabilities);
         driver.setFileDetector(new LocalFileDetector());
         return driver;
     }
