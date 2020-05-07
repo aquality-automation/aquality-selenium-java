@@ -4,6 +4,7 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
+import io.github.bonigarcia.wdm.Architecture;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 
@@ -53,9 +54,13 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     @Override
-    public String getSystemArchitecture() {
-        return String.valueOf(getSettingsFile().getValueOrDefault(
+    public Architecture getSystemArchitecture() {
+        String strValue = String.valueOf(getSettingsFile().getValueOrDefault(
                 getDriverSettingsPath("systemArchitecture"), "Auto"));
+        return Arrays.stream(Architecture.values())
+                .filter(value -> value.name().equals(strValue))
+                .findFirst()
+                .orElse(Architecture.X32);
     }
 
     @Override

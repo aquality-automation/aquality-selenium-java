@@ -16,8 +16,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import java.util.Arrays;
-
 public class LocalBrowserFactory implements BrowserFactory {
 
     private final IBrowserProfile browserProfile;
@@ -32,10 +30,7 @@ public class LocalBrowserFactory implements BrowserFactory {
         RemoteWebDriver driver;
         IDriverSettings driverSettings = browserProfile.getDriverSettings();
         String webDriverVersion = driverSettings.getWebDriverVersion();
-        Architecture systemArchitecture = Arrays.stream(Architecture.values())
-                .filter(value -> value.name().equals(driverSettings.getSystemArchitecture()))
-                .findFirst()
-                .orElse(Architecture.X32);
+        Architecture systemArchitecture = driverSettings.getSystemArchitecture();
         switch (browserName) {
             case CHROME:
                 WebDriverManager.chromedriver().version(webDriverVersion).setup();
