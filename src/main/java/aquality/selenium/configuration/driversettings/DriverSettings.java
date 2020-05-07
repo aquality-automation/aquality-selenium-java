@@ -1,20 +1,30 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.PageLoadStrategy;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 abstract class DriverSettings implements IDriverSettings {
 
-    abstract ISettingsFile getSettingsFile();
+    private final ISettingsFile settingsFile;
+
+    protected DriverSettings(ISettingsFile settingsFile) {
+        this.settingsFile = settingsFile;
+    }
+
+    protected ISettingsFile getSettingsFile() {
+        return settingsFile;
+    }
 
     Map<String, Object> getBrowserOptions() {
         return getSettingsFile().getMap(getDriverSettingsPath(CapabilityType.OPTIONS));
@@ -39,21 +49,28 @@ abstract class DriverSettings implements IDriverSettings {
     @Override
     public String getWebDriverVersion() {
         return String.valueOf(getSettingsFile().getValueOrDefault(
-                getDriverSettingsPath(getBrowserName()) + "/webDriverVersion", "Latest"));
+                getDriverSettingsPath("webDriverVersion"), "Latest"));
     }
 
     @Override
     public String getSystemArchitecture() {
         return String.valueOf(getSettingsFile().getValueOrDefault(
-                getDriverSettingsPath(getBrowserName()) + "/systemArchitecture", "Auto"));
+                getDriverSettingsPath("systemArchitecture"), "Auto"));
     }
 
-    private String getDriverSettingsPath(CapabilityType capabilityType) {
-        return getDriverSettingsPath(getBrowserName()) + "/" + capabilityType.getKey();
+    @Override
+    public PageLoadStrategy getPageLoadStrategy() {
+        String value = (String) getSettingsFile().getValueOrDefault(getDriverSettingsPath("pageLoadStrategy"), "normal");
+        return PageLoadStrategy.fromString(value.toLowerCase());
     }
 
-    String getDriverSettingsPath(BrowserName browserName) {
-        return String.format("/driverSettings/%1$s", browserName.toString().toLowerCase());
+    private String getDriverSettingsPath(final CapabilityType capabilityType) {
+        return getDriverSettingsPath(capabilityType.getKey());
+    }
+
+    String getDriverSettingsPath(final String... paths) {
+        String pathToDriverSettings = String.format("/driverSettings/%1$s", getBrowserName().toString().toLowerCase());
+        return pathToDriverSettings.concat(Arrays.stream(paths).map("/"::concat).collect(Collectors.joining()));
     }
 
     void setCapabilities(MutableCapabilities options) {

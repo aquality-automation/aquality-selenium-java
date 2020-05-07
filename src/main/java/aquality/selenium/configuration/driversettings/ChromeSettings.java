@@ -9,10 +9,8 @@ import java.util.Map;
 
 public class ChromeSettings extends DriverSettings {
 
-    private final ISettingsFile settingsFile;
-
     public ChromeSettings(ISettingsFile settingsFile){
-        this.settingsFile = settingsFile;
+        super(settingsFile);
     }
 
     @Override
@@ -21,6 +19,7 @@ public class ChromeSettings extends DriverSettings {
         setChromePrefs(chromeOptions);
         setCapabilities(chromeOptions);
         setChromeArgs(chromeOptions);
+        chromeOptions.setPageLoadStrategy(getPageLoadStrategy());
         return chromeOptions;
     }
 
@@ -47,11 +46,6 @@ public class ChromeSettings extends DriverSettings {
     @Override
     public String getDownloadDirCapabilityKey() {
         return "download.default_directory";
-    }
-
-    @Override
-    protected ISettingsFile getSettingsFile() {
-        return settingsFile;
     }
 
     @Override

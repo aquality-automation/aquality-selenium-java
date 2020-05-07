@@ -2,6 +2,7 @@ package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.PageLoadStrategy;
 
 /**
  * Describes web driver settings.
@@ -13,6 +14,12 @@ public interface IDriverSettings {
      * @return initialized {@link Capabilities}
      */
     Capabilities getCapabilities();
+
+    /**
+     * Gets WebDriver page load strategy.
+     * @return initialized {@link PageLoadStrategy}
+     */
+    PageLoadStrategy getPageLoadStrategy();
 
     /**
      * Gets version of web driver for WebDriverManager.
