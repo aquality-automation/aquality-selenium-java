@@ -1,7 +1,9 @@
 package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
+import io.github.bonigarcia.wdm.Architecture;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.PageLoadStrategy;
 
 /**
  * Describes web driver settings.
@@ -15,6 +17,12 @@ public interface IDriverSettings {
     Capabilities getCapabilities();
 
     /**
+     * Gets WebDriver page load strategy.
+     * @return initialized {@link PageLoadStrategy}
+     */
+    PageLoadStrategy getPageLoadStrategy();
+
+    /**
      * Gets version of web driver for WebDriverManager.
      * @return Version of web driver.
      */
@@ -22,9 +30,9 @@ public interface IDriverSettings {
 
     /**
      * Gets target system architecture for WebDriverManager.
-     * @return System architecture.
+     * @return initialized {@link Architecture}.
      */
-    String getSystemArchitecture();
+    Architecture getSystemArchitecture();
 
     /**
      * Gets download directory for web driver.
