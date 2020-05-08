@@ -38,9 +38,9 @@ public class FirefoxSettings extends DriverSettings {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 options.addPreference(key, getDownloadDir());
             } else if(value instanceof Boolean) {
-                options.addPreference(key, (Boolean) value);
+                options.addPreference(key, (boolean) value);
             } else if (value instanceof Integer) {
-                options.addPreference(key, Integer.parseInt(value.toString()));
+                options.addPreference(key, (int) value);
             } else if (value instanceof String) {
                 options.addPreference(key, (String) value);
             }

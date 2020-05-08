@@ -30,7 +30,7 @@ public interface IDriverSettings {
 
     /**
      * Gets target system architecture for WebDriverManager.
-     * @return initialized {@link io.github.bonigarcia.wdm.Architecture}.
+     * @return initialized {@link Architecture}.
      */
     Architecture getSystemArchitecture();
 
