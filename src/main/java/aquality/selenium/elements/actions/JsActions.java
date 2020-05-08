@@ -3,18 +3,19 @@ package aquality.selenium.elements.actions;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.browser.JavaScript;
+import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IElement;
 import org.openqa.selenium.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsActions {
 
     protected IElement element;
     protected String type;
     protected String name;
-
 
     public JsActions(IElement element, String type) {
         this.element = element;
@@ -133,8 +134,9 @@ public class JsActions {
      *
      * @return Point object
      */
+    @SuppressWarnings("unchecked")
     public Point getViewPortCoordinates() {
-        ArrayList<Number> coordinates = (ArrayList<Number>) getBrowser().executeScript(JavaScript.GET_VIEWPORT_COORDINATES.getScript(), element.getElement());
+        List<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES, element);
         return new Point(Math.round(coordinates.get(0).floatValue()), Math.round(coordinates.get(1).floatValue()));
     }
 
@@ -149,11 +151,11 @@ public class JsActions {
     }
 
     protected Object executeScript(JavaScript javaScript, IElement element) {
-        return getBrowser().executeScript(javaScript, element.getElement());
+        return getActionRetrier().doWithRetry(() -> getBrowser().executeScript(javaScript, element.getElement()));
     }
 
     protected Object executeScript(JavaScript javaScript, IElement element, Object... args) {
-        return getBrowser().executeScript(javaScript, element.getElement(), args);
+        return getActionRetrier().doWithRetry(() -> getBrowser().executeScript(javaScript, element.getElement(), args));
     }
 
     /**
@@ -167,5 +169,9 @@ public class JsActions {
 
     private Browser getBrowser() {
         return AqualityServices.getBrowser();
+    }
+
+    private IElementActionRetrier getActionRetrier() {
+        return AqualityServices.get(IElementActionRetrier.class);
     }
 }
