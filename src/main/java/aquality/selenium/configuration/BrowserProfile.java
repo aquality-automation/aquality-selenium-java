@@ -36,7 +36,7 @@ public class BrowserProfile implements IBrowserProfile {
     @Override
     public IDriverSettings getDriverSettings() {
         IDriverSettings driverSettings;
-        switch (getBrowserName()){
+        switch (getBrowserName()) {
             case CHROME:
                 driverSettings = new ChromeSettings(settingsFile);
                 break;

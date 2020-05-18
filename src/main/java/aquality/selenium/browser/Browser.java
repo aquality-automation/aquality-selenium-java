@@ -12,6 +12,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver.Navigation;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
@@ -23,14 +24,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class Browser implements IApplication {
+
     private final RemoteWebDriver webDriver;
     private final ITimeoutConfiguration timeouts;
-    private Duration timeoutImpl;
     private final IBrowserProfile browserProfile;
     private final IConditionalWait conditionalWait;
     private final ILocalizationManager localizationManager;
     private final ILocalizedLogger localizedLogger;
 
+    private Duration implicitTimeout;
 
     public Browser(RemoteWebDriver remoteWebDriver) {
         conditionalWait = AqualityServices.getConditionalWait();
@@ -39,8 +41,8 @@ public class Browser implements IApplication {
         this.browserProfile = AqualityServices.getBrowserProfile();
         this.timeouts = AqualityServices.get(ITimeoutConfiguration.class);
         webDriver = remoteWebDriver;
-        this.timeoutImpl = timeouts.getImplicit();
-        getDriver().manage().timeouts().implicitlyWait(timeoutImpl.getSeconds(), TimeUnit.SECONDS);
+        this.implicitTimeout = timeouts.getImplicit();
+        getDriver().manage().timeouts().implicitlyWait(implicitTimeout.getSeconds(), TimeUnit.SECONDS);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
     }
@@ -161,7 +163,7 @@ public class Browser implements IApplication {
         localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
         if (!timeout.equals(getImplicitWaitTimeout())) {
             getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
-            timeoutImpl = timeout;
+            implicitTimeout = timeout;
         }
     }
 
@@ -199,6 +201,15 @@ public class Browser implements IApplication {
      */
     public byte[] getScreenshot() {
         return getDriver().getScreenshotAs(OutputType.BYTES);
+    }
+
+    /**
+     * Gets logs from WebDriver.
+     * @param logKind Type of logs {@link org.openqa.selenium.logging.LogType}
+     * @return Storage of LogEntries.
+     */
+    public LogEntries getLogs(final String logKind) {
+        return getDriver().manage().logs().get(logKind);
     }
 
     /**
@@ -350,6 +361,6 @@ public class Browser implements IApplication {
     }
 
     private Duration getImplicitWaitTimeout() {
-        return timeoutImpl;
+        return implicitTimeout;
     }
 }
