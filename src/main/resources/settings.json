@@ -1,7 +1,7 @@
 {
   "browserName" : "chrome",
   "isRemote": false,
-  "remoteConnectionUrl": "http://qa-auto-nexus:4444/wd/hub",
+  "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
 
   "driverSettings": {
@@ -18,6 +18,7 @@
         "download.prompt_for_download": "false",
         "download.default_directory": "//home//selenium//downloads"
       },
+      "pageLoadStrategy": "Normal",
       "startArguments": []
     },
     "firefox": {

@@ -6,16 +6,15 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class IExplorerSettings extends DriverSettings {
 
-    private final ISettingsFile settingsFile;
-
     public IExplorerSettings(ISettingsFile settingsFile){
-        this.settingsFile = settingsFile;
+        super(settingsFile);
     }
 
     @Override
     public InternetExplorerOptions getCapabilities() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         setCapabilities(internetExplorerOptions);
+        internetExplorerOptions.setPageLoadStrategy(getPageLoadStrategy());
         return internetExplorerOptions;
     }
 
@@ -27,10 +26,5 @@ public class IExplorerSettings extends DriverSettings {
     @Override
     public BrowserName getBrowserName() {
         return BrowserName.IEXPLORER;
-    }
-
-    @Override
-    protected ISettingsFile getSettingsFile() {
-        return settingsFile;
     }
 }

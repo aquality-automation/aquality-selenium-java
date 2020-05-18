@@ -8,10 +8,8 @@ import java.util.Map;
 
 public class FirefoxSettings extends DriverSettings {
 
-    private final ISettingsFile settingsFile;
-
     public FirefoxSettings(ISettingsFile settingsFile){
-        this.settingsFile = settingsFile;
+        super(settingsFile);
     }
 
     @Override
@@ -20,6 +18,7 @@ public class FirefoxSettings extends DriverSettings {
         setCapabilities(firefoxOptions);
         setFirefoxPrefs(firefoxOptions);
         setFirefoxArgs(firefoxOptions);
+        firefoxOptions.setPageLoadStrategy(getPageLoadStrategy());
         return firefoxOptions;
     }
 
@@ -33,21 +32,15 @@ public class FirefoxSettings extends DriverSettings {
         return BrowserName.FIREFOX;
     }
 
-    @Override
-    protected ISettingsFile getSettingsFile() {
-        return settingsFile;
-    }
-
     private void setFirefoxPrefs(FirefoxOptions options) {
         Map<String, Object> configOptions = getBrowserOptions();
         configOptions.forEach((key, value) -> {
             if (key.equals(getDownloadDirCapabilityKey())) {
                 options.addPreference(key, getDownloadDir());
-            }else if(value instanceof Boolean){
-                options.addPreference(key, (Boolean) value);
-            }
-            else if (value instanceof Integer) {
-                options.addPreference(key, Integer.valueOf(value.toString()));
+            } else if(value instanceof Boolean) {
+                options.addPreference(key, (boolean) value);
+            } else if (value instanceof Integer) {
+                options.addPreference(key, (int) value);
             } else if (value instanceof String) {
                 options.addPreference(key, (String) value);
             }

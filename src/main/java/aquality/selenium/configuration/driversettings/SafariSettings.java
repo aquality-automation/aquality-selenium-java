@@ -6,10 +6,8 @@ import org.openqa.selenium.safari.SafariOptions;
 
 public class SafariSettings extends DriverSettings {
 
-    private final ISettingsFile settingsFile;
-
-    public SafariSettings(ISettingsFile settingsFile){
-        this.settingsFile = settingsFile;
+    public SafariSettings(ISettingsFile settingsFile) {
+        super(settingsFile);
     }
 
     @Override
@@ -26,16 +24,11 @@ public class SafariSettings extends DriverSettings {
 
     @Override
     public String getDownloadDir() {
-        return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath(getBrowserName()) + "/downloadDir"));
+        return String.valueOf(getSettingsFile().getValue(getDriverSettingsPath("downloadDir")));
     }
 
     @Override
     public BrowserName getBrowserName() {
         return BrowserName.SAFARI;
-    }
-
-    @Override
-    protected ISettingsFile getSettingsFile() {
-        return settingsFile;
     }
 }
