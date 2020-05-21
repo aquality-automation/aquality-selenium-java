@@ -22,11 +22,11 @@ interface BrowserFactory extends IBrowserFactory {
         AqualityServices.getLocalizedLogger().info("loc.browser.ready", browserName.toString());
     }
 
-    default <TDriver extends RemoteWebDriver> TDriver getDriver(Class<TDriver> driverClass, Capabilities capabilities) {
+    default <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, Capabilities capabilities) {
         return getDriver(driverClass, null, capabilities);
     }
 
-    default <TDriver extends RemoteWebDriver> TDriver getDriver(Class<TDriver> driverClass, CommandExecutor commandExecutor, Capabilities capabilities) {
+    default <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, CommandExecutor commandExecutor, Capabilities capabilities) {
         return AqualityServices.get(IActionRetrier.class).doWithRetry(() -> {
             try {
                 if (commandExecutor != null) {
