@@ -8,8 +8,11 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.elements.interfaces.*;
 import com.google.inject.Inject;
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ByXPath;
+import org.openqa.selenium.By.ByClassName;
+import org.openqa.selenium.By.ById;
+import org.openqa.selenium.By.ByName;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ByIdOrName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +22,15 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
     @Inject
     public ElementFactory(IConditionalWait conditionalWait, IElementFinder elementFinder, ILocalizationManager localizationManager) {
         super(conditionalWait, elementFinder, localizationManager);
+    }
+
+    private static Map<Class<? extends By>, String> getLocatorToXPathTemplateMap() {
+        Map<Class<? extends By>, String> locatorToXPathTemplateMap = new HashMap<>();
+        locatorToXPathTemplateMap.put(ByClassName.class, "//*[contains(@class,'%s')]");
+        locatorToXPathTemplateMap.put(ByName.class, "//*[@name='%s']");
+        locatorToXPathTemplateMap.put(ById.class, "//*[@id='%s']");
+        locatorToXPathTemplateMap.put(ByIdOrName.class, "//*[@id='%s' or @name='%s']");
+        return locatorToXPathTemplateMap;
     }
 
     @Override
@@ -44,8 +56,40 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
      */
     @Override
     protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
-        return multipleElementsLocator.getClass().equals(ByXPath.class)
+        return isLocatorSupportedForXPathExtraction(multipleElementsLocator)
                 ? super.generateXpathLocator(multipleElementsLocator, webElement, elementIndex)
                 : By.xpath((String) AqualityServices.getBrowser().executeScript(JavaScript.GET_ELEMENT_XPATH, webElement));
+    }
+
+    /**
+     * Defines is the locator can be transformed to xpath or not.
+     *
+     * @param locator locator to transform
+     * @return true if the locator can be transformed to xpath, false otherwise.
+     */
+    @Override
+    protected boolean isLocatorSupportedForXPathExtraction(By locator) {
+        return getLocatorToXPathTemplateMap().containsKey(locator.getClass())
+                || super.isLocatorSupportedForXPathExtraction(locator);
+    }
+
+    /**
+     * Extracts XPath from passed locator.
+     *
+     * @param locator locator to get xpath from.
+     * @return extracted XPath.
+     */
+    @Override
+    protected String extractXPathFromLocator(By locator) {
+        String locatorString = locator.toString();
+        int indexOfDots = locatorString.indexOf(':');
+        String locValuableString = indexOfDots == -1
+                // case ByIdOrName:
+                ? locatorString.substring(locatorString.indexOf('"')).replace("\"", "")
+                : locatorString.substring(indexOfDots + 1).trim();
+        Class<? extends By> locatorClass = locator.getClass();
+        return getLocatorToXPathTemplateMap().containsKey(locator.getClass())
+                ? String.format(getLocatorToXPathTemplateMap().get(locatorClass), locValuableString)
+                : super.extractXPathFromLocator(locator);
     }
 }
