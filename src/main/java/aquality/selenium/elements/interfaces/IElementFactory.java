@@ -261,6 +261,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Find list of elements
      *
+     * @param <T>     Type of the target elements.
      * @param locator Elements selector
      * @param name    elements' name.
      * @param type    Type of elements to be obtained
@@ -344,6 +345,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param type          Type of elements to be obtained
@@ -356,6 +358,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param type          Type of elements to be obtained
@@ -370,6 +373,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param type          Type of elements to be obtained
@@ -384,6 +388,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param type          Type of the element to be obtained
@@ -399,6 +404,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param name          Child elements name.
@@ -413,6 +419,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param name          Child elements name.
@@ -428,6 +435,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>           Type of the target elements.
      * @param parentElement Parent element for relative search of child elements.
      * @param childLoc      Locator of child elements relative to its parent.
      * @param name          Child elements name.

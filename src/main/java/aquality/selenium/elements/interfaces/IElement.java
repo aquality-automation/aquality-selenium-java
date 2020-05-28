@@ -161,6 +161,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param elementType type of the element to be obtained
      * @return List of child elements.
@@ -172,6 +173,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param elementType type of the element to be obtained
      * @param count       Expected number of elements that have to be found (zero, more then zero, any).
@@ -184,6 +186,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param elementType type of the element to be obtained
      * @param state       Visibility state of child elements.
@@ -196,6 +199,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param elementType type of the element to be obtained
      * @param state       Visibility state of child elements.
@@ -210,6 +214,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param name        Child elements name.
      * @param elementType type of the element to be obtained
@@ -222,6 +227,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds displayed child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param name        Child elements name.
      * @param elementType type of the element to be obtained
@@ -235,6 +241,7 @@ public interface IElement extends aquality.selenium.core.elements.interfaces.IEl
     /**
      * Finds child elements by their locator relative to parent element.
      *
+     * @param <T>         Type of the target elements.
      * @param childLoc    Locator of child elements relative to its parent.
      * @param name        Child elements name.
      * @param elementType type of the element to be obtained
