@@ -29,7 +29,7 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
         locatorToXPathTemplateMap.put(ByClassName.class, "//*[contains(@class,'%s')]");
         locatorToXPathTemplateMap.put(ByName.class, "//*[@name='%s']");
         locatorToXPathTemplateMap.put(ById.class, "//*[@id='%s']");
-        locatorToXPathTemplateMap.put(ByIdOrName.class, "//*[@id='%s' or @name='%s']");
+        locatorToXPathTemplateMap.put(ByIdOrName.class, "//*[@id='%1$s' or @name='%1$s']");
         return locatorToXPathTemplateMap;
     }
 
