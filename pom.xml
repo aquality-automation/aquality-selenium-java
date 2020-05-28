@@ -7,7 +7,6 @@
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
     <version>2.4.0</version>
-
     <packaging>jar</packaging>
     <name>Aquality Selenium</name>
     <description>Library around Selenium WebDriver</description>
