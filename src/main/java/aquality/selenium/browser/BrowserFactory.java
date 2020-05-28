@@ -35,7 +35,7 @@ interface BrowserFactory extends IBrowserFactory {
 
                 return driverClass.getDeclaredConstructor(Capabilities.class).newInstance(capabilities);
             } catch (ReflectiveOperationException e) {
-                throw new UnsupportedOperationException(String.format("Cannot instantiate driver with type '%1$s'", driverClass), e);
+                throw new UnsupportedOperationException(String.format("Cannot instantiate driver with type '%1$s'.", driverClass), e);
             }
         }, Collections.emptyList());
     }
