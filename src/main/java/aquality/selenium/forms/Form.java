@@ -10,7 +10,7 @@ import org.openqa.selenium.Dimension;
 /**
  * Defines base class for any UI form.
  */
-public abstract class Form extends FormParent {
+public abstract class Form {
     /**
      * Locator for specified form
      */
@@ -78,10 +78,10 @@ public abstract class Form extends FormParent {
 
     /**
      * Gets Label of form element defined by its locator and name.
+     * Could be used to find child elements relative to form element.
      *
      * @return Label of form element.
      */
-    @Override
     protected ILabel getFormLabel() {
         return getElementFactory().getLabel(locator, name);
     }
