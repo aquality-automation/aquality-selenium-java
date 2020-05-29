@@ -7,7 +7,9 @@ import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 
-
+/**
+ * Defines base class for any UI form.
+ */
 public abstract class Form {
     /**
      * Locator for specified form
@@ -51,7 +53,7 @@ public abstract class Form {
      * False - form is not opened
      */
     public boolean isDisplayed() {
-        return getElementFactory().getLabel(locator, name).state().waitForDisplayed();
+        return getFormLabel().state().waitForDisplayed();
     }
 
     /**
@@ -64,11 +66,23 @@ public abstract class Form {
         getFormLabel().getJsActions().scrollBy(x, y);
     }
 
+    /**
+     * Gets size of form element defined by its locator.
+     *
+     * @return Size of the form element.
+     */
     public Dimension getSize() {
         return getFormLabel().getElement().getSize();
     }
 
-    private ILabel getFormLabel() {
+
+    /**
+     * Gets Label of form element defined by its locator and name.
+     * Could be used to find child elements relative to form element.
+     *
+     * @return Label of form element.
+     */
+    protected ILabel getFormLabel() {
         return getElementFactory().getLabel(locator, name);
     }
 
