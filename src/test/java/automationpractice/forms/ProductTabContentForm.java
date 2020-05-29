@@ -49,7 +49,7 @@ public class ProductTabContentForm extends Form {
     }
 
     public ILabel getChildElementByNonXPath(ElementState state) {
-        return findChildElement(BEST_SELLERS_BY_ID, ElementType.LABEL, state);
+        return getFormLabel().findChildElement(BEST_SELLERS_BY_ID, ElementType.LABEL, state);
     }
 
     public List<ILabel> getListElementsByDottedXPath(ElementState state, ElementsCount count) {
@@ -57,6 +57,6 @@ public class ProductTabContentForm extends Form {
     }
 
     public List<ILabel> getChildElementsByDottedXPath(ElementState state, ElementsCount count) {
-        return findChildElements(DOTTED_XPATH, ElementType.LABEL, state, count);
+        return getFormLabel().findChildElements(DOTTED_XPATH, ElementType.LABEL, state, count);
     }
 }
