@@ -2,8 +2,10 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.IConfiguration;
+import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import com.google.inject.Injector;
@@ -66,7 +68,8 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
      */
     public static void setDefaultBrowserFactory() {
         IBrowserFactory browserFactory = getBrowserProfile().isRemote()
-                ? new RemoteBrowserFactory() : new LocalBrowserFactory();
+                ? new RemoteBrowserFactory(get(IActionRetrier.class), getBrowserProfile(), get(ITimeoutConfiguration.class), getLocalizedLogger())
+                : new LocalBrowserFactory(get(IActionRetrier.class), getBrowserProfile(), getLocalizedLogger());
         setBrowserFactory(browserFactory);
     }
 

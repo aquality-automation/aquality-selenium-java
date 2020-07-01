@@ -109,7 +109,9 @@ public class Browser implements IApplication {
      */
     public String getCurrentUrl() {
         localizedLogger.info("loc.browser.getUrl");
-        return getDriver().getCurrentUrl();
+        String value = getDriver().getCurrentUrl();
+        localizedLogger.info("loc.browser.url.value", value);
+        return value;
     }
 
     /**

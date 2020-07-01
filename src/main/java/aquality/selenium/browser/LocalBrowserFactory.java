@@ -2,8 +2,11 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.utilities.IActionRetrier;
 import io.github.bonigarcia.wdm.Architecture;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,16 +14,17 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-public class LocalBrowserFactory implements BrowserFactory {
+public class LocalBrowserFactory extends BrowserFactory {
 
     private final IBrowserProfile browserProfile;
 
-    public LocalBrowserFactory() {
-        this.browserProfile = AqualityServices.getBrowserProfile();
+    public LocalBrowserFactory(IActionRetrier actionRetrier, IBrowserProfile browserProfile, ILocalizedLogger localizedLogger) {
+        super(actionRetrier, browserProfile, localizedLogger);
+        this.browserProfile = browserProfile;
     }
 
     @Override
-    public Browser getBrowser() {
+    public RemoteWebDriver getDriver() {
         BrowserName browserName = browserProfile.getBrowserName();
         RemoteWebDriver driver;
         IDriverSettings driverSettings = browserProfile.getDriverSettings();
@@ -47,10 +51,16 @@ public class LocalBrowserFactory implements BrowserFactory {
                 driver = getDriver(SafariDriver.class, driverSettings.getCapabilities());
                 break;
             default:
-                throw getLoggedWrongBrowserNameException();
+                throw new IllegalArgumentException(String.format("Browser [%s] is not supported.", browserName));
         }
-        logBrowserIsReady(browserName);
+        return driver;
+    }
 
-        return new Browser(driver);
+    private  <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, Capabilities capabilities) {
+        try {
+            return driverClass.getDeclaredConstructor(Capabilities.class).newInstance(capabilities);
+        } catch (ReflectiveOperationException e) {
+            throw new UnsupportedOperationException(String.format("Cannot instantiate driver with type '%1$s'.", driverClass), e);
+        }
     }
 }
