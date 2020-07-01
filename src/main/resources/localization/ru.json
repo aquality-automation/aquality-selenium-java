@@ -1,9 +1,9 @@
 {
-  "loc.browser.arguments.setting" : "Установка стартовых аргументов браузера из JSON файла: %s",
+  "loc.browser.arguments" : "Получили стартовые аргументы браузера из settings файла: %s",
   "loc.browser.back" : "Возврат на предыдущую страницу",
   "loc.browser.forward" : "Перейти на следующую страницу",
-  "loc.browser.caps.setting" : "Установка capabilities браузера из JSON файла: %s",
-  "loc.browser.config.setting" : "Установка настроек браузера из JSON файла: %s",
+  "loc.browser.capabilities" : "Получили capabilities браузера из settings файла: %s",
+  "loc.browser.options" : "Получили опции профиля браузера из settings файла: %s",
   "loc.browser.driver.quit" : "Закрытие драйвера браузера",
   "loc.browser.getUrl" : "Получение ссылки текущей страницы",
   "loc.browser.grid" : "Установка драйвера браузера из Selenium Grid хаба",

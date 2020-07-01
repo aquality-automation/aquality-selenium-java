@@ -15,6 +15,7 @@ public class IExplorerSettings extends DriverSettings {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         setCapabilities(internetExplorerOptions);
         internetExplorerOptions.setPageLoadStrategy(getPageLoadStrategy());
+        internetExplorerOptions.addCommandSwitches(getBrowserStartArguments().toArray(new String[0]));
         return internetExplorerOptions;
     }
 

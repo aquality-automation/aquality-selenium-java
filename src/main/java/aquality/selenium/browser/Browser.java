@@ -147,8 +147,8 @@ public class Browser implements IApplication {
      * @param timeout seconds to wait
      */
     public void setPageLoadTimeout(Duration timeout) {
-        localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
         if (!getBrowserName().equals(BrowserName.SAFARI)) {
+            localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
             getDriver().manage().timeouts().pageLoadTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
         }
     }
@@ -160,8 +160,8 @@ public class Browser implements IApplication {
      * @param timeout duration of time to wait
      */
     public void setImplicitWaitTimeout(Duration timeout) {
-        localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
         if (!timeout.equals(getImplicitWaitTimeout())) {
+            localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
             getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
             implicitTimeout = timeout;
         }

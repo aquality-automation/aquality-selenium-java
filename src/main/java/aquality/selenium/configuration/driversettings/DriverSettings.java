@@ -5,12 +5,14 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import io.github.bonigarcia.wdm.Architecture;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 abstract class DriverSettings implements IDriverSettings {
 
     private final ISettingsFile settingsFile;
+    private Map<String, Object> options;
+    private Map<String, Object> capabilities;
+    private List<String> startArguments;
 
     protected DriverSettings(ISettingsFile settingsFile) {
         this.settingsFile = settingsFile;
@@ -27,23 +32,46 @@ abstract class DriverSettings implements IDriverSettings {
         return settingsFile;
     }
 
-    Map<String, Object> getBrowserOptions() {
-        return getSettingsFile().getMap(getDriverSettingsPath(CapabilityType.OPTIONS));
+    protected Map<String, Object> getBrowserOptions() {
+        if (options == null) {
+            String path = getDriverSettingsPath(CapabilityType.OPTIONS);
+            options = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+            logCollection("loc.browser.options", options);
+        }
+        return options;
     }
 
-    private Map<String, Object> getBrowserCapabilities() {
-        return getSettingsFile().getMap(getDriverSettingsPath(CapabilityType.CAPABILITIES));
+    protected Map<String, Object> getBrowserCapabilities() {
+        if (capabilities == null) {
+            String path = getDriverSettingsPath(CapabilityType.CAPABILITIES);
+            capabilities = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+            logCollection("loc.browser.capabilities", capabilities);
+        }
+        return capabilities;
     }
 
-    List<String> getBrowserStartArguments() {
-        return getSettingsFile().getList(getDriverSettingsPath(CapabilityType.START_ARGS));
+    protected List<String> getBrowserStartArguments() {
+        if (startArguments == null) {
+            String path = getDriverSettingsPath(CapabilityType.START_ARGS);
+            boolean isValuePresent;
+            try {
+                getSettingsFile().getValue(path);
+                isValuePresent = true;
+            }
+            catch (IllegalArgumentException e) {
+                isValuePresent = false;
+            }
+            startArguments = isValuePresent ? getSettingsFile().getList(path) : Collections.emptyList();
+            logCollection("loc.browser.arguments", startArguments);
+        }
+        return startArguments;
     }
 
-    void logStartArguments() {
-        List<String> startArguments = getBrowserStartArguments();
-        if (!startArguments.isEmpty()) {
+    @SafeVarargs
+    private final <T> void logCollection(String messageKey, final T... elements) {
+        if (elements.length > 0) {
             AqualityServices.getLocalizedLogger()
-                    .info("loc.browser.arguments.setting", String.join(" ", startArguments));
+                    .debug(messageKey,System.lineSeparator() + StringUtils.join(elements));
         }
     }
 

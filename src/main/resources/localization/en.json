@@ -1,9 +1,9 @@
 {
-  "loc.browser.arguments.setting" : "Setting browser start arguments from JSON file: %s",
+  "loc.browser.arguments" : "Got browser start arguments from settings file: %s",
   "loc.browser.back" : "Return to previous page",
   "loc.browser.forward" : "Proceed to the next page",
-  "loc.browser.caps.setting" : "Setting browser capabilities from JSON file: %s",
-  "loc.browser.config.setting" : "Setting browser profile options from JSON file: %s",
+  "loc.browser.capabilities" : "Got browser capabilities from settings file: %s",
+  "loc.browser.options" : "Got browser profile options from settings file: %s",
   "loc.browser.driver.quit" : "Closing browser",
   "loc.browser.getUrl" : "Getting current url",
   "loc.browser.grid" : "Setting webdriver from selenium grid hub",

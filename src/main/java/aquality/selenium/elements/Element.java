@@ -121,8 +121,8 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public IElementStateProvider state() {
         return getElementCacheConfiguration().isEnabled()
-                ? new CachedElementStateProvider(getLocator(), getConditionalWait(), getCache(), getLocalizedLogger())
-                : new ElementStateProvider(getLocator(), getConditionalWait(), getElementFinder());
+                ? new CachedElementStateProvider(getLocator(), getConditionalWait(), getCache(), logElementState())
+                : new ElementStateProvider(getLocator(), getConditionalWait(), getElementFinder(), logElementState());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package aquality.selenium.localization;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.LocalizationManager;
 import aquality.selenium.core.logging.Logger;
@@ -49,6 +50,16 @@ public class LocalizationManagerTests {
     }
 
     private LocalizationManager getLocalizationManager(String language) {
-        return new LocalizationManager(() -> language, Logger.getInstance());
+        return new LocalizationManager(new ILoggerConfiguration() {
+            @Override
+            public String getLanguage() {
+                return language;
+            }
+
+            @Override
+            public boolean logPageSource() {
+                return true;
+            }
+        }, Logger.getInstance());
     }
 }

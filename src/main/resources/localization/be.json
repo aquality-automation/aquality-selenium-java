@@ -1,9 +1,9 @@
 {
-  "loc.browser.arguments.setting" : "Задаем стартавыя аргументы браўзэра з JSON файла: %s",
+  "loc.browser.arguments" : "Атрымалі стартавыя аргументы браўзэра з settings файла: %s",
   "loc.browser.back" : "Вяртаемся да папярэдняй старонкі",
   "loc.browser.forward" : "Пераходзім да наступнай старонкі",
-  "loc.browser.caps.setting" : "Задаем capabilities браўзэра з JSON файла: %s",
-  "loc.browser.config.setting" : "Задаем опцыі профіля браўзэра з JSON файла: %s",
+  "loc.browser.capabilities" : "Атрымалі capabilities браўзэра з settings файла: %s",
+  "loc.browser.options" : "Атрымалі опцыі профіля браўзэра з settings файла: %s",
   "loc.browser.driver.quit" : "Закрываем браўзэр",
   "loc.browser.getUrl" : "Атрымліваем адрас бягучай старонкі",
   "loc.browser.grid" : "Усталёўваем драйвэр для браўзэра з Selenium Grid hub",
