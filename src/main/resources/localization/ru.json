@@ -65,7 +65,7 @@
   "loc.scrolling.js" : "Скроллинг посредством JavaScript",
   "loc.selecting.value" : "Выбор значения - '%s'",
   "loc.send.text" : "Ввод текста - '%s'",
-  "loc.setting.value" : "Установка значения '%s'",
+  "loc.setting.value" : "Установка значения - '%s'",
   "loc.text.clearing" : "Очистка",
   "loc.text.submitting": "Отправка",
   "loc.text.field" : "Текстовое поле",
