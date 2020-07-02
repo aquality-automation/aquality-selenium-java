@@ -18,6 +18,8 @@
   "loc.browser.page.load.timeout" : "Задаем таймаўт загрузкі старонкі: '%1$s' сек.",
   "loc.browser.implicit.timeout" : "Задаем implicit(няяўны) таймаўт: '%1$s' сек.",
   "loc.browser.script.timeout" : "Задаем таймаўт на выкананне асінхронных javascript камандаў: '%1$s' сек.",
+  "loc.browser.alert.accept" : "Пацвярджаем дзеянне ў акне апавяшчэння",
+  "loc.browser.alert.decline" : "Адхіляем дзеянне ў акне апавяшчэння",
   "loc.browser.alert.fail" : "Памылка пры ўзаемадзеянні з акном апавяшчэння",
   "loc.button" : "Кнопка",
   "loc.checkbox" : "Чэкбокс",

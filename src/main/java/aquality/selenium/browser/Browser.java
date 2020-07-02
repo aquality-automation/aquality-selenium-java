@@ -308,9 +308,11 @@ public class Browser implements IApplication {
      * @param text        message to send
      */
     public void handlePromptAlert(AlertActions alertAction, String text) {
+        localizedLogger.info(String.format("loc.browser.alert.%s", alertAction.name().toLowerCase()));
         try {
             Alert alert = getDriver().switchTo().alert();
             if (text != null && !text.isEmpty()) {
+                localizedLogger.info("loc.send.text", text);
                 getDriver().switchTo().alert().sendKeys(text);
             }
             if (alertAction.equals(AlertActions.ACCEPT)) {

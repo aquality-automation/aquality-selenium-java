@@ -18,6 +18,8 @@
   "loc.browser.page.load.timeout" : "Установка таймаута для загрузки страниц: '%1$s' секунд",
   "loc.browser.implicit.timeout" : "Установка implicit(неявного) таймаута: '%1$s' секунд",
   "loc.browser.script.timeout" : "Установка таймаута на выполнение асинхронных javascript вызовов: '%1$s' секунд",
+  "loc.browser.alert.accept" : "Подтверждение действия во всплывающем окне",
+  "loc.browser.alert.decline" : "Отклонение действия во всплывающем окне",
   "loc.browser.alert.fail" : "Не удалось обработать всплывающее окно",
   "loc.button" : "Кнопка",
   "loc.checkbox" : "Чекбокс",

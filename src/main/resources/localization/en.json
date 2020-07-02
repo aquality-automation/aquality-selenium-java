@@ -18,6 +18,8 @@
   "loc.browser.page.load.timeout" : "Set '%1$s' timeout in seconds for loading of pages",
   "loc.browser.implicit.timeout" : "Set implicit timeout '%1$s' in seconds",
   "loc.browser.script.timeout" : "Set async javascript execution timeout '%1$s' in seconds",
+  "loc.browser.alert.accept" : "Accepting browser alert",
+  "loc.browser.alert.decline" : "Dismissing browser alert",
   "loc.browser.alert.fail" : "Failed while handling alert",
   "loc.button" : "Button",
   "loc.checkbox" : "CheckBox",

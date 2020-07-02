@@ -69,7 +69,9 @@ abstract class DriverSettings implements IDriverSettings {
 
     @SafeVarargs
     private final <T> void logCollection(String messageKey, final T... elements) {
-        if (elements.length > 0) {
+        if (elements.length == 1 &&
+                (elements[0] instanceof Map && !((Map)elements[0]).isEmpty()
+                || elements[0] instanceof List && !((List)elements[0]).isEmpty())) {
             AqualityServices.getLocalizedLogger()
                     .debug(messageKey,System.lineSeparator() + StringUtils.join(elements));
         }
