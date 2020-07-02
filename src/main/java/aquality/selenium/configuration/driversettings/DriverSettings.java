@@ -107,17 +107,16 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     void setCapabilities(MutableCapabilities options) {
-        Map<String, Object> capabilities = getBrowserCapabilities();
-        capabilities.forEach(options::setCapability);
+        getBrowserCapabilities().forEach(options::setCapability);
     }
 
     @Override
     public String getDownloadDir() {
-        Map<String, Object> options = getBrowserOptions();
+        Map<String, Object> browserOptions = getBrowserOptions();
         String key = getDownloadDirCapabilityKey();
 
-        if (options.containsKey(key)) {
-            String pathInConfiguration = String.valueOf(options.get(key));
+        if (browserOptions.containsKey(key)) {
+            String pathInConfiguration = String.valueOf(browserOptions.get(key));
             return pathInConfiguration.contains(".") ? getAbsolutePath(pathInConfiguration) : pathInConfiguration;
         }
         throw new IllegalArgumentException(String.format("failed to find %s profiles option for %s", key, getBrowserName()));
