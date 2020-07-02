@@ -186,6 +186,7 @@ public class Browser implements IApplication {
      * Use setPageLoadTimeout to configure your own timeout from code if it is necessary
      */
     public void waitForPageToLoad() {
+        localizedLogger.info("loc.browser.page.wait");
         ExpectedCondition<Boolean> condition = d -> {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;

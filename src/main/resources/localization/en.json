@@ -11,6 +11,7 @@
   "loc.browser.grid.fail" : "Driver setting  from Selenium Grid hub was failed",
   "loc.browser.maximize" : "Maximizing browser window",
   "loc.browser.navigate" : "Navigate to url - '%s'",
+  "loc.browser.page.wait": "Waiting for page to load",
   "loc.browser.page.timeout" : "Page loading timed out",
   "loc.browser.ready" : "Browser '%1$s' ready...",
   "loc.browser.refresh" : "Refreshing the page",

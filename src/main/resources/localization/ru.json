@@ -11,6 +11,7 @@
   "loc.browser.grid.fail" : "Ошибка при получении драйвера из Selenium Grid хаба",
   "loc.browser.maximize" : "Открытие браузера на всё окно",
   "loc.browser.navigate" : "Переход на страницу - '%s'",
+  "loc.browser.page.wait": "Ожидание загрузки страницы",
   "loc.browser.page.timeout" : "Таймаут загрузки страницы",
   "loc.browser.ready" : "Браузер '%1$s' готов...",
   "loc.browser.refresh" : "Обновление страницы",
