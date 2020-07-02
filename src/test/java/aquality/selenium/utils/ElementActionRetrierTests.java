@@ -51,7 +51,7 @@ public class ElementActionRetrierTests {
                 throw handledException;
             }
         });
-        DurationSample durationSample = new DurationSample( timer.duration(), pollingInterval, 200);
+        DurationSample durationSample = new DurationSample( timer.duration(), pollingInterval, 299);
 
         assertTrue(durationSample.isDurationBetweenLimits(), durationSample.toString());
     }

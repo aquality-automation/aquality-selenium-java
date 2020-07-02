@@ -4,6 +4,7 @@ import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
 import org.openqa.selenium.SessionNotCreatedException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
@@ -29,7 +30,11 @@ public abstract class BrowserFactory implements IBrowserFactory {
     public Browser getBrowser() {
         RemoteWebDriver driver = actionRetrier.doWithRetry(
                 this::getDriver,
-                Arrays.asList(SessionNotCreatedException.class, UnreachableBrowserException.class, WebDriverException.class));
+                Arrays.asList(
+                        SessionNotCreatedException.class,
+                        UnreachableBrowserException.class,
+                        WebDriverException.class,
+                        TimeoutException.class));
         Browser browser = new Browser(driver);
         localizedLogger.info("loc.browser.ready", browserProfile.getBrowserName().toString());
         return browser;
