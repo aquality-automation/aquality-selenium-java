@@ -24,7 +24,7 @@ public class LocalBrowserFactory extends BrowserFactory {
     }
 
     @Override
-    public RemoteWebDriver getDriver() {
+    protected RemoteWebDriver getDriver() {
         BrowserName browserName = browserProfile.getBrowserName();
         RemoteWebDriver driver;
         IDriverSettings driverSettings = browserProfile.getDriverSettings();

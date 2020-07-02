@@ -34,20 +34,23 @@ abstract class DriverSettings implements IDriverSettings {
 
     protected Map<String, Object> getBrowserOptions() {
         if (options == null) {
-            String path = getDriverSettingsPath(CapabilityType.OPTIONS);
-            options = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
-            logCollection("loc.browser.options", options);
+            options = getMapOrEmpty(CapabilityType.OPTIONS);
         }
         return options;
     }
 
     protected Map<String, Object> getBrowserCapabilities() {
         if (capabilities == null) {
-            String path = getDriverSettingsPath(CapabilityType.CAPABILITIES);
-            capabilities = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
-            logCollection("loc.browser.capabilities", capabilities);
+            capabilities = getMapOrEmpty(CapabilityType.CAPABILITIES);
         }
         return capabilities;
+    }
+
+    private Map<String, Object> getMapOrEmpty(CapabilityType capabilityType) {
+        String path = getDriverSettingsPath(capabilityType);
+        Map<String, Object> map = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+        logCollection("loc.browser.".concat(capabilityType.getKey()), map);
+        return map;
     }
 
     protected List<String> getBrowserStartArguments() {
@@ -70,8 +73,8 @@ abstract class DriverSettings implements IDriverSettings {
     @SafeVarargs
     private final <T> void logCollection(String messageKey, final T... elements) {
         if (elements.length == 1 &&
-                (elements[0] instanceof Map && !((Map)elements[0]).isEmpty()
-                || elements[0] instanceof List && !((List)elements[0]).isEmpty())) {
+                ((elements[0] instanceof Map && !((Map)elements[0]).isEmpty())
+                || (elements[0] instanceof List && !((List)elements[0]).isEmpty()))) {
             AqualityServices.getLocalizedLogger()
                     .debug(messageKey,System.lineSeparator() + StringUtils.join(elements));
         }
