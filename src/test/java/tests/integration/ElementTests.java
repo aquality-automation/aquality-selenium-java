@@ -104,6 +104,31 @@ public class ElementTests extends BaseTest {
     }
 
     @Test
+    public void testCheckBoxJsActions() {
+        navigate(TheInternetPage.CHECKBOXES);
+        String checkboxLocator = "//input[@type='checkbox']";
+        List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
+                ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
+        ICheckBox checkBox1 = checkBoxes.get(0);
+        ICheckBox checkBox2 = checkBoxes.get(1);
+        boolean stateFirst = checkBox1.getJsActions().isChecked();
+        boolean stateSecond = checkBox2.getJsActions().isChecked();
+        boolean state = checkBox1.getJsActions().isChecked();
+        checkBox1.getJsActions().toggle();
+        Assert.assertEquals(checkBox1.getJsActions().isChecked(), !state);
+
+        checkBox2.getJsActions().uncheck();
+        Assert.assertFalse(checkBox2.getJsActions().isChecked());
+
+        AqualityServices.getBrowser().refresh();
+        checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ElementType.CHECKBOX);
+        checkBox1 = checkBoxes.get(0);
+        checkBox2 = checkBoxes.get(1);
+        Assert.assertEquals(checkBox1.getJsActions().isChecked(), stateFirst, "");
+        Assert.assertEquals(checkBox2.getJsActions().isChecked(), stateSecond, "");
+    }
+
+    @Test
     public void testLink() {
         navigate(TheInternetPage.REDIRECTOR);
         ILink link = elementFactory.getLink(By.id("redirect"), "Link");
