@@ -108,7 +108,9 @@ public class JsActions {
      */
     public boolean isElementOnScreen() {
         logElementAction("loc.is.present.js");
-        return (boolean) executeScript(JavaScript.ELEMENT_IS_ON_SCREEN, element);
+        boolean value = (boolean) executeScript(JavaScript.ELEMENT_IS_ON_SCREEN, element);
+        logElementAction("loc.is.present.value", value);
+        return value;
     }
 
     /**
@@ -147,7 +149,9 @@ public class JsActions {
      */
     public String getXPath() {
         logElementAction("loc.get.xpath.js");
-        return (String) executeScript(JavaScript.GET_ELEMENT_XPATH, element);
+        String value = (String) executeScript(JavaScript.GET_ELEMENT_XPATH, element);
+        logElementAction("loc.xpath.value", value);
+        return value;
     }
 
     protected Object executeScript(JavaScript javaScript, IElement element) {

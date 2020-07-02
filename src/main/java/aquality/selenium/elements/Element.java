@@ -173,7 +173,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
 
     @Override
     public void sendKeys(Keys key) {
-        logElementAction("loc.text.sending.keys", Keys.class.getSimpleName().concat(".").concat(key.name()));
+        logElementAction("loc.text.sending.key", Keys.class.getSimpleName().concat(".").concat(key.name()));
         doWithRetry(() -> getElement().sendKeys(key));
     }
 }
