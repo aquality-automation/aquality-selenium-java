@@ -109,7 +109,9 @@ public class Browser implements IApplication {
      */
     public String getCurrentUrl() {
         localizedLogger.info("loc.browser.getUrl");
-        return getDriver().getCurrentUrl();
+        String value = getDriver().getCurrentUrl();
+        localizedLogger.info("loc.browser.url.value", value);
+        return value;
     }
 
     /**
@@ -147,8 +149,8 @@ public class Browser implements IApplication {
      * @param timeout seconds to wait
      */
     public void setPageLoadTimeout(Duration timeout) {
-        localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
         if (!getBrowserName().equals(BrowserName.SAFARI)) {
+            localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
             getDriver().manage().timeouts().pageLoadTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
         }
     }
@@ -160,8 +162,8 @@ public class Browser implements IApplication {
      * @param timeout duration of time to wait
      */
     public void setImplicitWaitTimeout(Duration timeout) {
-        localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
         if (!timeout.equals(getImplicitWaitTimeout())) {
+            localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
             getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
             implicitTimeout = timeout;
         }
@@ -184,6 +186,7 @@ public class Browser implements IApplication {
      * Use setPageLoadTimeout to configure your own timeout from code if it is necessary
      */
     public void waitForPageToLoad() {
+        localizedLogger.info("loc.browser.page.wait");
         ExpectedCondition<Boolean> condition = d -> {
             Object result = executeScript(JavaScript.IS_PAGE_LOADED.getScript());
             return result instanceof Boolean && (Boolean) result;
@@ -305,9 +308,11 @@ public class Browser implements IApplication {
      * @param text        message to send
      */
     public void handlePromptAlert(AlertActions alertAction, String text) {
+        localizedLogger.info(String.format("loc.browser.alert.%s", alertAction.name().toLowerCase()));
         try {
             Alert alert = getDriver().switchTo().alert();
             if (text != null && !text.isEmpty()) {
+                localizedLogger.info("loc.send.text", text);
                 getDriver().switchTo().alert().sendKeys(text);
             }
             if (alertAction.equals(AlertActions.ACCEPT)) {

@@ -19,6 +19,6 @@ public class Link extends Element implements ILink {
 
     @Override
     public String getHref() {
-        return getAttribute("href");
+        return getAttribute("href", HighlightState.DEFAULT);
     }
 }

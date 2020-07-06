@@ -4,6 +4,7 @@ import aquality.selenium.browser.JavaScript;
 import aquality.selenium.elements.interfaces.IComboBox;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComboBoxJsActions extends JsActions {
 
@@ -18,7 +19,10 @@ public class ComboBoxJsActions extends JsActions {
      */
     public List<String> getTexts() {
         logElementAction("loc.combobox.get.texts.js");
-        return (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
+        List<String> values = (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
+        logElementAction("loc.combobox.texts",
+                values.stream().map(value -> String.format("'%s'", value)).collect(Collectors.joining(", ")));
+        return values;
     }
 
     /**
@@ -28,7 +32,9 @@ public class ComboBoxJsActions extends JsActions {
      */
     public String getSelectedText() {
         logElementAction("loc.combobox.get.text.js");
-        return (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
+        String text = (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
+        logElementAction("loc.combobox.selected.text", text);
+        return text;
     }
 
     /**

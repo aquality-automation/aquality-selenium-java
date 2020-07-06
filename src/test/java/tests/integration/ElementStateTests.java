@@ -18,8 +18,8 @@ import java.time.Duration;
 
 public class ElementStateTests extends BaseTest {
 
-    private final Duration customWaitTime = Duration.ofSeconds(2L);
-    private final double customDeviation = 2;
+    private final Duration customWaitTime = Duration.ofSeconds(5L);
+    private final double customDeviation = 5;
     private final double defaultDeviation = 7;
     private final IElementFactory elementFactory = AqualityServices.get(IElementFactory.class);
     private final ILabel lblNotExists = elementFactory.getLabel(By.xpath("//div[@class='not exist element']"), "not exist element");

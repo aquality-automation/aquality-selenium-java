@@ -5,12 +5,14 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import io.github.bonigarcia.wdm.Architecture;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 abstract class DriverSettings implements IDriverSettings {
 
     private final ISettingsFile settingsFile;
+    private Map<String, Object> options;
+    private Map<String, Object> capabilities;
+    private List<String> startArguments;
 
     protected DriverSettings(ISettingsFile settingsFile) {
         this.settingsFile = settingsFile;
@@ -27,23 +32,51 @@ abstract class DriverSettings implements IDriverSettings {
         return settingsFile;
     }
 
-    Map<String, Object> getBrowserOptions() {
-        return getSettingsFile().getMap(getDriverSettingsPath(CapabilityType.OPTIONS));
+    protected Map<String, Object> getBrowserOptions() {
+        if (options == null) {
+            options = getMapOrEmpty(CapabilityType.OPTIONS);
+        }
+        return options;
     }
 
-    private Map<String, Object> getBrowserCapabilities() {
-        return getSettingsFile().getMap(getDriverSettingsPath(CapabilityType.CAPABILITIES));
+    protected Map<String, Object> getBrowserCapabilities() {
+        if (capabilities == null) {
+            capabilities = getMapOrEmpty(CapabilityType.CAPABILITIES);
+        }
+        return capabilities;
     }
 
-    List<String> getBrowserStartArguments() {
-        return getSettingsFile().getList(getDriverSettingsPath(CapabilityType.START_ARGS));
+    private Map<String, Object> getMapOrEmpty(CapabilityType capabilityType) {
+        String path = getDriverSettingsPath(capabilityType);
+        Map<String, Object> map = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+        logCollection("loc.browser.".concat(capabilityType.getKey()), map);
+        return map;
     }
 
-    void logStartArguments() {
-        List<String> startArguments = getBrowserStartArguments();
-        if (!startArguments.isEmpty()) {
+    protected List<String> getBrowserStartArguments() {
+        if (startArguments == null) {
+            String path = getDriverSettingsPath(CapabilityType.START_ARGS);
+            boolean isValuePresent;
+            try {
+                getSettingsFile().getValue(path);
+                isValuePresent = true;
+            }
+            catch (IllegalArgumentException e) {
+                isValuePresent = false;
+            }
+            startArguments = isValuePresent ? getSettingsFile().getList(path) : Collections.emptyList();
+            logCollection("loc.browser.arguments", startArguments);
+        }
+        return startArguments;
+    }
+
+    @SafeVarargs
+    private final <T> void logCollection(String messageKey, final T... elements) {
+        if (elements.length == 1 &&
+                ((elements[0] instanceof Map && !((Map)elements[0]).isEmpty())
+                || (elements[0] instanceof List && !((List)elements[0]).isEmpty()))) {
             AqualityServices.getLocalizedLogger()
-                    .info("loc.browser.arguments.setting", String.join(" ", startArguments));
+                    .debug(messageKey,System.lineSeparator() + StringUtils.join(elements));
         }
     }
 
@@ -79,17 +112,16 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     void setCapabilities(MutableCapabilities options) {
-        Map<String, Object> capabilities = getBrowserCapabilities();
-        capabilities.forEach(options::setCapability);
+        getBrowserCapabilities().forEach(options::setCapability);
     }
 
     @Override
     public String getDownloadDir() {
-        Map<String, Object> options = getBrowserOptions();
+        Map<String, Object> browserOptions = getBrowserOptions();
         String key = getDownloadDirCapabilityKey();
 
-        if (options.containsKey(key)) {
-            String pathInConfiguration = String.valueOf(options.get(key));
+        if (browserOptions.containsKey(key)) {
+            String pathInConfiguration = String.valueOf(browserOptions.get(key));
             return pathInConfiguration.contains(".") ? getAbsolutePath(pathInConfiguration) : pathInConfiguration;
         }
         throw new IllegalArgumentException(String.format("failed to find %s profiles option for %s", key, getBrowserName()));

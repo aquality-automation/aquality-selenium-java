@@ -1,6 +1,7 @@
 package aquality.selenium.forms;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -47,13 +48,23 @@ public abstract class Form {
     }
 
     /**
-     * Return form state for form locator
+     * Provides ability to get form's state (whether it is displayed, exists or not) and respective waiting functions.
+     * @return state provider of the current form.
+     */
+    public IElementStateProvider state() {
+        return getFormLabel().state();
+    }
+
+    /**
+     * @deprecated This method will be removed in the future release. Use state().waitForDisplayed() if needed.
+     * Return form state for form locator, waiting for the form to be displayed.
      *
      * @return True - form is opened,
      * False - form is not opened
      */
+    @Deprecated
     public boolean isDisplayed() {
-        return getFormLabel().state().waitForDisplayed();
+        return state().waitForDisplayed();
     }
 
     /**

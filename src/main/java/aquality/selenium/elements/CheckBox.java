@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 /**
  * Class describing the checkbox
  */
-public class CheckBox extends Element implements ICheckBox {
+public class CheckBox extends CheckableElement implements ICheckBox {
 
     protected CheckBox(final By locator, final String name, final ElementState state) {
         super(locator, name, state);
@@ -29,13 +29,8 @@ public class CheckBox extends Element implements ICheckBox {
     }
 
     @Override
-    public boolean isChecked() {
-        return getState();
-    }
-
-    @Override
     public void toggle() {
-        setState(!isChecked());
+        setState(!getState());
     }
 
     @Override
@@ -53,10 +48,5 @@ public class CheckBox extends Element implements ICheckBox {
         if (state != getState()) {
             click();
         }
-    }
-
-    private boolean getState() {
-        logElementAction("loc.checkbox.get.state");
-        return getElement().isSelected();
     }
 }

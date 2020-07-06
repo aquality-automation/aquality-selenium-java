@@ -37,7 +37,6 @@ public class ChromeSettings extends DriverSettings {
     }
 
     private void setChromeArgs(ChromeOptions options) {
-        logStartArguments();
         for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }

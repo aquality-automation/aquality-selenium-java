@@ -48,7 +48,6 @@ public class FirefoxSettings extends DriverSettings {
     }
 
     private void setFirefoxArgs(FirefoxOptions options) {
-        logStartArguments();
         for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }

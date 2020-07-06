@@ -6,10 +6,15 @@ import aquality.selenium.browser.BrowserModule;
 import aquality.selenium.browser.IBrowserFactory;
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.driversettings.FirefoxSettings;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.utilities.ISettingsFile;
 import com.google.inject.Provider;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.SessionNotCreatedException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -22,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -46,7 +52,14 @@ public class BrowserFactoryTests {
         return () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
             WebDriverManager.firefoxdriver().setup();
-            FirefoxDriver driver = new FirefoxDriver(firefoxSettings.getCapabilities().setHeadless(true));
+            FirefoxDriver driver = AqualityServices.get(IActionRetrier.class).doWithRetry(
+                    () -> new FirefoxDriver(firefoxSettings.getCapabilities().setHeadless(true)),
+                    Arrays.asList(
+                            SessionNotCreatedException.class,
+                            UnreachableBrowserException.class,
+                            WebDriverException.class,
+                            TimeoutException.class));
+
             return new Browser(driver);
         };
     }

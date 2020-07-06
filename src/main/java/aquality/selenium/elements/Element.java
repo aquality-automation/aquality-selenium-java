@@ -115,28 +115,34 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     public String getText(HighlightState highlightState) {
         logElementAction("loc.get.text");
         getJsActions().highlightElement();
-        return doWithRetry(() -> getElement().getText());
+        String value = doWithRetry(() -> getElement().getText());
+        logElementAction("loc.text.value", value);
+        return value;
     }
 
     @Override
     public IElementStateProvider state() {
         return getElementCacheConfiguration().isEnabled()
-                ? new CachedElementStateProvider(getLocator(), getConditionalWait(), getCache(), getLocalizedLogger())
-                : new ElementStateProvider(getLocator(), getConditionalWait(), getElementFinder());
+                ? new CachedElementStateProvider(getLocator(), getConditionalWait(), getCache(), logElementState())
+                : new ElementStateProvider(getLocator(), getConditionalWait(), getElementFinder(), logElementState());
     }
 
     @Override
     public String getAttribute(final String attr, HighlightState highlightState) {
         logElementAction("loc.el.getattr", attr);
         getJsActions().highlightElement();
-        return doWithRetry(() -> getElement().getAttribute(attr));
+        String value = doWithRetry(() -> getElement().getAttribute(attr));
+        logElementAction("loc.el.attr.value", attr, value);
+        return value;
     }
 
     @Override
     public String getCssValue(final String propertyName, HighlightState highlightState) {
         logElementAction("loc.el.cssvalue", propertyName);
         getJsActions().highlightElement();
-        return doWithRetry(() -> getElement().getCssValue(propertyName));
+        String value = doWithRetry(() -> getElement().getCssValue(propertyName));
+        logElementAction("loc.el.attr.value", propertyName, value);
+        return value;
     }
 
     @Override
@@ -167,7 +173,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
 
     @Override
     public void sendKeys(Keys key) {
-        logElementAction("loc.text.sending.keys", Keys.class.getSimpleName().concat(".").concat(key.name()));
+        logElementAction("loc.text.sending.key", Keys.class.getSimpleName().concat(".").concat(key.name()));
         doWithRetry(() -> getElement().sendKeys(key));
     }
 }

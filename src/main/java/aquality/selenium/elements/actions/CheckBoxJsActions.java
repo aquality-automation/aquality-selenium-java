@@ -13,14 +13,6 @@ public class CheckBoxJsActions extends JsActions {
     }
 
     /**
-     * @return state of checkbox using .checked property of element
-     */
-    public boolean getState() {
-        logElementAction("loc.checkbox.get.state");
-        return Boolean.valueOf(executeScript(JavaScript.GET_CHECKBOX_STATE, element).toString());
-    }
-
-    /**
      * Performs check action on the element.
      */
     public void check() {
@@ -39,14 +31,17 @@ public class CheckBoxJsActions extends JsActions {
      * @return true if checked, false otherwise
      */
     public boolean isChecked() {
-        return getState();
+        logElementAction("loc.checkable.get.state");
+        boolean state = getState();
+        logElementAction("loc.checkable.state", state);
+        return state;
     }
 
     /**
      * Performs toggle action on the element.
      */
     public void toggle() {
-        setState(!isChecked());
+        setState(!getState());
     }
 
     /**
@@ -59,5 +54,12 @@ public class CheckBoxJsActions extends JsActions {
         if (state != getState()) {
             click();
         }
+    }
+
+    /**
+     * @return state of checkbox using .checked property of element
+     */
+    private boolean getState() {
+        return Boolean.valueOf(executeScript(JavaScript.GET_CHECKBOX_STATE, element).toString());
     }
 }

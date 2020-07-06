@@ -2,9 +2,11 @@ package aquality.selenium.browser;
 
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
-import aquality.selenium.configuration.driversettings.IDriverSettings;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.utilities.IActionRetrier;
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -17,27 +19,24 @@ import java.net.URL;
 import java.time.Duration;
 
 
-public class RemoteBrowserFactory implements BrowserFactory {
+public class RemoteBrowserFactory extends BrowserFactory {
 
     private final IBrowserProfile browserProfile;
     private final ITimeoutConfiguration timeoutConfiguration;
+    private final ILocalizedLogger localizedLogger;
 
-    public RemoteBrowserFactory() {
-        browserProfile = AqualityServices.getBrowserProfile();
-        timeoutConfiguration = AqualityServices.get(ITimeoutConfiguration.class);
+    public RemoteBrowserFactory(IActionRetrier actionRetrier, IBrowserProfile browserProfile,
+                                ITimeoutConfiguration timeoutConfiguration, ILocalizedLogger localizedLogger) {
+        super(actionRetrier, browserProfile, localizedLogger);
+        this.browserProfile = browserProfile;
+        this.timeoutConfiguration = timeoutConfiguration;
+        this.localizedLogger = localizedLogger;
     }
 
     @Override
-    public Browser getBrowser() {
-        BrowserName browserName = browserProfile.getBrowserName();
-        IDriverSettings driverSettings = browserProfile.getDriverSettings();
-        logBrowserIsReady(browserName);
-        RemoteWebDriver driver = createRemoteDriver(driverSettings.getCapabilities());
-        return new Browser(driver);
-    }
-
-    private RemoteWebDriver createRemoteDriver(Capabilities capabilities) {
-        AqualityServices.getLocalizedLogger().info("loc.browser.grid");
+    protected RemoteWebDriver getDriver() {
+        Capabilities capabilities = browserProfile.getDriverSettings().getCapabilities();
+        localizedLogger.info("loc.browser.grid");
 
         ClientFactory clientFactory = new ClientFactory();
         CommandExecutor commandExecutor = new HttpCommandExecutor(
@@ -45,9 +44,16 @@ public class RemoteBrowserFactory implements BrowserFactory {
                 browserProfile.getRemoteConnectionUrl(),
                 clientFactory);
 
-        RemoteWebDriver driver = getDriver(RemoteWebDriver.class, commandExecutor, capabilities);
-        driver.setFileDetector(new LocalFileDetector());
-        return driver;
+        try {
+            RemoteWebDriver driver = new RemoteWebDriver(commandExecutor, capabilities);
+            driver.setFileDetector(new LocalFileDetector());
+            return driver;
+        }
+        catch (WebDriverException e) {
+            localizedLogger.fatal("loc.browser.grid.fail", e);
+            throw e;
+        }
+
     }
 
     class ClientFactory implements Factory {
