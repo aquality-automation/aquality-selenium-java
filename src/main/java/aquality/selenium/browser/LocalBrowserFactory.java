@@ -4,8 +4,8 @@ import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
-import io.github.bonigarcia.wdm.Architecture;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.config.Architecture;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -32,19 +32,19 @@ public class LocalBrowserFactory extends BrowserFactory {
         Architecture systemArchitecture = driverSettings.getSystemArchitecture();
         switch (browserName) {
             case CHROME:
-                WebDriverManager.chromedriver().version(webDriverVersion).setup();
+                WebDriverManager.chromedriver().driverVersion(webDriverVersion).setup();
                 driver = getDriver(ChromeDriver.class, driverSettings.getCapabilities());
                 break;
             case FIREFOX:
-                WebDriverManager.firefoxdriver().version(webDriverVersion).setup();
+                WebDriverManager.firefoxdriver().driverVersion(webDriverVersion).setup();
                 driver = getDriver(FirefoxDriver.class, driverSettings.getCapabilities());
                 break;
             case IEXPLORER:
-                WebDriverManager.iedriver().architecture(systemArchitecture).version(webDriverVersion).setup();
+                WebDriverManager.iedriver().architecture(systemArchitecture).driverVersion(webDriverVersion).setup();
                 driver = getDriver(InternetExplorerDriver.class, driverSettings.getCapabilities());
                 break;
             case EDGE:
-                WebDriverManager.edgedriver().version(webDriverVersion).setup();
+                WebDriverManager.edgedriver().driverVersion(webDriverVersion).setup();
                 driver = getDriver(EdgeDriver.class, driverSettings.getCapabilities());
                 break;
             case SAFARI:
@@ -56,7 +56,7 @@ public class LocalBrowserFactory extends BrowserFactory {
         return driver;
     }
 
-    private  <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, Capabilities capabilities) {
+    private <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, Capabilities capabilities) {
         try {
             return driverClass.getDeclaredConstructor(Capabilities.class).newInstance(capabilities);
         } catch (ReflectiveOperationException e) {
