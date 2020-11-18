@@ -1,7 +1,5 @@
 package aquality.selenium.elements.interfaces;
 
-import java.util.List;
-
 public interface IMultiChoiceComboBox extends IComboBox {
 
     /**
