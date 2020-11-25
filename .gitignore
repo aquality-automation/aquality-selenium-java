@@ -1,5 +1,5 @@
-# Compiled class file
-*.class
+# Build results
+target
 
 # Log file
 *.log
