@@ -7,9 +7,9 @@
             <class name="tests.integration.AlertTests"/>
             <class name="tests.integration.BrowserTests"/>
             <class name="tests.integration.BrowserTabsTests"/>
-            <class name="tests.integration.ElementTests"/>
+            <class name="tests.integration.elements.ElementTests"/>
             <class name="tests.integration.ElementStateTests"/>
-            <class name="tests.integration.HiddenElementsTests"/>
+            <class name="tests.integration.elements.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
             <class name="tests.usecases.TestTimeoutConfiguration"/>
         </classes>

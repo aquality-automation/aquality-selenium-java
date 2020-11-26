@@ -1,4 +1,4 @@
-package tests.integration;
+package tests.integration.elements;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.elements.ElementState;

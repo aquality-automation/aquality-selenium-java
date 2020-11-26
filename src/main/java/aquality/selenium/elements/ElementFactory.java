@@ -39,6 +39,7 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
         typesMap.put(IButton.class, Button.class);
         typesMap.put(ICheckBox.class, CheckBox.class);
         typesMap.put(IComboBox.class, ComboBox.class);
+        typesMap.put(IMultiChoiceComboBox.class, MultiChoiceComboBox.class);
         typesMap.put(ILabel.class, Label.class);
         typesMap.put(ILink.class, Link.class);
         typesMap.put(IRadioButton.class, RadioButton.class);

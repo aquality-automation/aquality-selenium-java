@@ -49,7 +49,7 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByContainingText(String text) {
         logElementAction("loc.combobox.select.by.text", text);
-        selectOptionThatContains(WebElement::getText,
+        applySelectFuncToOptionThatContains(WebElement::getText,
                 Select::selectByVisibleText,
                 text);
     }
@@ -57,12 +57,12 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByContainingValue(String value) {
         logElementAction(LOG_SELECTING_VALUE, value);
-        selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
+        applySelectFuncToOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
                 Select::selectByValue,
                 value);
     }
 
-    private void selectOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
+    protected void applySelectFuncToOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
         doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
