@@ -14,7 +14,7 @@ public class EdgeSettings extends DriverSettings {
     public EdgeOptions getCapabilities() {
         EdgeOptions edgeOptions = new EdgeOptions();
         setCapabilities(edgeOptions);
-        edgeOptions.setPageLoadStrategy(getPageLoadStrategy().toString());
+        edgeOptions.setPageLoadStrategy(getPageLoadStrategy());
         return edgeOptions;
     }
 

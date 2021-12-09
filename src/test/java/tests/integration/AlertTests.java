@@ -24,7 +24,7 @@ public class AlertTests extends BaseTest {
     public void testShouldBePossibleToAcceptAlert() {
         alertsForm.getBtnJsAlert().click();
         getBrowser().handleAlert(AlertActions.ACCEPT);
-        Assert.assertEquals(alertsForm.getLblResult().getText(), "You successfuly clicked an alert");
+        Assert.assertEquals(alertsForm.getLblResult().getText(), "You successfully clicked an alert");
     }
 
     @Test
