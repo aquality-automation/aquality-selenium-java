@@ -5,10 +5,9 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import io.github.bonigarcia.wdm.config.Architecture;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
