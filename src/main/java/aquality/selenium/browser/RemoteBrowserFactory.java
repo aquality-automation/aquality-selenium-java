@@ -60,7 +60,6 @@ public class RemoteBrowserFactory extends BrowserFactory {
         private final Factory defaultClientFactory = Factory.createDefault();
         private final Duration timeoutCommand = timeoutConfiguration.getCommand();
 
-
         public HttpClient createClient(URL url) {
             return defaultClientFactory.createClient(ClientConfig.defaultConfig().baseUrl(url).readTimeout(timeoutCommand));
         }

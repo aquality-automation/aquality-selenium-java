@@ -82,7 +82,7 @@ public class BrowserTests extends BaseTest {
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testShouldBePossibleToSetPageLoadTimeout(){
-        getBrowser().setPageLoadTimeout(Duration.ofSeconds(1L));
+        getBrowser().setPageLoadTimeout(Duration.ofMillis(300));
         String urlAquality = "https://github.com/aquality-automation";
         getBrowser().goTo(urlAquality);
     }
