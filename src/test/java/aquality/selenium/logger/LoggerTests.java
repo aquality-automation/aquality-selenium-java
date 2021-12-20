@@ -1,7 +1,12 @@
 package aquality.selenium.logger;
 
 import aquality.selenium.core.logging.Logger;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
@@ -22,7 +27,7 @@ public class LoggerTests {
     private final static String testMessage = "test message";
     private final static String testExceptionText = "test exception";
     private final static String log4jFieldName = "log4J";
-    private org.apache.log4j.Logger log4j;
+    private org.apache.logging.log4j.core.Logger log4j;
     private Appender appender;
     private File appenderFile;
 
@@ -30,14 +35,15 @@ public class LoggerTests {
     private void addMessagesAppender() throws IOException {
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
-        Logger.getInstance().addAppender(appender);
+        appender.start();
+        LoggerContext.getContext(false).getRootLogger().addAppender(appender);
     }
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);
         log4jField.setAccessible(true);
-        log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(Logger.getInstance())).get();
+        log4j = ((ThreadLocal<org.apache.logging.log4j.core.Logger>) log4jField.get(Logger.getInstance())).get();
     }
 
     @Test
@@ -54,7 +60,8 @@ public class LoggerTests {
 
     @Test
     public void testShouldBePossibleToRemoveAppender() throws IOException {
-        Logger.getInstance().addAppender(appender).removeAppender(appender).info(testMessage);
+        appender.stop();
+        LoggerContext.getContext(false).getRootLogger().removeAppender(appender);
         if(appenderFile.exists()){
             assertFalse(isFileContainsText(appenderFile, testMessage), String.format("New appender is not removed from log4j. File '%s' is not empty.", appenderFile.getPath()));
         }
@@ -153,10 +160,12 @@ public class LoggerTests {
     }
 
     private Appender getFileAppender(File file) throws IOException {
-        Layout layout = new PatternLayout("%m%n");
-        RollingFileAppender fileAppender = new RollingFileAppender(layout, file.getPath());
-        fileAppender.setName("test");
-        fileAppender.setAppend(true);
+        Layout layout = PatternLayout.newBuilder().withPattern("%m%n").build();
+        FileAppender fileAppender = FileAppender.newBuilder().setName("test")
+                .setLayout(layout)
+                .withFileName(file.getPath())
+                .withAppend(true)
+                .build();
         return fileAppender;
     }
 

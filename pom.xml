@@ -70,19 +70,10 @@
     </developers>
 
     <dependencies>
-       <!-- <dependency>
+        <dependency>
             <groupId>com.github.aquality-automation</groupId>
             <artifactId>aquality-selenium-core</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-
--->
-        <dependency>
-            <groupId>autotest-core-local</groupId>
-            <artifactId>autotest-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/.idea/libraries/aquality-selenium-core-1.2.0.jar</systemPath>
+            <version>2.0.1</version>
         </dependency>
 
         <dependency>
@@ -107,24 +98,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.14.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.26</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.26</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -176,7 +149,8 @@
                     <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
                     <reuseForks>false</reuseForks>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/aquality-selenium-core-1.2.0-jar-with-dependencies.jar.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/aquality-selenium-core-1.2.0-jar-with-dependencies.jar.xml
+                        </suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
