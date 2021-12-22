@@ -157,8 +157,7 @@
                     <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
                     <reuseForks>false</reuseForks>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/aquality-selenium-core-1.2.0-jar-with-dependencies.jar.xml
-                        </suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/TestSuite.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
