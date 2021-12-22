@@ -6,6 +6,7 @@ import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeGroups;
@@ -69,56 +70,56 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testInfoMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().info(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.INFO);
+        Configurator.setRootLevel(Level.INFO);
         Logger.getInstance().info(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testInfoMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().info("%s", testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.INFO);
+        Configurator.setRootLevel(Level.INFO);
         Logger.getInstance().info("%s", testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug("%s", testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug("%s", testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithThrowableShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug(testMessage, new Exception(testExceptionText));
         assertFalse(isFileContainsText(appenderFile, testMessage));
         assertFalse(isFileContainsText(appenderFile, testExceptionText));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug(testMessage, new Exception(testExceptionText));
         assertTrue(isFileContainsText(appenderFile, testMessage));
         assertTrue(isFileContainsText(appenderFile, testExceptionText));
@@ -126,23 +127,23 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testWarnMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.ERROR);
+        Configurator.setRootLevel(Level.ERROR);
         Logger.getInstance().warn(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().warn(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testFatalMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.OFF);
+        Configurator.setRootLevel(Level.OFF);
         Logger.getInstance().fatal(testMessage, new Exception(testExceptionText));
         assertFalse(isFileContainsText(appenderFile, testMessage));
         assertFalse(isFileContainsText(appenderFile, testExceptionText));
 
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().fatal(testMessage, new Exception(testExceptionText));
         assertTrue(isFileContainsText(appenderFile, testMessage));
         assertTrue(isFileContainsText(appenderFile, testExceptionText));
@@ -150,11 +151,11 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testErrorMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().error(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.ERROR);
+        Configurator.setRootLevel(Level.ERROR);
         Logger.getInstance().error(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
