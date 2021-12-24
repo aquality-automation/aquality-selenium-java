@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
+import utils.SiteLoader;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 
@@ -22,7 +23,7 @@ public class ActionTests extends BaseTest {
     protected void beforeMethod() {
         AqualityServices.getBrowser().getDriver().manage().window().maximize();
         if (!AqualityServices.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
-            AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+            SiteLoader.openAutomationPracticeSite();
         }
     }
 

@@ -1,6 +1,5 @@
 package tests.integration;
 
-import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -11,13 +10,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.BaseTest;
+import utils.SiteLoader;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 
 public class HiddenElementsTests extends BaseTest {
 
@@ -26,7 +24,7 @@ public class HiddenElementsTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        SiteLoader.openAutomationPracticeSite();
     }
 
 

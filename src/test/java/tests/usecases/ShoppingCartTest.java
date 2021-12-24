@@ -1,17 +1,20 @@
 package tests.usecases;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.*;
 import automationpractice.modals.ProceedToCheckoutModal;
+import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
+import utils.SiteLoader;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
+import java.util.NoSuchElementException;
 
 public class ShoppingCartTest extends BaseTest {
     private static final String USER_EMAIL_TEMPLATE = "john+%s@doe.com";
@@ -20,7 +23,20 @@ public class ShoppingCartTest extends BaseTest {
 
     @Test
     public void testShoppingCart() {
-        AqualityServices.getBrowser().getDriver().navigate().to(URL_AUTOMATIONPRACTICE);
+        //website automationpractice.com is out of resources and unable to proceed operations sometimes
+        AqualityServices.get(IActionRetrier.class).doWithRetry(this::actionsOnAutomationPractice,
+                new ArrayList<Class<? extends Throwable>>() {{
+                    add(NoSuchElementException.class);
+                    add(TimeoutException.class);
+                    add(AssertionError.class);
+                }});
+    }
+
+    public void actionsOnAutomationPractice() {
+        getBrowser().quit();
+        SiteLoader.openAutomationPracticeSite();
+        getBrowser().maximize();
+
         SoftAssert softAssert = new SoftAssert();
 
         SliderForm sliderForm = new SliderForm();
@@ -70,7 +86,7 @@ public class ShoppingCartTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    private String getUserEmail(){
+    private String getUserEmail() {
         return String.format(USER_EMAIL_TEMPLATE, System.currentTimeMillis());
     }
 }

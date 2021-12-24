@@ -14,13 +14,13 @@ import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
 import utils.DurationSample;
+import utils.SiteLoader;
 import utils.Timer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
 
 
@@ -174,7 +174,7 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToScrollWindowBy(){
-        getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        SiteLoader.openAutomationPracticeSite();
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
         int formHeight = sliderForm.getSize().getHeight();

@@ -8,15 +8,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
+import utils.SiteLoader;
 
 public class ElementExistNotDisplayedTest extends BaseTest {
 
     @BeforeMethod
     @Override
     public void beforeMethod() {
-        AqualityServices.getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        SiteLoader.openAutomationPracticeSite();
     }
 
     @Test
