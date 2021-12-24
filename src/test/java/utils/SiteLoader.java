@@ -22,7 +22,7 @@ public class SiteLoader {
                         return false;
                     }
                     return true;
-                }, Duration.ofMinutes(2), Duration.ofSeconds(10),
+                }, Duration.ofMinutes(3), Duration.ofSeconds(15),
                 String.format("Failed to load [%1$s] website, [%2$s] is displayed", Constants.URL_AUTOMATIONPRACTICE, resourceLimitLabel.getName()));
     }
 }
