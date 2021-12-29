@@ -8,14 +8,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-import utils.SiteLoader;
+import utils.AutomationPracticeUtils;
 
 public class ElementExistNotDisplayedTest extends BaseTest {
 
     @BeforeMethod
     @Override
     public void beforeMethod() {
-        SiteLoader.openAutomationPracticeSite();
+        AutomationPracticeUtils.openAutomationPracticeSite();
     }
 
     @Test

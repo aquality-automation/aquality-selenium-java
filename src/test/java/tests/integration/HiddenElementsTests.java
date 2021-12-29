@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-import utils.SiteLoader;
+import utils.AutomationPracticeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class HiddenElementsTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        SiteLoader.openAutomationPracticeSite();
+        AutomationPracticeUtils.openAutomationPracticeSite();
     }
 
 

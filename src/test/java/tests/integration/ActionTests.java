@@ -12,7 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-import utils.SiteLoader;
+import utils.AutomationPracticeUtils;
 
 import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 
@@ -23,7 +23,7 @@ public class ActionTests extends BaseTest {
     protected void beforeMethod() {
         AqualityServices.getBrowser().getDriver().manage().window().maximize();
         if (!AqualityServices.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
-            SiteLoader.openAutomationPracticeSite();
+            AutomationPracticeUtils.openAutomationPracticeSite();
         }
     }
 
@@ -71,25 +71,31 @@ public class ActionTests extends BaseTest {
 
     @Test
     public void testSetFocus() {
-        new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
+        Runnable testSetFocus = () -> {
+            new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
 
-        ITextBox txbQuantity = new ProductForm().getTxbQuantity();
-        txbQuantity.getJsActions().setFocus();
-        txbQuantity.sendKeys(Keys.DELETE);
-        txbQuantity.sendKeys(Keys.BACK_SPACE);
-        Assert.assertEquals(txbQuantity.getValue(), "",
-                "value is not empty after sending Delete keys, probably setFocus() didn't worked");
+            ITextBox txbQuantity = new ProductForm().getTxbQuantity();
+            txbQuantity.getJsActions().setFocus();
+            txbQuantity.sendKeys(Keys.DELETE);
+            txbQuantity.sendKeys(Keys.BACK_SPACE);
+            Assert.assertEquals(txbQuantity.getValue(), "",
+                    "value is not empty after sending Delete keys, probably setFocus() didn't worked");
+        };
+        AutomationPracticeUtils.doOnAutomationPracticeWithRetry(testSetFocus);
     }
 
     @Test
     public void testSetValue() {
-        new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
+        Runnable testSetValue = () -> {
+            new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
 
-        ProductForm productForm = new ProductForm();
-        ITextBox txbQuantity = productForm.getTxbQuantity();
-        txbQuantity.getJsActions().setValue("2");
-        productForm.getBtnPlus().click();
-        Assert.assertEquals(txbQuantity.getValue(), "3",
-                "value of textbox is not correct, probably setValue() didn't worked");
+            ProductForm productForm = new ProductForm();
+            ITextBox txbQuantity = productForm.getTxbQuantity();
+            txbQuantity.getJsActions().setValue("2");
+            productForm.getBtnPlus().click();
+            Assert.assertEquals(txbQuantity.getValue(), "3",
+                    "value of textbox is not correct, probably setValue() didn't worked");
+        };
+        AutomationPracticeUtils.doOnAutomationPracticeWithRetry(testSetValue);
     }
 }

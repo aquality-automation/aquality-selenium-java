@@ -14,7 +14,7 @@ import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
 import utils.DurationSample;
-import utils.SiteLoader;
+import utils.AutomationPracticeUtils;
 import utils.Timer;
 
 import java.io.IOException;
@@ -174,7 +174,7 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToScrollWindowBy(){
-        SiteLoader.openAutomationPracticeSite();
+        AutomationPracticeUtils.openAutomationPracticeSite();
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
         int formHeight = sliderForm.getSize().getHeight();
