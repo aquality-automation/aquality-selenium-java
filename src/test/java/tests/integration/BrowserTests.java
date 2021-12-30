@@ -14,13 +14,13 @@ import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
 import utils.DurationSample;
+import utils.AutomationPracticeUtils;
 import utils.Timer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
 import static utils.FileUtil.getResourceFileByName;
 
 
@@ -82,7 +82,7 @@ public class BrowserTests extends BaseTest {
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testShouldBePossibleToSetPageLoadTimeout(){
-        getBrowser().setPageLoadTimeout(Duration.ofSeconds(1L));
+        getBrowser().setPageLoadTimeout(Duration.ofMillis(300));
         String urlAquality = "https://github.com/aquality-automation";
         getBrowser().goTo(urlAquality);
     }
@@ -174,7 +174,7 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToScrollWindowBy(){
-        getBrowser().goTo(URL_AUTOMATIONPRACTICE);
+        AutomationPracticeUtils.openAutomationPracticeSite();
         SliderForm sliderForm = new SliderForm();
         int initialY = sliderForm.getFormPointInViewPort().getY();
         int formHeight = sliderForm.getSize().getHeight();

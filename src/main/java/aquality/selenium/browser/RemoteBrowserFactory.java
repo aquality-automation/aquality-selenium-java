@@ -11,8 +11,8 @@ import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.remote.http.HttpClient;
-import org.openqa.selenium.remote.http.HttpClient.Builder;
 import org.openqa.selenium.remote.http.HttpClient.Factory;
 
 import java.net.URL;
@@ -60,14 +60,14 @@ public class RemoteBrowserFactory extends BrowserFactory {
         private final Factory defaultClientFactory = Factory.createDefault();
         private final Duration timeoutCommand = timeoutConfiguration.getCommand();
 
-        @Override
-        public Builder builder() {
-            return defaultClientFactory.builder().readTimeout(timeoutCommand);
+        public HttpClient createClient(URL url) {
+            return defaultClientFactory.createClient(ClientConfig.defaultConfig().baseUrl(url).readTimeout(timeoutCommand));
         }
 
         @Override
-        public HttpClient createClient(URL url) {
-            return this.builder().createClient(url);
+        public HttpClient createClient(ClientConfig clientConfig) {
+            clientConfig.readTimeout(timeoutCommand);
+            return defaultClientFactory.createClient(clientConfig);
         }
 
         @Override

@@ -42,7 +42,7 @@ public class Browser implements IApplication {
         this.timeouts = AqualityServices.get(ITimeoutConfiguration.class);
         webDriver = remoteWebDriver;
         this.implicitTimeout = timeouts.getImplicit();
-        getDriver().manage().timeouts().implicitlyWait(implicitTimeout.getSeconds(), TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(implicitTimeout);
         setPageLoadTimeout(timeouts.getPageLoad());
         setScriptTimeout(timeouts.getScript());
     }
@@ -151,7 +151,7 @@ public class Browser implements IApplication {
     public void setPageLoadTimeout(Duration timeout) {
         if (!getBrowserName().equals(BrowserName.SAFARI)) {
             localizedLogger.debug("loc.browser.page.load.timeout", timeout.getSeconds());
-            getDriver().manage().timeouts().pageLoadTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
+            getDriver().manage().timeouts().pageLoadTimeout(timeout);
         }
     }
 
@@ -164,7 +164,7 @@ public class Browser implements IApplication {
     public void setImplicitWaitTimeout(Duration timeout) {
         if (!timeout.equals(getImplicitWaitTimeout())) {
             localizedLogger.debug("loc.browser.implicit.timeout", timeout.getSeconds());
-            getDriver().manage().timeouts().implicitlyWait(timeout.getSeconds(), TimeUnit.SECONDS);
+            getDriver().manage().timeouts().implicitlyWait(timeout);
             implicitTimeout = timeout;
         }
     }
@@ -176,7 +176,7 @@ public class Browser implements IApplication {
      */
     public void setScriptTimeout(Duration timeout) {
         localizedLogger.debug("loc.browser.script.timeout", timeout.getSeconds());
-        getDriver().manage().timeouts().setScriptTimeout(timeout.getSeconds(), TimeUnit.SECONDS);
+        getDriver().manage().timeouts().scriptTimeout(timeout);
     }
 
     /**

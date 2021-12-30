@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Demo Test Suite" verbose="1">
-    <test name="Integration tests" parallel="methods" thread-count="10">
+    <test name="Integration tests" parallel="methods" thread-count="3">
         <classes>
             <class name="tests.integration.ActionTests"/>
             <class name="tests.integration.AlertTests"/>
@@ -14,7 +14,7 @@
             <class name="tests.usecases.TestTimeoutConfiguration"/>
         </classes>
     </test>
-    <test name="Use cases tests" parallel="methods" thread-count="10">
+    <test name="Use cases tests" parallel="methods" thread-count="3">
         <classes>
             <class name="tests.usecases.CustomElementTests"/>
             <class name="tests.usecases.FileDownloadingTests"/>

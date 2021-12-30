@@ -1,7 +1,13 @@
 package aquality.selenium.logger;
 
 import aquality.selenium.core.logging.Logger;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
@@ -22,7 +28,7 @@ public class LoggerTests {
     private final static String testMessage = "test message";
     private final static String testExceptionText = "test exception";
     private final static String log4jFieldName = "log4J";
-    private org.apache.log4j.Logger log4j;
+    private org.apache.logging.log4j.core.Logger log4j;
     private Appender appender;
     private File appenderFile;
 
@@ -30,14 +36,15 @@ public class LoggerTests {
     private void addMessagesAppender() throws IOException {
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
-        Logger.getInstance().addAppender(appender);
+        appender.start();
+        LoggerContext.getContext(false).getRootLogger().addAppender(appender);
     }
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);
         log4jField.setAccessible(true);
-        log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(Logger.getInstance())).get();
+        log4j = ((ThreadLocal<org.apache.logging.log4j.core.Logger>) log4jField.get(Logger.getInstance())).get();
     }
 
     @Test
@@ -54,7 +61,8 @@ public class LoggerTests {
 
     @Test
     public void testShouldBePossibleToRemoveAppender() throws IOException {
-        Logger.getInstance().addAppender(appender).removeAppender(appender).info(testMessage);
+        appender.stop();
+        LoggerContext.getContext(false).getRootLogger().removeAppender(appender);
         if(appenderFile.exists()){
             assertFalse(isFileContainsText(appenderFile, testMessage), String.format("New appender is not removed from log4j. File '%s' is not empty.", appenderFile.getPath()));
         }
@@ -62,56 +70,56 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testInfoMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().info(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.INFO);
+        Configurator.setRootLevel(Level.INFO);
         Logger.getInstance().info(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testInfoMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().info("%s", testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.INFO);
+        Configurator.setRootLevel(Level.INFO);
         Logger.getInstance().info("%s", testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug("%s", testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug("%s", testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithThrowableShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().debug(testMessage, new Exception(testExceptionText));
         assertFalse(isFileContainsText(appenderFile, testMessage));
         assertFalse(isFileContainsText(appenderFile, testExceptionText));
 
-        log4j.setLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG);
         Logger.getInstance().debug(testMessage, new Exception(testExceptionText));
         assertTrue(isFileContainsText(appenderFile, testMessage));
         assertTrue(isFileContainsText(appenderFile, testExceptionText));
@@ -119,23 +127,23 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testWarnMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.ERROR);
+        Configurator.setRootLevel(Level.ERROR);
         Logger.getInstance().warn(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.WARN);
+        Configurator.setRootLevel(Level.WARN);
         Logger.getInstance().warn(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     @Test(groups = "messages")
     public void testFatalMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.OFF);
+        Configurator.setRootLevel(Level.OFF);
         Logger.getInstance().fatal(testMessage, new Exception(testExceptionText));
         assertFalse(isFileContainsText(appenderFile, testMessage));
         assertFalse(isFileContainsText(appenderFile, testExceptionText));
 
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().fatal(testMessage, new Exception(testExceptionText));
         assertTrue(isFileContainsText(appenderFile, testMessage));
         assertTrue(isFileContainsText(appenderFile, testExceptionText));
@@ -143,20 +151,22 @@ public class LoggerTests {
 
     @Test(groups = "messages")
     public void testErrorMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
-        log4j.setLevel(Level.FATAL);
+        Configurator.setRootLevel(Level.FATAL);
         Logger.getInstance().error(testMessage);
         assertFalse(isFileContainsText(appenderFile, testMessage));
 
-        log4j.setLevel(Level.ERROR);
+        Configurator.setRootLevel(Level.ERROR);
         Logger.getInstance().error(testMessage);
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
     private Appender getFileAppender(File file) throws IOException {
-        Layout layout = new PatternLayout("%m%n");
-        RollingFileAppender fileAppender = new RollingFileAppender(layout, file.getPath());
-        fileAppender.setName("test");
-        fileAppender.setAppend(true);
+        Layout layout = PatternLayout.newBuilder().withPattern("%m%n").build();
+        FileAppender fileAppender = FileAppender.newBuilder().setName("test")
+                .setLayout(layout)
+                .withFileName(file.getPath())
+                .withAppend(true)
+                .build();
         return fileAppender;
     }
 
