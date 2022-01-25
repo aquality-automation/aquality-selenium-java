@@ -78,5 +78,12 @@
   "loc.browser.get.tab.handles": "Атрыманне спісу дэскрыптараў адкрытых укладак",
   "loc.browser.get.tab.handle": "Атрыманне дэскрыптара бягучай укладкі",
   "loc.browser.tab.open.new": "Адкрыццё новай укладкі",
-  "loc.browser.tab.close": "Закрыццё ўкладкі"
+  "loc.browser.tab.close": "Закрыццё ўкладкі",
+  "loc.browser.network.authentication.add": "Дадаем апрацоўшчык базавай аўтэнтыфікацыі",
+  "loc.browser.network.authentication.clear": "Ачысика апрацоўшчыка базавай аўтэнтыфікацыі",
+  "loc.browser.emulation.geolocation.set": "Дадаем перавызначэнне геалакацыі",
+  "loc.browser.emulation.geolocation.clear": "Ачыстка перавызначэння геалакацыі",
+  "loc.browser.network.event.requestsent.add": "Падпісваемся на падзею адпраўкі сеткавага запыта",
+  "loc.browser.network.event.responsereceived.add": "Падпісваемся на падзею атрымання сеткавага адказа",
+  "loc.browser.network.event.listeners.clear": "Ачыстка спіса адсочваных падзей"
 }

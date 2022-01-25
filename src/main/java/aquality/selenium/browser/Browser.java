@@ -1,5 +1,6 @@
 package aquality.selenium.browser;
 
+import aquality.selenium.browser.devtools.BrowserDevTools;
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
@@ -20,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class Browser implements IApplication {
@@ -367,5 +367,9 @@ public class Browser implements IApplication {
 
     private Duration getImplicitWaitTimeout() {
         return implicitTimeout;
+    }
+
+    public BrowserDevTools devTools() {
+        return new BrowserDevTools(getDriver(), browserProfile);
     }
 }

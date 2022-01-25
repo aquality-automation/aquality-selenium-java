@@ -78,5 +78,12 @@
   "loc.browser.get.tab.handles": "Getting tab handles",
   "loc.browser.get.tab.handle": "Getting current tab handle",
   "loc.browser.tab.open.new": "Opening new tab",
-  "loc.browser.tab.close": "Closing tab"
+  "loc.browser.tab.close": "Closing tab",
+  "loc.browser.network.authentication.add": "Adding Basic Authentication handler",
+  "loc.browser.network.authentication.clear": "Clearing Basic Authentication handlers",
+  "loc.browser.emulation.geolocation.set": "Setting Geolocation override",
+  "loc.browser.emulation.geolocation.clear": "Clearing Geolocation override",
+  "loc.browser.network.event.requestsent.add": "Subscribing to Network Request Sent event",
+  "loc.browser.network.event.responsereceived.add": "Subscribing to Network Response Received event",
+  "loc.browser.network.event.listeners.clear": "Clearing event listeners"
 }
