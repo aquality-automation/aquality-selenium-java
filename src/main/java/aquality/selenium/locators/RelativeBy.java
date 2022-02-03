@@ -30,6 +30,55 @@ public class RelativeBy extends By {
         return new RelativeBy(this.by);
     }
 
+    public RelativeBy below(IElement element) {
+        by = RelativeLocator.with(by).below(element.getElement());
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy below(WebElement element) {
+        by = RelativeLocator.with(by).below(element);
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy below(By by) {
+        this.by = RelativeLocator.with(this.by).below(by);
+        return new RelativeBy(this.by);
+    }
+
+    public RelativeBy toLeftOf(IElement element) {
+        by = RelativeLocator.with(by).toLeftOf(element.getElement());
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy toLeftOf(WebElement element) {
+        by = RelativeLocator.with(by).toLeftOf(element);
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy toLeftOf(By by) {
+        this.by = RelativeLocator.with(this.by).toLeftOf(by);
+        return new RelativeBy(this.by);
+    }
+
+    public RelativeBy toRightOf(IElement element) {
+        by = RelativeLocator.with(by).toRightOf(element.getElement());
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy toRightOf(WebElement element) {
+        by = RelativeLocator.with(by).toRightOf(element);
+        return new RelativeBy(by);
+    }
+
+    public RelativeBy toRightOf(By by) {
+        this.by = RelativeLocator.with(this.by).toRightOf(by);
+        return new RelativeBy(this.by);
+    }
+
+
+
+
+
     @Override
     public List<WebElement> findElements(SearchContext context) {
         return context.findElements(by);
