@@ -157,8 +157,6 @@ public class LocatorTests extends BaseTest {
         ILabel cellInRow5Column3 = elementFactory.getLabel(By.xpath(labelLocatorCellRow5Column3), "CellInRow5Column3");
         ILabel cellInRow7Column5 = elementFactory.getLabel(By.xpath(labelLocatorCellRow7Column5), "CellInRow7Column5");
 
-
-
         ILabel actualCellRaw5Column5GotWithAqualityElement =
                 elementFactory.getLabel(with(By.xpath(labelLocatorCell))
                         .above(cellInRow7Column5)
@@ -167,17 +165,40 @@ public class LocatorTests extends BaseTest {
                         .toLeftOf(cellInRow5Column7)
                         .above(cellInRow7Column5), nameElementRow5Column5);
 
+        ILabel actualCellRaw5Column5GotWithWebElement =
+                elementFactory.getLabel(with(By.xpath(labelLocatorCell))
+                        .above(cellInRow7Column5.getElement())
+                        .below(cellInRow3Column5.getElement())
+                        .toRightOf(cellInRow5Column3.getElement())
+                        .toLeftOf(cellInRow5Column7.getElement())
+                        .above(cellInRow7Column5.getElement())
+                        , nameElementRow5Column5);
 
-        String a = actualCellRaw5Column5GotWithAqualityElement.getText();
-        int ss=2;
+        ILabel actualCellRaw5Column5GotWithXpath =
+                elementFactory.getLabel(with(By.xpath(labelLocatorCell))
+                                .above(By.xpath(labelLocatorCellRow7Column5))
+                                .below(By.xpath(labelLocatorCellRow3Column5))
+                                .toRightOf(By.xpath(labelLocatorCellRow5Column3))
+                                .toLeftOf(By.xpath(labelLocatorCellRow5Column7))
+                                .above(By.xpath(labelLocatorCellRow7Column5))
+                        , nameElementRow5Column5);
 
+        WebElement actualWebElementCellRaw5Column5GotBySeleniumRelative =
+                getBrowser().getDriver().findElement(RelativeLocator.with(By.xpath(labelLocatorCell))
+                        .above(By.xpath(labelLocatorCellRow7Column5))
+                        .below(By.xpath(labelLocatorCellRow3Column5))
+                        .toRightOf(By.xpath(labelLocatorCellRow5Column3))
+                        .toLeftOf(By.xpath(labelLocatorCellRow5Column7))
+                        .above(By.xpath(labelLocatorCellRow7Column5))
+                        );
 
+        checkDifferentTypesWithSoftAssert(
+                actualCellRaw5Column5GotWithAqualityElement.getText(),
+                actualCellRaw5Column5GotWithXpath.getText(),
+                actualCellRaw5Column5GotWithWebElement.getText(),
+                actualWebElementCellRaw5Column5GotBySeleniumRelative.getText(),
+                cellInRow5Column5.getText());
     }
-
-
-
-
-
 
     public void checkDifferentTypesWithSoftAssert(String textAquality, String textWebElement, String textByXpath, String textSelenium, String expectedText) {
         SoftAssert softAssert = new SoftAssert();

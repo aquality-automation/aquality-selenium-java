@@ -8,7 +8,7 @@ import org.openqa.selenium.support.locators.RelativeLocator;
 
 import java.util.List;
 
-public class RelativeBy extends By {
+public class RelativeBy extends By implements IRelativeByAqualityElement, IRelativeByWebElement, IRelativeBy {
     private By by;
 
     public RelativeBy(By by) {
@@ -75,9 +75,35 @@ public class RelativeBy extends By {
         return new RelativeBy(this.by);
     }
 
+    public RelativeBy near(IElement element) {
+        by = RelativeLocator.with(by).near(element.getElement());
+        return new RelativeBy(this.by);
+    }
 
+    public RelativeBy near(WebElement element) {
+        by = RelativeLocator.with(by).near(element);
+        return new RelativeBy(this.by);
+    }
 
+    public RelativeBy near(By by) {
+        this.by = RelativeLocator.with(this.by).near(by);
+        return new RelativeBy(this.by);
+    }
 
+    public RelativeBy near(IElement element, int atMostDistanceInPixels) {
+        by = RelativeLocator.with(by).near(element.getElement(), atMostDistanceInPixels);
+        return new RelativeBy(this.by);
+    }
+
+    public RelativeBy near(WebElement element, int atMostDistanceInPixels) {
+        by = RelativeLocator.with(by).near(element, atMostDistanceInPixels);
+        return new RelativeBy(this.by);
+    }
+
+    public RelativeBy near(By by, int atMostDistanceInPixels) {
+        this.by = RelativeLocator.with(this.by).near(by, atMostDistanceInPixels);
+        return new RelativeBy(this.by);
+    }
 
     @Override
     public List<WebElement> findElements(SearchContext context) {
