@@ -77,12 +77,12 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
 
     public RelativeBy near(IElement element) {
         by = RelativeLocator.with(by).near(element.getElement());
-        return new RelativeBy(this.by);
+        return new RelativeBy(by);
     }
 
     public RelativeBy near(WebElement element) {
         by = RelativeLocator.with(by).near(element);
-        return new RelativeBy(this.by);
+        return new RelativeBy(by);
     }
 
     public RelativeBy near(By by) {
@@ -92,12 +92,12 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
 
     public RelativeBy near(IElement element, int atMostDistanceInPixels) {
         by = RelativeLocator.with(by).near(element.getElement(), atMostDistanceInPixels);
-        return new RelativeBy(this.by);
+        return new RelativeBy(by);
     }
 
     public RelativeBy near(WebElement element, int atMostDistanceInPixels) {
         by = RelativeLocator.with(by).near(element, atMostDistanceInPixels);
-        return new RelativeBy(this.by);
+        return new RelativeBy(by);
     }
 
     public RelativeBy near(By by, int atMostDistanceInPixels) {

@@ -12,6 +12,7 @@
             <class name="tests.integration.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
             <class name="tests.usecases.TestTimeoutConfiguration"/>
+            <class name="tests.integration.LocatorTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="3">
