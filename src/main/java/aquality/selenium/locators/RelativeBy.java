@@ -15,7 +15,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy above(IElement element) {
-        by = RelativeLocator.with(by).above(element.getElement());
+        by = RelativeLocator.with(by).above(element.getLocator());
         return new RelativeBy(by);
     }
 
@@ -30,7 +30,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy below(IElement element) {
-        by = RelativeLocator.with(by).below(element.getElement());
+        by = RelativeLocator.with(by).below(element.getLocator());
         return new RelativeBy(by);
     }
 
@@ -45,7 +45,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy toLeftOf(IElement element) {
-        by = RelativeLocator.with(by).toLeftOf(element.getElement());
+        by = RelativeLocator.with(by).toLeftOf(element.getLocator());
         return new RelativeBy(by);
     }
 
@@ -60,7 +60,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy toRightOf(IElement element) {
-        by = RelativeLocator.with(by).toRightOf(element.getElement());
+        by = RelativeLocator.with(by).toRightOf(element.getLocator());
         return new RelativeBy(by);
     }
 
@@ -75,7 +75,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy near(IElement element) {
-        by = RelativeLocator.with(by).near(element.getElement());
+        by = RelativeLocator.with(by).near(element.getLocator());
         return new RelativeBy(by);
     }
 
@@ -90,7 +90,7 @@ public class RelativeBy extends By implements IRelativeByAqualityElement, IRelat
     }
 
     public RelativeBy near(IElement element, int atMostDistanceInPixels) {
-        by = RelativeLocator.with(by).near(element.getElement(), atMostDistanceInPixels);
+        by = RelativeLocator.with(by).near(element.getLocator(), atMostDistanceInPixels);
         return new RelativeBy(by);
     }
 
