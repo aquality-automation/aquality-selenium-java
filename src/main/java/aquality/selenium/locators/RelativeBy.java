@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.locators.RelativeLocator;
-
 import java.util.List;
 
 public class RelativeBy extends By implements IRelativeByAqualityElement, IRelativeByWebElement, IRelativeBy {
