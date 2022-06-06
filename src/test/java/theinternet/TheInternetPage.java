@@ -10,7 +10,8 @@ public enum TheInternetPage {
     LOGIN,
     REDIRECTOR,
     STATUS_CODES,
-    TABLES;
+    TABLES,
+    CHALLENGING_DOM;
 
     private static final String BASE_URL = "http://the-internet.herokuapp.com/";
 
