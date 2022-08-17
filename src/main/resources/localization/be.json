@@ -80,7 +80,7 @@
   "loc.browser.tab.open.new": "Адкрыццё новай укладкі",
   "loc.browser.tab.close": "Закрыццё ўкладкі",
   "loc.browser.network.authentication.add": "Дадаем апрацоўшчык базавай аўтэнтыфікацыі",
-  "loc.browser.network.authentication.clear": "Ачысика апрацоўшчыка базавай аўтэнтыфікацыі",
+  "loc.browser.network.authentication.clear": "Ачыстка апрацоўшчыка базавай аўтэнтыфікацыі",
   "loc.browser.emulation.geolocation.set": "Дадаем перавызначэнне геалакацыі",
   "loc.browser.emulation.geolocation.clear": "Ачыстка перавызначэння геалакацыі",
   "loc.browser.network.event.requestsent.add": "Падпісваемся на падзею адпраўкі сеткавага запыта",

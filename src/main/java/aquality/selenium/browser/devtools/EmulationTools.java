@@ -3,7 +3,7 @@ package aquality.selenium.browser.devtools;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v96.emulation.Emulation;
+import org.openqa.selenium.devtools.v85.emulation.Emulation;
 
 import java.util.Optional;
 
@@ -15,7 +15,6 @@ public class EmulationTools {
     public EmulationTools(DevTools tools) {
         this.tools = tools;
     }
-
 
     public void setGeolocationOverride(double lat, double lng, int accuracy) {
         localizedLogger.info("loc.browser.emulation.geolocation.set");

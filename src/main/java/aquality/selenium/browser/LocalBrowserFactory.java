@@ -8,9 +8,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.Architecture;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
@@ -33,22 +35,22 @@ public class LocalBrowserFactory extends BrowserFactory {
         switch (browserName) {
             case CHROME:
                 WebDriverManager.chromedriver().driverVersion(webDriverVersion).setup();
-                driver = getDriver(ChromeDriver.class, driverSettings.getCapabilities());
+                driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
                 break;
             case FIREFOX:
                 WebDriverManager.firefoxdriver().driverVersion(webDriverVersion).setup();
-                driver = getDriver(FirefoxDriver.class, driverSettings.getCapabilities());
+                driver = getDriver(FirefoxDriver.class, driverSettings.getDriverOptions());
                 break;
             case IEXPLORER:
                 WebDriverManager.iedriver().architecture(systemArchitecture).driverVersion(webDriverVersion).setup();
-                driver = getDriver(InternetExplorerDriver.class, driverSettings.getCapabilities());
+                driver = getDriver(InternetExplorerDriver.class, driverSettings.getDriverOptions());
                 break;
             case EDGE:
                 WebDriverManager.edgedriver().driverVersion(webDriverVersion).setup();
-                driver = getDriver(EdgeDriver.class, driverSettings.getCapabilities());
+                driver = getDriver(EdgeDriver.class, driverSettings.getDriverOptions());
                 break;
             case SAFARI:
-                driver = getDriver(SafariDriver.class, driverSettings.getCapabilities());
+                driver = getDriver(SafariDriver.class, driverSettings.getDriverOptions());
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Browser [%s] is not supported.", browserName));
@@ -56,9 +58,9 @@ public class LocalBrowserFactory extends BrowserFactory {
         return driver;
     }
 
-    private <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, Capabilities capabilities) {
+    private <T extends RemoteWebDriver> T getDriver(Class<T> driverClass, AbstractDriverOptions<?> options) {
         try {
-            return driverClass.getDeclaredConstructor(Capabilities.class).newInstance(capabilities);
+            return driverClass.getDeclaredConstructor(AbstractDriverOptions.class).newInstance(options);
         } catch (ReflectiveOperationException e) {
             throw new UnsupportedOperationException(String.format("Cannot instantiate driver with type '%1$s'.", driverClass), e);
         }

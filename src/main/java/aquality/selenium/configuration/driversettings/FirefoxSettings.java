@@ -3,6 +3,7 @@ package aquality.selenium.configuration.driversettings;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class FirefoxSettings extends DriverSettings {
     }
 
     @Override
-    public FirefoxOptions getCapabilities() {
+    public AbstractDriverOptions<?> getDriverOptions() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         setCapabilities(firefoxOptions);
         setFirefoxPrefs(firefoxOptions);

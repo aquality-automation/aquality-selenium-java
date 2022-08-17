@@ -14,6 +14,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -53,7 +54,7 @@ public class BrowserFactoryTests {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
             WebDriverManager.firefoxdriver().setup();
             FirefoxDriver driver = AqualityServices.get(IActionRetrier.class).doWithRetry(
-                    () -> new FirefoxDriver(firefoxSettings.getCapabilities().setHeadless(true)),
+                    () -> new FirefoxDriver(((FirefoxOptions) firefoxSettings.getDriverOptions()).setHeadless(true)),
                     Arrays.asList(
                             SessionNotCreatedException.class,
                             UnreachableBrowserException.class,
@@ -73,6 +74,7 @@ public class BrowserFactoryTests {
         String downloadDir = AqualityServices.getBrowser().getDownloadDirectory();
         if (new File(downloadDirInitialized).exists()) {
             try (Stream<Path> walk = Files.walk(Paths.get(downloadDir))) {
+                //noinspection ResultOfMethodCallIgnored
                 walk.sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
@@ -89,7 +91,7 @@ public class BrowserFactoryTests {
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
 
-    private class CustomBrowserModule extends BrowserModule {
+    private static class CustomBrowserModule extends BrowserModule {
 
         CustomBrowserModule(Provider<Browser> applicationProvider) {
             super(applicationProvider);

@@ -5,7 +5,7 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import io.github.bonigarcia.wdm.config.Architecture;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import java.io.File;
@@ -129,7 +129,7 @@ abstract class DriverSettings implements IDriverSettings {
     private enum CapabilityType {
         CAPABILITIES("capabilities"), OPTIONS("options"), START_ARGS("startArguments");
 
-        private String key;
+        private final String key;
 
         CapabilityType(String key) {
             this.key = key;

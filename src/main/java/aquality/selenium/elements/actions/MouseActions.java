@@ -8,12 +8,12 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.function.UnaryOperator;
 
+import static aquality.selenium.browser.AqualityServices.getBrowser;
+
 public class MouseActions {
-
-    private IElement element;
-    private String type;
-    private String name;
-
+    private final IElement element;
+    private final String type;
+    private final String name;
 
     public MouseActions(IElement element, String type) {
         this.element = element;
@@ -56,12 +56,10 @@ public class MouseActions {
     }
 
     /**
-     * Double click on the item. Waiting for the end of renderiga
+     * Performs double-click on the element.
      */
     public void doubleClick() {
         infoLoc("loc.clicking.double");
-        AqualityServices.get(IElementActionRetrier.class).doWithRetry(
-                () -> (getBrowser().getDriver()).getMouse().mouseMove(element.getElement().getCoordinates()));
         performAction(actions -> actions.doubleClick(element.getElement()));
     }
 
@@ -78,9 +76,5 @@ public class MouseActions {
      */
     private void infoLoc(String key) {
         AqualityServices.getLocalizedLogger().infoElementAction(type, name, key);
-    }
-
-    private Browser getBrowser() {
-        return AqualityServices.getBrowser();
     }
 }

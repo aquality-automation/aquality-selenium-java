@@ -1,6 +1,7 @@
 package aquality.selenium.browser;
 
-import aquality.selenium.browser.devtools.BrowserDevTools;
+import aquality.selenium.browser.devtools.DevToolsHandling;
+import aquality.selenium.browser.devtools.NetworkHandling;
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
@@ -8,12 +9,12 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.apache.commons.io.IOUtils;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.OutputType;
+import org.apache.commons.lang3.NotImplementedException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Navigation;
+import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
@@ -369,7 +370,28 @@ public class Browser implements IApplication {
         return implicitTimeout;
     }
 
-    public BrowserDevTools devTools() {
-        return new BrowserDevTools(getDriver(), browserProfile);
+    /**
+     * Provides interface to handle DevTools for Chromium-based and Firefox drivers.
+     * @return an instance of {@link DevToolsHandling}
+     */
+    public DevToolsHandling devTools() {
+        WebDriver driver = getDriver();
+        if (!(driver instanceof HasDevTools)) {
+            driver = new Augmenter().augment(driver);
+        }
+        if (driver instanceof HasDevTools) {
+            return new DevToolsHandling((HasDevTools) driver);
+        }
+        else {
+            throw new NotImplementedException("DevTools protocol is not supported for current browser.");
+        }
+    }
+
+    /**
+     * Provides Network Handling functionality
+     * @return an instance of {@link NetworkHandling}
+     */
+    public NetworkHandling network() {
+        return devTools().network();
     }
 }

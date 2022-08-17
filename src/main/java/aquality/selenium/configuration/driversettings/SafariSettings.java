@@ -2,6 +2,7 @@ package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class SafariSettings extends DriverSettings {
@@ -11,7 +12,7 @@ public class SafariSettings extends DriverSettings {
     }
 
     @Override
-    public SafariOptions getCapabilities() {
+    public AbstractDriverOptions<?> getDriverOptions() {
         SafariOptions safariOptions = new SafariOptions();
         setCapabilities(safariOptions);
         return safariOptions;

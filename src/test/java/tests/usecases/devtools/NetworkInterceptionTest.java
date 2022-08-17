@@ -7,7 +7,6 @@ import org.openqa.selenium.remote.http.HttpResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-import theinternet.forms.FormAuthenticationForm;
 import theinternet.forms.WelcomeForm;
 
 import static org.openqa.selenium.remote.http.Contents.utf8String;
@@ -17,10 +16,10 @@ public class NetworkInterceptionTest extends BaseTest {
     private static final String SOME_PHRASE = "Creamy, delicious cheese!";
 
     @Test
-    public void RegisterBasicAuth() {
+    public void testAllRequestsInterception() {
         WelcomeForm welcomeForm = new WelcomeForm();
 
-        NetworkInterceptor interceptor = getBrowser().devTools().network().startNetworkInterceptor(new HttpResponse()
+        NetworkInterceptor interceptor = getBrowser().network().interceptAllRequests(new HttpResponse()
                 .setStatus(HttpStatus.SC_OK)
                 .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
                 .setContent(utf8String(SOME_PHRASE)));
