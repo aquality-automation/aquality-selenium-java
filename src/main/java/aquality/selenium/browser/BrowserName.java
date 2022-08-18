@@ -5,5 +5,8 @@ public enum BrowserName {
     EDGE,
     FIREFOX,
     IEXPLORER,
-    SAFARI
+    OPERA,
+    OTHER,
+    SAFARI,
+    YANDEX
 }

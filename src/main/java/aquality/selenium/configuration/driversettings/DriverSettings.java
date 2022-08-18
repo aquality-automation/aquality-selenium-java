@@ -69,6 +69,15 @@ abstract class DriverSettings implements IDriverSettings {
         return startArguments;
     }
 
+    protected String getBinaryLocation(String defaultBinaryLocation) {
+        String value = (String) getSettingsFile().getValueOrDefault(getDriverSettingsPath("binaryLocation"), defaultBinaryLocation);
+        int varStartIndex = value.indexOf('%');
+        int varEndIndex = value.lastIndexOf('%');
+        return varStartIndex == 0 && varStartIndex != varEndIndex
+                ? System.getenv(value.substring(varStartIndex + 1, varEndIndex)) + value.substring(varEndIndex + 1)
+                : getAbsolutePath(value);
+    }
+
     @SafeVarargs
     private final <T> void logCollection(String messageKey, final T... elements) {
         if (elements.length == 1 &&
@@ -140,7 +149,7 @@ abstract class DriverSettings implements IDriverSettings {
         }
     }
 
-    private String getAbsolutePath(String path) {
+    protected String getAbsolutePath(String path) {
         try {
             return new File(path).getCanonicalPath();
         } catch (IOException e) {

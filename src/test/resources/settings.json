@@ -1,11 +1,26 @@
 {
-  "browserName" : "chrome",
+  "browserName" : "opera",
   "isRemote": false,
   "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
 
   "driverSettings": {
     "chrome": {
+      "webDriverVersion": "latest",
+      "capabilities": {
+        "enableVNC": true
+      },
+      "options": {
+        "intl.accept_languages": "en",
+        "safebrowsing.enabled": "true",
+        "profile.default_content_settings.popups": "0",
+        "disable-popup-blocking": "true",
+        "download.prompt_for_download": "false",
+        "download.default_directory": "//home//selenium//downloads"
+      },
+      "startArguments": []
+    },
+    "edge": {
       "webDriverVersion": "latest",
       "capabilities": {
         "enableVNC": true
@@ -49,8 +64,40 @@
         "ignoreProtectedModeSettings": true
       }
     },
+    "opera": {
+      "webDriverVersion": "latest",
+      "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Programs\\Opera\\launcher.exe",
+      "capabilities": {
+        "enableVNC": true
+      },
+      "options": {
+        "intl.accept_languages": "en",
+        "safebrowsing.enabled": "true",
+        "profile.default_content_settings.popups": "0",
+        "disable-popup-blocking": "true",
+        "download.prompt_for_download": "false",
+        "download.default_directory": "./downloads"
+      },
+      "startArguments": ["--remote-debugging-port=9222", "--no-sandbox", "--disable-dev-shm-usage"]
+    },
     "safari": {
       "downloadDir": "/Users/username/Downloads"
+    },
+    "yandex": {
+      "webDriverVersion": "102.0.5005.61",
+      "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
+      "capabilities": {
+        "enableVNC": true
+      },
+      "options": {
+        "intl.accept_languages": "en",
+        "safebrowsing.enabled": "true",
+        "profile.default_content_settings.popups": "0",
+        "disable-popup-blocking": "true",
+        "download.prompt_for_download": "false",
+        "download.default_directory": "//home//selenium//downloads"
+      },
+      "startArguments": []
     }
   },
   "timeouts": {
