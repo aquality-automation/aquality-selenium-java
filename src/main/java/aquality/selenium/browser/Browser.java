@@ -33,6 +33,7 @@ public class Browser implements IApplication {
     private final ILocalizationManager localizationManager;
     private final ILocalizedLogger localizedLogger;
 
+    private DevToolsHandling devTools;
     private Duration implicitTimeout;
 
     public Browser(RemoteWebDriver remoteWebDriver) {
@@ -375,12 +376,16 @@ public class Browser implements IApplication {
      * @return an instance of {@link DevToolsHandling}
      */
     public DevToolsHandling devTools() {
+        if (devTools != null) {
+            return devTools;
+        }
         WebDriver driver = getDriver();
         if (!(driver instanceof HasDevTools)) {
             driver = new Augmenter().augment(driver);
         }
         if (driver instanceof HasDevTools) {
-            return new DevToolsHandling((HasDevTools) driver);
+            devTools = new DevToolsHandling((HasDevTools) driver);
+            return devTools;
         }
         else {
             throw new NotImplementedException("DevTools protocol is not supported for current browser.");

@@ -23,10 +23,11 @@ public class NetworkInterceptionTest extends BaseTest {
                 .setStatus(HttpStatus.SC_OK)
                 .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
                 .setContent(utf8String(SOME_PHRASE)));
+        Assert.assertNotNull(interceptor, "Network interceptor must not be null");
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertTrue(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
 
-        getBrowser().devTools().network().closeNetworkInterceptor(interceptor);
+        getBrowser().devTools().network().clearNetworkInterceptor();
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertFalse(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
     }
