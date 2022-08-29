@@ -22,6 +22,7 @@ public class DevToolsHandling {
     private DevTools session;
     private NetworkHandling network;
     private EmulationHandling emulation;
+    private JavaScriptHandling javaScript;
 
     /**
      * Initializes an instance of {@link DevToolsHandling}
@@ -30,6 +31,10 @@ public class DevToolsHandling {
     public DevToolsHandling(HasDevTools devToolsProvider) {
         this.devToolsProvider = devToolsProvider;
         this.logger = AqualityServices.getLocalizedLogger();
+    }
+
+    HasDevTools getDevToolsProvider() {
+        return devToolsProvider;
     }
 
     private DevTools getDevTools() {
@@ -164,5 +169,12 @@ public class DevToolsHandling {
             network = new NetworkHandling(this);
         }
         return network;
+    }
+
+    public JavaScriptHandling javaScript() {
+        if (javaScript == null) {
+            javaScript = new JavaScriptHandling(this);
+        }
+        return javaScript;
     }
 }
