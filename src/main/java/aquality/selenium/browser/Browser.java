@@ -1,6 +1,7 @@
 package aquality.selenium.browser;
 
 import aquality.selenium.browser.devtools.DevToolsHandling;
+import aquality.selenium.browser.devtools.JavaScriptHandling;
 import aquality.selenium.browser.devtools.NetworkHandling;
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
@@ -398,5 +399,13 @@ public class Browser implements IApplication {
      */
     public NetworkHandling network() {
         return devTools().network();
+    }
+
+    /**
+     * Provides JavaScript Monitoring functionality.
+     * @return an instance of {@link JavaScriptHandling}
+     */
+    public JavaScriptHandling javaScriptEngine() {
+        return devTools().javaScript();
     }
 }

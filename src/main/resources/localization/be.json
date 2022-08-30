@@ -95,5 +95,20 @@
   "loc.browser.network.filter.set": "Задаем фільтр сеткавых падзеяў",
   "loc.browser.network.event.requestsent.add": "Падпісваемся на падзею адпраўкі сеткавага запыта",
   "loc.browser.network.event.responsereceived.add": "Падпісваемся на падзею атрымання сеткавага адказа",
-  "loc.browser.network.interceptor.start": "Пачынаем перахоп сеткавых падзеяў"
+  "loc.browser.network.interceptor.start": "Пачынаем перахоп сеткавых падзеяў",
+  "loc.browser.javascript.initializationscripts.get": "Атрымліваем ініцыялізацыйныя скрыпты",
+  "loc.browser.javascript.scriptcallbackbindings.get": "Атрымліваем прывязкі зваротнага выкліку JavaScript",
+  "loc.browser.javascript.event.callbackexecuted.add": "Падпісваемся на падзею выканання іменаванай прывязкі зваротнага выкліку JavaScript",
+  "loc.browser.javascript.event.exceptionthrown.add": "Падпісваемся на падзею падзення памылкі JavaScript",
+  "loc.browser.javascript.event.consoleapicalled.add": "Падпісваемся на падзею выкліку API кансолі JavaScript",
+  "loc.browser.javascript.event.consoleapicalled.disable": "Адпісваемся ад падзеяў кансолі JavaScript",
+  "loc.browser.javascript.event.dommutated.add": "Падпісваемся на падзею зменаў у DOM",
+  "loc.browser.javascript.initializationscript.add": "Дадаем ініцыялізацыйны JavaScript з прыязным іменем '%1$s'",
+  "loc.browser.javascript.initializationscript.remove": "Выдаляем ініцыялізацыйны JavaScript з прыязным іменем '%1$s'",
+  "loc.browser.javascript.initializationscripts.clear": "Выдаляем усе ініцыялізацыйныя скрыпты",
+  "loc.browser.javascript.scriptcallbackbinding.add": "Дадаем прывязку зваротнага выкліку JavaScript з іменем '%1$s'",
+  "loc.browser.javascript.scriptcallbackbinding.remove": "Выдаляем прывязку зваротнага выкліку JavaScript з іменем '%1$s'",
+  "loc.browser.javascript.scriptcallbackbindings.clear": "Выдаляем усе прывязкі зваротнага выкліку JavaScript",
+  "loc.browser.javascript.clearall": "Выдаляем усе прывязкі зваротнага выкліку JavaScript і ініцыялізацыйныя скрыпты",
+  "loc.browser.javascript.reset": "Выдаляем усе прывязкі зваротнага выкліку JavaScript і ініцыялізацыйныя скрыпты, і спыняем чаканне падзеяў"
 }

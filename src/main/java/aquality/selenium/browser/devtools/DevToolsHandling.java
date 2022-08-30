@@ -8,9 +8,14 @@ import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.Event;
 import org.openqa.selenium.devtools.HasDevTools;
+import org.openqa.selenium.devtools.v85.performance.Performance;
+import org.openqa.selenium.devtools.v85.performance.model.Metric;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Wrapper for Selenium {@link DevTools} functionality.
@@ -171,10 +176,46 @@ public class DevToolsHandling {
         return network;
     }
 
+    /**
+     * Provides JavaScript Monitoring functionality.
+     * @return an instance of {@link JavaScriptHandling}
+     */
     public JavaScriptHandling javaScript() {
         if (javaScript == null) {
             javaScript = new JavaScriptHandling(this);
         }
         return javaScript;
+    }
+
+    /**
+     * Disable collecting and reporting metrics.
+     */
+    public void disablePerformanceMonitoring() {
+        sendCommand(Performance.disable());
+    }
+
+    /**
+     * Enable collecting and reporting metrics.
+     * @param timeDomain Time domain to use for collecting and reporting duration metrics.
+     *                   Allowed Values: timeTicks, threadTicks.
+     */
+    public void enablePerformanceMonitoring(String timeDomain) {
+        sendCommand(Performance.enable(Optional.of(Performance.EnableTimeDomain.fromString(timeDomain))));
+    }
+
+    /**
+     * Enable collecting and reporting metrics.
+     */
+    public void enablePerformanceMonitoring() {
+        sendCommand(Performance.enable(Optional.empty()));
+    }
+
+    /**
+     * Retrieve current values of run-time metrics.
+     * @return Current values for run-time metrics
+     */
+    public Map<String, Number> getPerformanceMetrics() {
+        List<Metric> metrics = sendCommand(Performance.getMetrics());
+        return metrics.stream().collect(Collectors.toMap(Metric::getName, Metric::getValue));
     }
 }

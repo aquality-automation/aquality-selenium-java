@@ -10,14 +10,13 @@ import org.openqa.selenium.devtools.events.DomMutationEvent;
 import org.openqa.selenium.devtools.idealized.Events;
 import org.openqa.selenium.devtools.idealized.Javascript;
 import org.openqa.selenium.devtools.idealized.ScriptId;
+import org.openqa.selenium.devtools.v85.page.Page;
+import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.logging.EventType;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.openqa.selenium.devtools.events.CdpEventTypes.consoleEvent;
@@ -33,6 +32,7 @@ public class JavaScriptHandling {
     private final Events<?, ?> events;
     private final ILocalizedLogger logger = AqualityServices.getLocalizedLogger();
     private final Set<String> bindings = new HashSet<>();
+    private final Set<InitializationScript> initializationScripts = new HashSet<>();
 
     /**
      * Initializes a new instance of the {@link JavaScriptHandling} class.
@@ -45,36 +45,94 @@ public class JavaScriptHandling {
     }
 
     /**
+     * Adds a binding to a callback method that will raise an event when the named binding is called by JavaScript
+     * executing in the browser.
+     * @param scriptName The name of the callback that will trigger events.
+     */
+    public void addScriptCallbackBinding(String scriptName) {
+        logger.info("loc.browser.javascript.scriptcallbackbinding.add", scriptName);
+        bindings.add(scriptName);
+        tools.sendCommand(Runtime.addBinding(scriptName, Optional.empty()));
+    }
+
+    /**
+     * Removes a binding to a JavaScript callback.
+     * @param scriptName The name of the callback to be removed.
+     */
+    public void removeScriptCallbackBinding(String scriptName) {
+        logger.info("loc.browser.javascript.scriptcallbackbinding.remove", scriptName);
+        bindings.remove(scriptName);
+        tools.sendCommand(Runtime.removeBinding(scriptName));
+    }
+
+    /**
      * Gets the read-only list of binding callbacks added for this JavaScript engine.
      * @return list of binding callbacks added for this JavaScript engine.
      */
-    public List<String> getBindings() {
+    public List<String> getScriptCallbackBindings() {
         logger.info("loc.browser.javascript.scriptcallbackbindings.get");
         return new ArrayList<>(bindings);
     }
 
     /**
-     * Removes all initialization scripts from being loaded for each document, and stops listening for events.
+     * Removes all bindings to JavaScript callbacks.
      */
-    public void disable() {
-        logger.info("loc.browser.javascript.reset");
-        engine.disable();
-        bindings.clear();
+    public void clearScriptCallbackBindings() {
+        logger.info("loc.browser.javascript.scriptcallbackbindings.clear");
+        bindings.forEach(scriptName -> {
+            bindings.remove(scriptName);
+            tools.sendCommand(Runtime.removeBinding(scriptName));
+        });
     }
 
     /**
-     * Pins a JavaScript snippet for execution in the browser without transmitting the entire script across the wire
-     * for every execution.
-     * @param exposeScriptAs The name of the callback that will trigger events when the named binding is called by
-     *                       JavaScript executing in the browser.
-     * @param script The JavaScript to pin.
-     * @return a {@link ScriptId} object to use to execute the script.
+     * Adds JavaScript to be loaded on every document load, and adds a binding to a callback method
+     * that will raise an event when the script with that name is called.
+     * @param scriptName The friendly name by which to refer to this initialization script.
+     * @param script The JavaScript to be loaded on every page.
+     * @return Initialization script.
      */
-    public ScriptId pin(String exposeScriptAs, String script) {
-        logger.info("loc.browser.javascript.snippet.pin");
-        logger.info("loc.browser.javascript.scriptcallbackbinding.add", exposeScriptAs);
-        bindings.add(exposeScriptAs);
-        return engine.pin(exposeScriptAs, script);
+    public InitializationScript addInitializationScript(String scriptName, String script) {
+        logger.info("loc.browser.javascript.initializationscript.add", scriptName);
+        logger.info("loc.browser.javascript.scriptcallbackbinding.add", scriptName);
+        ScriptId scriptId = engine.pin(scriptName, script);
+        InitializationScript initializationScript = new InitializationScript(scriptId, scriptName, script);
+        bindings.add(scriptName);
+        initializationScripts.add(initializationScript);
+        return initializationScript;
+    }
+
+    /**
+     * Removes JavaScript from being loaded on every document load, and removes a callback binding for it.
+     * @param script an instance of script to be removed.
+     */
+    public void removeInitializationScript(InitializationScript script) {
+        logger.info("loc.browser.javascript.initializationscript.remove", script.getScriptName());
+        tools.sendCommand(Page.removeScriptToEvaluateOnNewDocument(script.getScriptId().getActualId()));
+        initializationScripts.remove(script);
+        removeScriptCallbackBinding(script.getScriptName());
+    }
+
+    /**
+     * Gets the read-only list of initialization scripts added for this JavaScript engine.
+     * @return the list of added initialization scripts.
+     */
+    public List<InitializationScript> getInitializationScripts() {
+        logger.info("loc.browser.javascript.initializationscripts.get");
+        return new ArrayList<>(initializationScripts);
+    }
+
+    /**
+     * Removes all initialization scripts from being loaded on every document load.
+     */
+    public void clearInitializationScripts() {
+        logger.info("loc.browser.javascript.initializationscripts.clear");
+        initializationScripts.forEach(script -> {
+            Page.removeScriptToEvaluateOnNewDocument(script.getScriptId().getActualId());
+            initializationScripts.remove(script);
+            tools.sendCommand(Runtime.removeBinding(script.getScriptName()));
+            bindings.remove(script.getScriptName());
+        });
     }
 
     /**
@@ -119,16 +177,17 @@ public class JavaScriptHandling {
      * Adds a listener for events that occur when methods on the JavaScript console are called.
      * @param listener a listener to add, consuming a javascript exception.
      */
-    public void addConsoleEventListener(Consumer<ConsoleEvent> listener) {
+    public void addJavaScriptConsoleApiListener(Consumer<ConsoleEvent> listener) {
         logger.info("loc.browser.javascript.event.consoleapicalled.add");
         getDriverThatHasLogEvents().onLogEvent(consoleEvent(listener));
     }
 
     /**
      * Adds a listener for events that occur when methods on the JavaScript console are called.
+     * Consider using a method {@link this.addJavaScriptConsoleApiListener} instead.
      * @param listener a listener to add, consuming a javascript exception.
      */
-    public void addJavaScriptConsoleApiListener(Consumer<ConsoleEvent> listener) {
+    public void addConsoleEventListener(Consumer<ConsoleEvent> listener) {
         logger.info("loc.browser.javascript.event.consoleapicalled.add");
         events.addConsoleListener(listener);
     }
@@ -143,23 +202,30 @@ public class JavaScriptHandling {
     }
 
     /**
-     * Adds a binding to a callback method that will raise an event when the named binding is called by JavaScript
-     * executing in the browser.
-     * @param scriptName The name of the callback that will trigger events.
+     * Disables console event listener and JavaScript event listener (disables the runtime).
      */
-    public void addJsBinding(String scriptName) {
-        logger.info("loc.browser.javascript.scriptcallbackbinding.add", scriptName);
-        engine.addJsBinding(scriptName);
-        bindings.add(scriptName);
+    public void disableConsoleEventListeners() {
+        logger.info("loc.browser.javascript.event.consoleapicalled.disable");
+        events.disable();
     }
 
     /**
-     * Removes a binding to a JavaScript callback.
-     * @param scriptName The name of the callback to be removed.
+     * Removes all bindings to JavaScript callbacks and all initialization scripts from being loaded for each document.
      */
-    public void removeJsBinding(String scriptName) {
-        logger.info("loc.browser.javascript.scriptcallbackbinding.remove", scriptName);
-        engine.removeJsBinding(scriptName);
-        bindings.remove(scriptName);
+    public void clearAll() {
+        logger.info("loc.browser.javascript.clearall");
+        clearInitializationScripts();
+        clearScriptCallbackBindings();
+    }
+
+    /**
+     * Removes all bindings to JavaScript callbacks and all initialization scripts from being loaded for each document,
+     * and stops listening for events.
+     */
+    public void reset() {
+        logger.info("loc.browser.javascript.reset");
+        engine.disable();
+        clearInitializationScripts();
+        clearScriptCallbackBindings();
     }
 }

@@ -96,5 +96,20 @@
   "loc.browser.network.event.requestsent.add": "Подписываемся на событие отправки сетевого запроса",
   "loc.browser.network.event.responsereceived.add": "Подписываемся на событие получения сетевого ответа",
   "loc.browser.network.event.listeners.clear": "Очистка списка отслеживаемых событий",
-  "loc.browser.network.interceptor.start": "Начинаем перехват сетевых событий"
+  "loc.browser.network.interceptor.start": "Начинаем перехват сетевых событий",
+  "loc.browser.javascript.initializationscripts.get": "Получение инициализационных скриптов",
+  "loc.browser.javascript.scriptcallbackbindings.get": "Получение привязок обратного вызова JavaScript",
+  "loc.browser.javascript.event.callbackexecuted.add": "Подписываемся на событие исполнения именованной привязки обратного вызова JavaScript",
+  "loc.browser.javascript.event.exceptionthrown.add": "Подписываемся на событие падения ошибки JavaScript",
+  "loc.browser.javascript.event.consoleapicalled.add": "Подписываемся на событие вызова API консоли JavaScript",
+  "loc.browser.javascript.event.consoleapicalled.disable": "Отписываемся от события консоли JavaScript",
+  "loc.browser.javascript.event.dommutated.add": "Подписываемся на событие изменений в DOM",
+  "loc.browser.javascript.initializationscript.add": "Добавление инициализационного JavaScript с дружелюбным именем '%1$s'",
+  "loc.browser.javascript.initializationscript.remove": "Удаление инициализационного JavaScript с дружелюбным именем '%1$s'",
+  "loc.browser.javascript.initializationscripts.clear": "Удаление всех инициализационных скриптов",
+  "loc.browser.javascript.scriptcallbackbinding.add": "Добавление привязки обратного вызова JavaScript с именем '%1$s'",
+  "loc.browser.javascript.scriptcallbackbinding.remove": "Удаление привязки обратного вызова JavaScript с именем '%1$s'",
+  "loc.browser.javascript.scriptcallbackbindings.clear": "Удаление всех привязок обратного вызова JavaScript",
+  "loc.browser.javascript.clearall": "Удаляем все привязки обратного вызова JavaScript и инициализационные скрипты",
+  "loc.browser.javascript.reset": "Удаляем все привязки обратного вызова JavaScript и инициализационные скрипты, и останавливаем прослушивание событий"
 }
