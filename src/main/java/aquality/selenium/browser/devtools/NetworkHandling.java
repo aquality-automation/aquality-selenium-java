@@ -2,15 +2,18 @@ package aquality.selenium.browser.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.logging.HttpExchangeLoggingOptions;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v85.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v85.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v85.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,6 +21,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
+import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
 import static org.openqa.selenium.devtools.v85.network.Network.*;
 
 /**
@@ -143,6 +147,74 @@ public class NetworkHandling {
      */
     public void clearListeners() {
         tools.clearListeners();
+    }
+
+    /**
+     * Enables HTTP Request/Response logging with default {@link HttpExchangeLoggingOptions}.
+     */
+    public void enableHttpExchangeLogging() {
+        enableHttpExchangeLogging(new HttpExchangeLoggingOptions());
+    }
+
+    private String formatHeaders(Headers headers) {
+        List<String> formattedHeaders = new ArrayList<>();
+        headers.forEach((key, value) -> formattedHeaders.add(String.format("%s\t%s: %s", System.lineSeparator(), key, value)));
+        return String.join(",", formattedHeaders);
+    }
+
+    private Consumer<RequestWillBeSent> getRequestLogger(HttpExchangeLoggingOptions loggingOptions) {
+        return requestWillBeSent -> {
+            Request request = requestWillBeSent.getRequest();
+            if (loggingOptions.getRequestInfo().isEnabled()) {
+                logByLevel(loggingOptions.getRequestInfo().getLogLevel(),
+                        "loc.browser.network.event.requestsent.log.info",
+                        request.getMethod(), request.getUrl() + request.getUrlFragment().orElse(""), requestWillBeSent.getRequestId());
+            }
+            if (loggingOptions.getRequestHeaders().isEnabled() && !request.getHeaders().isEmpty()) {
+                logByLevel(loggingOptions.getRequestHeaders().getLogLevel(),
+                        "loc.browser.network.event.requestsent.log.headers",
+                        formatHeaders(request.getHeaders()));
+            }
+            if (loggingOptions.getRequestPostData().isEnabled() && request.getHasPostData().orElse(false)) {
+                logByLevel(loggingOptions.getRequestPostData().getLogLevel(),
+                        "loc.browser.network.event.requestsent.log.data",
+                        request.getPostData().orElse(null));
+            }
+        };
+    }
+
+    private Consumer<ResponseReceived> getResponseLogger(HttpExchangeLoggingOptions loggingOptions) {
+        return responseReceived -> {
+            Response response = responseReceived.getResponse();
+            RequestId requestId = responseReceived.getRequestId();
+            if (loggingOptions.getResponseInfo().isEnabled()) {
+                logByLevel(loggingOptions.getResponseInfo().getLogLevel(),
+                        "loc.browser.network.event.responsereceived.log.info",
+                        response.getStatus(), response.getUrl(), responseReceived.getType().toString(), requestId);
+            }
+            if (loggingOptions.getResponseHeaders().isEnabled() && !response.getHeaders().isEmpty()) {
+                logByLevel(loggingOptions.getResponseHeaders().getLogLevel(),
+                        "loc.browser.network.event.responsereceived.log.headers",
+                        formatHeaders(response.getHeaders()));
+            }
+            if (loggingOptions.getResponseBody().isEnabled()) {
+                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v85.network.Network.getResponseBody(requestId)).getBody();
+                if (StringUtils.isNotEmpty(responseBody)) {
+                    logByLevel(loggingOptions.getResponseBody().getLogLevel(),
+                            "loc.browser.network.event.responsereceived.log.body",
+                            responseBody);
+                }
+            }
+        };
+    }
+
+    /**
+     * Enables HTTP Request/Response logging.
+     * @param loggingOptions logging parameters {@link HttpExchangeLoggingOptions}.
+     */
+    public void enableHttpExchangeLogging(HttpExchangeLoggingOptions loggingOptions) {
+        addRequestListener(getRequestLogger(loggingOptions));
+        addResponseListener(getResponseLogger(loggingOptions));
     }
 
     /**

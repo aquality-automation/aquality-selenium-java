@@ -43,7 +43,12 @@ public class DevToolsHandling {
     }
 
     private DevTools getDevTools() {
+        return getDevTools("default");
+    }
+
+    private DevTools getDevTools(String handleToLog) {
         if (session == null) {
+            logger.info("loc.browser.devtools.session.get", handleToLog);
             session = devToolsProvider.getDevTools();
         }
         return session;
@@ -74,7 +79,6 @@ public class DevToolsHandling {
      * @return The active session to use to communicate with the Chromium Developer Tools debugging protocol.
      */
     public DevTools getDevToolsSession() {
-        logger.info("loc.browser.devtools.session.get", "default");
         getDevTools().createSessionIfThereIsNotOne();
         return session;
     }
@@ -89,8 +93,7 @@ public class DevToolsHandling {
      * @return The active session to use to communicate with the Chromium Developer Tools debugging protocol.
      */
     public DevTools getDevToolsSession(String windowHandle) {
-        logger.info("loc.browser.devtools.session.get", windowHandle);
-        getDevTools().createSessionIfThereIsNotOne(windowHandle);
+        getDevTools(windowHandle).createSessionIfThereIsNotOne(windowHandle);
         return session;
     }
 
