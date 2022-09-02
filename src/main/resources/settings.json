@@ -8,7 +8,6 @@
     "chrome": {
       "webDriverVersion": "latest",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
@@ -24,7 +23,6 @@
     "edge": {
       "webDriverVersion": "latest",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
@@ -39,7 +37,6 @@
     "firefox": {
       "webDriverVersion": "latest",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
@@ -69,7 +66,6 @@
       "webDriverVersion": "latest",
       "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Programs\\Opera\\launcher.exe",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
@@ -88,7 +84,6 @@
       "webDriverVersion": "102.0.5005.61",
       "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",

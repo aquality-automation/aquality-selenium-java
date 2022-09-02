@@ -27,16 +27,16 @@
             <class name="tests.usecases.devtools.RegisterBasicAuthTest"/>
         </classes>
     </test>
+    <test name="Single-thread tests" parallel="none">
+        <classes>
+            <class name="tests.usecases.devtools.LogHttpExchangeTest"/>
+        </classes>
+    </test>
     <test name="Non-threadsafe tests" parallel="classes">
         <classes>
             <class name="aquality.selenium.logger.LoggerTests"/>
             <class name="aquality.selenium.waitings.ConditionalWaitTests"/>
             <class name="aquality.selenium.utils.ElementActionRetrierTests"/>
-        </classes>
-    </test>
-    <test name="Single-thread tests" parallel="none">
-        <classes>
-            <class name="tests.usecases.devtools.LogHttpExchangeTest"/>
         </classes>
     </test>
 </suite>
