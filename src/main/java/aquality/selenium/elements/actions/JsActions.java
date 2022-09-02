@@ -6,12 +6,14 @@ import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IElement;
+import aquality.selenium.elements.interfaces.IShadowRootExpander;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.SearchContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsActions {
+public class JsActions implements IShadowRootExpander {
 
     protected IElement element;
     protected String type;
@@ -21,6 +23,12 @@ public class JsActions {
         this.element = element;
         this.type = type;
         this.name = element.getName();
+    }
+
+    @Override
+    public SearchContext expandShadowRoot() {
+        logElementAction("loc.shadowroot.expand.js");
+        return (SearchContext) executeScript(JavaScript.EXPAND_SHADOW_ROOT, element);
     }
 
     /**

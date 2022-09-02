@@ -117,5 +117,7 @@
   "loc.browser.javascript.scriptcallbackbinding.remove": "Удаление привязки обратного вызова JavaScript с именем '%1$s'",
   "loc.browser.javascript.scriptcallbackbindings.clear": "Удаление всех привязок обратного вызова JavaScript",
   "loc.browser.javascript.clearall": "Удаляем все привязки обратного вызова JavaScript и инициализационные скрипты",
-  "loc.browser.javascript.reset": "Удаляем все привязки обратного вызова JavaScript и инициализационные скрипты, и останавливаем прослушивание событий"
+  "loc.browser.javascript.reset": "Удаляем все привязки обратного вызова JavaScript и инициализационные скрипты, и останавливаем прослушивание событий",
+  "loc.shadowroot.expand": "Разворачиваем дерево скрытых элементов",
+  "loc.shadowroot.expand.js": "Разворачиваем дерево скрытых элементов посредством JavaScript"
 }

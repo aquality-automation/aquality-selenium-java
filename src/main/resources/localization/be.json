@@ -116,5 +116,7 @@
   "loc.browser.javascript.scriptcallbackbinding.remove": "Выдаляем прывязку зваротнага выкліку JavaScript з іменем '%1$s'",
   "loc.browser.javascript.scriptcallbackbindings.clear": "Выдаляем усе прывязкі зваротнага выкліку JavaScript",
   "loc.browser.javascript.clearall": "Выдаляем усе прывязкі зваротнага выкліку JavaScript і ініцыялізацыйныя скрыпты",
-  "loc.browser.javascript.reset": "Выдаляем усе прывязкі зваротнага выкліку JavaScript і ініцыялізацыйныя скрыпты, і спыняем чаканне падзеяў"
+  "loc.browser.javascript.reset": "Выдаляем усе прывязкі зваротнага выкліку JavaScript і ініцыялізацыйныя скрыпты, і спыняем чаканне падзеяў",
+  "loc.shadowroot.expand": "Разварочваем дрэва схаваных элементаў",
+  "loc.shadowroot.expand.js": "Разварочваем дрэва схаваных элементаў праз JavaScript"
 }

@@ -116,5 +116,7 @@
   "loc.browser.javascript.scriptcallbackbinding.remove": "Removing JavaScript callback binding with the name '%1$s'",
   "loc.browser.javascript.scriptcallbackbindings.clear": "Removing all JavaScript callback bindings",
   "loc.browser.javascript.clearall": "Removing all JavaScript callback bindings and initialization JavaScripts",
-  "loc.browser.javascript.reset": "Removing all JavaScript callback bindings and initialization JavaScripts, and stopping listening for events"
+  "loc.browser.javascript.reset": "Removing all JavaScript callback bindings and initialization JavaScripts, and stopping listening for events",
+  "loc.shadowroot.expand": "Expanding the Shadow Root",
+  "loc.shadowroot.expand.js": "Expanding the Shadow Root via JavaScript"
 }
