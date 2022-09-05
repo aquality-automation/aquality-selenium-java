@@ -22,9 +22,15 @@
             <class name="tests.usecases.ElementExistNotDisplayedTest"/>
             <class name="tests.usecases.BrowserFactoryTests"/>
             <class name="tests.usecases.ShoppingCartTest"/>
+            <class name="tests.usecases.ShadowRootTests"/>
             <class name="tests.usecases.devtools.NetworkInterceptionTests"/>
             <class name="tests.usecases.devtools.OverrideGeolocationTest"/>
             <class name="tests.usecases.devtools.RegisterBasicAuthTest"/>
+            <class name="tests.usecases.devtools.OverrideUserAgentTest"/>
+            <class name="tests.usecases.devtools.PerformanceMetricsTest"/>
+            <class name="tests.usecases.devtools.DeviceEmulationTest"/>
+            <class name="tests.usecases.devtools.EmulationTests"/>
+            <class name="tests.usecases.devtools.DevToolsSessionTest"/>
         </classes>
     </test>
     <test name="Single-thread tests" parallel="none">
