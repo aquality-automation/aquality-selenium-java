@@ -79,6 +79,8 @@
   "loc.browser.get.tab.handle": "Getting current tab handle",
   "loc.browser.tab.open.new": "Opening new tab",
   "loc.browser.tab.close": "Closing tab",
+  "loc.browser.devtools.session.isactive": "Checking if DevTools session is active",
+  "loc.browser.devtools.session.isactive.result": "Is DevTools session active: [%1$s]",
   "loc.browser.devtools.session.close": "Closing DevTools session",
   "loc.browser.devtools.session.get": "Getting DevTools session by tab handle '%1$s'",
   "loc.browser.devtools.command.execute": "Executing DevTools command [%1$s]",

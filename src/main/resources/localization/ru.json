@@ -79,6 +79,8 @@
   "loc.browser.get.tab.handle": "Получение дескриптора текущей вкладки",
   "loc.browser.tab.open.new": "Открытие новой вкладки",
   "loc.browser.tab.close": "Закрытие вкладки",
+  "loc.browser.devtools.session.isactive": "Проверка, активна ли сессия DevTools",
+  "loc.browser.devtools.session.isactive.result": "Активна ли DevTools сессия: [%1$s]",
   "loc.browser.devtools.session.close": "Завершение DevTools сессии",
   "loc.browser.devtools.session.get": "Получение DevTools сессии с дескриптором вкладки '%1$s'",
   "loc.browser.devtools.command.execute": "Исполняем DevTools команду [%1$s]",

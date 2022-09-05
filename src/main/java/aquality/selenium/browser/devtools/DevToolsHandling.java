@@ -98,6 +98,17 @@ public class DevToolsHandling {
     }
 
     /**
+     * Gets a value indicating whether a DevTools session is active.
+     * @return true if there is an active session, false otherwise.
+     */
+    public boolean hasActiveDevToolsSession() {
+        logger.info("loc.browser.devtools.session.isactive");
+        boolean result = devToolsProvider.getDevTools().getCdpSession() != null;
+        logger.info("loc.browser.devtools.session.isactive.result", result);
+        return result;
+    }
+
+    /**
      * Closes a DevTools session.
      */
     public void closeDevToolsSession() {
@@ -218,7 +229,11 @@ public class DevToolsHandling {
      * @return Current values for run-time metrics
      */
     public Map<String, Number> getPerformanceMetrics() {
-        List<Metric> metrics = sendCommand(Performance.getMetrics());
-        return metrics.stream().collect(Collectors.toMap(Metric::getName, Metric::getValue));
+        Command<List<Metric>> command = Performance.getMetrics();
+        logCommand(command.getMethod(), command.getParams());
+        List<Metric> metrics = getDevToolsSession().send(command);
+        Map<String, Number> result = metrics.stream().collect(Collectors.toMap(Metric::getName, Metric::getValue));
+        logCommandResult(result.isEmpty() ? "empty" : result);
+        return result;
     }
 }

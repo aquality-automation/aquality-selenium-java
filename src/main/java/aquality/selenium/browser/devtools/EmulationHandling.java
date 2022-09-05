@@ -206,8 +206,19 @@ public class EmulationHandling {
      * @param mediaFeatures Media features to emulate.
      */
     public void setEmulatedMedia(String media, Map<String, String> mediaFeatures) {
-        List<MediaFeature> featureList = mediaFeatures.entrySet().stream().map((Map.Entry<String, String> entry) -> new MediaFeature(entry.getKey(), entry.getValue())).collect(Collectors.toList());
-        tools.sendCommand(Emulation.setEmulatedMedia(Optional.of(media), Optional.of(featureList)));
+        setEmulatedMedia(Optional.of(media), Optional.of(mediaFeatures));
+    }
+
+    /**
+     * Emulates the given media type or media feature for CSS media queries.
+     * @param media Media type to emulate. Empty string disables the override.
+     *              Possible values: braille, embossed, handheld, print, projection, screen, speech, tty, tv.
+     * @param mediaFeatures Media features to emulate.
+     */
+    public void setEmulatedMedia(Optional<String> media, Optional<Map<String, String>> mediaFeatures) {
+        List<MediaFeature> featureList = mediaFeatures.orElse(Collections.emptyMap()).entrySet().stream()
+                .map((Map.Entry<String, String> entry) -> new MediaFeature(entry.getKey(), entry.getValue())).collect(Collectors.toList());
+        tools.sendCommand(Emulation.setEmulatedMedia(media, Optional.of(featureList)));
     }
 
     /**

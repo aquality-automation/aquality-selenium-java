@@ -22,7 +22,7 @@
             <class name="tests.usecases.ElementExistNotDisplayedTest"/>
             <class name="tests.usecases.BrowserFactoryTests"/>
             <class name="tests.usecases.ShoppingCartTest"/>
-            <class name="tests.usecases.devtools.NetworkInterceptionTest"/>
+            <class name="tests.usecases.devtools.NetworkInterceptionTests"/>
             <class name="tests.usecases.devtools.OverrideGeolocationTest"/>
             <class name="tests.usecases.devtools.RegisterBasicAuthTest"/>
         </classes>

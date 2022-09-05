@@ -1,7 +1,6 @@
 package tests.usecases.devtools;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.logging.HttpExchangeLoggingOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -30,8 +29,7 @@ public class LogHttpExchangeTest extends BaseTest {
         navigate(TheInternetPage.DROPDOWN);
         String logMessage1 = getLastMessage();
         Assert.assertNotNull(logMessage1, "Some message should appear in log file and should not be empty");
-        HttpExchangeLoggingOptions httpExchangeLoggingOptions = new HttpExchangeLoggingOptions();
-        AqualityServices.getBrowser().network().enableHttpExchangeLogging(httpExchangeLoggingOptions);
+        AqualityServices.getBrowser().network().enableHttpExchangeLogging();
         AqualityServices.getBrowser().getDriver().navigate().refresh();
         String logMessage2 = getLastMessage();
         Assert.assertNotNull(logMessage2, "Some message should appear in log file and should not be empty");

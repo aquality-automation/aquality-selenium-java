@@ -79,6 +79,8 @@
   "loc.browser.get.tab.handle": "Атрыманне дэскрыптара бягучай укладкі",
   "loc.browser.tab.open.new": "Адкрыццё новай укладкі",
   "loc.browser.tab.close": "Закрыццё ўкладкі",
+  "loc.browser.devtools.session.isactive": "Правяраем, ці актыўная DevTools сэсія",
+  "loc.browser.devtools.session.isactive.result": "Ці актыўная DevTools сэсія: [%1$s]",
   "loc.browser.devtools.session.close": "Завяршаем сэсію DevTools",
   "loc.browser.devtools.session.get": "Атрымліваем сэсію DevTools з дэскрыптарам ўкладкі '%1$s'",
   "loc.browser.devtools.command.execute": "Выконваем DevTools каманду [%1$s]",

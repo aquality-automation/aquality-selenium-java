@@ -29,6 +29,7 @@ import static org.openqa.selenium.devtools.v85.network.Network.*;
  * For more information, see {@link org.openqa.selenium.devtools.v85.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
+    public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
     private final DevToolsHandling tools;
     private final Network<?, ?> network;
     private final ILocalizedLogger logger = AqualityServices.getLocalizedLogger();
@@ -46,7 +47,7 @@ public class NetworkHandling {
     /**
      * Starts network monitoring.
      */
-    public void prepareToInterceptTraffic() {
+    public void startMonitoring() {
         logger.info("loc.browser.network.monitoring.start");
         network.prepareToInterceptTraffic();
     }
@@ -54,7 +55,7 @@ public class NetworkHandling {
     /**
      * Stops network monitoring.
      */
-    public void disable() {
+    public void stopMonitoring() {
         logger.info("loc.browser.network.monitoring.stop");
         network.disable();
     }
@@ -102,7 +103,7 @@ public class NetworkHandling {
      */
     public void clearBasicAuthentication() {
         logger.info("loc.browser.network.authentication.clear");
-        disable();
+        stopMonitoring();
     }
 
     /**
@@ -223,7 +224,7 @@ public class NetworkHandling {
      * @return an instance of {@link NetworkInterceptor}.
      */
     public NetworkInterceptor startNetworkInterceptor(HttpHandler httpHandler) {
-        logger.info("loc.browser.network.interceptor.start");
+        logger.info(LOC_NETWORK_INTERCEPTOR_START);
         return new NetworkInterceptor(getBrowser().getDriver(), httpHandler);
     }
 
@@ -233,7 +234,7 @@ public class NetworkHandling {
      * @return an instance of {@link NetworkInterceptor}.
      */
     public NetworkInterceptor startNetworkInterceptor(Filter filter) {
-        logger.info("loc.browser.network.interceptor.start");
+        logger.info(LOC_NETWORK_INTERCEPTOR_START);
         return new NetworkInterceptor(getBrowser().getDriver(), filter);
     }
 
@@ -243,7 +244,7 @@ public class NetworkHandling {
      * @return an instance of {@link NetworkInterceptor}.
      */
     public NetworkInterceptor startNetworkInterceptor(Routable routable) {
-        logger.info("loc.browser.network.interceptor.start");
+        logger.info(LOC_NETWORK_INTERCEPTOR_START);
         return new NetworkInterceptor(getBrowser().getDriver(), routable);
     }
 
