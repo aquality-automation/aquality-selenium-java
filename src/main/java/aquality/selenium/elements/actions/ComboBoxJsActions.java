@@ -17,9 +17,10 @@ public class ComboBoxJsActions extends JsActions {
      *
      * @return texts of options from ComboBox
      */
+    @SuppressWarnings("unchecked")
     public List<String> getTexts() {
         logElementAction("loc.combobox.get.texts.js");
-        List<String> values = (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS, element);
+        List<String> values = (List<String>) executeScript(JavaScript.GET_COMBOBOX_TEXTS);
         logElementAction("loc.combobox.texts",
                 values.stream().map(value -> String.format("'%s'", value)).collect(Collectors.joining(", ")));
         return values;
@@ -32,7 +33,7 @@ public class ComboBoxJsActions extends JsActions {
      */
     public String getSelectedText() {
         logElementAction("loc.combobox.get.text.js");
-        String text = (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT, element);
+        String text = (String) executeScript(JavaScript.GET_COMBOBOX_SELECTED_TEXT);
         logElementAction("loc.combobox.selected.text", text);
         return text;
     }
@@ -44,6 +45,6 @@ public class ComboBoxJsActions extends JsActions {
      */
     public void selectValueByText(final String text) {
         logElementAction("loc.combobox.select.by.text.js", text);
-        executeScript(JavaScript.SELECT_COMBOBOX_VALUE_BY_TEXT, element, text);
+        executeScript(JavaScript.SELECT_COMBOBOX_VALUE_BY_TEXT, text);
     }
 }

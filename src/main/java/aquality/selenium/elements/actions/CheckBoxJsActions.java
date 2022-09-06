@@ -60,6 +60,6 @@ public class CheckBoxJsActions extends JsActions {
      * @return state of checkbox using .checked property of element
      */
     private boolean getState() {
-        return Boolean.valueOf(executeScript(JavaScript.GET_CHECKBOX_STATE, element).toString());
+        return Boolean.parseBoolean(executeScript(JavaScript.GET_CHECKBOX_STATE).toString());
     }
 }

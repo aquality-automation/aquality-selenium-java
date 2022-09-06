@@ -265,6 +265,17 @@ public class Browser implements IApplication {
         return executeJavaScript(() -> getDriver().executeScript(script, arguments));
     }
 
+    /**
+     * Executes JS (jQuery) script.
+     *
+     * @param script Script pinned with {@link this#javaScriptEngine()}.
+     * @param arguments Arguments for the script (web elements, values etc.
+     * @return Result object of script execution
+     */
+    public Object executeScript(final ScriptKey script, Object... arguments) {
+        return executeJavaScript(() -> getDriver().executeScript(script, arguments));
+    }
+
     private Object executeJavaScript(Supplier<Object> executeScriptFunc) {
         Object result = executeScriptFunc.get();
         return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;

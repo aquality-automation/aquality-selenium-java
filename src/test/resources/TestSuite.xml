@@ -31,6 +31,9 @@
             <class name="tests.usecases.devtools.DeviceEmulationTest"/>
             <class name="tests.usecases.devtools.EmulationTests"/>
             <class name="tests.usecases.devtools.DevToolsSessionTest"/>
+            <class name="tests.usecases.devtools.DomMonitoringTest"/>
+            <class name="tests.usecases.devtools.InitializationScriptsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptSnippetsTests"/>
         </classes>
     </test>
     <test name="Single-thread tests" parallel="none">

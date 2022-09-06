@@ -4,6 +4,8 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.ScriptKey;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
 import org.openqa.selenium.devtools.events.DomMutationEvent;
@@ -11,11 +13,13 @@ import org.openqa.selenium.devtools.idealized.Events;
 import org.openqa.selenium.devtools.idealized.Javascript;
 import org.openqa.selenium.devtools.idealized.ScriptId;
 import org.openqa.selenium.devtools.v85.page.Page;
+import org.openqa.selenium.devtools.v85.page.model.ScriptIdentifier;
 import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.logging.EventType;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -102,15 +106,28 @@ public class JavaScriptHandling {
         return initializationScript;
     }
 
+    private void removeInitializationScriptCore(InitializationScript script) {
+        tools.sendCommand(Page.removeScriptToEvaluateOnNewDocument(new ScriptIdentifier(script.getScriptId().getActualId().toString())));
+        try {
+            final Field pinnedScripts = Javascript.class.getDeclaredField("pinnedScripts");
+            pinnedScripts.setAccessible(true);
+            //noinspection unchecked
+            ((Map<String, ScriptId>)pinnedScripts.get(engine)).remove(script.getScriptSource());
+            pinnedScripts.setAccessible(false);
+        } catch (ReflectiveOperationException e) {
+            AqualityServices.getLogger().fatal("Error while removing initialization script", e);
+        }
+        initializationScripts.remove(script);
+        removeScriptCallbackBinding(script.getScriptName());
+    }
+
     /**
      * Removes JavaScript from being loaded on every document load, and removes a callback binding for it.
      * @param script an instance of script to be removed.
      */
     public void removeInitializationScript(InitializationScript script) {
         logger.info("loc.browser.javascript.initializationscript.remove", script.getScriptName());
-        tools.sendCommand(Page.removeScriptToEvaluateOnNewDocument(script.getScriptId().getActualId()));
-        initializationScripts.remove(script);
-        removeScriptCallbackBinding(script.getScriptName());
+        removeInitializationScriptCore(script);
     }
 
     /**
@@ -127,12 +144,47 @@ public class JavaScriptHandling {
      */
     public void clearInitializationScripts() {
         logger.info("loc.browser.javascript.initializationscripts.clear");
-        initializationScripts.forEach(script -> {
-            Page.removeScriptToEvaluateOnNewDocument(script.getScriptId().getActualId());
-            initializationScripts.remove(script);
-            tools.sendCommand(Runtime.removeBinding(script.getScriptName()));
-            bindings.remove(script.getScriptName());
-        });
+        initializationScripts.forEach(this::removeInitializationScriptCore);
+    }
+
+    private JavascriptExecutor getJavascriptExecutor() {
+        return (JavascriptExecutor) tools.getDevToolsProvider();
+    }
+
+    /**
+     * Pins a JavaScript snippet for execution in the browser without transmitting the entire script across the wire for every execution.
+     * @param script The JavaScript to pin.
+     * @return object to use to execute the script.
+     */
+    public ScriptKey pinScript(String script) {
+        logger.info("loc.browser.javascript.snippet.pin");
+        return getJavascriptExecutor().pin(script);
+    }
+
+    /**
+     * Unpins a previously pinned script from the browser.
+     * @param pinnedScript The {@link ScriptKey} object to unpin.
+     */
+    public void unpinScript(ScriptKey pinnedScript) {
+        logger.info("loc.browser.javascript.snippet.unpin");
+        getJavascriptExecutor().unpin(pinnedScript);
+    }
+
+    /**
+     * Gets list of previously pinned scripts.
+     * @return a list of previously pinned scripts.
+     */
+    public Set<ScriptKey> getPinnedScripts() {
+        logger.info("loc.browser.javascript.snippets.get");
+        return getJavascriptExecutor().getPinnedScripts();
+    }
+
+    /**
+     * Unpins previously pinned scripts from being loaded on every document load.
+     */
+    public void clearPinnedScripts() {
+        logger.info("loc.browser.javascript.snippets.clear");
+        getJavascriptExecutor().getPinnedScripts().forEach(getJavascriptExecutor()::unpin);
     }
 
     /**

@@ -33,6 +33,7 @@ public enum JavaScript {
     SELECT_COMBOBOX_VALUE_BY_TEXT("selectComboboxValueByText.js"),
     SET_FOCUS("setFocus.js"),
     SET_VALUE("setValue.js"),
+    SET_ATTRIBUTE("setAttribute.js"),
     SCROLL_BY("scrollBy.js"),
     IS_PAGE_LOADED("isPageLoaded.js"),
     SCROLL_WINDOW_BY("scrollWindowBy.js"),
