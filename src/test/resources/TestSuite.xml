@@ -34,6 +34,7 @@
             <class name="tests.usecases.devtools.DomMonitoringTest"/>
             <class name="tests.usecases.devtools.InitializationScriptsTests"/>
             <class name="tests.usecases.devtools.JavaScriptSnippetsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptEventTests"/>
         </classes>
     </test>
     <test name="Single-thread tests" parallel="none">

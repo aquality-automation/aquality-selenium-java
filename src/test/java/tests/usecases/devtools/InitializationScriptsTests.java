@@ -56,6 +56,7 @@ public class InitializationScriptsTests extends BaseTest {
     @Test(enabled = false)
     public void testAddScriptCallbackBindingSubscribeAndUnsubscribeGetItThenRemoveOrClear() throws TimeoutException {
         List<String> executedBindings = new ArrayList<>();
+        javaScriptEngine().startEventMonitoring();
         javaScriptEngine().addInitializationScript(SCRIPT_NAME, SCRIPT);
         javaScriptEngine().addBindingCalledListener(executedBindings::add);
         getBrowser().refreshPageWithAlert(AlertActions.ACCEPT);

@@ -23,7 +23,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-import static org.openqa.selenium.devtools.events.CdpEventTypes.consoleEvent;
 import static org.openqa.selenium.devtools.events.CdpEventTypes.domMutation;
 
 /**
@@ -188,6 +187,22 @@ public class JavaScriptHandling {
     }
 
     /**
+     * Starts monitoring for events from the browser's JavaScript engine.
+     */
+    public void startEventMonitoring() {
+        logger.info("loc.browser.javascript.event.monitoring.start");
+        tools.sendCommand(Runtime.enable());
+    }
+
+    /**
+     * Stops monitoring for events from the browser's JavaScript engine, and clears JavaScript console event listeners.
+     */
+    public void stopEventMonitoring() {
+        logger.info("loc.browser.javascript.event.monitoring.stop");
+        events.disable();
+    }
+
+    /**
      * Adds a listener for events that occur when a JavaScript callback with a named binding is executed.
      * To add a binding, use {@link this.addJsBinding}.
      * @param listener a listener to add, consuming a name of exposed script.
@@ -227,19 +242,9 @@ public class JavaScriptHandling {
 
     /**
      * Adds a listener for events that occur when methods on the JavaScript console are called.
-     * @param listener a listener to add, consuming a javascript exception.
+     * @param listener a listener to add, consuming a {@link ConsoleEvent}.
      */
     public void addJavaScriptConsoleApiListener(Consumer<ConsoleEvent> listener) {
-        logger.info("loc.browser.javascript.event.consoleapicalled.add");
-        getDriverThatHasLogEvents().onLogEvent(consoleEvent(listener));
-    }
-
-    /**
-     * Adds a listener for events that occur when methods on the JavaScript console are called.
-     * Consider using a method {@link this.addJavaScriptConsoleApiListener} instead.
-     * @param listener a listener to add, consuming a javascript exception.
-     */
-    public void addConsoleEventListener(Consumer<ConsoleEvent> listener) {
         logger.info("loc.browser.javascript.event.consoleapicalled.add");
         events.addConsoleListener(listener);
     }
@@ -251,14 +256,6 @@ public class JavaScriptHandling {
     public void addJavaScriptExceptionThrownListener(Consumer<JavascriptException> listener) {
         logger.info("loc.browser.javascript.event.exceptionthrown.add");
         events.addJavascriptExceptionListener(listener);
-    }
-
-    /**
-     * Disables console event listener and JavaScript event listener (disables the runtime).
-     */
-    public void disableConsoleEventListeners() {
-        logger.info("loc.browser.javascript.event.consoleapicalled.disable");
-        events.disable();
     }
 
     /**
