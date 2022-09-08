@@ -67,6 +67,13 @@ public class OverrideUserAgentTest extends BaseTest {
     }
 
     @Test
+    public void overrideUserAgentByCdpCommandTest() {
+        Map<String, Object> params = Collections.singletonMap("userAgent", CUSTOM_USER_AGENT);
+        AqualityServices.getBrowser().devTools().executeCdpCommand("Emulation.setUserAgentOverride", params);
+        Assert.assertEquals(new UserAgentForm().open().getValue(), CUSTOM_USER_AGENT, "User agent should match to value set");
+    }
+
+    @Test
     public void overrideUserAgentAndLanguageTest() {
         String defaultLanguage = new BrowserLanguageForm().open().getValue();
         String defaultUserAgent = new UserAgentForm().open().getValue();
