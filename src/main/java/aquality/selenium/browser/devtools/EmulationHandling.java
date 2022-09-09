@@ -44,7 +44,7 @@ public class EmulationHandling {
      * @param longitude Longitude of location
      * @param accuracy Accuracy of the location
      */
-    public void setGeolocationOverride(double latitude, double longitude, int accuracy) {
+    public void setGeolocationOverride(double latitude, double longitude, double accuracy) {
         setGeolocationOverride(Optional.of(latitude), Optional.of(longitude), Optional.of(accuracy));
     }
 

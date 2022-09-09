@@ -19,7 +19,7 @@ We use interfaces where is possible, so you can implement your own version of ta
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>LATEST</version>
+    <version>3.x.x</version>
 </dependency>
 ```
 
@@ -47,12 +47,32 @@ txbSearch.submit();
 browser.waitForPageToLoad();
 ```
 
-6. Quit browser at the end
+6. Use BiDi functionality to handle basic authentication:
+```java
+browser.network().addBasicAuthentication("domain.com", "username", "password");
 ```
+or intercept network requests/responses:
+```java
+browser.network().startNetworkInterceptor((HttpHandler) request -> new HttpResponse()
+        .setStatus(HttpStatus.SC_OK)
+        .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+        .setContent(utf8String("Some phrase")));
+```
+7. Emulate GeoLocation, Device, Touch, Media, UserAgent overrides, Disable script execution, log HTTP exchange, track Performance metrics, add initialization scripts, and more using browser.devTools() interfaces:
+```java
+final double latitude = 53.90772672521578;
+final double longitude = 27.458060411865375;
+final double accuracy = 0.97;
+browser.devTools().emulation().setGeolocationOverride(latitude, longitude, accuracy);
+```
+See more DevTools use cases [here](./src/test/java/tests/usecases/devtools)
+
+8. Quit browser at the end
+```java
 browser.quit();
 ```
 
-See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
+See quick start example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:

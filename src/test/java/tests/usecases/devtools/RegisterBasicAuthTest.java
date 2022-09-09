@@ -10,7 +10,7 @@ public class RegisterBasicAuthTest extends BaseTest {
     @Test
     public void setBasicAuth() {
         BasicAuthForm basicAuthForm = new BasicAuthForm();
-        getBrowser().devTools().network().addBasicAuthentication(BasicAuthForm.getDomain(), BasicAuthForm.getUsername(), BasicAuthForm.getPassword());
+        getBrowser().network().addBasicAuthentication(BasicAuthForm.getDomain(), BasicAuthForm.getUsername(), BasicAuthForm.getPassword());
         getBrowser().goTo(basicAuthForm.getUrl());
         Assert.assertTrue(basicAuthForm.isCongratulationsDisplayed());
     }
@@ -18,8 +18,8 @@ public class RegisterBasicAuthTest extends BaseTest {
     @Test
     public void clearBasicAuth() {
         BasicAuthForm basicAuthForm = new BasicAuthForm();
-        getBrowser().devTools().network().addBasicAuthentication(BasicAuthForm.getDomain(), BasicAuthForm.getUsername(), BasicAuthForm.getPassword());
-        getBrowser().devTools().network().clearBasicAuthentication();
+        getBrowser().network().addBasicAuthentication(BasicAuthForm.getDomain(), BasicAuthForm.getUsername(), BasicAuthForm.getPassword());
+        getBrowser().network().clearBasicAuthentication();
         getBrowser().goTo(basicAuthForm.getUrl());
         Assert.assertFalse(basicAuthForm.isCongratulationsDisplayed());
     }

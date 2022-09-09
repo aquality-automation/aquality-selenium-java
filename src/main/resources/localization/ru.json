@@ -106,7 +106,6 @@
   "loc.browser.network.event.responsereceived.log.headers": "Заголовки ответа:\r\n{{%s\r\n}}",
   "loc.browser.network.event.responsereceived.log.body": "Тело ответа:\r\n{%s}",
   "loc.browser.network.event.responsereceived.add": "Подписываемся на событие получения сетевого ответа",
-  "loc.browser.network.event.listeners.clear": "Очистка списка отслеживаемых событий",
   "loc.browser.network.interceptor.start": "Начинаем перехват сетевых событий",
   "loc.browser.javascript.initializationscripts.get": "Получение инициализационных скриптов",
   "loc.browser.javascript.scriptcallbackbindings.get": "Получение привязок обратного вызова JavaScript",

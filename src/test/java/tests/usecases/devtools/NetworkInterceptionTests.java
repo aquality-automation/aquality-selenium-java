@@ -47,7 +47,7 @@ public class NetworkInterceptionTests extends BaseTest {
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertTrue(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
 
-        getBrowser().devTools().network().clearNetworkInterceptor();
+        getBrowser().network().clearNetworkInterceptor();
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertFalse(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
     }
@@ -63,7 +63,7 @@ public class NetworkInterceptionTests extends BaseTest {
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertTrue(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
 
-        getBrowser().devTools().network().clearNetworkInterceptor();
+        getBrowser().network().clearNetworkInterceptor();
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertFalse(getBrowser().getDriver().getPageSource().contains(SOME_PHRASE));
     }
