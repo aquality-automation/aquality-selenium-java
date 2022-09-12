@@ -81,3 +81,6 @@ See quick start example [here](./src/test/java/tests/usecases/QuickStartExample.
 To get more details please look at documentation:
 - [In English](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(English))
 - [In Russian](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(Russian))
+
+### License
+Library's source code is made available under the [Apache 2.0 license](LICENSE).
