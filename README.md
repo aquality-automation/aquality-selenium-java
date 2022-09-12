@@ -13,8 +13,11 @@ Most of performed methods are logged using LOG4J, so you can easily see a histor
 We use interfaces where is possible, so you can implement your own version of target interface with no need to rewrite other classes.
 
 ### Quick start
+To start the project using aquality.selenium framework, you can [download our template BDD project by this link.](https://github.com/aquality-automation/aquality-selenium-java-template)
 
-1. To start work with this package, simply add the dependency to your pom.xml:
+Alternatively, you can follow the steps below:
+
+1. Add the dependency to your pom.xml:
 ```
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
