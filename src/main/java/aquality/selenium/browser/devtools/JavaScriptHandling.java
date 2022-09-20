@@ -204,7 +204,7 @@ public class JavaScriptHandling {
 
     /**
      * Adds a listener for events that occur when a JavaScript callback with a named binding is executed.
-     * To add a binding, use {@link this.addJsBinding}.
+     * To add a binding, use {@link JavaScriptHandling#addScriptCallbackBinding(String)}.
      * @param listener a listener to add, consuming a name of exposed script.
      */
     public void addBindingCalledListener(Consumer<String> listener) {

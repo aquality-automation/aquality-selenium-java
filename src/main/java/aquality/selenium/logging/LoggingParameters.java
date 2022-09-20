@@ -9,6 +9,8 @@ public class LoggingParameters {
 
     /**
      * Initializes logging parameters.
+     * @param enabled enabled or not.
+     * @param logLevel expected log level.
      */
     public LoggingParameters(boolean enabled, LogLevel logLevel) {
 

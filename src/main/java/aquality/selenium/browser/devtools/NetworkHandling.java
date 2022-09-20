@@ -308,7 +308,7 @@ public class NetworkHandling {
      * Currently, Selenium supports only a single network interceptor. Any new Network interceptor will override the previous one.
      * And on {@link NetworkInterceptor#close()} the NetworkInterceptor class just calls the {@link Network#resetNetworkFilter()}, so it's enough to call it.
      * If multiple network interceptors at the same time would be allowed, we may want to store all
-     *  {@link NetworkInterceptor} classes to call {@link NetworkInterceptor::close()} for each.
+     *  {@link NetworkInterceptor} classes to call {@link NetworkInterceptor#close()} for each.
      */
     public void clearNetworkInterceptor() {
         resetNetworkFilter();

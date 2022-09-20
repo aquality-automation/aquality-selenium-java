@@ -268,7 +268,7 @@ public class Browser implements IApplication {
     /**
      * Executes JS (jQuery) script.
      *
-     * @param script Script pinned with {@link this#javaScriptEngine()}.
+     * @param script Script pinned with {@link Browser#javaScriptEngine()}.
      * @param arguments Arguments for the script (web elements, values etc.
      * @return Result object of script execution
      */
