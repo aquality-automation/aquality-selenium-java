@@ -10,11 +10,11 @@ public abstract class TheInternetForm extends Form {
         super(locator, name);
     }
 
-    private final String theInternetFormUrl = "http://the-internet.herokuapp.com";
-    private ILink elementalSeleniumLink = getElementFactory().getLink(By.xpath("//a[contains(@href,'elementalselenium')]"), "Elemental Selenium");
+    private static final String THE_INTERNET_FORM_URL = "http://the-internet.herokuapp.com";
+    private final ILink elementalSeleniumLink = getElementFactory().getLink(By.xpath("//a[contains(@href,'elementalselenium')]"), "Elemental Selenium");
 
     public String getUrl() {
-        return theInternetFormUrl + getUri();
+        return THE_INTERNET_FORM_URL + getUri();
     }
 
     public void clickElementalSelenium() {

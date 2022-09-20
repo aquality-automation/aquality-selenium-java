@@ -23,6 +23,24 @@
             <class name="tests.usecases.ElementExistNotDisplayedTest"/>
             <class name="tests.usecases.BrowserFactoryTests"/>
             <class name="tests.usecases.ShoppingCartTest"/>
+            <class name="tests.usecases.ShadowRootTests"/>
+            <class name="tests.usecases.devtools.NetworkInterceptionTests"/>
+            <class name="tests.usecases.devtools.OverrideGeolocationTest"/>
+            <class name="tests.usecases.devtools.RegisterBasicAuthTest"/>
+            <class name="tests.usecases.devtools.OverrideUserAgentTest"/>
+            <class name="tests.usecases.devtools.PerformanceMetricsTest"/>
+            <class name="tests.usecases.devtools.DeviceEmulationTest"/>
+            <class name="tests.usecases.devtools.EmulationTests"/>
+            <class name="tests.usecases.devtools.DevToolsSessionTest"/>
+            <class name="tests.usecases.devtools.DomMonitoringTest"/>
+            <class name="tests.usecases.devtools.InitializationScriptsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptSnippetsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptEventTests"/>
+        </classes>
+    </test>
+    <test name="Single-thread tests" parallel="none">
+        <classes>
+            <class name="tests.usecases.devtools.LogHttpExchangeTest"/>
         </classes>
     </test>
     <test name="Non-threadsafe tests" parallel="classes">

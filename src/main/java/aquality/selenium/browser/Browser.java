@@ -1,5 +1,8 @@
 package aquality.selenium.browser;
 
+import aquality.selenium.browser.devtools.DevToolsHandling;
+import aquality.selenium.browser.devtools.JavaScriptHandling;
+import aquality.selenium.browser.devtools.NetworkHandling;
 import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.applications.IApplication;
@@ -7,12 +10,12 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.apache.commons.io.IOUtils;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.OutputType;
+import org.apache.commons.lang3.NotImplementedException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Navigation;
+import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
@@ -20,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class Browser implements IApplication {
@@ -32,6 +34,7 @@ public class Browser implements IApplication {
     private final ILocalizationManager localizationManager;
     private final ILocalizedLogger localizedLogger;
 
+    private DevToolsHandling devTools;
     private Duration implicitTimeout;
 
     public Browser(RemoteWebDriver remoteWebDriver) {
@@ -262,6 +265,17 @@ public class Browser implements IApplication {
         return executeJavaScript(() -> getDriver().executeScript(script, arguments));
     }
 
+    /**
+     * Executes JS (jQuery) script.
+     *
+     * @param script Script pinned with {@link this#javaScriptEngine()}.
+     * @param arguments Arguments for the script (web elements, values etc.
+     * @return Result object of script execution
+     */
+    public Object executeScript(final ScriptKey script, Object... arguments) {
+        return executeJavaScript(() -> getDriver().executeScript(script, arguments));
+    }
+
     private Object executeJavaScript(Supplier<Object> executeScriptFunc) {
         Object result = executeScriptFunc.get();
         return result instanceof Boolean ? Boolean.parseBoolean(result.toString()) : result;
@@ -367,5 +381,42 @@ public class Browser implements IApplication {
 
     private Duration getImplicitWaitTimeout() {
         return implicitTimeout;
+    }
+
+    /**
+     * Provides interface to handle DevTools for Chromium-based and Firefox drivers.
+     * @return an instance of {@link DevToolsHandling}
+     */
+    public DevToolsHandling devTools() {
+        if (devTools != null) {
+            return devTools;
+        }
+        WebDriver driver = getDriver();
+        if (!(driver instanceof HasDevTools)) {
+            driver = new Augmenter().augment(driver);
+        }
+        if (driver instanceof HasDevTools) {
+            devTools = new DevToolsHandling((HasDevTools) driver);
+            return devTools;
+        }
+        else {
+            throw new NotImplementedException("DevTools protocol is not supported for current browser.");
+        }
+    }
+
+    /**
+     * Provides Network Handling functionality
+     * @return an instance of {@link NetworkHandling}
+     */
+    public NetworkHandling network() {
+        return devTools().network();
+    }
+
+    /**
+     * Provides JavaScript Monitoring functionality.
+     * @return an instance of {@link JavaScriptHandling}
+     */
+    public JavaScriptHandling javaScriptEngine() {
+        return devTools().javaScript();
     }
 }

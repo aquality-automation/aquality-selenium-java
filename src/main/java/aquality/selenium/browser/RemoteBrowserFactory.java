@@ -35,7 +35,7 @@ public class RemoteBrowserFactory extends BrowserFactory {
 
     @Override
     protected RemoteWebDriver getDriver() {
-        Capabilities capabilities = browserProfile.getDriverSettings().getCapabilities();
+        Capabilities capabilities = browserProfile.getDriverSettings().getDriverOptions();
         localizedLogger.info("loc.browser.grid");
 
         ClientFactory clientFactory = new ClientFactory();

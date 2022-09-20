@@ -57,7 +57,7 @@
     "timeoutImplicit" : 0,
     "timeoutCondition" : 30,
     "timeoutScript" : 10,
-    "timeoutPageLoad" : 30,
+    "timeoutPageLoad" : 60,
     "timeoutPollingInterval": 300,
     "timeoutCommand": 120
   },

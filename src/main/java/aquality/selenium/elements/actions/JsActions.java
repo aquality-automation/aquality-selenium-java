@@ -6,12 +6,16 @@ import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IElement;
+import aquality.selenium.elements.interfaces.IShadowRootExpander;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScriptKey;
+import org.openqa.selenium.SearchContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class JsActions {
+public class JsActions implements IShadowRootExpander {
 
     protected IElement element;
     protected String type;
@@ -23,13 +27,29 @@ public class JsActions {
         this.name = element.getName();
     }
 
+    @Override
+    public SearchContext expandShadowRoot() {
+        logElementAction("loc.shadowroot.expand.js");
+        return (SearchContext) executeScript(JavaScript.EXPAND_SHADOW_ROOT);
+    }
+
+    /**
+     * Setting attribute value.
+     * @param name Attribute name
+     * @param value Value to set
+     */
+    public void setAttribute(String name, String value) {
+        logElementAction("loc.el.attr.set", name, value);
+        executeScript(JavaScript.SET_ATTRIBUTE, name, value);
+    }
+
     /**
      * Click via JS.
      */
     public void click() {
         logElementAction("loc.clicking.js");
         highlightElement();
-        executeScript(JavaScript.CLICK_ELEMENT, element);
+        executeScript(JavaScript.CLICK_ELEMENT);
     }
 
     /**
@@ -52,7 +72,7 @@ public class JsActions {
      */
     public void highlightElement(HighlightState highlightState) {
         if (AqualityServices.getBrowserProfile().isElementHighlightEnabled() || highlightState.equals(HighlightState.HIGHLIGHT)) {
-            executeScript(JavaScript.BORDER_ELEMENT, element);
+            executeScript(JavaScript.BORDER_ELEMENT);
         }
     }
 
@@ -61,7 +81,7 @@ public class JsActions {
      */
     public void scrollIntoView() {
         logElementAction("loc.scrolling.js");
-        executeScript(JavaScript.SCROLL_TO_ELEMENT, element, true);
+        executeScript(JavaScript.SCROLL_TO_ELEMENT, true);
     }
 
     /**
@@ -72,7 +92,7 @@ public class JsActions {
      */
     public void scrollBy(int x, int y) {
         logElementAction("loc.scrolling.js");
-        executeScript(JavaScript.SCROLL_BY, element, x, y);
+        executeScript(JavaScript.SCROLL_BY, x, y);
     }
 
     /**
@@ -80,7 +100,7 @@ public class JsActions {
      */
     public void scrollToTheCenter() {
         logElementAction("loc.scrolling.center.js");
-        executeScript(JavaScript.SCROLL_TO_ELEMENT_CENTER, element);
+        executeScript(JavaScript.SCROLL_TO_ELEMENT_CENTER);
     }
 
     /**
@@ -90,7 +110,7 @@ public class JsActions {
      */
     public void setValue(final String value) {
         logElementAction("loc.setting.value", value);
-        executeScript(JavaScript.SET_VALUE, element, value);
+        executeScript(JavaScript.SET_VALUE, value);
     }
 
     /**
@@ -98,7 +118,7 @@ public class JsActions {
      */
     public void setFocus() {
         logElementAction("loc.focusing");
-        executeScript(JavaScript.SET_FOCUS, element);
+        executeScript(JavaScript.SET_FOCUS);
     }
 
     /**
@@ -108,7 +128,7 @@ public class JsActions {
      */
     public boolean isElementOnScreen() {
         logElementAction("loc.is.present.js");
-        boolean value = (boolean) executeScript(JavaScript.ELEMENT_IS_ON_SCREEN, element);
+        boolean value = (boolean) executeScript(JavaScript.ELEMENT_IS_ON_SCREEN);
         logElementAction("loc.is.present.value", value);
         return value;
     }
@@ -120,7 +140,7 @@ public class JsActions {
      */
     public String getElementText() {
         logElementAction("loc.get.text.js");
-        return (String) executeScript(JavaScript.GET_ELEMENT_TEXT, element);
+        return (String) executeScript(JavaScript.GET_ELEMENT_TEXT);
     }
 
     /**
@@ -128,7 +148,7 @@ public class JsActions {
      */
     public void hoverMouse() {
         logElementAction("loc.hover.js");
-        executeScript(JavaScript.MOUSE_HOVER, element);
+        executeScript(JavaScript.MOUSE_HOVER);
     }
 
     /**
@@ -138,7 +158,7 @@ public class JsActions {
      */
     @SuppressWarnings("unchecked")
     public Point getViewPortCoordinates() {
-        List<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES, element);
+        List<Number> coordinates = (ArrayList<Number>) executeScript(JavaScript.GET_VIEWPORT_COORDINATES);
         return new Point(Math.round(coordinates.get(0).floatValue()), Math.round(coordinates.get(1).floatValue()));
     }
 
@@ -149,17 +169,38 @@ public class JsActions {
      */
     public String getXPath() {
         logElementAction("loc.get.xpath.js");
-        String value = (String) executeScript(JavaScript.GET_ELEMENT_XPATH, element);
+        String value = (String) executeScript(JavaScript.GET_ELEMENT_XPATH);
         logElementAction("loc.xpath.value", value);
         return value;
     }
 
-    protected Object executeScript(JavaScript javaScript, IElement element) {
+    private Object[] resolveArguments(Object... args) {
+        List<Object> arguments = new ArrayList<>();
+        arguments.add(element.getElement());
+        arguments.addAll(Arrays.asList(args));
+        return arguments.toArray();
+    }
+
+    /**
+     * Executes pinned JavaScript against the element and gets result value.
+     * @param pinnedScript Instance of script pinned with {@link Browser#javaScriptEngine()}
+     * @return Script execution result.
+     */
+    public Object executeScript(ScriptKey pinnedScript, Object... args) {
+        logElementAction("loc.el.execute.pinnedjs");
+        Object result = getActionRetrier().doWithRetry(() -> getBrowser().executeScript(pinnedScript, resolveArguments(args)));
+        if (result != null) {
+            logElementAction("loc.el.execute.pinnedjs.result", result);
+        }
+        return result;
+    }
+
+    protected Object executeScript(JavaScript javaScript) {
         return getActionRetrier().doWithRetry(() -> getBrowser().executeScript(javaScript, element.getElement()));
     }
 
-    protected Object executeScript(JavaScript javaScript, IElement element, Object... args) {
-        return getActionRetrier().doWithRetry(() -> getBrowser().executeScript(javaScript, element.getElement(), args));
+    protected Object executeScript(JavaScript javaScript, Object... args) {
+        return getActionRetrier().doWithRetry(() -> getBrowser().executeScript(javaScript, resolveArguments(args)));
     }
 
     /**

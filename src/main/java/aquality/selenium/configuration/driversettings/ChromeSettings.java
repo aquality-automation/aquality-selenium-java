@@ -3,6 +3,7 @@ package aquality.selenium.configuration.driversettings;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class ChromeSettings extends DriverSettings {
     }
 
     @Override
-    public ChromeOptions getCapabilities() {
+    public AbstractDriverOptions<?> getDriverOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
         setChromePrefs(chromeOptions);
         setCapabilities(chromeOptions);

@@ -3,6 +3,7 @@ package aquality.selenium.configuration.driversettings;
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 
 public class IExplorerSettings extends DriverSettings {
 
@@ -11,7 +12,7 @@ public class IExplorerSettings extends DriverSettings {
     }
 
     @Override
-    public InternetExplorerOptions getCapabilities() {
+    public AbstractDriverOptions<?> getDriverOptions() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         setCapabilities(internetExplorerOptions);
         internetExplorerOptions.setPageLoadStrategy(getPageLoadStrategy());
