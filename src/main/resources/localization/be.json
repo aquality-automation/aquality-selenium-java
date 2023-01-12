@@ -4,6 +4,7 @@
   "loc.browser.forward": "Пераходзім да наступнай старонкі",
   "loc.browser.capabilities": "Атрымалі capabilities браўзэра з settings файла: %s",
   "loc.browser.options": "Атрымалі опцыі профіля браўзэра з settings файла: %s",
+  "loc.browser.loggingPreferences": "Атрымалі налады лагавання браўзэра з settings файла: %s",
   "loc.browser.driver.quit": "Закрываем браўзэр",
   "loc.browser.getUrl": "Атрымліваем адрас бягучай старонкі",
   "loc.browser.url.value": "Адрас бягучай старонкі: [%s]",

@@ -7,6 +7,7 @@ import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
 import automationpractice.forms.SliderForm;
 import org.openqa.selenium.*;
+import org.openqa.selenium.logging.LogType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -32,6 +33,13 @@ public class BrowserTests extends BaseTest {
     public void testShouldBePossibleToStartBrowserAndNavigate(){
         getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
         Assert.assertEquals(getBrowser().getCurrentUrl(), TheInternetPage.LOGIN.getAddress());
+    }
+
+    @Test
+    public void testShouldBePossibleToGetPerformanceLogs(){
+        getBrowser().goTo(TheInternetPage.LOGIN.getAddress());
+        Assert.assertFalse(getBrowser().getLogs(LogType.PERFORMANCE).getAll().isEmpty(),
+                "Some performance logs should be presented");
     }
 
     @Test

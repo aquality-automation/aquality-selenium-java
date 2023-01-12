@@ -21,6 +21,7 @@ public class ChromeSettings extends DriverSettings {
         setCapabilities(chromeOptions);
         setChromeArgs(chromeOptions);
         chromeOptions.setPageLoadStrategy(getPageLoadStrategy());
+        setLoggingPreferences(chromeOptions, ChromeOptions.LOGGING_PREFS);
         return chromeOptions;
     }
 

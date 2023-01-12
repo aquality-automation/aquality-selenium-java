@@ -8,12 +8,15 @@ import io.github.bonigarcia.wdm.config.Architecture;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.logging.LoggingPreferences;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 abstract class DriverSettings implements IDriverSettings {
@@ -21,6 +24,7 @@ abstract class DriverSettings implements IDriverSettings {
     private final ISettingsFile settingsFile;
     private Map<String, Object> options;
     private Map<String, Object> capabilities;
+    private Map<String, Level> loggingPreferences;
     private List<String> startArguments;
 
     protected DriverSettings(ISettingsFile settingsFile) {
@@ -43,6 +47,15 @@ abstract class DriverSettings implements IDriverSettings {
             capabilities = getMapOrEmpty(CapabilityType.CAPABILITIES);
         }
         return capabilities;
+    }
+
+    protected Map<String, Level> getLoggingPreferences() {
+        if (loggingPreferences == null) {
+            loggingPreferences = getMapOrEmpty(CapabilityType.LOGGING_PREFERENCES).entrySet().stream().collect(
+                    Collectors.toMap(entry -> entry.getKey().toLowerCase(),
+                            pair -> Level.parse(pair.getValue().toString().toUpperCase())));
+        }
+        return loggingPreferences;
     }
 
     private Map<String, Object> getMapOrEmpty(CapabilityType capabilityType) {
@@ -123,6 +136,14 @@ abstract class DriverSettings implements IDriverSettings {
         getBrowserCapabilities().forEach(options::setCapability);
     }
 
+    void setLoggingPreferences(MutableCapabilities options, String capabilityKey) {
+        if (!getLoggingPreferences().isEmpty()) {
+            LoggingPreferences logs = new LoggingPreferences();
+            getLoggingPreferences().forEach(logs::enable);
+            options.setCapability(capabilityKey, logs);
+        }
+    }
+
     @Override
     public String getDownloadDir() {
         Map<String, Object> browserOptions = getBrowserOptions();
@@ -136,7 +157,10 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     private enum CapabilityType {
-        CAPABILITIES("capabilities"), OPTIONS("options"), START_ARGS("startArguments");
+        CAPABILITIES("capabilities"),
+        OPTIONS("options"),
+        START_ARGS("startArguments"),
+        LOGGING_PREFERENCES("loggingPreferences");
 
         private final String key;
 

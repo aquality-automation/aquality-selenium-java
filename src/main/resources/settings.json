@@ -15,7 +15,10 @@
         "profile.default_content_settings.popups": "0",
         "disable-popup-blocking": "true",
         "download.prompt_for_download": "false",
-        "download.default_directory": "//home//selenium//downloads"
+        "download.default_directory": "./downloads"
+      },
+      "loggingPreferences": {
+        "Performance": "All"
       },
       "pageLoadStrategy": "Normal",
       "startArguments": []
@@ -30,7 +33,10 @@
         "profile.default_content_settings.popups": "0",
         "disable-popup-blocking": "true",
         "download.prompt_for_download": "false",
-        "download.default_directory": "//home//selenium//downloads"
+        "download.default_directory": "./downloads"
+      },
+      "loggingPreferences": {
+        "Performance": "All"
       },
       "startArguments": []
     },
@@ -40,7 +46,7 @@
       },
       "options": {
         "intl.accept_languages": "en",
-        "browser.download.dir": "//home//selenium//downloads",
+        "browser.download.dir": "./downloads",
         "browser.download.folderList": 2,
         "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream, application/x-debian-package, application/x-www-form-urlencod, application/json, application/x-compressed, application/x-zip-compressed, application/zip, multipart/x-zip, text/plain, text/csv",
         "browser.helperApps.alwaysAsk.force": false,
