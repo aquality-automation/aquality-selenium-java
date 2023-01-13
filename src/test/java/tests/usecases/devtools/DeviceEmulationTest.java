@@ -71,7 +71,11 @@ public class DeviceEmulationTest extends BaseTest {
         navigate(TheInternetPage.TABLES);
         Assert.assertEquals(getWindowHeight.get(), HEIGHT, "Browser height should match to override value");
         emulation().clearDeviceMetricsOverride();
-        AqualityServices.getBrowser().refresh();
+        AqualityServices.getConditionalWait().waitFor(() -> {
+                AqualityServices.getBrowser().refresh();
+                return getWindowHeight.get() == initialValue;
+        });
+
         Assert.assertEquals(getWindowHeight.get(), initialValue, "Browser height should match to initial value after clear");
     }
 }
