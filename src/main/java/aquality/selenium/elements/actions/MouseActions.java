@@ -1,7 +1,6 @@
 package aquality.selenium.elements.actions;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.browser.Browser;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.interfaces.IElement;
 import org.openqa.selenium.interactions.Actions;
@@ -51,8 +50,10 @@ public class MouseActions {
      */
     public void moveMouseFromElement() {
         infoLoc("loc.movingFrom");
-        performAction(actions -> actions.moveToElement(element.getElement(),
-                -element.getElement().getSize().width / 2, -element.getElement().getSize().height / 2));
+        AqualityServices.get(IElementActionRetrier.class).doWithRetry(() ->
+                new Actions(getBrowser().getDriver())
+                        .moveToElement(element.getElement(), -element.getElement().getSize().width, -element.getElement().getSize().height)
+                        .build().perform());
     }
 
     /**

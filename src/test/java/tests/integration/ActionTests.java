@@ -1,20 +1,21 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.browser.JavaScript;
-import aquality.selenium.elements.actions.JsActions;
-import aquality.selenium.elements.interfaces.IButton;
+import aquality.selenium.elements.interfaces.ILabel;
+import aquality.selenium.elements.interfaces.ILink;
 import aquality.selenium.elements.interfaces.ITextBox;
-import automationpractice.forms.ProductForm;
-import automationpractice.forms.ProductListForm;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
-import utils.AutomationPracticeUtils;
+import theinternet.forms.FormAuthenticationForm;
+import theinternet.forms.InfiniteScrollForm;
+import theinternet.forms.JQueryMenuForm;
+import theinternet.forms.WelcomeForm;
 
-import static automationpractice.Constants.URL_AUTOMATIONPRACTICE;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ActionTests extends BaseTest {
 
@@ -22,80 +23,89 @@ public class ActionTests extends BaseTest {
     @Override
     protected void beforeMethod() {
         AqualityServices.getBrowser().getDriver().manage().window().maximize();
-        if (!AqualityServices.getBrowser().getCurrentUrl().equals(URL_AUTOMATIONPRACTICE)) {
-            AutomationPracticeUtils.openAutomationPracticeSite();
-        }
     }
 
     @Test
     public void testScrollToTheCenter() {
-        JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
-        jsActions.scrollToTheCenter();
-        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollToTheCenter()");
+        final int accuracy = 1;
+        WelcomeForm welcomeForm = new WelcomeForm();
+        getBrowser().goTo(welcomeForm.getUrl());
+        ILink link = welcomeForm.getExampleLink(WelcomeForm.AvailableExample.HOVERS);
+        link.getJsActions().scrollToTheCenter();
+
+        Long windowHeight = getScriptResultOrDefault("getWindowSize.js", 10L);
+        double currentY = getScriptResultOrDefault("getElementYCoordinate.js", 0.0, link.getElement());
+        double coordinateRelatingWindowCenter =  windowHeight.doubleValue() / 2 - currentY;
+        Assert.assertTrue(Math.abs(coordinateRelatingWindowCenter) <= accuracy,
+                "Upper bound of element should be in the center of the page");
     }
 
     @Test
-    public void testScrollIntoView() {
-        AqualityServices.getBrowser().executeScript(JavaScript.SCROLL_TO_BOTTOM);
-        JsActions jsActions = new ProductListForm().getLblLastProduct().getJsActions();
-        jsActions.scrollIntoView();
-        Assert.assertTrue(jsActions.isElementOnScreen(), "element is not on the screen after scrollIntoView()");
+    public void testScrollIntoView() throws TimeoutException {
+        InfiniteScrollForm infiniteScrollForm = new InfiniteScrollForm();
+        getBrowser().goTo(infiniteScrollForm.getUrl());
+        infiniteScrollForm.waitForMoreExamples();
+        int defaultCount = infiniteScrollForm.getExampleLabels().size();
+        AtomicReference<ILabel> lastExampleLabel = new AtomicReference<>(infiniteScrollForm.getLastExampleLabel());
+        AqualityServices.getConditionalWait().waitForTrue(() -> {
+            lastExampleLabel.set(infiniteScrollForm.getLastExampleLabel());
+            lastExampleLabel.get().getJsActions().scrollIntoView();
+            return infiniteScrollForm.getExampleLabels().size() > defaultCount;
+        }, "Some examples should be added after scroll");
+        Assert.assertTrue(lastExampleLabel.get().getJsActions().isElementOnScreen(),
+                "Element should be on screen after scroll into view");
     }
 
     @Test
     public void testMoveMouseToElement() {
-        IButton button = new ProductListForm().getBtnLastProductMoreFocused();
-        Assert.assertTrue(button.getText().contains("More"), "element is not focused after moveMouseToElement()");
+        JQueryMenuForm menuForm = new JQueryMenuForm();
+        getBrowser().goTo(menuForm.getUrl());
+        menuForm.getEnabledButton().getMouseActions().moveMouseToElement();
+        Assert.assertTrue(menuForm.isEnabledButtonFocused(), "element is not focused after moveMouseToElement()");
     }
 
     @Test
     public void testMoveMouseFromElement() {
-        ProductListForm productListForm = new ProductListForm();
-
-        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() -> {
-            IButton button = productListForm.getBtnLastProductMoreFocused();
-            return button.getText().contains("More");
-        }, "element is not focused after moveMouseToElement()"));
-
-        IButton button = productListForm.getBtnLastProductMoreFocused();
-        productListForm.getLblLastProduct().getMouseActions().moveMouseFromElement();
-        Assert.assertFalse(button.state().isDisplayed(), "element is still focused after moveMouseFromElement()");
+        JQueryMenuForm menuForm = new JQueryMenuForm();
+        testMoveMouseToElement();
+        menuForm.getEnabledButton().getMouseActions().moveMouseFromElement();
+        boolean isUnfocused = AqualityServices.getConditionalWait().waitFor(() -> !menuForm.isEnabledButtonFocused());
+        Assert.assertTrue(isUnfocused, "element is still focused after moveMouseFromElement()");
     }
 
     @Test
     public void testGetElementText() {
-        IButton button = new ProductListForm().getBtnLastProductMoreFocused();
-        Assert.assertEquals(button.getText().trim(), button.getJsActions().getElementText().trim(),
+        WelcomeForm welcomeForm = new WelcomeForm();
+        getBrowser().goTo(welcomeForm.getUrl());
+        ILink link = welcomeForm.getExampleLink(WelcomeForm.AvailableExample.HOVERS);
+        Assert.assertEquals(link.getText().trim(), link.getJsActions().getElementText().trim(),
                 "element text got via JsActions is not match to expected");
     }
 
     @Test
     public void testSetFocus() {
-        Runnable testSetFocus = () -> {
-            new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
+        FormAuthenticationForm form = new FormAuthenticationForm();
+        getBrowser().goTo(form.getUrl());
+        ITextBox textBox = form.getTxbUsername();
+        ITextBox secondTextBox = form.getTxbPassword();
+        textBox.clearAndType("peter.parker@example.com");
+        secondTextBox.getJsActions().setFocus();
 
-            ITextBox txbQuantity = new ProductForm().getTxbQuantity();
-            txbQuantity.getJsActions().setFocus();
-            txbQuantity.sendKeys(Keys.DELETE);
-            txbQuantity.sendKeys(Keys.BACK_SPACE);
-            Assert.assertEquals(txbQuantity.getValue(), "",
-                    "value is not empty after sending Delete keys, probably setFocus() didn't worked");
-        };
-        AutomationPracticeUtils.doOnAutomationPracticeWithRetry(testSetFocus);
+        String currentText = textBox.getValue();
+        String expectedText = currentText.substring(0, currentText.length() - 1);
+        textBox.getJsActions().setFocus();
+        textBox.sendKeys(Keys.DELETE);
+        textBox.sendKeys(Keys.BACK_SPACE);
+        Assert.assertEquals(textBox.getValue(), expectedText, "One character should be removed from " + expectedText);
     }
 
     @Test
     public void testSetValue() {
-        Runnable testSetValue = () -> {
-            new ProductListForm().getBtnLastProductMoreFocused().getJsActions().clickAndWait();
-
-            ProductForm productForm = new ProductForm();
-            ITextBox txbQuantity = productForm.getTxbQuantity();
-            txbQuantity.getJsActions().setValue("2");
-            productForm.getBtnPlus().click();
-            Assert.assertEquals(txbQuantity.getValue(), "3",
-                    "value of textbox is not correct, probably setValue() didn't worked");
-        };
-        AutomationPracticeUtils.doOnAutomationPracticeWithRetry(testSetValue);
+        final String expectedValue = "2";
+        FormAuthenticationForm form = new FormAuthenticationForm();
+        getBrowser().goTo(form.getUrl());
+        ITextBox textBox = form.getTxbUsername();
+        textBox.getJsActions().setValue(expectedValue);
+        Assert.assertEquals(textBox.getValue(), expectedValue, "Text is not set to value");
     }
 }

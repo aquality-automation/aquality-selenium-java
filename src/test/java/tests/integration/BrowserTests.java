@@ -5,7 +5,6 @@ import aquality.selenium.browser.BrowserName;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
-import automationpractice.forms.SliderForm;
 import org.openqa.selenium.*;
 import org.openqa.selenium.logging.LogType;
 import org.testng.Assert;
@@ -14,8 +13,8 @@ import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.DynamicContentForm;
 import theinternet.forms.FormAuthenticationForm;
+import theinternet.forms.WelcomeForm;
 import utils.DurationSample;
-import utils.AutomationPracticeUtils;
 import utils.Timer;
 
 import java.io.IOException;
@@ -182,12 +181,12 @@ public class BrowserTests extends BaseTest {
 
     @Test
     public void testShouldBePossibleToScrollWindowBy(){
-        AutomationPracticeUtils.openAutomationPracticeSite();
-        SliderForm sliderForm = new SliderForm();
-        int initialY = sliderForm.getFormPointInViewPort().getY();
-        int formHeight = sliderForm.getSize().getHeight();
+        WelcomeForm scrollForm = new WelcomeForm();
+        getBrowser().goTo(scrollForm.getUrl());
+        int initialY = scrollForm.getFormPointInViewPort().getY();
+        int formHeight = scrollForm.getSize().getHeight();
         getBrowser().scrollWindowBy(0, formHeight);
-        Assert.assertEquals(initialY - sliderForm.getFormPointInViewPort().getY(), formHeight);
+        Assert.assertEquals(initialY - scrollForm.getFormPointInViewPort().getY(), formHeight);
     }
 
     @Test

@@ -6,7 +6,6 @@ import automationpractice.forms.*;
 import automationpractice.modals.ProceedToCheckoutModal;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import utils.AutomationPracticeUtils;
@@ -29,7 +28,9 @@ public class ShoppingCartTest extends BaseTest {
         }
     }
 
-    @Test
+    /*@Test
+    test skipped because automationpractice.com site is down
+     */
     public void testShoppingCart() {
         Runnable testShoppingCart = () -> {
             SoftAssert softAssert = new SoftAssert();
