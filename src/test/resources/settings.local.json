@@ -8,7 +8,6 @@
     "chrome": {
       "webDriverVersion": "latest",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",
@@ -18,13 +17,15 @@
         "download.prompt_for_download": "false",
         "download.default_directory": ".//target//downloads//"
       },
+      "loggingPreferences": {
+        "Performance": "All"
+      },
       "startArguments": []
     },
     "firefox": {
       "webDriverVersion": "latest",
       "systemArchitecture": "X32",
       "capabilities": {
-        "enableVNC": true
       },
       "options": {
         "intl.accept_languages": "en",

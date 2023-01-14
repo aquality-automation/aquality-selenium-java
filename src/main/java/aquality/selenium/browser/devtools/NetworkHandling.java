@@ -313,4 +313,32 @@ public class NetworkHandling {
     public void clearNetworkInterceptor() {
         resetNetworkFilter();
     }
+
+    /**
+     * Activates emulation of network conditions.
+     * @param offline True to emulate internet disconnection.
+     * @param latency Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     */
+    public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput, Optional.empty()));
+    }
+
+    /**
+     * Activates emulation of network conditions.
+     * @param offline True to emulate internet disconnection.
+     * @param latency Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     * @param connectionType Connection type if known.
+     *                       Possible values: "none", "cellular2g", "cellular3g", "cellular4g", "bluetooth", "ethernet",
+     *                       "wifi", "wimax", "other".
+     */
+    public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput, String connectionType) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput,
+                Optional.of(ConnectionType.fromString(connectionType))));
+    }
 }

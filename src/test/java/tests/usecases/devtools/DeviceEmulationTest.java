@@ -3,8 +3,8 @@ package tests.usecases.devtools;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.devtools.EmulationHandling;
 import com.google.common.collect.ImmutableMap;
-import org.openqa.selenium.devtools.v104.emulation.Emulation;
-import org.openqa.selenium.devtools.v104.emulation.model.DisplayFeature;
+import org.openqa.selenium.devtools.v108.emulation.Emulation;
+import org.openqa.selenium.devtools.v108.emulation.model.DisplayFeature;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -71,7 +71,11 @@ public class DeviceEmulationTest extends BaseTest {
         navigate(TheInternetPage.TABLES);
         Assert.assertEquals(getWindowHeight.get(), HEIGHT, "Browser height should match to override value");
         emulation().clearDeviceMetricsOverride();
-        AqualityServices.getBrowser().refresh();
+        AqualityServices.getConditionalWait().waitFor(() -> {
+                AqualityServices.getBrowser().refresh();
+                return getWindowHeight.get() == initialValue;
+        });
+
         Assert.assertEquals(getWindowHeight.get(), initialValue, "Browser height should match to initial value after clear");
     }
 }

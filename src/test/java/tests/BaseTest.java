@@ -44,9 +44,9 @@ public abstract class BaseTest {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> T getScriptResultOrDefault(String scriptName, T defaultValue) {
+    protected <T> T getScriptResultOrDefault(String scriptName, T defaultValue, Object... arguments) {
         try {
-            return ((T) getBrowser().executeScript(getResourceFileByName(scriptName)));
+            return ((T) getBrowser().executeScript(getResourceFileByName(scriptName), arguments));
         } catch (IOException e) {
             return defaultValue;
         }

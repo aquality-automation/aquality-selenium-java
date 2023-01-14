@@ -140,7 +140,9 @@ public class JsActions implements IShadowRootExpander {
      */
     public String getElementText() {
         logElementAction("loc.get.text.js");
-        return (String) executeScript(JavaScript.GET_ELEMENT_TEXT);
+        String value = (String) executeScript(JavaScript.GET_ELEMENT_TEXT);
+        logElementAction("loc.text.value", value);
+        return value;
     }
 
     /**

@@ -2,7 +2,6 @@ package aquality.selenium.configuration.driversettings;
 
 import aquality.selenium.browser.BrowserName;
 import aquality.selenium.core.utilities.ISettingsFile;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 
@@ -22,6 +21,7 @@ public class EdgeSettings extends DriverSettings {
         setPrefs(edgeOptions);
         getBrowserStartArguments().forEach(edgeOptions::addArguments);
         edgeOptions.setPageLoadStrategy(getPageLoadStrategy());
+        setLoggingPreferences(edgeOptions, EdgeOptions.LOGGING_PREFS);
         return edgeOptions;
     }
 
