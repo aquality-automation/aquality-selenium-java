@@ -5,7 +5,7 @@ import aquality.selenium.browser.devtools.EmulationHandling;
 import manytools.BrowserLanguageForm;
 import manytools.UserAgentForm;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v108.emulation.Emulation;
+import org.openqa.selenium.devtools.v110.emulation.Emulation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

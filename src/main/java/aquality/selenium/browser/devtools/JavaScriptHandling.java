@@ -12,6 +12,7 @@ import org.openqa.selenium.devtools.events.DomMutationEvent;
 import org.openqa.selenium.devtools.idealized.Events;
 import org.openqa.selenium.devtools.idealized.Javascript;
 import org.openqa.selenium.devtools.idealized.ScriptId;
+import org.openqa.selenium.devtools.idealized.target.model.SessionID;
 import org.openqa.selenium.devtools.v85.page.Page;
 import org.openqa.selenium.devtools.v85.page.model.ScriptIdentifier;
 import org.openqa.selenium.devtools.v85.runtime.Runtime;
@@ -111,7 +112,9 @@ public class JavaScriptHandling {
             final Field pinnedScripts = Javascript.class.getDeclaredField("pinnedScripts");
             pinnedScripts.setAccessible(true);
             //noinspection unchecked
-            ((Map<String, ScriptId>)pinnedScripts.get(engine)).remove(script.getScriptSource());
+            ((Map<SessionID, Map<String, ScriptId>>)pinnedScripts.get(engine))
+                    .get(tools.getDevToolsSession().getCdpSession())
+                    .remove(script.getScriptSource());
             pinnedScripts.setAccessible(false);
         } catch (ReflectiveOperationException e) {
             AqualityServices.getLogger().fatal("Error while removing initialization script", e);
