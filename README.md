@@ -22,7 +22,7 @@ Alternatively, you can follow the steps below:
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>3.x.x</version>
+    <version>4.x.x</version>
 </dependency>
 ```
 

@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class BrowserFactoryTests {
@@ -53,14 +54,14 @@ public class BrowserFactoryTests {
         return () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
             WebDriverManager.firefoxdriver().setup();
-            FirefoxDriver driver = AqualityServices.get(IActionRetrier.class).doWithRetry(
-                    () -> new FirefoxDriver(((FirefoxOptions) firefoxSettings.getDriverOptions()).setHeadless(true)),
-                    Arrays.asList(
-                            SessionNotCreatedException.class,
-                            UnreachableBrowserException.class,
-                            WebDriverException.class,
-                            TimeoutException.class));
-
+            FirefoxOptions options = ((FirefoxOptions) firefoxSettings.getDriverOptions()).addArguments("--headless");
+            final List<Class<? extends Throwable>> handledExceptions = Arrays.asList(
+                    SessionNotCreatedException.class,
+                    UnreachableBrowserException.class,
+                    WebDriverException.class,
+                    TimeoutException.class);
+            FirefoxDriver driver = AqualityServices.get(IActionRetrier.class)
+                    .doWithRetry(() -> new FirefoxDriver(options), handledExceptions);
             return new Browser(driver);
         };
     }

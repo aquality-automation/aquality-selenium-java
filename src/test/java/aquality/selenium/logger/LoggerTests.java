@@ -33,7 +33,7 @@ public class LoggerTests {
     private File appenderFile;
 
     @BeforeMethod
-    private void addMessagesAppender() throws IOException {
+    private void addMessagesAppender() {
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
         appender.start();
@@ -160,14 +160,13 @@ public class LoggerTests {
         assertTrue(isFileContainsText(appenderFile, testMessage));
     }
 
-    private Appender getFileAppender(File file) throws IOException {
-        Layout layout = PatternLayout.newBuilder().withPattern("%m%n").build();
-        FileAppender fileAppender = FileAppender.newBuilder().setName("test")
+    private Appender getFileAppender(File file) {
+        Layout<String> layout = PatternLayout.newBuilder().withPattern("%m%n").build();
+        return FileAppender.newBuilder().setName("test")
                 .setLayout(layout)
                 .withFileName(file.getPath())
                 .withAppend(true)
                 .build();
-        return fileAppender;
     }
 
     private boolean isFileContainsText(File file, String line) throws IOException {

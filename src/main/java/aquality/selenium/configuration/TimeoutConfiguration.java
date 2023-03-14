@@ -37,7 +37,7 @@ public class TimeoutConfiguration extends aquality.selenium.core.configurations.
         SCRIPT("timeoutScript"),
         PAGE_LOAD("timeoutPageLoad");
 
-        private String key;
+        private final String key;
 
         TIMEOUT(String key) {
             this.key = key;
