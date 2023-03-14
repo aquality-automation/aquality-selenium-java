@@ -65,18 +65,6 @@ public abstract class Form extends aquality.selenium.core.forms.Form<IElement> {
     }
 
     /**
-     * @deprecated This method will be removed in the future release. Use state().waitForDisplayed() if needed.
-     * Return form state for form locator, waiting for the form to be displayed.
-     *
-     * @return True - form is opened,
-     * False - form is not opened
-     */
-    @Deprecated
-    public boolean isDisplayed() {
-        return state().waitForDisplayed();
-    }
-
-    /**
      * Scroll form without scrolling entire page
      *
      * @param x horizontal coordinate
