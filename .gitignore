@@ -5,6 +5,9 @@ downloads
 # Log file
 *.log
 
+# Visualization files
+visualDumps/
+
 # BlueJ files
 *.ctxt
 

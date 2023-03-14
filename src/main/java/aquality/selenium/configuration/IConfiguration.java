@@ -3,6 +3,7 @@ package aquality.selenium.configuration;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
+import aquality.selenium.core.configurations.IVisualizationConfiguration;
 
 /**
  * Describes tool configuration.
@@ -43,4 +44,11 @@ public interface IConfiguration {
      * @return Configuration of element caching.
      */
     IElementCacheConfiguration getElementCacheConfiguration();
+
+    /**
+     * Gets configuration of VisualStateProvider and Dump manager.
+     *
+     * @return Visualization configuration.
+     */
+    IVisualizationConfiguration getVisualizationConfiguration();
 }

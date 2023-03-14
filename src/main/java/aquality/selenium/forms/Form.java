@@ -1,17 +1,24 @@
 package aquality.selenium.forms;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.configurations.IVisualizationConfiguration;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.IElementFactory;
 import aquality.selenium.elements.interfaces.ILabel;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
+
+import java.awt.*;
 
 /**
  * Defines base class for any UI form.
  */
-public abstract class Form {
+public abstract class Form extends aquality.selenium.core.forms.Form<IElement> {
+    /**
+     * Label of form element defined by its locator and name.
+     */
+    private final ILabel formLabel;
     /**
      * Locator for specified form
      */
@@ -25,8 +32,10 @@ public abstract class Form {
      * Constructor with parameters
      */
     protected Form(By locator, String name) {
+        super(IElement.class);
         this.locator = locator;
         this.name = name;
+        formLabel = getElementFactory().getLabel(locator, name);
     }
 
     /**
@@ -83,7 +92,7 @@ public abstract class Form {
      * @return Size of the form element.
      */
     public Dimension getSize() {
-        return getFormLabel().getElement().getSize();
+        return getFormLabel().visual().getSize();
     }
 
 
@@ -94,7 +103,7 @@ public abstract class Form {
      * @return Label of form element.
      */
     protected ILabel getFormLabel() {
-        return getElementFactory().getLabel(locator, name);
+        return formLabel;
     }
 
     /**
@@ -111,7 +120,18 @@ public abstract class Form {
      *
      * @return instance of localized logger.
      */
-    protected ILocalizedLogger getLogger() {
+    @Override
+    protected ILocalizedLogger getLocalizedLogger() {
         return AqualityServices.getLocalizedLogger();
+    }
+
+    /**
+     * Visualization configuration used by dump().
+     *
+     * @return instance of visualization configuration.
+     */
+    @Override
+    protected IVisualizationConfiguration getVisualizationConfiguration() {
+        return AqualityServices.getConfiguration().getVisualizationConfiguration();
     }
 }

@@ -2,7 +2,7 @@ package aquality.selenium.elements;
 
 import aquality.selenium.core.elements.DefaultElementStateProvider;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
-import aquality.selenium.core.elements.interfaces.ILogElementState;
+import aquality.selenium.core.logging.ILogElementState;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
