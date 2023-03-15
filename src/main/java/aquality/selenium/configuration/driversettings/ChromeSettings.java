@@ -42,6 +42,11 @@ public class ChromeSettings extends DriverSettings {
         for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
         }
+        // workaround for Selenium issue https://github.com/SeleniumHQ/selenium/issues/11750
+        final String allowOriginsArgument = "--remote-allow-origins=*";
+        if (!getBrowserStartArguments().contains(allowOriginsArgument)) {
+            options.addArguments(allowOriginsArgument);
+        }
     }
 
     @Override

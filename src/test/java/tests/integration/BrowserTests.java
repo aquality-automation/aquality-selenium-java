@@ -184,7 +184,7 @@ public class BrowserTests extends BaseTest {
         WelcomeForm scrollForm = new WelcomeForm();
         getBrowser().goTo(scrollForm.getUrl());
         int initialY = scrollForm.getFormPointInViewPort().getY();
-        int formHeight = scrollForm.getSize().getHeight();
+        int formHeight = (int) scrollForm.getSize().getHeight();
         getBrowser().scrollWindowBy(0, formHeight);
         Assert.assertEquals(initialY - scrollForm.getFormPointInViewPort().getY(), formHeight);
     }

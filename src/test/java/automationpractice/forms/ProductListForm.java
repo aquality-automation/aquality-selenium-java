@@ -25,7 +25,7 @@ public class ProductListForm extends Form {
     }
 
     public List<ILabel> getProductContainerLabels(){
-        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
+        return getElementFactory().findElements(By.xpath(XPATH_PRODUCT_CONTAINER), ElementType.LABEL, ElementsCount.MORE_THAN_ZERO, ElementState.DISPLAYED);
     }
 
     private ILabel getLblFirstProduct(){

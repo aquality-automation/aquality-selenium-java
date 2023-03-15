@@ -35,7 +35,7 @@ public class YourPersonalInfoForm extends Form {
     }
 
     public Integer getNumOfDays(){
-        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementsCount.MORE_THEN_ZERO, ElementState.EXISTS_IN_ANY_STATE);
+        List<ILabel> lblDays = getElementFactory().findElements(By.xpath(XPATH_SELECT_DAYS), ElementType.LABEL, ElementsCount.MORE_THAN_ZERO, ElementState.EXISTS_IN_ANY_STATE);
         return lblDays.size();
     }
 

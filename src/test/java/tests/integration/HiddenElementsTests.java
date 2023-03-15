@@ -47,14 +47,14 @@ public class HiddenElementsTests extends BaseTest {
 
     @Test(dataProvider = "getHiddenElementListProviders")
     public void testHiddenElementsExist(Function<ElementsCount, List<ILabel>> elementsListProvider) {
-        List<ILabel> listElements = elementsListProvider.apply(ElementsCount.MORE_THEN_ZERO);
+        List<ILabel> listElements = elementsListProvider.apply(ElementsCount.MORE_THAN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
         Assert.assertTrue(listElements.stream().allMatch(el -> el.state().isExist()));
     }
 
     @Test(dataProvider = "getHiddenElementListProviders")
     public void testHiddenElementsNotDisplayed(Function<ElementsCount, List<ILabel>> elementsListProvider) {
-        List<ILabel> listElements = elementsListProvider.apply(ElementsCount.MORE_THEN_ZERO);
+        List<ILabel> listElements = elementsListProvider.apply(ElementsCount.MORE_THAN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
         Assert.assertTrue(listElements.stream().noneMatch(el -> el.state().isDisplayed()));
     }

@@ -120,5 +120,13 @@
   },
   "elementCache": {
     "isEnabled": false
+  },
+  "visualization": {
+    "imageExtension": "png",
+    "maxFullFileNameLength": 255,
+    "defaultThreshold": 0.012,
+    "comparisonWidth": 16,
+    "comparisonHeight": 16,
+    "pathToDumps": "./src/test/resources/visualDumps/"
   }
 }
