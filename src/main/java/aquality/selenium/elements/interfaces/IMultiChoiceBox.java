@@ -1,6 +1,27 @@
 package aquality.selenium.elements.interfaces;
 
-public interface IMultiChoiceComboBox extends IComboBox {
+import java.util.List;
+
+public interface IMultiChoiceBox extends IComboBox {
+
+    /**
+     * Gets value of all selected options
+     *
+     * @return selected values
+     */
+    List<String> getSelectedValues();
+
+    /**
+     * Gets text of all selected options
+     *
+     * @return selected text
+     */
+    List<String> getSelectedTexts();
+
+    /**
+     * Select all options
+     */
+    void selectAll();
 
     /**
      * Deselect all selected options

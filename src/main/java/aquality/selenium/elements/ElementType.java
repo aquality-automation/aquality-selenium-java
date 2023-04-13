@@ -6,7 +6,7 @@ public enum ElementType {
     BUTTON(IButton.class),
     CHECKBOX(ICheckBox.class),
     COMBOBOX(IComboBox.class),
-    MULTICHOICECOMBOBOX(IMultiChoiceComboBox.class),
+    MULTICHOICECOMBOBOX(IMultiChoiceBox.class),
     LABEL(ILabel.class),
     LINK(ILink.class),
     RADIOBUTTON(IRadioButton.class),

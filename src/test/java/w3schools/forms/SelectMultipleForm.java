@@ -2,7 +2,7 @@ package w3schools.forms;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.IButton;
-import aquality.selenium.elements.interfaces.IMultiChoiceComboBox;
+import aquality.selenium.elements.interfaces.IMultiChoiceBox;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
@@ -17,12 +17,20 @@ import java.util.stream.IntStream;
 
 public class SelectMultipleForm extends Form {
 
-    private final IMultiChoiceComboBox cbxCars = getElementFactory().getMultiChoiceComboBox(By.id("cars"), "Cars");
+    private final IMultiChoiceBox cbxCars = getElementFactory().getMultiChoiceComboBox(By.id("cars"), "Cars");
     private final IButton btnSubmit = getElementFactory().getButton(By.cssSelector("input[type='submit']"), "Submit");
     private final ITextBox txbResult = getElementFactory().getTextBox(By.cssSelector(".w3-large"), "Result");
+    private final IButton btnAcceptCookies = getElementFactory().getButton(By.id("accept-choices"), "Accept cookies");
 
     public SelectMultipleForm() {
         super(By.id("iframe"), "Select Multiple");
+    }
+
+    public void acceptCookies() {
+        if (btnAcceptCookies.state().isDisplayed()) {
+            btnAcceptCookies.click();
+            btnAcceptCookies.state().waitForNotDisplayed();
+        }
     }
 
     public void switchToResultFrame() {
@@ -46,7 +54,19 @@ public class SelectMultipleForm extends Form {
     }
 
     public void selectAll() {
-        cbxCars.getValues().forEach(cbxCars::selectByValue);
+        cbxCars.selectAll();
+    }
+
+    public List<String> getAllTexts() {
+        return cbxCars.getTexts();
+    }
+
+    public List<String> getSelectedTexts() {
+        return cbxCars.getSelectedTexts();
+    }
+
+    public List<String> getSelectedValues() {
+        return cbxCars.getSelectedValues();
     }
 
     public List<String> deselectByValue(List<String> valuesToDeselect) {
@@ -65,11 +85,11 @@ public class SelectMultipleForm extends Form {
         return deselectBy(cbxCars::deselectByContainingText, textToDeselect);
     }
 
-    public List<String> deselectByIndex(List<Integer> indeciesToDeselect) {
+    public List<String> deselectByIndex(List<Integer> indicesToDeselect) {
         List<String> values = cbxCars.getValues();
-        indeciesToDeselect.forEach(cbxCars::deselectByIndex);
+        indicesToDeselect.forEach(cbxCars::deselectByIndex);
         return IntStream.range(0, values.size())
-                .filter(i -> !indeciesToDeselect.contains(i))
+                .filter(i -> !indicesToDeselect.contains(i))
                 .mapToObj(values::get)
                 .collect(Collectors.toList());
     }

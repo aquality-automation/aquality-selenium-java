@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MultiChoiceComboBoxTests extends BaseTest {
+public class MultiChoiceBoxTests extends BaseTest {
 
     private final SelectMultipleForm selectMultipleForm = new SelectMultipleForm();
 
@@ -20,13 +20,28 @@ public class MultiChoiceComboBoxTests extends BaseTest {
     public void beforeMethod() {
         getBrowser().goTo(W3SchoolsPage.SELECT_MULTIPLE.getAddress());
         getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
+        selectMultipleForm.acceptCookies();
+        selectMultipleForm.switchToResultFrame();
+    }
+
+    @Test
+    public void testSelectAll() {
+        List<String> allTexts = selectMultipleForm.getAllTexts();
+
+        selectMultipleForm.selectAll();
+        List<String> selected = selectMultipleForm.getSelectedTexts();
+        Assert.assertEquals(allTexts, selected, "Not all texts were selected");
+
+        selected = selectMultipleForm.getSelectedValues();
+        selectMultipleForm.submit();
+
+        Assert.assertEquals(selectMultipleForm.getValuesFromResult(), selected);
     }
 
     @Test
     public void testDeselectByValue() {
         List<String> valuesToRemove = Stream.of("volvo", "saab").collect(Collectors.toList());
 
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         List<String> remaining = selectMultipleForm.deselectByValue(valuesToRemove);
         selectMultipleForm.submit();
@@ -38,7 +53,6 @@ public class MultiChoiceComboBoxTests extends BaseTest {
     public void testDeselectByContainingValue() {
         List<String> valuesToRemove = Stream.of("saa", "ope").collect(Collectors.toList());
 
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         List<String> remaining = selectMultipleForm.deselectByContainingValue(valuesToRemove);
         selectMultipleForm.submit();
@@ -50,7 +64,6 @@ public class MultiChoiceComboBoxTests extends BaseTest {
     public void testDeselectByText() {
         List<String> valuesToRemove = Stream.of("Opel").collect(Collectors.toList());
 
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         List<String> remaining = selectMultipleForm.deselectByText(valuesToRemove);
         selectMultipleForm.submit();
@@ -62,7 +75,6 @@ public class MultiChoiceComboBoxTests extends BaseTest {
     public void testDeselectByContainingText() {
         List<String> valuesToRemove = Stream.of("Au", "Vol").collect(Collectors.toList());
 
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         List<String> remaining = selectMultipleForm.deselectByContainingText(valuesToRemove);
         selectMultipleForm.submit();
@@ -74,7 +86,6 @@ public class MultiChoiceComboBoxTests extends BaseTest {
     public void testDeselectByIndex() {
         List<Integer> valuesToRemove = Stream.of(2, 3).collect(Collectors.toList());
 
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         List<String> remaining = selectMultipleForm.deselectByIndex(valuesToRemove);
         selectMultipleForm.submit();
@@ -84,7 +95,6 @@ public class MultiChoiceComboBoxTests extends BaseTest {
 
     @Test
     public void testDeselectAll() {
-        selectMultipleForm.switchToResultFrame();
         selectMultipleForm.selectAll();
         selectMultipleForm.deselectAll();
         selectMultipleForm.submit();

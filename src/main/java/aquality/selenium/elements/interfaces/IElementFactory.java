@@ -87,7 +87,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
      * @param name    Element name
      * @return Instance of element that implements IMultiChoiceComboBox interface
      */
-    default IMultiChoiceComboBox getMultiChoiceComboBox(By locator, String name) {
+    default IMultiChoiceBox getMultiChoiceComboBox(By locator, String name) {
         return getMultiChoiceComboBox(locator, name, ElementState.DISPLAYED);
     }
 
@@ -99,7 +99,7 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
      * @param state   Element state
      * @return Instance of element that implements IMultiChoiceComboBox interface
      */
-    default IMultiChoiceComboBox getMultiChoiceComboBox(By locator, String name, ElementState state) {
+    default IMultiChoiceBox getMultiChoiceComboBox(By locator, String name, ElementState state) {
         return get(ElementType.MULTICHOICECOMBOBOX, locator, name, state);
     }
 
