@@ -83,7 +83,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
+                ElementsCount.MORE_THAN_ZERO, ElementState.DISPLAYED);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.isChecked();
@@ -108,7 +108,7 @@ public class ElementTests extends BaseTest {
         navigate(TheInternetPage.CHECKBOXES);
         String checkboxLocator = "//input[@type='checkbox']";
         List<ICheckBox> checkBoxes = elementFactory.findElements(By.xpath(checkboxLocator), ICheckBox.class,
-                ElementsCount.MORE_THEN_ZERO, ElementState.DISPLAYED);
+                ElementsCount.MORE_THAN_ZERO, ElementState.DISPLAYED);
         ICheckBox checkBox1 = checkBoxes.get(0);
         ICheckBox checkBox2 = checkBoxes.get(1);
         boolean stateFirst = checkBox1.getJsActions().isChecked();

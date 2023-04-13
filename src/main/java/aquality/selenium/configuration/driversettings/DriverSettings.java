@@ -8,6 +8,7 @@ import io.github.bonigarcia.wdm.config.Architecture;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.logging.LoggingPreferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 abstract class DriverSettings implements IDriverSettings {
@@ -22,6 +24,7 @@ abstract class DriverSettings implements IDriverSettings {
     private final ISettingsFile settingsFile;
     private Map<String, Object> options;
     private Map<String, Object> capabilities;
+    private Map<String, Level> loggingPreferences;
     private List<String> startArguments;
 
     protected DriverSettings(ISettingsFile settingsFile) {
@@ -46,6 +49,15 @@ abstract class DriverSettings implements IDriverSettings {
         return capabilities;
     }
 
+    protected Map<String, Level> getLoggingPreferences() {
+        if (loggingPreferences == null) {
+            loggingPreferences = getMapOrEmpty(CapabilityType.LOGGING_PREFERENCES).entrySet().stream().collect(
+                    Collectors.toMap(entry -> entry.getKey().toLowerCase(),
+                            pair -> Level.parse(pair.getValue().toString().toUpperCase())));
+        }
+        return loggingPreferences;
+    }
+
     private Map<String, Object> getMapOrEmpty(CapabilityType capabilityType) {
         String path = getDriverSettingsPath(capabilityType);
         Map<String, Object> map = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
@@ -68,6 +80,15 @@ abstract class DriverSettings implements IDriverSettings {
             logCollection("loc.browser.arguments", startArguments);
         }
         return startArguments;
+    }
+
+    protected String getBinaryLocation(String defaultBinaryLocation) {
+        String value = (String) getSettingsFile().getValueOrDefault(getDriverSettingsPath("binaryLocation"), defaultBinaryLocation);
+        int varStartIndex = value.indexOf('%');
+        int varEndIndex = value.lastIndexOf('%');
+        return varStartIndex == 0 && varStartIndex != varEndIndex
+                ? System.getenv(value.substring(varStartIndex + 1, varEndIndex)) + value.substring(varEndIndex + 1)
+                : getAbsolutePath(value);
     }
 
     @SafeVarargs
@@ -115,6 +136,14 @@ abstract class DriverSettings implements IDriverSettings {
         getBrowserCapabilities().forEach(options::setCapability);
     }
 
+    void setLoggingPreferences(MutableCapabilities options, String capabilityKey) {
+        if (!getLoggingPreferences().isEmpty()) {
+            LoggingPreferences logs = new LoggingPreferences();
+            getLoggingPreferences().forEach(logs::enable);
+            options.setCapability(capabilityKey, logs);
+        }
+    }
+
     @Override
     public String getDownloadDir() {
         Map<String, Object> browserOptions = getBrowserOptions();
@@ -128,9 +157,12 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     private enum CapabilityType {
-        CAPABILITIES("capabilities"), OPTIONS("options"), START_ARGS("startArguments");
+        CAPABILITIES("capabilities"),
+        OPTIONS("options"),
+        START_ARGS("startArguments"),
+        LOGGING_PREFERENCES("loggingPreferences");
 
-        private String key;
+        private final String key;
 
         CapabilityType(String key) {
             this.key = key;
@@ -141,7 +173,7 @@ abstract class DriverSettings implements IDriverSettings {
         }
     }
 
-    private String getAbsolutePath(String path) {
+    protected String getAbsolutePath(String path) {
         try {
             return new File(path).getCanonicalPath();
         } catch (IOException e) {

@@ -6,7 +6,7 @@
 
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>2.5.2</version>
+    <version>4.0.0</version>
     <packaging>jar</packaging>
     <name>Aquality Selenium</name>
     <description>Library around Selenium WebDriver</description>
@@ -67,55 +67,39 @@
             <id>knysh</id>
             <name>Sergey Knysh</name>
         </developer>
+        <developer>
+            <id>d2kravchenko</id>
+            <name>Dmitry Kravchenko</name>
+        </developer>
+        <developer>
+            <id>aPavar</id>
+            <name>Andrey Pavar</name>
+        </developer>
     </developers>
 
     <dependencies>
         <dependency>
             <groupId>com.github.aquality-automation</groupId>
             <artifactId>aquality-selenium-core</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>3.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>4.2.0</version>
+            <version>5.3.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.9</version>
+            <version>2.14.2</version>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.14.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.26</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.26</version>
+            <version>7.5</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

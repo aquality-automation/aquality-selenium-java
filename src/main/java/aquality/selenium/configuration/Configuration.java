@@ -3,6 +3,7 @@ package aquality.selenium.configuration;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
+import aquality.selenium.core.configurations.IVisualizationConfiguration;
 import com.google.inject.Inject;
 
 public class Configuration implements IConfiguration {
@@ -12,16 +13,18 @@ public class Configuration implements IConfiguration {
     private final IBrowserProfile browserProfile;
     private final ILoggerConfiguration loggerConfiguration;
     private final IElementCacheConfiguration elementCacheConfiguration;
+    private final IVisualizationConfiguration visualizationConfiguration;
 
     @Inject
     public Configuration(ITimeoutConfiguration timeoutConfiguration, IRetryConfiguration retryConfiguration,
                          IBrowserProfile browserProfile, ILoggerConfiguration loggerConfiguration,
-                         IElementCacheConfiguration elementCacheConfiguration) {
+                         IElementCacheConfiguration elementCacheConfiguration, IVisualizationConfiguration visualizationConfiguration) {
         this.timeoutConfiguration = timeoutConfiguration;
         this.retryConfiguration = retryConfiguration;
         this.browserProfile = browserProfile;
         this.loggerConfiguration = loggerConfiguration;
         this.elementCacheConfiguration = elementCacheConfiguration;
+        this.visualizationConfiguration = visualizationConfiguration;
     }
 
     @Override
@@ -47,5 +50,10 @@ public class Configuration implements IConfiguration {
     @Override
     public IElementCacheConfiguration getElementCacheConfiguration() {
         return elementCacheConfiguration;
+    }
+
+    @Override
+    public IVisualizationConfiguration getVisualizationConfiguration() {
+        return visualizationConfiguration;
     }
 }

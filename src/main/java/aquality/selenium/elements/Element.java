@@ -12,6 +12,7 @@ import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.visualization.IImageComparator;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;
@@ -20,6 +21,7 @@ import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.time.Duration;
@@ -28,6 +30,8 @@ import java.time.Duration;
  * Abstract class, describing wrapper of WebElement.
  */
 public abstract class Element extends aquality.selenium.core.elements.Element implements IElement {
+    private IElementFinder elementFinder;
+
     /**
      * The main constructor
      *
@@ -51,7 +55,19 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
 
     @Override
     protected IElementFinder getElementFinder() {
-        return AqualityServices.get(IElementFinder.class);
+        if (elementFinder == null) {
+            elementFinder = AqualityServices.get(IElementFinder.class);
+        }
+        return elementFinder;
+    }
+
+    void setElementFinder(IElementFinder elementFinder) {
+        this.elementFinder = elementFinder;
+    }
+
+    @Override
+    protected IImageComparator getImageComparator() {
+        return AqualityServices.get(IImageComparator.class);
     }
 
     @Override
@@ -69,6 +85,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
         return AqualityServices.getLocalizedLogger();
     }
 
+    @Override
     protected ILocalizationManager getLocalizationManager() {
         return AqualityServices.get(ILocalizationManager.class);
     }
@@ -175,5 +192,11 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     public void sendKeys(Keys key) {
         logElementAction("loc.text.sending.key", Keys.class.getSimpleName().concat(".").concat(key.name()));
         doWithRetry(() -> getElement().sendKeys(key));
+    }
+
+    @Override
+    public SearchContext expandShadowRoot() {
+        logElementAction("loc.shadowroot.expand");
+        return getElement().getShadowRoot();
     }
 }

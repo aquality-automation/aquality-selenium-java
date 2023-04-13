@@ -14,6 +14,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -29,6 +30,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class BrowserFactoryTests {
@@ -52,14 +54,14 @@ public class BrowserFactoryTests {
         return () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
             WebDriverManager.firefoxdriver().setup();
-            FirefoxDriver driver = AqualityServices.get(IActionRetrier.class).doWithRetry(
-                    () -> new FirefoxDriver(firefoxSettings.getCapabilities().setHeadless(true)),
-                    Arrays.asList(
-                            SessionNotCreatedException.class,
-                            UnreachableBrowserException.class,
-                            WebDriverException.class,
-                            TimeoutException.class));
-
+            FirefoxOptions options = ((FirefoxOptions) firefoxSettings.getDriverOptions()).addArguments("--headless");
+            final List<Class<? extends Throwable>> handledExceptions = Arrays.asList(
+                    SessionNotCreatedException.class,
+                    UnreachableBrowserException.class,
+                    WebDriverException.class,
+                    TimeoutException.class);
+            FirefoxDriver driver = AqualityServices.get(IActionRetrier.class)
+                    .doWithRetry(() -> new FirefoxDriver(options), handledExceptions);
             return new Browser(driver);
         };
     }
@@ -73,6 +75,7 @@ public class BrowserFactoryTests {
         String downloadDir = AqualityServices.getBrowser().getDownloadDirectory();
         if (new File(downloadDirInitialized).exists()) {
             try (Stream<Path> walk = Files.walk(Paths.get(downloadDir))) {
+                //noinspection ResultOfMethodCallIgnored
                 walk.sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
@@ -89,7 +92,7 @@ public class BrowserFactoryTests {
         Assert.assertTrue(isFileDownloaded, "Downloaded file exists");
     }
 
-    private class CustomBrowserModule extends BrowserModule {
+    private static class CustomBrowserModule extends BrowserModule {
 
         CustomBrowserModule(Provider<Browser> applicationProvider) {
             super(applicationProvider);

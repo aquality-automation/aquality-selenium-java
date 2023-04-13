@@ -8,6 +8,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import theinternet.TheInternetPage;
 
+import java.io.IOException;
+
+import static utils.FileUtil.getResourceFileByName;
+
 public abstract class BaseTest {
     private static final String DEFAULT_URL = TheInternetPage.LOGIN.getAddress();
 
@@ -37,5 +41,14 @@ public abstract class BaseTest {
 
     protected Browser getBrowser() {
         return AqualityServices.getBrowser();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> T getScriptResultOrDefault(String scriptName, T defaultValue, Object... arguments) {
+        try {
+            return ((T) getBrowser().executeScript(getResourceFileByName(scriptName), arguments));
+        } catch (IOException e) {
+            return defaultValue;
+        }
     }
 }

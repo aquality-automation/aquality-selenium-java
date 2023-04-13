@@ -11,7 +11,7 @@ import org.openqa.selenium.Keys;
 
 import java.util.List;
 
-public interface IElement extends aquality.selenium.core.elements.interfaces.IElement {
+public interface IElement extends aquality.selenium.core.elements.interfaces.IElement, IShadowRootExpander {
 
     /**
      * Send keys.

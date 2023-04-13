@@ -1,8 +1,12 @@
-# Compiled class file
-*.class
+# Build results
+target
+downloads
 
 # Log file
 *.log
+
+# Visualization files
+visualDumps/
 
 # BlueJ files
 *.ctxt

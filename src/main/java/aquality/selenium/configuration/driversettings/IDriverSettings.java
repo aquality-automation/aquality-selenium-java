@@ -4,6 +4,7 @@ import aquality.selenium.browser.BrowserName;
 import io.github.bonigarcia.wdm.config.Architecture;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 
 /**
  * Describes web driver settings.
@@ -14,7 +15,7 @@ public interface IDriverSettings {
      * Gets web driver capabilities.
      * @return initialized {@link Capabilities}
      */
-    Capabilities getCapabilities();
+    AbstractDriverOptions<?> getDriverOptions();
 
     /**
      * Gets WebDriver page load strategy.

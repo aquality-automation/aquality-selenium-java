@@ -33,6 +33,7 @@ public enum JavaScript {
     SELECT_COMBOBOX_VALUE_BY_TEXT("selectComboboxValueByText.js"),
     SET_FOCUS("setFocus.js"),
     SET_VALUE("setValue.js"),
+    SET_ATTRIBUTE("setAttribute.js"),
     SCROLL_BY("scrollBy.js"),
     IS_PAGE_LOADED("isPageLoaded.js"),
     SCROLL_WINDOW_BY("scrollWindowBy.js"),
@@ -40,7 +41,8 @@ public enum JavaScript {
     GET_VIEWPORT_COORDINATES("getViewPortCoordinates.js"),
     GET_SCREEN_OFFSET("getScreenOffset.js"),
     OPEN_IN_NEW_TAB("openInNewTab.js"),
-    OPEN_NEW_TAB("openNewTab.js");
+    OPEN_NEW_TAB("openNewTab.js"),
+    EXPAND_SHADOW_ROOT("expandShadowRoot.js");
 
     private final String filename;
 
@@ -55,11 +57,12 @@ public enum JavaScript {
      */
     public String getScript() {
         URL scriptFile = getClass().getResource("/js/" + filename);
-        try {
-            InputStream stream = scriptFile.openStream();
-            return IOUtils.toString(stream, StandardCharsets.UTF_8.name());
-        } catch (IOException e) {
-            Logger.getInstance().fatal(format("Couldn't find the script \"%s\"", filename), e);
+        if (scriptFile != null) {
+            try (InputStream stream = scriptFile.openStream()) {
+                return IOUtils.toString(stream, StandardCharsets.UTF_8.name());
+            } catch (IOException e) {
+                Logger.getInstance().fatal(format("Couldn't find the script \"%s\"", filename), e);
+            }
         }
         return "";
     }

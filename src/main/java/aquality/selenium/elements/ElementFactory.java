@@ -3,6 +3,7 @@ package aquality.selenium.elements;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.elements.interfaces.IElementSupplier;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.elements.interfaces.*;
@@ -19,9 +20,12 @@ import java.util.Map;
 
 public class ElementFactory extends aquality.selenium.core.elements.ElementFactory implements IElementFactory {
 
+    private final IElementFinder elementFinder;
+
     @Inject
     public ElementFactory(IConditionalWait conditionalWait, IElementFinder elementFinder, ILocalizationManager localizationManager) {
         super(conditionalWait, elementFinder, localizationManager);
+        this.elementFinder = elementFinder;
     }
 
     private static Map<Class<? extends By>, String> getLocatorToXPathTemplateMap() {
@@ -92,5 +96,17 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
         return getLocatorToXPathTemplateMap().containsKey(locator.getClass())
                 ? String.format(getLocatorToXPathTemplateMap().get(locatorClass), locValuableString)
                 : super.extractXPathFromLocator(locator);
+    }
+
+    @Override
+    protected <T extends aquality.selenium.core.elements.interfaces.IElement> IElementSupplier<T> getDefaultElementSupplier(Class<T> clazz) {
+        IElementSupplier<T> baseSupplier = super.getDefaultElementSupplier(clazz);
+        return (locator, name, state) -> {
+            T element = baseSupplier.get(locator, name, state);
+            if (element instanceof Element) {
+                ((Element)element).setElementFinder(elementFinder);
+            }
+            return element;
+        };
     }
 }

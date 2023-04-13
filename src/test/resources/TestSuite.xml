@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Demo Test Suite" verbose="1">
-    <test name="Integration tests" parallel="methods" thread-count="10">
+    <test name="Integration tests" parallel="methods" thread-count="3">
         <classes>
             <class name="tests.integration.ActionTests"/>
             <class name="tests.integration.AlertTests"/>
@@ -12,9 +12,10 @@
             <class name="tests.integration.elements.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
             <class name="tests.usecases.TestTimeoutConfiguration"/>
+            <class name="tests.integration.LocatorTests"/>
         </classes>
     </test>
-    <test name="Use cases tests" parallel="methods" thread-count="10">
+    <test name="Use cases tests" parallel="methods" thread-count="3">
         <classes>
             <class name="tests.usecases.CustomElementTests"/>
             <class name="tests.usecases.FileDownloadingTests"/>
@@ -22,6 +23,25 @@
             <class name="tests.usecases.ElementExistNotDisplayedTest"/>
             <class name="tests.usecases.BrowserFactoryTests"/>
             <class name="tests.usecases.ShoppingCartTest"/>
+            <class name="tests.usecases.ShadowRootTests"/>
+            <class name="tests.usecases.devtools.NetworkInterceptionTests"/>
+            <class name="tests.usecases.devtools.OverrideGeolocationTest"/>
+            <class name="tests.usecases.devtools.RegisterBasicAuthTest"/>
+            <class name="tests.usecases.devtools.OverrideUserAgentTest"/>
+            <class name="tests.usecases.devtools.PerformanceMetricsTest"/>
+            <class name="tests.usecases.devtools.DeviceEmulationTest"/>
+            <class name="tests.usecases.devtools.EmulationTests"/>
+            <class name="tests.usecases.devtools.DevToolsSessionTest"/>
+            <class name="tests.usecases.devtools.DomMonitoringTest"/>
+            <class name="tests.usecases.devtools.InitializationScriptsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptSnippetsTests"/>
+            <class name="tests.usecases.devtools.JavaScriptEventTests"/>
+            <class name="tests.usecases.VisualTests"/>
+        </classes>
+    </test>
+    <test name="Single-thread tests" parallel="none">
+        <classes>
+            <class name="tests.usecases.devtools.LogHttpExchangeTest"/>
         </classes>
     </test>
     <test name="Non-threadsafe tests" parallel="classes">

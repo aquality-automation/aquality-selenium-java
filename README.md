@@ -13,13 +13,16 @@ Most of performed methods are logged using LOG4J, so you can easily see a histor
 We use interfaces where is possible, so you can implement your own version of target interface with no need to rewrite other classes.
 
 ### Quick start
+To start the project using aquality.selenium framework, you can [download our template BDD project by this link.](https://github.com/aquality-automation/aquality-selenium-java-template)
 
-1. To start work with this package, simply add the dependency to your pom.xml:
+Alternatively, you can follow the steps below:
+
+1. Add the dependency to your pom.xml:
 ```
 <dependency>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium</artifactId>
-    <version>LATEST</version>
+    <version>4.x.x</version>
 </dependency>
 ```
 
@@ -47,14 +50,37 @@ txbSearch.submit();
 browser.waitForPageToLoad();
 ```
 
-6. Quit browser at the end
+6. Use BiDi functionality to handle basic authentication:
+```java
+browser.network().addBasicAuthentication("domain.com", "username", "password");
 ```
+or intercept network requests/responses:
+```java
+browser.network().startNetworkInterceptor((HttpHandler) request -> new HttpResponse()
+        .setStatus(HttpStatus.SC_OK)
+        .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+        .setContent(utf8String("Some phrase")));
+```
+7. Emulate GeoLocation, Device, Touch, Media, UserAgent overrides, Disable script execution, log HTTP exchange, track Performance metrics, add initialization scripts, and more using browser.devTools() interfaces:
+```java
+final double latitude = 53.90772672521578;
+final double longitude = 27.458060411865375;
+final double accuracy = 0.97;
+browser.devTools().emulation().setGeolocationOverride(latitude, longitude, accuracy);
+```
+See more DevTools use cases [here](./src/test/java/tests/usecases/devtools)
+
+8. Quit browser at the end
+```java
 browser.quit();
 ```
 
-See full example [here](./src/test/java/tests/usecases/QuickStartExample.java)
+See quick start example [here](./src/test/java/tests/usecases/QuickStartExample.java)
 
 ### Documentation
 To get more details please look at documentation:
 - [In English](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(English))
 - [In Russian](https://github.com/aquality-automation/aquality-selenium-java/wiki/Overview-(Russian))
+
+### License
+Library's source code is made available under the [Apache 2.0 license](LICENSE).
