@@ -81,26 +81,26 @@ public interface IElementFactory extends aquality.selenium.core.elements.interfa
     }
 
     /**
-     * Creates element that implements IMultiChoiceComboBox interface.
+     * Creates element that implements IMultiChoiceBox interface.
      *
      * @param locator Element locator
      * @param name    Element name
-     * @return Instance of element that implements IMultiChoiceComboBox interface
+     * @return Instance of element that implements IMultiChoiceBox interface
      */
-    default IMultiChoiceBox getMultiChoiceComboBox(By locator, String name) {
-        return getMultiChoiceComboBox(locator, name, ElementState.DISPLAYED);
+    default IMultiChoiceBox getMultiChoiceBox(By locator, String name) {
+        return getMultiChoiceBox(locator, name, ElementState.DISPLAYED);
     }
 
     /**
-     * Creates element that implements IMultiChoiceComboBox interface.
+     * Creates element that implements IMultiChoiceBox interface.
      *
      * @param locator Element locator
      * @param name    Element name
      * @param state   Element state
-     * @return Instance of element that implements IMultiChoiceComboBox interface
+     * @return Instance of element that implements IMultiChoiceBox interface
      */
-    default IMultiChoiceBox getMultiChoiceComboBox(By locator, String name, ElementState state) {
-        return get(ElementType.MULTICHOICECOMBOBOX, locator, name, state);
+    default IMultiChoiceBox getMultiChoiceBox(By locator, String name, ElementState state) {
+        return get(ElementType.MULTICHOICEBOX, locator, name, state);
     }
 
     /**
