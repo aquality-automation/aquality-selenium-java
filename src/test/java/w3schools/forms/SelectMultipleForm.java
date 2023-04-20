@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 public class SelectMultipleForm extends Form {
 
-    private final IMultiChoiceBox cbxCars = getElementFactory().getMultiChoiceComboBox(By.id("cars"), "Cars");
+    private final IMultiChoiceBox cbxCars = getElementFactory().getMultiChoiceBox(By.id("cars"), "Cars");
     private final IButton btnSubmit = getElementFactory().getButton(By.cssSelector("input[type='submit']"), "Submit");
     private final ITextBox txbResult = getElementFactory().getTextBox(By.cssSelector(".w3-large"), "Result");
     private final IButton btnAcceptCookies = getElementFactory().getButton(By.id("accept-choices"), "Accept cookies");
