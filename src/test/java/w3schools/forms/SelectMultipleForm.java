@@ -38,7 +38,7 @@ public class SelectMultipleForm extends Form {
     }
 
     public void submit() {
-        btnSubmit.clickAndWait();
+        btnSubmit.click();
     }
 
     public List<String> getValuesFromResult() {
