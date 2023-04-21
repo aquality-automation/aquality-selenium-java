@@ -8,7 +8,6 @@
             <class name="tests.integration.BrowserTests"/>
             <class name="tests.integration.BrowserTabsTests"/>
             <class name="tests.integration.elements.ElementTests"/>
-            <class name="tests.integration.elements.MultiChoiceBoxTests"/>
             <class name="tests.integration.ElementStateTests"/>
             <class name="tests.integration.elements.HiddenElementsTests"/>
             <class name="aquality.selenium.localization.LocalizationManagerTests"/>
@@ -43,6 +42,7 @@
     <test name="Single-thread tests" parallel="none">
         <classes>
             <class name="tests.usecases.devtools.LogHttpExchangeTest"/>
+            <class name="tests.integration.elements.MultiChoiceBoxTests"/>
         </classes>
     </test>
     <test name="Non-threadsafe tests" parallel="classes">
