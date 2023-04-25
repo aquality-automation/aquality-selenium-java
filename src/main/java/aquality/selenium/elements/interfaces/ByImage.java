@@ -1,18 +1,24 @@
 package aquality.selenium.elements.interfaces;
 
 import aquality.selenium.browser.AqualityServices;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.Point;
+import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Locatable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Locator to search elements by image.
+ * Takes screenshot and finds match using openCV.
+ * Then finds elements by coordinates using javascript.
+ */
 public class ByImage extends By {
     private static boolean wasLibraryLoaded = false;
     private final Mat template;
@@ -25,14 +31,29 @@ public class ByImage extends By {
         }
     }
 
+    /**
+     * Constructor accepting image file.
+     *
+     * @param file image file to locate element by.
+     */
     public ByImage(File file) {
         loadLibrary();
         this.template = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_UNCHANGED);
     }
 
+    /**
+     * Constructor accepting image file.
+     *
+     * @param bytes image bytes to locate element by.
+     */
     public ByImage(byte[] bytes) {
         loadLibrary();
         this.template = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
+    }
+
+    @Override
+    public String toString() {
+        return "ByImage: " + new Dimension(template.width(), template.height());
     }
 
     @Override
@@ -45,33 +66,61 @@ public class ByImage extends By {
         float threshold = 1 - AqualityServices.getConfiguration().getVisualizationConfiguration().getDefaultThreshold();
         Core.MinMaxLocResult minMaxLoc = Core.minMaxLoc(result);
 
-        if (minMaxLoc.maxVal < threshold) {
-            AqualityServices.getLogger().warn(String.format("No elements found by image [%s]", template));
-            return new ArrayList<>(0);
+        int matchCounter = (result.width() - template.width() + 1) * (result.height() - template.height() + 1);
+        List<Point> matchLocations = new ArrayList<>();
+        while (matchCounter > 0 && minMaxLoc.maxVal >= threshold) {
+            matchCounter--;
+            Point matchLocation = minMaxLoc.maxLoc;
+            matchLocations.add(matchLocation);
+            Imgproc.rectangle(result, new Point(matchLocation.x, matchLocation.y), new Point(matchLocation.x + template.cols(),
+                    matchLocation.y + template.rows()), new Scalar(0, 0, 0), -1);
+            minMaxLoc = Core.minMaxLoc(result);
         }
 
-        return getElementsOnPoint(minMaxLoc.maxLoc, context);
+        return matchLocations.stream().map(matchLocation -> getElementOnPoint(matchLocation, context)).collect(Collectors.toList());
     }
 
-    private List<WebElement> getElementsOnPoint(Point matchLocation, SearchContext context) {
-        int centerX = (int)(matchLocation.x + (template.width() / 2));
-        int centerY = (int)(matchLocation.y + (template.height() / 2));
-
-        JavascriptExecutor js;
-        if (!(context instanceof JavascriptExecutor)) {
-            AqualityServices.getLogger().debug("Current search context doesn't support executing scripts. " +
-                    "Will take browser js executor instead");
-            js = AqualityServices.getBrowser().getDriver();
+    /**
+     * Gets a single element on point (find by center coordinates, then select closest to matchLocation).
+     *
+     * @param matchLocation location of the upper-left point of the element.
+     * @param context       search context.
+     *                      If the searchContext is Locatable (like WebElement), adjust coordinates to be absolute coordinates.
+     * @return the closest found element.
+     */
+    protected WebElement getElementOnPoint(Point matchLocation, SearchContext context) {
+        if (context instanceof Locatable) {
+            final org.openqa.selenium.Point point = ((Locatable) context).getCoordinates().onPage();
+            matchLocation.x += point.getX();
+            matchLocation.y += point.getY();
         }
-        else {
-            js = (JavascriptExecutor) context;
-        }
-
+        int centerX = (int) (matchLocation.x + (template.width() / 2));
+        int centerY = (int) (matchLocation.y + (template.height() / 2));
         //noinspection unchecked
-        return (List<WebElement>) js.executeScript("return document.elementsFromPoint(arguments[0], arguments[1]);", centerX, centerY);
+        List<WebElement> elements = (List<WebElement>) AqualityServices.getBrowser().executeScript("return document.elementsFromPoint(arguments[0], arguments[1]);", centerX, centerY);
+        elements.sort(Comparator.comparingDouble(e -> distanceToPoint(matchLocation, e)));
+        return elements.get(0);
     }
 
-    private byte[] getScreenshot(SearchContext context) {
+    /**
+     * Calculates distance from element to matching point.
+     *
+     * @param matchLocation matching point.
+     * @param element       target element.
+     * @return distance in pixels.
+     */
+    protected static double distanceToPoint(Point matchLocation, WebElement element) {
+        org.openqa.selenium.Point elementLocation = element.getLocation();
+        return Math.sqrt(Math.pow(matchLocation.x - elementLocation.x, 2) + Math.pow(matchLocation.y - elementLocation.y, 2));
+    }
+
+    /**
+     * Takes screenshot from searchContext if supported, or from browser.
+     *
+     * @param context search context for element location.
+     * @return captured screenshot as byte array.
+     */
+    protected byte[] getScreenshot(SearchContext context) {
         byte[] screenshotBytes;
 
         if (!(context instanceof TakesScreenshot)) {
