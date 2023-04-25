@@ -22,6 +22,7 @@ public enum JavaScript {
     GET_COMBOBOX_SELECTED_TEXT("getCmbText.js"),
     GET_COMBOBOX_TEXTS("getCmbValues.js"),
     GET_ELEMENT_BY_XPATH("getElementByXpath.js"),
+    GET_ELEMENTS_FROM_POINT("getElementsFromPoint.js"),
     GET_ELEMENT_XPATH("getElementXPath.js"),
     GET_ELEMENT_TEXT("getElementText.js"),
     GET_TEXT_FIRST_CHILD("getTextFirstChild.js"),

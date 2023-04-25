@@ -1,6 +1,7 @@
 package aquality.selenium.elements.interfaces;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.browser.JavaScript;
 import org.opencv.core.Point;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -97,7 +98,8 @@ public class ByImage extends By {
         int centerX = (int) (matchLocation.x + (template.width() / 2));
         int centerY = (int) (matchLocation.y + (template.height() / 2));
         //noinspection unchecked
-        List<WebElement> elements = (List<WebElement>) AqualityServices.getBrowser().executeScript("return document.elementsFromPoint(arguments[0], arguments[1]);", centerX, centerY);
+        List<WebElement> elements = (List<WebElement>) AqualityServices.getBrowser()
+                .executeScript(JavaScript.GET_ELEMENTS_FROM_POINT, centerX, centerY);
         elements.sort(Comparator.comparingDouble(e -> distanceToPoint(matchLocation, e)));
         return elements.get(0);
     }
@@ -121,16 +123,8 @@ public class ByImage extends By {
      * @return captured screenshot as byte array.
      */
     protected byte[] getScreenshot(SearchContext context) {
-        byte[] screenshotBytes;
-
-        if (!(context instanceof TakesScreenshot)) {
-            AqualityServices.getLogger().debug("Current search context doesn't support taking screenshots. " +
-                    "Will take browser screenshot instead");
-            screenshotBytes = AqualityServices.getBrowser().getScreenshot();
-        } else {
-            screenshotBytes = ((TakesScreenshot) context).getScreenshotAs(OutputType.BYTES);
-        }
-
-        return screenshotBytes;
+        return !(context instanceof TakesScreenshot)
+                ? AqualityServices.getBrowser().getScreenshot()
+                : ((TakesScreenshot) context).getScreenshotAs(OutputType.BYTES);
     }
 }
