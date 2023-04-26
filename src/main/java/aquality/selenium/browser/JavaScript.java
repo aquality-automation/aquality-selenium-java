@@ -21,6 +21,7 @@ public enum JavaScript {
     GET_CHECKBOX_STATE("getCheckBxState.js"),
     GET_COMBOBOX_SELECTED_TEXT("getCmbText.js"),
     GET_COMBOBOX_TEXTS("getCmbValues.js"),
+    GET_DEVICE_PIXEL_RATIO("getDevicePixelRatio.js"),
     GET_ELEMENT_BY_XPATH("getElementByXpath.js"),
     GET_ELEMENTS_FROM_POINT("getElementsFromPoint.js"),
     GET_ELEMENT_XPATH("getElementXPath.js"),

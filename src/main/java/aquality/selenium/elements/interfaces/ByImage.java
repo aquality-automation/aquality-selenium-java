@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class ByImage extends By {
     private static boolean wasLibraryLoaded = false;
     private final Mat template;
+    private final boolean doScaling;
 
     private static void loadLibrary() {
         if (!wasLibraryLoaded) {
@@ -38,8 +39,19 @@ public class ByImage extends By {
      * @param file image file to locate element by.
      */
     public ByImage(File file) {
+        this(file, false);
+    }
+
+    /**
+     * Constructor accepting image file.
+     *
+     * @param file image file to locate element by.
+     * @param doScaling perform screenshot scaling if devicePixelRatio != 1
+     */
+    public ByImage(File file, boolean doScaling) {
         loadLibrary();
         this.template = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_UNCHANGED);
+        this.doScaling = doScaling;
     }
 
     /**
@@ -48,8 +60,19 @@ public class ByImage extends By {
      * @param bytes image bytes to locate element by.
      */
     public ByImage(byte[] bytes) {
+        this(bytes, false);
+    }
+
+    /**
+     * Constructor accepting image file.
+     *
+     * @param bytes image bytes to locate element by.
+     * @param doScaling perform screenshot scaling if devicePixelRatio != 1
+     */
+    public ByImage(byte[] bytes, boolean doScaling) {
         loadLibrary();
         this.template = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
+        this.doScaling = doScaling;
     }
 
     @Override
@@ -61,6 +84,12 @@ public class ByImage extends By {
     public List<WebElement> findElements(SearchContext context) {
         byte[] screenshotBytes = getScreenshot(context);
         Mat source = Imgcodecs.imdecode(new MatOfByte(screenshotBytes), Imgcodecs.IMREAD_UNCHANGED);
+        long devicePixelRatio = (long) AqualityServices.getBrowser().executeScript(JavaScript.GET_DEVICE_PIXEL_RATIO);
+        if (devicePixelRatio != 1 && doScaling) {
+            int scaledWidth = (int) (source.width() / devicePixelRatio);
+            int scaledHeight = (int) (source.height() / devicePixelRatio);
+            Imgproc.resize(source, source, new Size(scaledWidth, scaledHeight), 0, 0, Imgproc.INTER_AREA);
+        }
         Mat result = new Mat();
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
