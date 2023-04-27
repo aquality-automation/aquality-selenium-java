@@ -48,7 +48,7 @@ public class LocatorTests extends BaseTest {
 
         ILabel documentByTag = AqualityServices.getElementFactory().getLabel(By.tagName("body"), "document by tag");
         ILabel documentByImage = AqualityServices.getElementFactory().getLabel(new ByImage(documentByTag.getElement().getScreenshotAs(OutputType.BYTES)),
-                "full screen");
+                "body screen");
         Assert.assertTrue(documentByImage.state().isDisplayed(), "Should be possible to find element by document screenshot");
         Assert.assertEquals(documentByImage.getElement().getTagName(), "body", "Correct element must be found");
     }

@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class ByImage extends By {
     private static boolean wasLibraryLoaded = false;
     private final Mat template;
+    private final String description;
 
     private static void loadLibrary() {
         if (!wasLibraryLoaded) {
@@ -40,23 +41,42 @@ public class ByImage extends By {
      */
     public ByImage(File file) {
         loadLibrary();
+        description = file.getName();
         this.template = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_UNCHANGED);
     }
 
     /**
-     * Constructor accepting image file.
+     * Constructor accepting image bytes.
      *
      * @param bytes image bytes to locate element by.
      */
     public ByImage(byte[] bytes) {
         loadLibrary();
+        description = String.format("bytes[%d]", bytes.length);
         this.template = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
     }
 
     @Override
     public String toString() {
-        return "ByImage: " + new Dimension(template.width(), template.height());
+        return String.format("ByImage: %s, size: (width:%d, height:%d)", description, template.width(), template.height());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ByImage)) {
+            return false;
+        }
+
+        ByImage that = (ByImage) o;
+
+        return this.template.equals(that.template);
+    }
+
+    @Override
+    public int hashCode() {
+        return template.hashCode();
+    }
+
 
     @Override
     public List<WebElement> findElements(SearchContext context) {
