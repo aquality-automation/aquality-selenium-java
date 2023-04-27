@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 /**
  * Locator to search elements by image.
  * Takes screenshot and finds match using openCV.
+ * Performs screenshot scaling if devicePixelRatio != 1.
  * Then finds elements by coordinates using javascript.
  */
 public class ByImage extends By {
     private static boolean wasLibraryLoaded = false;
     private final Mat template;
-    private final boolean doScaling;
 
     private static void loadLibrary() {
         if (!wasLibraryLoaded) {
@@ -39,19 +39,8 @@ public class ByImage extends By {
      * @param file image file to locate element by.
      */
     public ByImage(File file) {
-        this(file, false);
-    }
-
-    /**
-     * Constructor accepting image file.
-     *
-     * @param file image file to locate element by.
-     * @param doScaling perform screenshot scaling if devicePixelRatio != 1
-     */
-    public ByImage(File file, boolean doScaling) {
         loadLibrary();
         this.template = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_UNCHANGED);
-        this.doScaling = doScaling;
     }
 
     /**
@@ -60,19 +49,8 @@ public class ByImage extends By {
      * @param bytes image bytes to locate element by.
      */
     public ByImage(byte[] bytes) {
-        this(bytes, false);
-    }
-
-    /**
-     * Constructor accepting image file.
-     *
-     * @param bytes image bytes to locate element by.
-     * @param doScaling perform screenshot scaling if devicePixelRatio != 1
-     */
-    public ByImage(byte[] bytes, boolean doScaling) {
         loadLibrary();
         this.template = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
-        this.doScaling = doScaling;
     }
 
     @Override
@@ -82,21 +60,14 @@ public class ByImage extends By {
 
     @Override
     public List<WebElement> findElements(SearchContext context) {
-        byte[] screenshotBytes = getScreenshot(context);
-        Mat source = Imgcodecs.imdecode(new MatOfByte(screenshotBytes), Imgcodecs.IMREAD_UNCHANGED);
-        long devicePixelRatio = (long) AqualityServices.getBrowser().executeScript(JavaScript.GET_DEVICE_PIXEL_RATIO);
-        if (devicePixelRatio != 1 && doScaling) {
-            int scaledWidth = (int) (source.width() / devicePixelRatio);
-            int scaledHeight = (int) (source.height() / devicePixelRatio);
-            Imgproc.resize(source, source, new Size(scaledWidth, scaledHeight), 0, 0, Imgproc.INTER_AREA);
-        }
+        Mat source = getScreenshot(context);
         Mat result = new Mat();
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
         float threshold = 1 - AqualityServices.getConfiguration().getVisualizationConfiguration().getDefaultThreshold();
         Core.MinMaxLocResult minMaxLoc = Core.minMaxLoc(result);
 
-        int matchCounter = (result.width() - template.width() + 1) * (result.height() - template.height() + 1);
+        int matchCounter = Math.abs((result.width() - template.width() + 1) * (result.height() - template.height() + 1));
         List<Point> matchLocations = new ArrayList<>();
         while (matchCounter > 0 && minMaxLoc.maxVal >= threshold) {
             matchCounter--;
@@ -149,11 +120,20 @@ public class ByImage extends By {
      * Takes screenshot from searchContext if supported, or from browser.
      *
      * @param context search context for element location.
-     * @return captured screenshot as byte array.
+     * @return captured screenshot as Mat object.
      */
-    protected byte[] getScreenshot(SearchContext context) {
-        return !(context instanceof TakesScreenshot)
-                ? AqualityServices.getBrowser().getScreenshot()
-                : ((TakesScreenshot) context).getScreenshotAs(OutputType.BYTES);
+    protected Mat getScreenshot(SearchContext context) {
+        byte[] screenshotBytes = context instanceof TakesScreenshot
+                ? ((TakesScreenshot) context).getScreenshotAs(OutputType.BYTES)
+                : AqualityServices.getBrowser().getScreenshot();
+        boolean isBrowserScreenshot = context instanceof WebDriver || !(context instanceof TakesScreenshot);
+        Mat source = Imgcodecs.imdecode(new MatOfByte(screenshotBytes), Imgcodecs.IMREAD_UNCHANGED);
+        long devicePixelRatio = (long) AqualityServices.getBrowser().executeScript(JavaScript.GET_DEVICE_PIXEL_RATIO);
+        if (devicePixelRatio != 1 && isBrowserScreenshot) {
+            int scaledWidth = (int) (source.width() / devicePixelRatio);
+            int scaledHeight = (int) (source.height() / devicePixelRatio);
+            Imgproc.resize(source, source, new Size(scaledWidth, scaledHeight), 0, 0, Imgproc.INTER_AREA);
+        }
+        return source;
     }
 }
