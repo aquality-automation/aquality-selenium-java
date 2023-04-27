@@ -8,7 +8,7 @@ import utils.FileUtil;
 import java.util.List;
 
 public class BrokenImagesForm extends TheInternetForm {
-    private final By imageLocator = new ByImage(FileUtil.getResourceFileByName("brokenImage.png"), true);
+    private final By imageLocator = new ByImage(FileUtil.getResourceFileByName("brokenImage.png"));
 
     public BrokenImagesForm(){
         super(By.id("content"), "Broken Images form");
