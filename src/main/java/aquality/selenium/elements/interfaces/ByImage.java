@@ -25,6 +25,7 @@ public class ByImage extends By {
     private static boolean wasLibraryLoaded = false;
     private final Mat template;
     private final String description;
+    private float threshold = 1 - AqualityServices.getConfiguration().getVisualizationConfiguration().getDefaultThreshold();
 
     private static void loadLibrary() {
         if (!wasLibraryLoaded) {
@@ -56,6 +57,27 @@ public class ByImage extends By {
         this.template = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
     }
 
+    /**
+     * Sets threshold of image similarity.
+     * @param threshold a float between 0 and 1, where 1 means 100% match, and 0.5 means 50% match.
+     * @return current instance of ByImage locator.
+     */
+    public ByImage setThreshold(float threshold) {
+        if (threshold < 0 || threshold > 1) {
+            throw new IllegalArgumentException("Threshold must be a float between 0 and 1.");
+        }
+        this.threshold = threshold;
+        return this;
+    }
+
+    /**
+     * Gets threshold of image similarity.
+     * @return current value of threshold.
+     */
+    public float getThreshold() {
+        return threshold;
+    }
+
     @Override
     public String toString() {
         return String.format("ByImage: %s, size: (width:%d, height:%d)", description, template.width(), template.height());
@@ -84,7 +106,6 @@ public class ByImage extends By {
         Mat result = new Mat();
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
-        float threshold = 1 - AqualityServices.getConfiguration().getVisualizationConfiguration().getDefaultThreshold();
         Core.MinMaxLocResult minMaxLoc = Core.minMaxLoc(result);
 
         int matchCounter = Math.abs((result.width() - template.width() + 1) * (result.height() - template.height() + 1));
