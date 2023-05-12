@@ -8,13 +8,13 @@ import org.testng.annotations.Test;
 import tests.BaseTest;
 import theinternet.forms.WelcomeForm;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.*;
 
 public class BrowserTabsTests extends BaseTest {
 
@@ -31,7 +31,24 @@ public class BrowserTabsTests extends BaseTest {
         String url = welcomeForm.getUrl();
         Browser browser = AqualityServices.getBrowser();
         browser.tabs().openInNewTab(url);
-        browser.tabs().switchToLastTab();
+        assertEquals(2, browser.tabs().getTabHandles().size());
+        assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
+    }
+
+    @Test
+    public void testShouldBePossibleToOpenUriInNewTab() throws MalformedURLException {
+        URL url = new URL(welcomeForm.getUrl());
+        Browser browser = AqualityServices.getBrowser();
+        browser.tabs().openInNewTab(url);
+        assertEquals(2, browser.tabs().getTabHandles().size());
+        assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
+    }
+
+    @Test
+    public void testShouldBePossibleToOpenUrlInNewTabViaJs() {
+        String url = welcomeForm.getUrl();
+        Browser browser = AqualityServices.getBrowser();
+        browser.tabs().openInNewTabViaJs(url);
         assertEquals(2, browser.tabs().getTabHandles().size());
         assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
     }
@@ -62,6 +79,21 @@ public class BrowserTabsTests extends BaseTest {
         assertNotEquals(tabHandle, newTabHandle, "Browser should be switched to new tab");
 
         browser.tabs().openNewTab(false);
+        assertEquals(3, browser.tabs().getTabHandles().size(), "New tab should be opened");
+        assertEquals(newTabHandle, browser.tabs().getCurrentTabHandle(), "Browser should not be switched to new tab");
+    }
+
+    @Test
+    public void testShouldBePossibleToOpenNewTabViaJs() {
+        Browser browser = AqualityServices.getBrowser();
+        String tabHandle = browser.tabs().getCurrentTabHandle();
+
+        browser.tabs().openNewTabViaJs();
+        String newTabHandle = browser.tabs().getCurrentTabHandle();
+        assertEquals(2, browser.tabs().getTabHandles().size(), "New tab should be opened");
+        assertNotEquals(tabHandle, newTabHandle, "Browser should be switched to new tab");
+
+        browser.tabs().openNewTabViaJs(false);
         assertEquals(3, browser.tabs().getTabHandles().size(), "New tab should be opened");
         assertEquals(newTabHandle, browser.tabs().getCurrentTabHandle(), "Browser should not be switched to new tab");
     }

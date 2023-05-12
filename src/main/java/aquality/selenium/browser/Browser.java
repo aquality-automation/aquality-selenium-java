@@ -125,7 +125,7 @@ public class Browser implements IApplication {
     }
 
     /**
-     * Refreshes the page and process alert that apears after refreshing
+     * Refreshes the page and process alert that appears after refreshing
      *
      * @param alertAction accept or decline alert
      */
@@ -135,7 +135,7 @@ public class Browser implements IApplication {
     }
 
     private Navigation navigate() {
-        return new BrowserNavigation(getDriver());
+        return new BrowserNavigation(getDriver(), localizedLogger);
     }
 
     /**
@@ -143,7 +143,7 @@ public class Browser implements IApplication {
      * @return Instance of IBrowserTabNavigation.
      */
     public IBrowserTabNavigation tabs() {
-        return new BrowserTabNavigation(getDriver());
+        return new BrowserTabNavigation(getDriver(), localizedLogger);
     }
 
     /**
