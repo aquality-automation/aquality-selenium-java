@@ -39,15 +39,9 @@ public class LocalBrowserFactory extends BrowserFactory {
         switch (browserName) {
             case CHROME:
             case YANDEX:
-                WebDriverManager.chromedriver().driverVersion(webDriverVersion).setup();
-                driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
-                break;
-            case OPERA:
-                WebDriverManager.operadriver().driverVersion(webDriverVersion).setup();
                 driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
                 break;
             case FIREFOX:
-                WebDriverManager.firefoxdriver().driverVersion(webDriverVersion).setup();
                 driver = new FirefoxDriver((FirefoxOptions) driverSettings.getDriverOptions());
                 break;
             case IEXPLORER:
