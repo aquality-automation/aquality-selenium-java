@@ -1,5 +1,5 @@
 {
-  "browserName" : "iexplorer",
+  "browserName" : "chrome",
   "isRemote": false,
   "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
