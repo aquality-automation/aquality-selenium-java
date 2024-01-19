@@ -4,7 +4,6 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
-import io.github.bonigarcia.wdm.config.Architecture;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
@@ -99,22 +98,6 @@ abstract class DriverSettings implements IDriverSettings {
             AqualityServices.getLocalizedLogger()
                     .debug(messageKey,System.lineSeparator() + StringUtils.join(elements));
         }
-    }
-
-    @Override
-    public String getWebDriverVersion() {
-        return String.valueOf(getSettingsFile().getValueOrDefault(
-                getDriverSettingsPath("webDriverVersion"), "Latest"));
-    }
-
-    @Override
-    public Architecture getSystemArchitecture() {
-        String strValue = String.valueOf(getSettingsFile().getValueOrDefault(
-                getDriverSettingsPath("systemArchitecture"), "Auto"));
-        return Arrays.stream(Architecture.values())
-                .filter(value -> value.name().equals(strValue))
-                .findFirst()
-                .orElse(Architecture.X32);
     }
 
     @Override

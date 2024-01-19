@@ -49,9 +49,6 @@ public class BrowserProfile implements IBrowserProfile {
             case IEXPLORER:
                 driverSettings = new IExplorerSettings(settingsFile);
                 break;
-            case OPERA:
-                driverSettings = new OperaSettings(settingsFile);
-                break;
             case SAFARI:
                 driverSettings = new SafariSettings(settingsFile);
                 break;
@@ -59,7 +56,7 @@ public class BrowserProfile implements IBrowserProfile {
                 driverSettings = new YandexSettings(settingsFile);
                 break;
             default:
-                throw new IllegalArgumentException("There are no assigned behaviour for retrieving driver driversettings for browser " + getBrowserName());
+                throw new UnsupportedOperationException("There are no assigned behaviour for retrieving driver driversettings for browser " + getBrowserName());
         }
         return driverSettings;
     }

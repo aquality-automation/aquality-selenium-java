@@ -22,7 +22,7 @@ public class IExplorerSettings extends DriverSettings {
 
     @Override
     public String getDownloadDirCapabilityKey() {
-        throw new IllegalArgumentException("Download directory for Internet Explorer profiles is not supported");
+        throw new UnsupportedOperationException("Download directory for Internet Explorer profiles is not supported");
     }
 
     @Override

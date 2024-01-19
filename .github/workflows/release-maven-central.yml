@@ -1,0 +1,61 @@
+name: Publish package to Maven Central
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Step 2 - Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: "8"
+          distribution: "adopt"
+          server-id: ossrh
+          server-username: MVN_CENTRAL_USERNAME
+          server-password: MVN_CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
+          gpg-passphrase: MVN_GPG_PASSPHRASE
+
+      - name: Step 3 - Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+
+      - name: Step 4 - Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+        with:
+          useConfigFile: true
+
+      - name: Step 5 - Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ github.event.pull_request.title }}
+          BODY: ${{ github.event.pull_request.body }}
+          VERSION: "v${{ steps.gitversion.outputs.semVer }}"
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }} ${{ env.TITLE }}
+          body: ${{ env.BODY }}
+          draft: false
+          prerelease: false
+
+      - name: Step 6 - Publish package
+        run: |
+          mvn -Dmaven.test.skip=true -P release -Drevision=${{ steps.gitversion.outputs.semVer }} deploy
+        env:
+          MVN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MVN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MVN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

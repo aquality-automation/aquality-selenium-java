@@ -9,7 +9,6 @@ import aquality.selenium.configuration.driversettings.FirefoxSettings;
 import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.utilities.ISettingsFile;
 import com.google.inject.Provider;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
@@ -53,7 +52,6 @@ public class BrowserFactoryTests {
     private IBrowserFactory getCustomFactory() {
         return () -> {
             FirefoxSettings firefoxSettings = new FirefoxSettings(AqualityServices.get(ISettingsFile.class));
-            WebDriverManager.firefoxdriver().setup();
             FirefoxOptions options = ((FirefoxOptions) firefoxSettings.getDriverOptions()).addArguments("--headless");
             final List<Class<? extends Throwable>> handledExceptions = Arrays.asList(
                     SessionNotCreatedException.class,
