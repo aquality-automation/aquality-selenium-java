@@ -99,12 +99,6 @@
             <artifactId>testng</artifactId>
             <version>7.5.1</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.webjars</groupId>
-                    <artifactId>jquery</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
