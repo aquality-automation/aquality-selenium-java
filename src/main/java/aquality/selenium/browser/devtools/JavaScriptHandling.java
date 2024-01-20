@@ -2,7 +2,6 @@ package aquality.selenium.browser.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.ScriptKey;
@@ -174,7 +173,7 @@ public class JavaScriptHandling {
 
     /**
      * Gets list of previously pinned scripts.
-     * @return a list of previously pinned scripts.
+     * @return a set of previously pinned scripts.
      */
     public Set<ScriptKey> getPinnedScripts() {
         logger.info("loc.browser.javascript.snippets.get");
@@ -227,7 +226,7 @@ public class JavaScriptHandling {
                 }
             }).augment(driver);
             if (!(driver instanceof HasLogEvents)) {
-                throw new NotImplementedException(
+                throw new UnsupportedOperationException(
                         String.format("Driver for the current browser [%s] doesn't implement HasLogEvents", browserName));
             }
         }
