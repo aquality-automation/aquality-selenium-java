@@ -52,6 +52,9 @@ public class BrowserProfile implements IBrowserProfile {
             case SAFARI:
                 driverSettings = new SafariSettings(settingsFile);
                 break;
+            case OPERA:
+                driverSettings = new OperaSettings(settingsFile);
+                break;
             case YANDEX:
                 driverSettings = new YandexSettings(settingsFile);
                 break;

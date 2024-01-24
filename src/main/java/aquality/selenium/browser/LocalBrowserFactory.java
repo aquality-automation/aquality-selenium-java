@@ -5,6 +5,7 @@ import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -32,8 +33,12 @@ public class LocalBrowserFactory extends BrowserFactory {
         IDriverSettings driverSettings = browserProfile.getDriverSettings();
         switch (browserName) {
             case CHROME:
-            case YANDEX:
                 driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
+                break;
+            case YANDEX:
+            case OPERA:
+                driver = new ChromeDriver(new ChromeDriverService.Builder().withBuildCheckDisabled(true).build(),
+                        (ChromeOptions) driverSettings.getDriverOptions());
                 break;
             case FIREFOX:
                 driver = new FirefoxDriver((FirefoxOptions) driverSettings.getDriverOptions());
