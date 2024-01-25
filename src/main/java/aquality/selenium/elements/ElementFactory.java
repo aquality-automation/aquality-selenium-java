@@ -61,21 +61,33 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
      * @return target element's locator
      */
     @Override
-    protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
+    protected By generateLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
         try {
-            if (isLocatorSupportedForXPathExtraction(multipleElementsLocator)) {
-                By locator = super.generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
-                if (elementFinder.findElements(locator).size() == 1) {
-                    return locator;
-                }
-            }
-            return By.xpath((String) conditionalWait.waitFor(driver -> ((RemoteWebDriver) Objects.requireNonNull(driver))
-                            .executeScript(JavaScript.GET_ELEMENT_XPATH.getScript(), webElement), "XPath generation failed"));
-        }
-        catch (InvalidArgumentException | JavascriptException ex) {
+            return generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
+        } catch (InvalidArgumentException | JavascriptException ex) {
             return By.cssSelector((String) conditionalWait.waitFor(driver -> ((RemoteWebDriver) Objects.requireNonNull(driver))
                     .executeScript(JavaScript.GET_ELEMENT_CSS_SELECTOR.getScript(), webElement), ex.getMessage() + ". CSS selector generation failed too."));
         }
+    }
+
+    /**
+     * Generates xpath locator for target element.
+     *
+     * @param multipleElementsLocator locator used to find elements.
+     * @param webElement              target element.
+     * @param elementIndex            index of target element.
+     * @return target element's locator
+     */
+    @Override
+    protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
+        if (isLocatorSupportedForXPathExtraction(multipleElementsLocator)) {
+            By locator = super.generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
+            if (elementFinder.findElements(locator).size() == 1) {
+                return locator;
+            }
+        }
+        return By.xpath((String) conditionalWait.waitFor(driver -> ((RemoteWebDriver) Objects.requireNonNull(driver))
+                .executeScript(JavaScript.GET_ELEMENT_XPATH.getScript(), webElement), "XPath generation failed"));
     }
 
     /**
