@@ -2,7 +2,6 @@ package aquality.selenium.browser.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
@@ -132,7 +131,7 @@ public class DevToolsHandling {
             return result;
         }
         else {
-            throw new NotImplementedException("Execution of CDP command directly is not supported for current browser. Try sendCommand method instead.");
+            throw new UnsupportedOperationException("Execution of CDP command directly is not supported for current browser. Try sendCommand method instead.");
         }
     }
 

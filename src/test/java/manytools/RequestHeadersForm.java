@@ -1,7 +1,6 @@
 package manytools;
 
 import aquality.selenium.elements.interfaces.ILabel;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 
 import java.util.function.Function;
@@ -20,7 +19,7 @@ public class RequestHeadersForm extends ManyToolsForm<RequestHeadersForm> {
 
     @Override
     public String getValue() {
-        throw new NotImplementedException("Please call the method getNullableValue with parameter instead");
+        throw new UnsupportedOperationException("Please call the method getNullableValue with parameter instead");
     }
 
     public String getNullableValue(String headerName) {

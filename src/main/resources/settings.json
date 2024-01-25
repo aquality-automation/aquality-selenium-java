@@ -6,7 +6,6 @@
 
   "driverSettings": {
     "chrome": {
-      "webDriverVersion": "latest",
       "capabilities": {
       },
       "options": {
@@ -24,7 +23,6 @@
       "startArguments": []
     },
     "edge": {
-      "webDriverVersion": "latest",
       "capabilities": {
       },
       "options": {
@@ -41,7 +39,6 @@
       "startArguments": []
     },
     "firefox": {
-      "webDriverVersion": "latest",
       "capabilities": {
       },
       "options": {
@@ -62,16 +59,17 @@
       "startArguments": []
     },
     "iexplorer": {
-      "webDriverVersion": "latest",
-      "systemArchitecture": "X32",
       "capabilities": {
         "ignoreProtectedModeSettings": true
       }
     },
+    "safari": {
+      "downloadDir": "/Users/username/Downloads"
+    },
     "opera": {
-      "webDriverVersion": "latest",
       "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Programs\\Opera\\launcher.exe",
       "capabilities": {
+        "unhandledPromptBehavior": "ignore"
       },
       "options": {
         "intl.accept_languages": "en",
@@ -81,13 +79,9 @@
         "download.prompt_for_download": "false",
         "download.default_directory": "./downloads"
       },
-      "startArguments": ["--remote-debugging-port=9222", "--no-sandbox", "--disable-dev-shm-usage"]
-    },
-    "safari": {
-      "downloadDir": "/Users/username/Downloads"
+      "startArguments": [ "--remote-debugging-port=9222", "--no-sandbox", "--disable-dev-shm-usage" ]
     },
     "yandex": {
-      "webDriverVersion": "102.0.5005.61",
       "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
       "capabilities": {
       },

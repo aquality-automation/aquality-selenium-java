@@ -13,7 +13,7 @@ public enum TheInternetPage {
     TABLES,
     CHALLENGING_DOM;
 
-    private static final String BASE_URL = "http://the-internet.herokuapp.com/";
+    private static final String BASE_URL = "https://the-internet.herokuapp.com/";
 
     private final String postfix;
 
