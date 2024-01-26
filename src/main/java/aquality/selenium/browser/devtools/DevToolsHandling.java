@@ -2,6 +2,8 @@ package aquality.selenium.browser.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.logging.DevToolsCommandLoggingOptions;
+import aquality.selenium.logging.LoggingParameters;
 import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
@@ -15,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
 
 /**
  * Wrapper for Selenium {@link DevTools} functionality.
@@ -53,21 +57,30 @@ public class DevToolsHandling {
         return session;
     }
 
-    private void logCommand(String commandName, Map<String, Object> commandParameters) {
+    private void logCommand(String commandName, Map<String, Object> commandParameters,
+                            DevToolsCommandLoggingOptions loggingOptions) {
+        LoggingParameters logging = (loggingOptions == null ? new DevToolsCommandLoggingOptions() : loggingOptions)
+                .getCommand();
+        if (!logging.isEnabled())
+        {
+            return;
+        }
         if (!commandParameters.isEmpty()) {
-            logger.info("loc.browser.devtools.command.execute.withparams", commandName, commandParameters);
+            logByLevel(logging.getLogLevel(), "loc.browser.devtools.command.execute.withparams", commandName, commandParameters);
         }
         else {
-            logger.info("loc.browser.devtools.command.execute", commandName);
+            logByLevel(logging.getLogLevel(), "loc.browser.devtools.command.execute", commandName);
         }
     }
 
-    private void logCommandResult(Object result) {
-        if (result != null) {
+    private void logCommandResult(Object result, DevToolsCommandLoggingOptions loggingOptions) {
+        LoggingParameters logging = (loggingOptions == null ? new DevToolsCommandLoggingOptions() : loggingOptions)
+                .getCommand();
+        if (result != null && logging.isEnabled()) {
             if (result instanceof Map && ((Map<?, ?>) result).isEmpty()) {
                 return;
             }
-            logger.info("loc.browser.devtools.command.execute.result", result);
+            logByLevel(logging.getLogLevel(), "loc.browser.devtools.command.execute.result", result);
         }
     }
 
@@ -123,11 +136,24 @@ public class DevToolsHandling {
      * @return An object representing the result of the command, if applicable.
      */
     public Map<String, Object> executeCdpCommand(String commandName, Map<String, Object> commandParameters) {
+        return executeCdpCommand(commandName, commandParameters, null);
+    }
+
+    /**
+     * Executes a custom Chromium Dev Tools Protocol Command.
+     * Note: works only if current driver is instance of {@link ChromiumDriver}.
+     * @param commandName Name of the command to execute.
+     * @param commandParameters Parameters of the command to execute.
+     * @param loggingOptions Logging preferences.
+     * @return An object representing the result of the command, if applicable.
+     */
+    public Map<String, Object> executeCdpCommand(String commandName, Map<String, Object> commandParameters,
+                                                 DevToolsCommandLoggingOptions loggingOptions) {
         if (devToolsProvider instanceof ChromiumDriver) {
-            logCommand(commandName, commandParameters);
+            logCommand(commandName, commandParameters, loggingOptions);
             ChromiumDriver driver = (ChromiumDriver) devToolsProvider;
             Map<String, Object> result = driver.executeCdpCommand(commandName, commandParameters);
-            logCommandResult(result);
+            logCommandResult(result, loggingOptions);
             return result;
         }
         else {
@@ -142,9 +168,20 @@ public class DevToolsHandling {
      * @return the result of the command, if applicable
      */
     public <X> X sendCommand(Command<X> command) {
-        logCommand(command.getMethod(), command.getParams());
+        return sendCommand(command, null);
+    }
+
+    /**
+     * Sends the specified command and returns the associated command response.
+     * @param command An instance of the {@link Command} to send.
+     * @param <X> The type of the command's result. For most commands it's {@link Void}
+     * @param loggingOptions Logging preferences.
+     * @return the result of the command, if applicable
+     */
+    public <X> X sendCommand(Command<X> command, DevToolsCommandLoggingOptions loggingOptions) {
+        logCommand(command.getMethod(), command.getParams(), loggingOptions);
         X result = getDevToolsSession().send(command);
-        logCommandResult(result);
+        logCommandResult(result, loggingOptions);
         return result;
     }
 
@@ -229,10 +266,10 @@ public class DevToolsHandling {
      */
     public Map<String, Number> getPerformanceMetrics() {
         Command<List<Metric>> command = Performance.getMetrics();
-        logCommand(command.getMethod(), command.getParams());
+        logCommand(command.getMethod(), command.getParams(), null);
         List<Metric> metrics = getDevToolsSession().send(command);
         Map<String, Number> result = metrics.stream().collect(Collectors.toMap(Metric::getName, Metric::getValue));
-        logCommandResult(result.isEmpty() ? "empty" : result);
+        logCommandResult(result.isEmpty() ? "empty" : result, null);
         return result;
     }
 }
