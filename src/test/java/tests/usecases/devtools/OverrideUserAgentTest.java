@@ -2,10 +2,13 @@ package tests.usecases.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.devtools.EmulationHandling;
+import aquality.selenium.logging.DevToolsCommandLoggingOptions;
+import aquality.selenium.logging.LogLevel;
+import aquality.selenium.logging.LoggingParameters;
 import manytools.BrowserLanguageForm;
 import manytools.UserAgentForm;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v110.emulation.Emulation;
+import org.openqa.selenium.devtools.v117.emulation.Emulation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -60,9 +63,12 @@ public class OverrideUserAgentTest extends BaseTest {
 
     @Test
     public void overrideUserAgentByVersionSpecificCommandTest() {
+        DevToolsCommandLoggingOptions loggingOptions = new DevToolsCommandLoggingOptions();
+        loggingOptions.setCommand(new LoggingParameters(false, LogLevel.DEBUG));
+        loggingOptions.setResult(new LoggingParameters(false, LogLevel.DEBUG));
         AqualityServices.getBrowser().devTools().sendCommand(Emulation.setUserAgentOverride(CUSTOM_USER_AGENT,
                 Optional.of(CUSTOM_ACCEPT_LANGUAGE), Optional.empty(),
-                Optional.empty()));
+                Optional.empty()), loggingOptions);
         Assert.assertEquals(new UserAgentForm().open().getValue(), CUSTOM_USER_AGENT, "User agent should match to value set");
     }
 

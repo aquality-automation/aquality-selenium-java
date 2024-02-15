@@ -1,5 +1,6 @@
 package aquality.selenium.browser;
 
+import java.net.URL;
 import java.util.Set;
 
 /**
@@ -88,9 +89,37 @@ public interface IBrowserTabNavigation {
     void openNewTab(boolean switchToNew);
 
     /**
+     * Opens and switches to new tab using JS function.
+     */
+    default void openNewTabViaJs() {
+        openNewTabViaJs(true);
+    }
+
+    /**
+     * Opens new tab using JS function.
+     *
+     * @param switchToNew Switches to new tab if true and stays at current otherwise.
+     */
+    void openNewTabViaJs(boolean switchToNew);
+
+    /**
      * Navigates to desired url in new tab.
      *
      * @param url String representation of URL.
      */
     void openInNewTab(String url);
+
+    /**
+     * Navigates to desired url in new tab.
+     *
+     * @param url target URL.
+     */
+    void openInNewTab(URL url);
+
+    /**
+     * Navigates to desired url in new tab.
+     *
+     * @param url String representation of URL.
+     */
+    void openInNewTabViaJs(String url);
 }

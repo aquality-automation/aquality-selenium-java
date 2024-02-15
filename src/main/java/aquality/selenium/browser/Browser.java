@@ -9,8 +9,6 @@ import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.devtools.HasDevTools;
@@ -21,7 +19,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -125,7 +122,7 @@ public class Browser implements IApplication {
     }
 
     /**
-     * Refreshes the page and process alert that apears after refreshing
+     * Refreshes the page and process alert that appears after refreshing
      *
      * @param alertAction accept or decline alert
      */
@@ -135,7 +132,7 @@ public class Browser implements IApplication {
     }
 
     private Navigation navigate() {
-        return new BrowserNavigation(getDriver());
+        return new BrowserNavigation(getDriver(), localizedLogger);
     }
 
     /**
@@ -143,11 +140,12 @@ public class Browser implements IApplication {
      * @return Instance of IBrowserTabNavigation.
      */
     public IBrowserTabNavigation tabs() {
-        return new BrowserTabNavigation(getDriver());
+        return new BrowserTabNavigation(getDriver(), localizedLogger);
     }
 
     /**
-     * Sets page load timeout (Will be ignored for Safari https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687)
+     * Sets page load timeout (Will be ignored for Safari
+     * <a href="https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/687">...</a>)
      *
      * @param timeout seconds to wait
      */
@@ -248,10 +246,9 @@ public class Browser implements IApplication {
      * @param file      Java Script file
      * @param arguments Arguments for the script (web elements, values etc.
      * @return Result object of script execution
-     * @throws IOException in case of problems with the File
      */
-    public Object executeAsyncScript(final File file, Object... arguments) throws IOException {
-        return executeAsyncScript(IOUtils.toString(file.toURI(), StandardCharsets.UTF_8.name()), arguments);
+    public Object executeAsyncScript(final File file, Object... arguments) {
+        return executeAsyncScript(JavaScript.readScript(file), arguments);
     }
 
     /**
@@ -303,7 +300,7 @@ public class Browser implements IApplication {
      * @throws IOException in case of problems with the File
      */
     public Object executeScript(final File file, Object... arguments) throws IOException {
-        return executeScript(IOUtils.toString(file.toURI(), StandardCharsets.UTF_8.name()), arguments);
+        return executeScript(JavaScript.readScript(file), arguments);
     }
 
     /**
@@ -400,7 +397,7 @@ public class Browser implements IApplication {
             return devTools;
         }
         else {
-            throw new NotImplementedException("DevTools protocol is not supported for current browser.");
+            throw new UnsupportedOperationException("DevTools protocol is not supported for current browser.");
         }
     }
 

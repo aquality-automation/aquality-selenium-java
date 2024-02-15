@@ -1,6 +1,5 @@
 package aquality.selenium.elements;
 
-import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.JavaScript;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.elements.interfaces.IElementSupplier;
@@ -8,23 +7,26 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.elements.interfaces.*;
 import com.google.inject.Inject;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.By.ById;
 import org.openqa.selenium.By.ByName;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ByIdOrName;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ElementFactory extends aquality.selenium.core.elements.ElementFactory implements IElementFactory {
 
+    private final IConditionalWait conditionalWait;
     private final IElementFinder elementFinder;
 
     @Inject
     public ElementFactory(IConditionalWait conditionalWait, IElementFinder elementFinder, ILocalizationManager localizationManager) {
         super(conditionalWait, elementFinder, localizationManager);
+        this.conditionalWait = conditionalWait;
         this.elementFinder = elementFinder;
     }
 
@@ -60,10 +62,33 @@ public class ElementFactory extends aquality.selenium.core.elements.ElementFacto
      * @return target element's locator
      */
     @Override
+    protected By generateLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
+        try {
+            return generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
+        } catch (InvalidArgumentException | JavascriptException ex) {
+            return By.cssSelector((String) conditionalWait.waitFor(driver -> ((RemoteWebDriver) Objects.requireNonNull(driver))
+                    .executeScript(JavaScript.GET_ELEMENT_CSS_SELECTOR.getScript(), webElement), ex.getMessage() + ". CSS selector generation failed too."));
+        }
+    }
+
+    /**
+     * Generates xpath locator for target element.
+     *
+     * @param multipleElementsLocator locator used to find elements.
+     * @param webElement              target element.
+     * @param elementIndex            index of target element.
+     * @return target element's locator
+     */
+    @Override
     protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
-        return isLocatorSupportedForXPathExtraction(multipleElementsLocator)
-                ? super.generateXpathLocator(multipleElementsLocator, webElement, elementIndex)
-                : By.xpath((String) AqualityServices.getBrowser().executeScript(JavaScript.GET_ELEMENT_XPATH, webElement));
+        if (isLocatorSupportedForXPathExtraction(multipleElementsLocator)) {
+            By locator = super.generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
+            if (elementFinder.findElements(locator).size() == 1) {
+                return locator;
+            }
+        }
+        return By.xpath((String) conditionalWait.waitFor(driver -> ((RemoteWebDriver) Objects.requireNonNull(driver))
+                .executeScript(JavaScript.GET_ELEMENT_XPATH.getScript(), webElement), "XPath generation failed"));
     }
 
     /**

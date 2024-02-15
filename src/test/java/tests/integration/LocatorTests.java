@@ -1,16 +1,23 @@
 package tests.integration;
 
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.elements.interfaces.ByImage;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.ChallengingDomForm;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.locators.RelativeLocator;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.BaseTest;
 import theinternet.TheInternetPage;
+import theinternet.forms.BrokenImagesForm;
+
 import java.util.List;
+
 import static aquality.selenium.locators.RelativeBySupplier.with;
 
 public class LocatorTests extends BaseTest {
@@ -24,6 +31,28 @@ public class LocatorTests extends BaseTest {
     @BeforeMethod
     public void beforeMethod() {
         navigate(TheInternetPage.CHALLENGING_DOM);
+    }
+
+    @Test
+    public void testByImageLocator() {
+        BrokenImagesForm form = new BrokenImagesForm();
+        Assert.assertFalse(form.getLabelByImage().state().isDisplayed(), "Should be impossible to find element on page by image when it is absent");
+        getBrowser().goTo(form.getUrl());
+        Assert.assertTrue(form.getLabelByImage().state().isDisplayed(), "Should be possible to find element on page by image");
+        Assert.assertEquals(form.getLabelByImage().getElement().getTagName(), "img", "Correct element must be found");
+
+        List<ILabel> childLabels = form.getChildLabelsByImage();
+        List<ILabel> docLabels = form.getLabelsByImage();
+        Assert.assertTrue(docLabels.size() > 1, "List of elements should be possible to find by image");
+        Assert.assertEquals(docLabels.size(), childLabels.size(), "Should be possible to find child elements by image with the same count");
+
+        ILabel documentByTag = AqualityServices.getElementFactory().getLabel(By.tagName("body"), "document by tag");
+        float fullThreshold = 1;
+        ILabel documentByImage = AqualityServices.getElementFactory().getLabel(new ByImage(documentByTag.getElement().getScreenshotAs(OutputType.BYTES)).setThreshold(fullThreshold),
+                "body screen");
+        Assert.assertTrue(documentByImage.state().isDisplayed(), "Should be possible to find element by document screenshot");
+        Assert.assertEquals(((ByImage)documentByImage.getLocator()).getThreshold(), fullThreshold, "Should be possible to get ByImage threshold");
+        Assert.assertEquals(documentByImage.getElement().getTagName(), "body", "Correct element must be found");
     }
 
     @Test
