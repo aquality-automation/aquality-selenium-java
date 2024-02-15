@@ -49,7 +49,7 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByContainingText(String text) {
         logElementAction("loc.combobox.select.by.text", text);
-        selectOptionThatContains(WebElement::getText,
+        applyFunctionToOptionsThatContain(WebElement::getText,
                 Select::selectByVisibleText,
                 text);
     }
@@ -57,12 +57,12 @@ public class ComboBox extends Element implements IComboBox {
     @Override
     public void selectByContainingValue(String value) {
         logElementAction(LOG_SELECTING_VALUE, value);
-        selectOptionThatContains(element -> element.getAttribute(Attributes.VALUE.toString()),
+        applyFunctionToOptionsThatContain(element -> element.getAttribute(Attributes.VALUE.toString()),
                 Select::selectByValue,
                 value);
     }
 
-    private void selectOptionThatContains(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
+    protected void applyFunctionToOptionsThatContain(Function<WebElement, String> getValueFunc, BiConsumer<Select, String> selectFunc, String value){
         doWithRetry(() -> {
             Select select = new Select(getElement());
             List<WebElement> elements = select.getOptions();
@@ -77,7 +77,7 @@ public class ComboBox extends Element implements IComboBox {
             }
             if (!isSelected){
                 throw new InvalidElementStateException(String.format(getLocalizationManager().getLocalizedMessage(
-                        "loc.combobox.impossible.to.select.contain.value.or.text"), value, getName()));
+                        "loc.combobox.impossible.to.find.option.contain.value.or.text"), value, getName()));
             }
         });
     }

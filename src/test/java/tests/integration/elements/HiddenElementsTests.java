@@ -1,4 +1,4 @@
-package tests.integration;
+package tests.integration.elements;
 
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.ElementsCount;
