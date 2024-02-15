@@ -6,7 +6,6 @@
 
   "driverSettings": {
     "chrome": {
-      "webDriverVersion": "latest",
       "capabilities": {
       },
       "options": {
@@ -23,8 +22,6 @@
       "startArguments": []
     },
     "firefox": {
-      "webDriverVersion": "latest",
-      "systemArchitecture": "X32",
       "capabilities": {
       },
       "options": {
@@ -45,7 +42,6 @@
       "startArguments": []
     },
     "iexplorer": {
-      "webDriverVersion": "latest",
       "capabilities": {
         "ignoreProtectedModeSettings": true
       }

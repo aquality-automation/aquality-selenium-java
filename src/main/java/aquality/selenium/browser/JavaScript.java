@@ -1,12 +1,12 @@
 package aquality.selenium.browser;
 
 import aquality.selenium.core.logging.Logger;
-import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.core.util.IOUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import static java.lang.String.format;
 
@@ -22,6 +22,7 @@ public enum JavaScript {
     GET_COMBOBOX_SELECTED_TEXT("getCmbText.js"),
     GET_COMBOBOX_TEXTS("getCmbValues.js"),
     GET_ELEMENT_BY_XPATH("getElementByXpath.js"),
+    GET_ELEMENT_CSS_SELECTOR("getElementCssSelector.js"),
     GET_ELEMENT_XPATH("getElementXPath.js"),
     GET_ELEMENT_TEXT("getElementText.js"),
     GET_TEXT_FIRST_CHILD("getTextFirstChild.js"),
@@ -59,11 +60,28 @@ public enum JavaScript {
         URL scriptFile = getClass().getResource("/js/" + filename);
         if (scriptFile != null) {
             try (InputStream stream = scriptFile.openStream()) {
-                return IOUtils.toString(stream, StandardCharsets.UTF_8.name());
+                return readScript(stream);
             } catch (IOException e) {
-                Logger.getInstance().fatal(format("Couldn't find the script \"%s\"", filename), e);
+                logScriptAbsence(filename, e);
             }
         }
         return "";
+    }
+
+    static String readScript(final File file) {
+        try (InputStream stream = Files.newInputStream(file.toPath())) {
+            return readScript(stream);
+        } catch (IOException e) {
+            logScriptAbsence(file.getName(), e);
+            return "";
+        }
+    }
+
+    private static void logScriptAbsence(String filename, IOException e) {
+        Logger.getInstance().fatal(format("Couldn't find the script \"%s\"", filename), e);
+    }
+
+    private static String readScript(InputStream stream) throws IOException {
+        return IOUtils.toString(new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)));
     }
 }

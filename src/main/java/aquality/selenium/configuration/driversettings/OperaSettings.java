@@ -7,14 +7,8 @@ import org.openqa.selenium.remote.AbstractDriverOptions;
 
 public class OperaSettings extends ChromeSettings {
     private static final String DEFAULT_BINARY_LOCATION = "%USERPROFILE%\\AppData\\Local\\Programs\\Opera\\launcher.exe";
-
     public OperaSettings(ISettingsFile settingsFile) {
         super(settingsFile);
-    }
-
-    @Override
-    public BrowserName getBrowserName() {
-        return BrowserName.OPERA;
     }
 
     @Override
@@ -23,5 +17,10 @@ public class OperaSettings extends ChromeSettings {
         options.setExperimentalOption("w3c", true);
         options.setBinary(getBinaryLocation(DEFAULT_BINARY_LOCATION));
         return options;
+    }
+
+    @Override
+    public BrowserName getBrowserName() {
+        return BrowserName.OPERA;
     }
 }
