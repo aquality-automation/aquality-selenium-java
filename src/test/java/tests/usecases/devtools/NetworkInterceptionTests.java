@@ -4,7 +4,6 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.devtools.NetworkHandling;
 import com.google.common.net.MediaType;
 import manytools.RequestHeadersForm;
-import org.apache.hc.core5.http.HttpStatus;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.remote.http.HttpHandler;
 import org.openqa.selenium.remote.http.HttpRequest;
@@ -40,7 +39,7 @@ public class NetworkInterceptionTests extends BaseTest {
         WelcomeForm welcomeForm = new WelcomeForm();
 
         NetworkInterceptor interceptor = network().interceptAllRequests(new HttpResponse()
-                .setStatus(HttpStatus.SC_OK)
+                .setStatus(200)
                 .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
                 .setContent(utf8String(SOME_PHRASE)));
         Assert.assertNotNull(interceptor, "Network interceptor must not be null");
@@ -56,7 +55,7 @@ public class NetworkInterceptionTests extends BaseTest {
     public void testRequestsInterception() {
         WelcomeForm welcomeForm = new WelcomeForm();
         NetworkInterceptor interceptor = network().startNetworkInterceptor((HttpHandler) request -> new HttpResponse()
-                .setStatus(HttpStatus.SC_OK)
+                .setStatus(200)
                 .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
                 .setContent(utf8String(SOME_PHRASE)));
         Assert.assertNotNull(interceptor, "Network interceptor must not be null");

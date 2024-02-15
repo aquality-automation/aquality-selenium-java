@@ -4,10 +4,8 @@ import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.driversettings.IDriverSettings;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.Architecture;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -15,7 +13,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
@@ -34,35 +31,29 @@ public class LocalBrowserFactory extends BrowserFactory {
         BrowserName browserName = browserProfile.getBrowserName();
         RemoteWebDriver driver;
         IDriverSettings driverSettings = browserProfile.getDriverSettings();
-        String webDriverVersion = driverSettings.getWebDriverVersion();
-        Architecture systemArchitecture = driverSettings.getSystemArchitecture();
         switch (browserName) {
             case CHROME:
-            case YANDEX:
-                WebDriverManager.chromedriver().driverVersion(webDriverVersion).setup();
                 driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
                 break;
+            case YANDEX:
             case OPERA:
-                WebDriverManager.operadriver().driverVersion(webDriverVersion).setup();
-                driver = new ChromeDriver((ChromeOptions) driverSettings.getDriverOptions());
+                driver = new ChromeDriver(new ChromeDriverService.Builder().withBuildCheckDisabled(true).build(),
+                        (ChromeOptions) driverSettings.getDriverOptions());
                 break;
             case FIREFOX:
-                WebDriverManager.firefoxdriver().driverVersion(webDriverVersion).setup();
                 driver = new FirefoxDriver((FirefoxOptions) driverSettings.getDriverOptions());
                 break;
             case IEXPLORER:
-                WebDriverManager.iedriver().architecture(systemArchitecture).driverVersion(webDriverVersion).setup();
                 driver = new InternetExplorerDriver((InternetExplorerOptions) driverSettings.getDriverOptions());
                 break;
             case EDGE:
-                WebDriverManager.edgedriver().driverVersion(webDriverVersion).setup();
                 driver = new EdgeDriver((EdgeOptions) driverSettings.getDriverOptions());
                 break;
             case SAFARI:
                 driver = new SafariDriver((SafariOptions) driverSettings.getDriverOptions());
                 break;
             default:
-                throw new IllegalArgumentException(String.format("Browser [%s] is not supported.", browserName));
+                throw new UnsupportedOperationException(String.format("Browser [%s] is not supported.", browserName));
         }
         return driver;
     }

@@ -20,7 +20,7 @@ public class SafariSettings extends DriverSettings {
 
     @Override
     public String getDownloadDirCapabilityKey() {
-        throw new IllegalArgumentException("Download directory for Safari profiles is not supported in capabilities. Please, use separate 'downloadDir' property");
+        throw new UnsupportedOperationException("Download directory for Safari profiles is not supported in capabilities. Please, use separate 'downloadDir' property");
     }
 
     @Override
