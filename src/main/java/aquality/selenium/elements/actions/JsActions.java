@@ -71,7 +71,8 @@ public class JsActions implements IShadowRootExpander {
      * Highlights the element.
      */
     public void highlightElement(HighlightState highlightState) {
-        if (AqualityServices.getBrowserProfile().isElementHighlightEnabled() || highlightState.equals(HighlightState.HIGHLIGHT)) {
+        if ((AqualityServices.getBrowserProfile().isElementHighlightEnabled() && !highlightState.equals(HighlightState.NOT_HIGHLIGHT))
+                || highlightState.equals(HighlightState.HIGHLIGHT)) {
             executeScript(JavaScript.BORDER_ELEMENT);
         }
     }
