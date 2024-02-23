@@ -131,7 +131,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public String getText(HighlightState highlightState) {
         logElementAction("loc.get.text");
-        getJsActions().highlightElement();
+        getJsActions().highlightElement(highlightState);
         String value = doWithRetry(() -> getElement().getText());
         logElementAction("loc.text.value", value);
         return value;
@@ -147,7 +147,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public String getAttribute(final String attr, HighlightState highlightState) {
         logElementAction("loc.el.getattr", attr);
-        getJsActions().highlightElement();
+        getJsActions().highlightElement(highlightState);
         String value = doWithRetry(() -> getElement().getAttribute(attr));
         logElementAction("loc.el.attr.value", attr, value);
         return value;
@@ -156,7 +156,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public String getCssValue(final String propertyName, HighlightState highlightState) {
         logElementAction("loc.el.cssvalue", propertyName);
-        getJsActions().highlightElement();
+        getJsActions().highlightElement(highlightState);
         String value = doWithRetry(() -> getElement().getCssValue(propertyName));
         logElementAction("loc.el.attr.value", propertyName, value);
         return value;
