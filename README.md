@@ -12,6 +12,11 @@ Most of performed methods are logged using LOG4J, so you can easily see a histor
 
 We use interfaces where is possible, so you can implement your own version of target interface with no need to rewrite other classes.
 
+
+> ### Breaking news! 
+> Starting from v4.4.0 onwards, this package requires Java 11 or higher, as Selenium has stopped support of Java 8.
+> The last version available for Java 8 is [v4.3.3](https://github.com/aquality-automation/aquality-selenium-java/releases/tag/v4.3.3)
+
 ### Quick start
 To start the project using aquality.selenium framework, you can [download our template BDD project by this link.](https://github.com/aquality-automation/aquality-selenium-java-template)
 
