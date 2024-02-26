@@ -3,8 +3,8 @@ package tests.usecases.devtools;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.devtools.EmulationHandling;
 import com.google.common.collect.ImmutableMap;
-import org.openqa.selenium.devtools.v117.emulation.Emulation;
-import org.openqa.selenium.devtools.v117.emulation.model.DisplayFeature;
+import org.openqa.selenium.devtools.v122.emulation.Emulation;
+import org.openqa.selenium.devtools.v122.emulation.model.DisplayFeature;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -44,7 +44,7 @@ public class DeviceEmulationTest extends BaseTest {
             AqualityServices.getBrowser().devTools().sendCommand(Emulation.setDeviceMetricsOverride(
                     WIDTH, HEIGHT, SCALE_FACTOR, IS_MOBILE, Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.of(DISPLAY_FEATURE)
+                    Optional.of(DISPLAY_FEATURE), Optional.empty()
             ));
             AqualityServices.getLogger().info("success");
         });

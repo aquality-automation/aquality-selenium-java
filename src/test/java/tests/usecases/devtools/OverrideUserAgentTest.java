@@ -8,7 +8,7 @@ import aquality.selenium.logging.LoggingParameters;
 import manytools.BrowserLanguageForm;
 import manytools.UserAgentForm;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v117.emulation.Emulation;
+import org.openqa.selenium.devtools.v122.emulation.Emulation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
