@@ -45,6 +45,8 @@ public enum JavaScript {
     GET_SCREEN_OFFSET("getScreenOffset.js"),
     OPEN_IN_NEW_TAB("openInNewTab.js"),
     OPEN_NEW_TAB("openNewTab.js"),
+    OPEN_IN_NEW_WINDOW("openInNewWindow.js"),
+    OPEN_NEW_WINDOW("openNewWindow.js"),
     EXPAND_SHADOW_ROOT("expandShadowRoot.js");
 
     private final String filename;

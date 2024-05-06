@@ -13,7 +13,7 @@ public class DevToolsSessionTest extends BaseTest {
 
     @Test
     public void getAndCloseDevToolsSessionTest() {
-        String windowHandle = getBrowser().tabs().getCurrentTabHandle();
+        String windowHandle = getBrowser().tabs().getCurrentHandle();
         Assert.assertFalse(devTools().hasActiveDevToolsSession(), "No DevTools session should be running initially");
         Assert.assertNotNull(devTools().getDevToolsSession(windowHandle), "Should be possible to get DevTools session");
         Assert.assertTrue(devTools().hasActiveDevToolsSession(), "DevTools session should be indicated as active after getting");

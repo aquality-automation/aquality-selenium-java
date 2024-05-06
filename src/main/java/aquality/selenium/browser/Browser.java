@@ -136,11 +136,19 @@ public class Browser implements IApplication {
     }
 
     /**
-     * Provides interface to manage of browser tabs.
+     * Provides interface to manage browser tabs.
      * @return Instance of IBrowserTabNavigation.
      */
     public IBrowserTabNavigation tabs() {
-        return new BrowserTabNavigation(getDriver(), localizedLogger);
+        return new BrowserWindowNavigation(getDriver(), localizedLogger, WindowType.TAB);
+    }
+
+    /**
+     * Provides interface to manage browser windows.
+     * @return Instance of IBrowserWindowNavigation.
+     */
+    public IBrowserWindowNavigation windows() {
+        return new BrowserWindowNavigation(getDriver(), localizedLogger, WindowType.WINDOW);
     }
 
     /**

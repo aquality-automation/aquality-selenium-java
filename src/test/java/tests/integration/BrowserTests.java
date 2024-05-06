@@ -130,7 +130,7 @@ public class BrowserTests extends BaseTest {
     }
 
     @Test (expectedExceptions = ScriptTimeoutException.class)
-    public void testScriptTimeoutExeceptionShouldBeThrownIfScriptTimeoutIsOver(){
+    public void testScriptTimeoutExceptionShouldBeThrownIfScriptTimeoutIsOver(){
         String url = new DynamicContentForm().getUrl();
         getBrowser().goTo(url);
         getBrowser().waitForPageToLoad();

@@ -1,11 +1,13 @@
 package w3schools.forms;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.logging.Logger;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.IMultiChoiceBox;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static aquality.selenium.browser.AqualityServices.getConfiguration;
 
 public class SelectMultipleForm extends Form {
 
@@ -27,7 +31,7 @@ public class SelectMultipleForm extends Form {
     }
 
     public void acceptCookies() {
-        if (btnAcceptCookies.state().isDisplayed()) {
+        if (btnAcceptCookies.state().waitForDisplayed(getConfiguration().getTimeoutConfiguration().getScript())) {
             btnAcceptCookies.click();
             btnAcceptCookies.state().waitForNotDisplayed();
         }
@@ -38,7 +42,16 @@ public class SelectMultipleForm extends Form {
     }
 
     public void submit() {
-        btnSubmit.click();
+        try {
+            btnSubmit.click();
+        }
+        catch (ElementClickInterceptedException e) {
+            Logger.getInstance().debug(e.getMessage(), e);
+            AqualityServices.getBrowser().getDriver().switchTo().defaultContent();
+            acceptCookies();
+            switchToResultFrame();
+            btnSubmit.click();
+        }
     }
 
     public List<String> getValuesFromResult() {
