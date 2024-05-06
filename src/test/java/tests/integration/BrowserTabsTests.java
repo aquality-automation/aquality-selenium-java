@@ -1,7 +1,7 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.browser.Browser;
+import aquality.selenium.browser.IBrowserWindowNavigation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -20,6 +20,10 @@ public class BrowserTabsTests extends BaseTest {
 
     private final WelcomeForm welcomeForm = new WelcomeForm();
 
+    protected IBrowserWindowNavigation tabs() {
+        return AqualityServices.getBrowser().tabs();
+    }
+
     @Override
     @BeforeMethod
     public void beforeMethod() {
@@ -29,146 +33,135 @@ public class BrowserTabsTests extends BaseTest {
     @Test
     public void testShouldBePossibleToOpenUrlInNewTab() {
         String url = welcomeForm.getUrl();
-        Browser browser = AqualityServices.getBrowser();
-        browser.tabs().openInNewTab(url);
-        assertEquals(2, browser.tabs().getTabHandles().size());
-        assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
+        tabs().openInNew(url);
+        assertEquals(2, tabs().getHandles().size());
+        assertEquals(AqualityServices.getBrowser().getCurrentUrl(), url + "/", "Url should be opened in new tab");
     }
 
     @Test
     public void testShouldBePossibleToOpenUriInNewTab() throws MalformedURLException {
         URL url = new URL(welcomeForm.getUrl());
-        Browser browser = AqualityServices.getBrowser();
-        browser.tabs().openInNewTab(url);
-        assertEquals(2, browser.tabs().getTabHandles().size());
-        assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
+        tabs().openInNew(url);
+        assertEquals(2, tabs().getHandles().size());
+        assertEquals(AqualityServices.getBrowser().getCurrentUrl(), url + "/", "Url should be opened in new tab");
     }
 
     @Test
     public void testShouldBePossibleToOpenUrlInNewTabViaJs() {
         String url = welcomeForm.getUrl();
-        Browser browser = AqualityServices.getBrowser();
-        browser.tabs().openInNewTabViaJs(url);
-        assertEquals(2, browser.tabs().getTabHandles().size());
-        assertEquals(browser.getCurrentUrl(), url + "/", "Url should be opened in new tab");
+        tabs().openInNewViaJs(url);
+        assertEquals(2, tabs().getHandles().size());
+        assertEquals(AqualityServices.getBrowser().getCurrentUrl(), url + "/", "Url should be opened in new tab");
     }
 
     @Test
     public void testShouldBePossibleToHandleTab() {
-        Browser browser = AqualityServices.getBrowser();
-        String tabHandle = browser.tabs().getCurrentTabHandle();
+        String tabHandle = tabs().getCurrentHandle();
         assertFalse(tabHandle.isEmpty(), "Tab handle should not be empty");
     }
 
     @Test
     public void testShouldBePossibleToGetTabHandles() {
-        Browser browser = AqualityServices.getBrowser();
-        Set<String> tabHandles = browser.tabs().getTabHandles();
+        Set<String> tabHandles = tabs().getHandles();
         assertEquals(1, tabHandles.size(), "Tab number should be correct");
         assertFalse(tabHandles.stream().findFirst().toString().isEmpty(), "Tab handle should not be empty");
     }
 
     @Test
     public void testShouldBePossibleToOpenNewTab() {
-        Browser browser = AqualityServices.getBrowser();
-        String tabHandle = browser.tabs().getCurrentTabHandle();
+        String tabHandle = tabs().getCurrentHandle();
 
-        browser.tabs().openNewTab();
-        String newTabHandle = browser.tabs().getCurrentTabHandle();
-        assertEquals(2, browser.tabs().getTabHandles().size(), "New tab should be opened");
+        tabs().openNew();
+        String newTabHandle = tabs().getCurrentHandle();
+        assertEquals(2, tabs().getHandles().size(), "New tab should be opened");
         assertNotEquals(tabHandle, newTabHandle, "Browser should be switched to new tab");
 
-        browser.tabs().openNewTab(false);
-        assertEquals(3, browser.tabs().getTabHandles().size(), "New tab should be opened");
-        assertEquals(newTabHandle, browser.tabs().getCurrentTabHandle(), "Browser should not be switched to new tab");
+        tabs().openNew(false);
+        assertEquals(3, tabs().getHandles().size(), "New tab should be opened");
+        assertEquals(newTabHandle, tabs().getCurrentHandle(), "Browser should not be switched to new tab");
     }
 
     @Test
     public void testShouldBePossibleToOpenNewTabViaJs() {
-        Browser browser = AqualityServices.getBrowser();
-        String tabHandle = browser.tabs().getCurrentTabHandle();
+        String tabHandle = tabs().getCurrentHandle();
 
-        browser.tabs().openNewTabViaJs();
-        String newTabHandle = browser.tabs().getCurrentTabHandle();
-        assertEquals(2, browser.tabs().getTabHandles().size(), "New tab should be opened");
+        tabs().openNewViaJs();
+        String newTabHandle = tabs().getCurrentHandle();
+        assertEquals(2, tabs().getHandles().size(), "New tab should be opened");
         assertNotEquals(tabHandle, newTabHandle, "Browser should be switched to new tab");
 
-        browser.tabs().openNewTabViaJs(false);
-        assertEquals(3, browser.tabs().getTabHandles().size(), "New tab should be opened");
-        assertEquals(newTabHandle, browser.tabs().getCurrentTabHandle(), "Browser should not be switched to new tab");
+        tabs().openNewViaJs(false);
+        assertEquals(3, tabs().getHandles().size(), "New tab should be opened");
+        assertEquals(newTabHandle, tabs().getCurrentHandle(), "Browser should not be switched to new tab");
     }
 
     @Test
     public void testShouldBePossibleToCloseTab() {
-        Browser browser = AqualityServices.getBrowser();
         welcomeForm.clickElementalSelenium();
-        assertEquals(2, browser.tabs().getTabHandles().size(), "New tab should be opened");
-        browser.tabs().closeTab();
-        assertEquals(1, browser.tabs().getTabHandles().size(), "New tab should be closed");
+        assertEquals(2, tabs().getHandles().size(), "New tab should be opened");
+        tabs().close();
+        assertEquals(1, tabs().getHandles().size(), "New tab should be closed");
     }
 
     @Test
     public void testShouldBePossibleToSwitchToNewTab() {
-        checkSwitching(2, () -> AqualityServices.getBrowser().tabs().switchToLastTab());
+        checkSwitching(2, () -> tabs().switchToLast());
     }
 
     @Test
     public void testShouldBePossibleToSwitchToNewTabAndClose() {
-        checkSwitching(1, () -> AqualityServices.getBrowser().tabs().switchToLastTab(true));
+        checkSwitching(1, () -> tabs().switchToLast(true));
     }
 
     @Test
     public void testShouldBePossibleToSwitchToTabByHandle() {
         checkSwitching(3, () -> {
-            Browser browser = AqualityServices.getBrowser();
             String tabHandle = getLastTab();
-            browser.tabs().openNewTab(false);
-            browser.tabs().switchToTab(tabHandle);
+            tabs().openNew(false);
+            tabs().switchTo(tabHandle);
         });
     }
 
     @Test
     public void testShouldBePossibleToSwitchToTabByHandleAndClose() {
         checkSwitching(2, () -> {
-            Browser browser = AqualityServices.getBrowser();
             String tabHandle = getLastTab();
-            browser.tabs().openNewTab(false);
-            browser.tabs().switchToTab(tabHandle, true);
+            tabs().openNew(false);
+            tabs().switchTo(tabHandle, true);
         });
     }
 
     @Test
     public void testShouldBePossibleToSwitchToTabByIndex() {
         checkSwitching(3, () -> {
-            AqualityServices.getBrowser().tabs().openNewTab(false);
-            AqualityServices.getBrowser().tabs().switchToTab(1);
+            tabs().openNew(false);
+            tabs().switchTo(1);
         });
     }
 
     @Test
     public void testShouldBePossibleToSwitchToTabByIndexAndClose() {
         checkSwitching(2, () -> {
-            AqualityServices.getBrowser().tabs().openNewTab(false);
-            AqualityServices.getBrowser().tabs().switchToTab(1, true);
+            tabs().openNew(false);
+            tabs().switchTo(1, true);
         });
     }
 
     @Test
     public void testShouldThrowIfSwitchToNewTabByIncorrectIndex() {
-        Assert.expectThrows(IndexOutOfBoundsException.class, () -> AqualityServices.getBrowser().tabs().switchToTab(10, true));
+        Assert.expectThrows(IndexOutOfBoundsException.class, () -> tabs().switchTo(10, true));
     }
 
     private void checkSwitching(int expectedTabCount, Runnable switchMethod) {
-        Browser browser = AqualityServices.getBrowser();
         welcomeForm.clickElementalSelenium();
         String newTabHandle = getLastTab();
         switchMethod.run();
-        assertEquals(newTabHandle, browser.tabs().getCurrentTabHandle(), "Browser should be switched to correct tab");
-        assertEquals(expectedTabCount, browser.tabs().getTabHandles().size(), "Number of tabs should be correct");
+        assertEquals(newTabHandle, tabs().getCurrentHandle(), "Browser should be switched to correct tab");
+        assertEquals(expectedTabCount, tabs().getHandles().size(), "Number of tabs should be correct");
     }
 
     private String getLastTab() {
-        List<String> tabs = new ArrayList<>(AqualityServices.getBrowser().tabs().getTabHandles());
+        List<String> tabs = new ArrayList<>(tabs().getHandles());
         return tabs.get(tabs.size() - 1);
     }
 }
