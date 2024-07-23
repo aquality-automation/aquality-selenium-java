@@ -14,6 +14,7 @@ import theinternet.forms.InfiniteScrollForm;
 import theinternet.forms.JQueryMenuForm;
 import theinternet.forms.WelcomeForm;
 
+import java.awt.*;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -22,7 +23,7 @@ public class ActionTests extends BaseTest {
     @BeforeMethod
     @Override
     protected void beforeMethod() {
-        AqualityServices.getBrowser().getDriver().manage().window().maximize();
+        getBrowser().maximize();
     }
 
     @Test
@@ -35,9 +36,40 @@ public class ActionTests extends BaseTest {
 
         Long windowHeight = getScriptResultOrDefault("getWindowSize.js", 10L);
         double currentY = getScriptResultOrDefault("getElementYCoordinate.js", 0.0, link.getElement());
-        double coordinateRelatingWindowCenter =  windowHeight.doubleValue() / 2 - currentY;
+        double coordinateRelatingWindowCenter = windowHeight.doubleValue() / 2 - currentY;
         Assert.assertTrue(Math.abs(coordinateRelatingWindowCenter) <= accuracy,
                 "Upper bound of element should be in the center of the page");
+    }
+
+    @Test
+    public void testScrollToElement() throws TimeoutException {
+        InfiniteScrollForm infiniteScrollForm = new InfiniteScrollForm();
+        getBrowser().goTo(infiniteScrollForm.getUrl());
+        infiniteScrollForm.waitForMoreExamples();
+        Dimension size = infiniteScrollForm.getLastExampleLabel().visual().getSize();
+        getBrowser().scrollWindowBy(size.width, size.height);
+        getBrowser().setWindowSize(size.width, size.height);
+        getBrowser().scrollWindowBy(0, 0);
+        int defaultCount = infiniteScrollForm.getExampleLabels().size();
+        AtomicReference<ILabel> lastExampleLabel = new AtomicReference<>(infiniteScrollForm.getLastExampleLabel());
+        AqualityServices.getConditionalWait().waitForTrue(() -> {
+            lastExampleLabel.set(infiniteScrollForm.getLastExampleLabel());
+            lastExampleLabel.get().getMouseActions().scrollToElement();
+            return infiniteScrollForm.getExampleLabels().size() > defaultCount;
+        }, "Some examples should be added after scroll");
+    }
+
+    @Test
+    public void testScrollFromOrigin() throws TimeoutException {
+        InfiniteScrollForm infiniteScrollForm = new InfiniteScrollForm();
+        getBrowser().goTo(infiniteScrollForm.getUrl());
+        int defaultCount = infiniteScrollForm.getExampleLabels().size();
+        AtomicReference<ILabel> lastExampleLabel = new AtomicReference<>(infiniteScrollForm.getLastExampleLabel());
+        AqualityServices.getConditionalWait().waitForTrue(() -> {
+            lastExampleLabel.set(infiniteScrollForm.getLastExampleLabel());
+            lastExampleLabel.get().getMouseActions().scrollFromOrigin(0, lastExampleLabel.get().visual().getSize().height);
+            return infiniteScrollForm.getExampleLabels().size() > defaultCount;
+        }, "Some examples should be added after scroll");
     }
 
     @Test

@@ -188,6 +188,15 @@ public class BrowserTests extends BaseTest {
         getBrowser().scrollWindowBy(0, formHeight);
         Assert.assertEquals(initialY - scrollForm.getFormPointInViewPort().getY(), formHeight);
     }
+    @Test
+    public void testShouldBePossibleToScrollWindowByViaJavaScript(){
+        WelcomeForm scrollForm = new WelcomeForm();
+        getBrowser().goTo(scrollForm.getUrl());
+        int initialY = scrollForm.getFormPointInViewPort().getY();
+        int formHeight = (int) scrollForm.getSize().getHeight();
+        getBrowser().scrollWindowByViaJs(0, formHeight);
+        Assert.assertEquals(initialY - scrollForm.getFormPointInViewPort().getY(), formHeight);
+    }
 
     @Test
     public void testShouldBePossibleToGetBrowserName() {

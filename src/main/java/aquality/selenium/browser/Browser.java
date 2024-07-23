@@ -12,6 +12,8 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.*;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.devtools.HasDevTools;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.WheelInput.ScrollOrigin;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -352,7 +354,30 @@ public class Browser implements IApplication {
      * @param y coordinate y
      */
     public void scrollWindowBy(int x, int y) {
+        localizedLogger.info("loc.scrolling.by", x, y);
+        new Actions(getDriver()).scrollByAmount(x, y).perform();
+    }
+
+    /**
+     * Executes scrolling of the page to given coordinates x and y  using JavaScript.
+     *
+     * @param x coordinate x
+     * @param y coordinate y
+     */
+    public void scrollWindowByViaJs(int x, int y) {
+        localizedLogger.info("loc.scrolling.by.js", x, y);
         executeScript(JavaScript.SCROLL_WINDOW_BY.getScript(), x, y);
+    }
+
+    /**
+     * Scrolls portion of screen from specified origin.
+     *
+     * @param scrollOrigin Origination point (either viewport or element, with possible offset)
+     * @param x coordinate x
+     * @param y coordinate y
+     */
+    public void scrollFromOrigin(ScrollOrigin scrollOrigin, int x, int y) {
+        new Actions(getDriver()).scrollFromOrigin(scrollOrigin, x, y).perform();
     }
 
     /**
