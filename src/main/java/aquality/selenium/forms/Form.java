@@ -71,6 +71,16 @@ public abstract class Form extends aquality.selenium.core.forms.Form<IElement> {
      * @param y vertical coordinate
      */
     public void scrollBy(int x, int y) {
+        getFormLabel().getMouseActions().scrollFromOrigin(x, y);
+    }
+
+    /**
+     * Scroll form via JavaScript without scrolling entire page
+     *
+     * @param x horizontal coordinate
+     * @param y vertical coordinate
+     */
+    public void scrollByJs(int x, int y) {
         getFormLabel().getJsActions().scrollBy(x, y);
     }
 

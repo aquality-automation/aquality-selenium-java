@@ -92,7 +92,7 @@ public class JsActions implements IShadowRootExpander {
      * @param y vertical coordinate
      */
     public void scrollBy(int x, int y) {
-        logElementAction("loc.scrolling.js");
+        logElementAction("loc.scrolling.by.js", x, y);
         executeScript(JavaScript.SCROLL_BY, x, y);
     }
 
