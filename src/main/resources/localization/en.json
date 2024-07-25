@@ -1,5 +1,6 @@
 {
   "loc.browser.arguments": "Got browser start arguments from settings file: %s",
+  "loc.browser.excludedArguments": "Got excluded browser arguments from settings file: %s",
   "loc.browser.back": "Return to previous page",
   "loc.browser.forward": "Proceed to the next page",
   "loc.browser.capabilities": "Got browser capabilities from settings file: %s",

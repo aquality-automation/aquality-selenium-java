@@ -1,5 +1,6 @@
 {
   "loc.browser.arguments": "Pobrano argumenty uruchamiania przeglądarki z pliku ustawień: %s",
+  "loc.browser.excludedArguments": "Pobrano wykluczone argumenty przeglądarki z pliku ustawień: %s",
   "loc.browser.back": "Powrót do poprzedniej strony",
   "loc.browser.forward": "Przejście do następnej strony",
   "loc.browser.capabilities": "Pobrano możliwości przeglądarki z pliku ustawień: %s",

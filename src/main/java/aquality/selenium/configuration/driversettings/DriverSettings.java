@@ -95,7 +95,7 @@ abstract class DriverSettings implements IDriverSettings {
                 isValuePresent = false;
             }
             excludedArguments = isValuePresent ? getSettingsFile().getList(path) : Collections.emptyList();
-            logCollection("loc.browser.excludedArguments", startArguments);
+            logCollection("loc.browser.excludedArguments", excludedArguments);
         }
         return excludedArguments;
     }
