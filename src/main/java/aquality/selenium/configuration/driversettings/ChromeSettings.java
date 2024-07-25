@@ -20,6 +20,7 @@ public class ChromeSettings extends DriverSettings {
         setChromePrefs(chromeOptions);
         setCapabilities(chromeOptions);
         setChromeArgs(chromeOptions);
+        setExcludedArguments(chromeOptions);
         chromeOptions.setPageLoadStrategy(getPageLoadStrategy());
         setLoggingPreferences(chromeOptions, ChromeOptions.LOGGING_PREFS);
         return chromeOptions;
@@ -41,11 +42,6 @@ public class ChromeSettings extends DriverSettings {
     private void setChromeArgs(ChromeOptions options) {
         for (String arg : getBrowserStartArguments()) {
             options.addArguments(arg);
-        }
-        // workaround for Selenium issue https://github.com/SeleniumHQ/selenium/issues/11750
-        final String allowOriginsArgument = "--remote-allow-origins=*";
-        if (!getBrowserStartArguments().contains(allowOriginsArgument)) {
-            options.addArguments(allowOriginsArgument);
         }
     }
 

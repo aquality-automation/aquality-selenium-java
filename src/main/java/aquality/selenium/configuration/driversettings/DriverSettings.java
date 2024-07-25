@@ -7,6 +7,7 @@ import aquality.selenium.core.utilities.ISettingsFile;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.chromium.ChromiumOptions;
 import org.openqa.selenium.logging.LoggingPreferences;
 
 import java.io.File;
@@ -25,6 +26,7 @@ abstract class DriverSettings implements IDriverSettings {
     private Map<String, Object> capabilities;
     private Map<String, Level> loggingPreferences;
     private List<String> startArguments;
+    private List<String> excludedArguments;
 
     protected DriverSettings(ISettingsFile settingsFile) {
         this.settingsFile = settingsFile;
@@ -81,6 +83,23 @@ abstract class DriverSettings implements IDriverSettings {
         return startArguments;
     }
 
+    protected List<String> getExcludedArguments() {
+        if (excludedArguments == null) {
+            String path = getDriverSettingsPath(CapabilityType.EXCLUDED_ARGS);
+            boolean isValuePresent;
+            try {
+                getSettingsFile().getValue(path);
+                isValuePresent = true;
+            }
+            catch (IllegalArgumentException e) {
+                isValuePresent = false;
+            }
+            excludedArguments = isValuePresent ? getSettingsFile().getList(path) : Collections.emptyList();
+            logCollection("loc.browser.excludedArguments", startArguments);
+        }
+        return excludedArguments;
+    }
+
     protected String getBinaryLocation(String defaultBinaryLocation) {
         String value = (String) getSettingsFile().getValueOrDefault(getDriverSettingsPath("binaryLocation"), defaultBinaryLocation);
         int varStartIndex = value.indexOf('%');
@@ -91,7 +110,7 @@ abstract class DriverSettings implements IDriverSettings {
     }
 
     @SafeVarargs
-    private final <T> void logCollection(String messageKey, final T... elements) {
+    private <T> void logCollection(String messageKey, final T... elements) {
         if (elements.length == 1 &&
                 ((elements[0] instanceof Map && !((Map)elements[0]).isEmpty())
                 || (elements[0] instanceof List && !((List)elements[0]).isEmpty()))) {
@@ -119,6 +138,10 @@ abstract class DriverSettings implements IDriverSettings {
         getBrowserCapabilities().forEach(options::setCapability);
     }
 
+    <T extends ChromiumOptions<T>> void setExcludedArguments(T chromiumOptions) {
+        chromiumOptions.setExperimentalOption("excludeSwitches", getExcludedArguments());
+    }
+
     void setLoggingPreferences(MutableCapabilities options, String capabilityKey) {
         if (!getLoggingPreferences().isEmpty()) {
             LoggingPreferences logs = new LoggingPreferences();
@@ -143,6 +166,7 @@ abstract class DriverSettings implements IDriverSettings {
         CAPABILITIES("capabilities"),
         OPTIONS("options"),
         START_ARGS("startArguments"),
+        EXCLUDED_ARGS("excludedArguments"),
         LOGGING_PREFERENCES("loggingPreferences");
 
         private final String key;

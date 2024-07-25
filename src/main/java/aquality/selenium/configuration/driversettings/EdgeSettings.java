@@ -20,6 +20,7 @@ public class EdgeSettings extends DriverSettings {
         setCapabilities(edgeOptions);
         setPrefs(edgeOptions);
         getBrowserStartArguments().forEach(edgeOptions::addArguments);
+        setExcludedArguments(edgeOptions);
         edgeOptions.setPageLoadStrategy(getPageLoadStrategy());
         setLoggingPreferences(edgeOptions, EdgeOptions.LOGGING_PREFS);
         return edgeOptions;
