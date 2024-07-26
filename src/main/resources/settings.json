@@ -20,7 +20,8 @@
         "Performance": "All"
       },
       "pageLoadStrategy": "Normal",
-      "startArguments": []
+      "startArguments": ["--disable-search-engine-choice-screen"],
+      "excludedArguments": []
     },
     "edge": {
       "capabilities": {
@@ -36,7 +37,8 @@
       "loggingPreferences": {
         "Performance": "All"
       },
-      "startArguments": []
+      "startArguments": [],
+      "excludedArguments": []
     },
     "firefox": {
       "capabilities": {
@@ -79,7 +81,8 @@
         "download.prompt_for_download": "false",
         "download.default_directory": "./downloads"
       },
-      "startArguments": [ "--remote-debugging-port=9222", "--no-sandbox", "--disable-dev-shm-usage" ]
+      "startArguments": [ "--remote-debugging-port=9222", "--no-sandbox", "--disable-dev-shm-usage" ],
+      "excludedArguments": []
     },
     "yandex": {
       "binaryLocation": "%USERPROFILE%\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe",
@@ -93,7 +96,8 @@
         "download.prompt_for_download": "false",
         "download.default_directory": "./downloads"
       },
-      "startArguments": []
+      "startArguments": [],
+      "excludedArguments": []
     }
   },
   "timeouts": {

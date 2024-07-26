@@ -1,5 +1,6 @@
 {
   "loc.browser.arguments": "Атрымалі стартавыя аргументы браўзэра з settings файла: %s",
+  "loc.browser.excludedArguments": "Атрымалі выключаныя аргументы браўзэра з settings файла: %s",
   "loc.browser.back": "Вяртаемся да папярэдняй старонкі",
   "loc.browser.forward": "Пераходзім да наступнай старонкі",
   "loc.browser.capabilities": "Атрымалі capabilities браўзэра з settings файла: %s",
