@@ -16,6 +16,11 @@ public interface ITextBox extends IElement {
     void typeSecret(String value);
 
     /**
+     * Clears element text.
+     */
+    void clear();
+
+    /**
      * Clears input and enters text in the box, inputted value isn't logging
      *
      * @param value text
