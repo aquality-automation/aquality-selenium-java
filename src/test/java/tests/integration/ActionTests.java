@@ -4,6 +4,7 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.elements.interfaces.ILink;
 import aquality.selenium.elements.interfaces.ITextBox;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -129,6 +130,22 @@ public class ActionTests extends BaseTest {
         textBox.sendKeys(Keys.DELETE);
         textBox.sendKeys(Keys.BACK_SPACE);
         Assert.assertEquals(textBox.getValue(), expectedText, "One character should be removed from " + expectedText);
+    }
+
+    @Test
+    public void testClear() {
+        FormAuthenticationForm form = new FormAuthenticationForm();
+        getBrowser().goTo(form.getUrl());
+        ITextBox textBox = form.getTxbUsername();
+        textBox.clear();
+        Assert.assertTrue(StringUtils.isEmpty(textBox.getValue()), "Clear should work when was initially empty");
+        textBox.type("anything");
+        textBox.clear();
+        Assert.assertTrue(StringUtils.isEmpty(textBox.getValue()), "Clear should work when was not empty");
+        textBox.type("anything");
+        textBox.clear();
+        textBox.clear();
+        Assert.assertTrue(StringUtils.isEmpty(textBox.getValue()), "Clear should work called twice");
     }
 
     @Test

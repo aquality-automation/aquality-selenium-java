@@ -1,9 +1,13 @@
 package aquality.selenium.elements;
 
 import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.elements.interfaces.ITextBox;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.Keys;
+
+import java.util.ArrayList;
 
 /**
  * The class that describes an input field
@@ -38,6 +42,15 @@ public class TextBox extends Element implements ITextBox {
     }
 
     @Override
+    public void clear() {
+        logElementAction(LOG_CLEARING);
+        getJsActions().highlightElement();
+        doWithRetry(() -> {
+            getElement().clear();
+        });
+    }
+
+    @Override
     public void clearAndTypeSecret(final String value) {
         clearAndType(value, true);
     }
@@ -62,7 +75,16 @@ public class TextBox extends Element implements ITextBox {
         doWithRetry(() -> getElement().sendKeys(Keys.TAB));
     }
 
-    private void type(final String value, final boolean maskValueInLog) {
+    @Override
+    protected void doWithRetry(Runnable action) {
+        IElementActionRetrier retrier = getElementActionRetrier();
+        ArrayList<Class<? extends Throwable>> handledExceptions = new ArrayList<>(retrier.getHandledExceptions());
+        handledExceptions.add(JavascriptException.class);
+        retrier.doWithRetry(action, handledExceptions);
+    }
+
+    private void type(final String value, final boolean maskValueInLog)
+    {
         logElementAction(LOG_TYPING, maskValueInLog ? logMaskedValue : value);
         getJsActions().highlightElement();
         doWithRetry(() -> getElement().sendKeys(value));
