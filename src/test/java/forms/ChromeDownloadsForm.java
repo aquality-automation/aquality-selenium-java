@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ChromeDownloadsForm extends Form {
     private static final String ADDRESS = "chrome://downloads/";
-    public static final By NESTED_SHADOW_ROOT_LOCATOR = By.id("moreActionsMenu");
+    public static final By NESTED_SHADOW_ROOT_LOCATOR = By.cssSelector("cr-toolbar");
     public static final By DIV_ELEMENTS_LOCATOR = By.cssSelector("div");
 
     private final ILabel lblDownloadsToolbar = getFormLabel().findElementInShadowRoot(By.cssSelector("downloads-toolbar"), "Downloads toolbar", ILabel.class);
