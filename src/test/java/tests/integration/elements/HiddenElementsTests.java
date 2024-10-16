@@ -1,5 +1,6 @@
 package tests.integration.elements;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -56,7 +57,7 @@ public class HiddenElementsTests extends BaseTest {
     public void testHiddenElementsNotDisplayed(Function<ElementsCount, List<ILabel>> elementsListProvider) {
         List<ILabel> listElements = elementsListProvider.apply(ElementsCount.MORE_THAN_ZERO);
         Assert.assertFalse(listElements.isEmpty());
-        Assert.assertTrue(listElements.stream().noneMatch(el -> el.state().isDisplayed()));
+        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() -> listElements.stream().noneMatch(el -> el.state().isDisplayed())));
     }
 
     @Test
