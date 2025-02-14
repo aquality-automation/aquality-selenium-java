@@ -2,7 +2,7 @@ package tests.usecases.devtools;
 
 import aquality.selenium.browser.AqualityServices;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.devtools.v131.network.model.ConnectionType;
+import org.openqa.selenium.devtools.v132.network.model.ConnectionType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
