@@ -82,7 +82,7 @@
         <dependency>
             <groupId>com.github.aquality-automation</groupId>
             <artifactId>aquality-selenium-core</artifactId>
-            <version>4.3.0</version>
+            <version>4.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.10.2</version>
+            <version>7.11.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -171,7 +171,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>attached</goal>
+                            <goal>single</goal>
                         </goals>
                         <phase>package</phase>
                         <configuration>
