@@ -12,9 +12,9 @@ import org.openqa.selenium.devtools.idealized.Events;
 import org.openqa.selenium.devtools.idealized.Javascript;
 import org.openqa.selenium.devtools.idealized.ScriptId;
 import org.openqa.selenium.devtools.idealized.target.model.SessionID;
-import org.openqa.selenium.devtools.v85.page.Page;
-import org.openqa.selenium.devtools.v85.page.model.ScriptIdentifier;
-import org.openqa.selenium.devtools.v85.runtime.Runtime;
+import org.openqa.selenium.devtools.v137.page.Page;
+import org.openqa.selenium.devtools.v137.page.model.ScriptIdentifier;
+import org.openqa.selenium.devtools.v137.runtime.Runtime;
 import org.openqa.selenium.logging.EventType;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
@@ -55,7 +55,7 @@ public class JavaScriptHandling {
     public void addScriptCallbackBinding(String scriptName) {
         logger.info("loc.browser.javascript.scriptcallbackbinding.add", scriptName);
         bindings.add(scriptName);
-        tools.sendCommand(Runtime.addBinding(scriptName, Optional.empty()));
+        tools.sendCommand(Runtime.addBinding(scriptName, Optional.empty(), Optional.empty()));
     }
 
     /**

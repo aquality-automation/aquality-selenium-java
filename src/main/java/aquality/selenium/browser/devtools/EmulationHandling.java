@@ -2,10 +2,10 @@ package aquality.selenium.browser.devtools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.v85.dom.model.RGBA;
-import org.openqa.selenium.devtools.v85.emulation.Emulation;
-import org.openqa.selenium.devtools.v85.emulation.model.MediaFeature;
-import org.openqa.selenium.devtools.v85.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.v137.dom.model.RGBA;
+import org.openqa.selenium.devtools.v137.emulation.Emulation;
+import org.openqa.selenium.devtools.v137.emulation.model.MediaFeature;
+import org.openqa.selenium.devtools.v137.emulation.model.ScreenOrientation;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +45,8 @@ public class EmulationHandling {
      * @param accuracy Accuracy of the location
      */
     public void setGeolocationOverride(double latitude, double longitude, double accuracy) {
-        setGeolocationOverride(Optional.of(latitude), Optional.of(longitude), Optional.of(accuracy));
+        setGeolocationOverride(Optional.of(latitude), Optional.of(longitude), Optional.of(accuracy), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     /**
@@ -64,8 +65,10 @@ public class EmulationHandling {
      * @param longitude Longitude of location
      * @param accuracy Accuracy of the location
      */
-    public void setGeolocationOverride(Optional<Number> latitude, Optional<Number> longitude, Optional<Number> accuracy) {
-        tools.sendCommand(Emulation.setGeolocationOverride(latitude, longitude, accuracy));
+    public void setGeolocationOverride(Optional<Number> latitude, Optional<Number> longitude, Optional<Number> accuracy,
+                                       Optional<Number> altitude, Optional<Number> altitudeAccuracy, Optional<Number> heading,
+                                       Optional<Number> speed) {
+        tools.sendCommand(Emulation.setGeolocationOverride(latitude, longitude, accuracy, altitude, altitudeAccuracy, heading, speed));
     }
 
     /**
@@ -115,7 +118,7 @@ public class EmulationHandling {
             screenOrientation = Optional.of(new ScreenOrientation(ScreenOrientation.Type.fromString(screenOrientationType.get()), angle));
         }
         tools.sendCommand(Emulation.setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), screenOrientation, Optional.empty()));
+                Optional.empty(), Optional.empty(), Optional.empty(), screenOrientation, Optional.empty(), Optional.empty(), Optional.empty()));
     }
 
     /**
