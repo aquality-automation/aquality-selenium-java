@@ -9,7 +9,7 @@ public class ChallengingDomForm extends Form {
     public static final String LOCATOR_CHALLENGING_DOM_FORM = "//h3[contains(text(),'Challenging DOM')]";
 
     public ChallengingDomForm() {
-        super(By.xpath(LOCATOR_CHALLENGING_DOM_FORM), "Header of Challenging Dom");
+        super(By.xpath(LOCATOR_CHALLENGING_DOM_FORM), "Challenging Dom");
     }
 
     public String getHeaderText() {

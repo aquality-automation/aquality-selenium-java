@@ -68,15 +68,15 @@ public class LocatorTests extends BaseTest {
         ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
         ILabel cellInRow4Column5 = challengingDomForm.getCell(4, 5);
 
-        ILabel actualCellRaw3Column5GotWithByXpath =
+        ILabel actualCellRaw4Column5GotWithByXpath =
                 elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5.getLocator()),
                         cellInRow5Column5.getName());
 
-        ILabel actualCellRaw3Column5GotWithWebElement =
+        ILabel actualCellRaw4Column5GotWithWebElement =
                 elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5.getElement()),
                         cellInRow4Column5.getName());
 
-        ILabel actualCellRaw3Column5GotWithAqualityElement =
+        ILabel actualCellRaw4Column5GotWithAqualityElement =
                 elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5),
                         cellInRow4Column5.getName());
 
@@ -86,9 +86,9 @@ public class LocatorTests extends BaseTest {
                         .above(cellInRow5Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
-                actualCellRaw3Column5GotWithAqualityElement.getText(),
-                actualCellRaw3Column5GotWithWebElement.getText(),
-                actualCellRaw3Column5GotWithByXpath.getText(),
+                actualCellRaw4Column5GotWithAqualityElement.getText(),
+                actualCellRaw4Column5GotWithWebElement.getText(),
+                actualCellRaw4Column5GotWithByXpath.getText(),
                 actualWebElementCellRaw3Column5GotBySeleniumRelative.getText(),
                 cellInRow4Column5.getText());
     }
@@ -193,7 +193,6 @@ public class LocatorTests extends BaseTest {
 
         ILabel actualCellRaw5Column5GotWithAqualityElement =
                 elementFactory.getLabel(with(labelLocatorCell)
-                                .above(cellInRow6Column5)
                                 .below(cellInRow3Column5)
                                 .toRightOf(cellInRow5Column3)
                                 .toLeftOf(cellInRow5Column7)
@@ -202,7 +201,6 @@ public class LocatorTests extends BaseTest {
 
         ILabel actualCellRaw5Column5GotWithWebElement =
                 elementFactory.getLabel(with(labelLocatorCell)
-                                .above(cellInRow6Column5.getElement())
                                 .below(cellInRow3Column5.getElement())
                                 .toRightOf(cellInRow5Column3.getElement())
                                 .toLeftOf(cellInRow5Column7.getElement())
@@ -211,7 +209,6 @@ public class LocatorTests extends BaseTest {
 
         ILabel actualCellRaw5Column5GotWithXpath =
                 elementFactory.getLabel(with(labelLocatorCell)
-                                .above(cellInRow6Column5.getLocator())
                                 .below(cellInRow3Column5.getLocator())
                                 .toRightOf(cellInRow5Column3.getLocator())
                                 .toLeftOf(cellInRow5Column7.getLocator())
@@ -220,7 +217,6 @@ public class LocatorTests extends BaseTest {
 
         WebElement actualWebElementCellRaw5Column5GotBySeleniumRelative =
                 getBrowser().getDriver().findElement(RelativeLocator.with(labelLocatorCell)
-                        .above(cellInRow6Column5.getLocator())
                         .below(cellInRow3Column5.getLocator())
                         .toRightOf(cellInRow5Column3.getLocator())
                         .toLeftOf(cellInRow5Column7.getLocator())
