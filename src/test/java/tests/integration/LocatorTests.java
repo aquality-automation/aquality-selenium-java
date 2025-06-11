@@ -43,24 +43,24 @@ public class LocatorTests extends BaseTest {
         Assert.assertTrue(docLabels.size() > 1, "List of elements should be possible to find by image");
         Assert.assertEquals(docLabels.size(), childLabels.size(), "Should be possible to find child elements by image with the same count");
 
-        ILabel documentByTag = AqualityServices.getElementFactory().getLabel(By.tagName("body"), "document by tag");
+        ILabel imgByTag = AqualityServices.getElementFactory().getLabel(By.tagName("img"), "img by tag");
         float fullThreshold = 1;
         AtomicReference<ILabel> documentByImageContainer = new AtomicReference<>();
         boolean isFound = AqualityServices.getConditionalWait().waitFor(browser -> {
-            ILabel documentByImage = AqualityServices.getElementFactory().getLabel(new ByImage(documentByTag.getElement().getScreenshotAs(OutputType.BYTES)).setThreshold(fullThreshold),
-                    "body screen");
-            documentByImageContainer.set(documentByImage);
-            boolean isDisplayed = documentByImage.state().isDisplayed();
+            ILabel image = AqualityServices.getElementFactory().getLabel(new ByImage(imgByTag.getElement().getScreenshotAs(OutputType.BYTES)).setThreshold(fullThreshold),
+                    "img screen");
+            documentByImageContainer.set(image);
+            boolean isDisplayed = image.state().isDisplayed();
             if (!isDisplayed) {
                 browser.navigate().refresh();
             }
             return isDisplayed;
         });
-        ILabel documentByImage = documentByImageContainer.get();
+        ILabel elementByImage = documentByImageContainer.get();
 
-        Assert.assertTrue(isFound, "Should be possible to find element by document screenshot");
-        Assert.assertEquals(((ByImage) documentByImage.getLocator()).getThreshold(), fullThreshold, "Should be possible to get ByImage threshold");
-        Assert.assertEquals(documentByImage.getElement().getTagName(), "body", "Correct element must be found");
+        Assert.assertTrue(isFound, "Should be possible to find element by element screenshot");
+        Assert.assertEquals(((ByImage) elementByImage.getLocator()).getThreshold(), fullThreshold, "Should be possible to get ByImage threshold");
+        Assert.assertEquals(elementByImage.getElement().getTagName(), "img", "Correct element must be found");
     }
 
     @Test
