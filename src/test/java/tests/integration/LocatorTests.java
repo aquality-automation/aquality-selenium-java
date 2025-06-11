@@ -17,16 +17,13 @@ import theinternet.TheInternetPage;
 import theinternet.forms.BrokenImagesForm;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static aquality.selenium.locators.RelativeBySupplier.with;
 
 public class LocatorTests extends BaseTest {
     private final ChallengingDomForm challengingDomForm = new ChallengingDomForm();
-    private final String labelLocatorCell = "//td";
-    private final String friendlyMessageEquallingText = "Actual cell text is not equal expected";
-    private final String friendlyMessageElementFound = "Element with not reachable distance is exist";
-    private final int distanceToFindElementWithPositiveResult = 300;
-    private final int distanceToFindElementWithNegativeResult = 100;
+    private final By labelLocatorCell = By.xpath("//td");
 
     @BeforeMethod
     public void beforeMethod() {
@@ -48,171 +45,186 @@ public class LocatorTests extends BaseTest {
 
         ILabel documentByTag = AqualityServices.getElementFactory().getLabel(By.tagName("body"), "document by tag");
         float fullThreshold = 1;
-        ILabel documentByImage = AqualityServices.getElementFactory().getLabel(new ByImage(documentByTag.getElement().getScreenshotAs(OutputType.BYTES)).setThreshold(fullThreshold),
-                "body screen");
-        Assert.assertTrue(documentByImage.state().isDisplayed(), "Should be possible to find element by document screenshot");
-        Assert.assertEquals(((ByImage)documentByImage.getLocator()).getThreshold(), fullThreshold, "Should be possible to get ByImage threshold");
+        AtomicReference<ILabel> documentByImageContainer = new AtomicReference<>();
+        boolean isFound = AqualityServices.getConditionalWait().waitFor(browser -> {
+            ILabel documentByImage = AqualityServices.getElementFactory().getLabel(new ByImage(documentByTag.getElement().getScreenshotAs(OutputType.BYTES)).setThreshold(fullThreshold),
+                    "body screen");
+            documentByImageContainer.set(documentByImage);
+            boolean isDisplayed = documentByImage.state().isDisplayed();
+            if (!isDisplayed) {
+                browser.navigate().refresh();
+            }
+            return isDisplayed;
+        });
+        ILabel documentByImage = documentByImageContainer.get();
+
+        Assert.assertTrue(isFound, "Should be possible to find element by document screenshot");
+        Assert.assertEquals(((ByImage) documentByImage.getLocator()).getThreshold(), fullThreshold, "Should be possible to get ByImage threshold");
         Assert.assertEquals(documentByImage.getElement().getTagName(), "body", "Correct element must be found");
     }
 
     @Test
     public void testAboveLocatorWithDifferentAboveParametersType() {
-        ILabel cellInRow5Column5 = challengingDomForm.getCellInRow5Column5();
+        ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
+        ILabel cellInRow4Column5 = challengingDomForm.getCell(4, 5);
 
         ILabel actualCellRaw3Column5GotWithByXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).above(By.xpath(challengingDomForm.getLocatorCellRow5Column5())),
-                        ChallengingDomForm.ELEMENT_NAME_ROW3_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5.getLocator()),
+                        cellInRow5Column5.getName());
 
         ILabel actualCellRaw3Column5GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).above(cellInRow5Column5.getElement()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW3_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5.getElement()),
+                        cellInRow4Column5.getName());
 
         ILabel actualCellRaw3Column5GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).above(cellInRow5Column5),
-                        ChallengingDomForm.ELEMENT_NAME_ROW3_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).above(cellInRow5Column5),
+                        cellInRow4Column5.getName());
 
         WebElement actualWebElementCellRaw3Column5GotBySeleniumRelative =
                 getBrowser().getDriver().findElement(RelativeLocator
-                        .with(By.xpath(labelLocatorCell))
-                        .above(By.xpath(challengingDomForm.getLocatorCellRow5Column5())));
+                        .with(labelLocatorCell)
+                        .above(cellInRow5Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw3Column5GotWithAqualityElement.getText(),
                 actualCellRaw3Column5GotWithWebElement.getText(),
                 actualCellRaw3Column5GotWithByXpath.getText(),
                 actualWebElementCellRaw3Column5GotBySeleniumRelative.getText(),
-                challengingDomForm.getCellInRow3Column5().getText());
+                cellInRow4Column5.getText());
     }
 
     @Test
     public void testBelowLocatorWithDifferentBelowParametersType() {
-        ILabel cellInRow5Column5 = challengingDomForm.getCellInRow5Column5();
+        ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
+        ILabel cellInRow6Column5 = challengingDomForm.getCell(6, 5);
 
         ILabel actualCellRaw7Column5GotWithByXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).below(By.xpath(challengingDomForm.getLocatorCellRow5Column5())),
-                        ChallengingDomForm.ELEMENT_NAME_ROW7_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).below(cellInRow5Column5.getLocator()),
+                        cellInRow6Column5.getName());
 
         ILabel actualCellRaw7Column5GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).below(cellInRow5Column5.getElement()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW7_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).below(cellInRow5Column5.getElement()),
+                        cellInRow6Column5.getName());
 
         ILabel actualCellRaw7Column5GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).below(cellInRow5Column5),
-                        ChallengingDomForm.ELEMENT_NAME_ROW7_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell).below(cellInRow5Column5),
+                        cellInRow6Column5.getName());
 
         WebElement actualWebElementCellRaw7Column5GotBySeleniumRelative =
                 getBrowser().getDriver().findElement(RelativeLocator
-                        .with(By.xpath(labelLocatorCell))
-                        .below(By.xpath(challengingDomForm.getLocatorCellRow5Column5())));
+                        .with(labelLocatorCell)
+                        .below(cellInRow5Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw7Column5GotWithAqualityElement.getText(),
                 actualCellRaw7Column5GotWithWebElement.getText(),
                 actualCellRaw7Column5GotWithByXpath.getText(),
                 actualWebElementCellRaw7Column5GotBySeleniumRelative.getText(),
-                challengingDomForm.getCellInRow7Column5().getText());
+                cellInRow6Column5.getText());
     }
 
     @Test
     public void testToLeftOfLocatorWithDifferentToLeftOfParametersType() {
-        ILabel cellInRow5Column5 = challengingDomForm.getCellInRow5Column5();
+        ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
+        ILabel cellInRow5Column4 = challengingDomForm.getCell(5, 4);
 
         ILabel actualCellRaw5Column3GotWithByXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toLeftOf(By.xpath(challengingDomForm.getLocatorCellRow5Column5())),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN3);
+                elementFactory.getLabel(with(labelLocatorCell).toLeftOf(cellInRow5Column5.getLocator()),
+                        cellInRow5Column4.getName());
 
         ILabel actualCellRaw5Column3GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toLeftOf(cellInRow5Column5.getElement()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN3);
+                elementFactory.getLabel(with(labelLocatorCell).toLeftOf(cellInRow5Column5.getElement()),
+                        cellInRow5Column4.getName());
 
         ILabel actualCellRaw5Column3GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toLeftOf(cellInRow5Column5),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN3);
+                elementFactory.getLabel(with(labelLocatorCell).toLeftOf(cellInRow5Column5),
+                        cellInRow5Column4.getName());
 
         WebElement actualWebElementCellRaw5Column3GotBySeleniumRelative =
                 getBrowser().getDriver().findElement(RelativeLocator
-                        .with(By.xpath(labelLocatorCell))
-                        .toLeftOf(By.xpath(challengingDomForm.getLocatorCellRow5Column5())));
+                        .with(labelLocatorCell)
+                        .toLeftOf(cellInRow5Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw5Column3GotWithAqualityElement.getText(),
                 actualCellRaw5Column3GotWithWebElement.getText(),
                 actualCellRaw5Column3GotWithByXpath.getText(),
                 actualWebElementCellRaw5Column3GotBySeleniumRelative.getText(),
-                challengingDomForm.getCellInRow5Column3().getText());
+                cellInRow5Column4.getText());
     }
 
     @Test
     public void testToRightOfLocatorWithDifferentToRightOfParametersType() {
-        ILabel cellInRow5Column5 = challengingDomForm.getCellInRow5Column5();
+        ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
+        ILabel cellInRow5Column6 = challengingDomForm.getCell(5, 6);
 
         ILabel actualCellRaw5Column7GotWithByXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toRightOf(By.xpath(challengingDomForm.getLocatorCellRow5Column5())),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN7);
+                elementFactory.getLabel(with(labelLocatorCell).toRightOf(cellInRow5Column5.getLocator()),
+                        cellInRow5Column6.getName());
 
         ILabel actualCellRaw5Column7GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toRightOf(cellInRow5Column5.getElement()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN7);
+                elementFactory.getLabel(with(labelLocatorCell).toRightOf(cellInRow5Column5.getElement()),
+                        cellInRow5Column6.getName());
 
         ILabel actualCellRaw5Column7GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).toRightOf(cellInRow5Column5),
-                        ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN7);
+                elementFactory.getLabel(with(labelLocatorCell).toRightOf(cellInRow5Column5),
+                        cellInRow5Column6.getName());
 
         WebElement actualWebElementCellRaw5Column7GotBySeleniumRelative =
                 getBrowser().getDriver().findElement(RelativeLocator
-                        .with(By.xpath(labelLocatorCell))
-                        .toRightOf(By.xpath(challengingDomForm.getLocatorCellRow5Column5())));
+                        .with(labelLocatorCell)
+                        .toRightOf(cellInRow5Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw5Column7GotWithAqualityElement.getText(),
                 actualCellRaw5Column7GotWithWebElement.getText(),
                 actualCellRaw5Column7GotWithByXpath.getText(),
                 actualWebElementCellRaw5Column7GotBySeleniumRelative.getText(),
-                challengingDomForm.getCellInRow5Column7().getText());
+                cellInRow5Column6.getText());
     }
 
     @Test
     public void testAboveBelowLeftRightWithDifferentParametersType() {
-        ILabel cellInRow3Column5 = challengingDomForm.getCellInRow3Column5();
-        ILabel cellInRow5Column7 = challengingDomForm.getCellInRow5Column7();
-        ILabel cellInRow5Column5 = challengingDomForm.getCellInRow5Column5();
-        ILabel cellInRow5Column3 = challengingDomForm.getCellInRow5Column3();
-        ILabel cellInRow7Column5 = challengingDomForm.getCellInRow7Column5();
+        ILabel cellInRow3Column5 = challengingDomForm.getCell(3, 5);
+        ILabel cellInRow5Column7 = challengingDomForm.getCell(5, 7);
+        ILabel cellInRow5Column5 = challengingDomForm.getCell(5, 5);
+        ILabel cellInRow5Column3 = challengingDomForm.getCell(5, 3);
+        ILabel cellInRow6Column5 = challengingDomForm.getCell(6, 5);
 
         ILabel actualCellRaw5Column5GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell))
-                                .above(cellInRow7Column5)
+                elementFactory.getLabel(with(labelLocatorCell)
+                                .above(cellInRow6Column5)
                                 .below(cellInRow3Column5)
                                 .toRightOf(cellInRow5Column3)
                                 .toLeftOf(cellInRow5Column7)
-                                .above(cellInRow7Column5)
-                        , ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN5);
+                                .above(cellInRow6Column5)
+                        , cellInRow5Column5.getName());
 
         ILabel actualCellRaw5Column5GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell))
-                                .above(cellInRow7Column5.getElement())
+                elementFactory.getLabel(with(labelLocatorCell)
+                                .above(cellInRow6Column5.getElement())
                                 .below(cellInRow3Column5.getElement())
                                 .toRightOf(cellInRow5Column3.getElement())
                                 .toLeftOf(cellInRow5Column7.getElement())
-                                .above(cellInRow7Column5.getElement())
-                        , ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN5);
+                                .above(cellInRow6Column5.getElement())
+                        , cellInRow5Column5.getName());
 
         ILabel actualCellRaw5Column5GotWithXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell))
-                                .above(By.xpath(challengingDomForm.getLocatorCellRow7Column5()))
-                                .below(By.xpath(challengingDomForm.getLocatorCellRow3Column5()))
-                                .toRightOf(By.xpath(challengingDomForm.getLocatorCellRow5Column3()))
-                                .toLeftOf(By.xpath(challengingDomForm.getLocatorCellRow5Column7()))
-                                .above(By.xpath(challengingDomForm.getLocatorCellRow7Column5()))
-                        , ChallengingDomForm.ELEMENT_NAME_ROW5_COLUMN5);
+                elementFactory.getLabel(with(labelLocatorCell)
+                                .above(cellInRow6Column5.getLocator())
+                                .below(cellInRow3Column5.getLocator())
+                                .toRightOf(cellInRow5Column3.getLocator())
+                                .toLeftOf(cellInRow5Column7.getLocator())
+                                .above(cellInRow6Column5.getLocator())
+                        , cellInRow5Column5.getName());
 
         WebElement actualWebElementCellRaw5Column5GotBySeleniumRelative =
-                getBrowser().getDriver().findElement(RelativeLocator.with(By.xpath(labelLocatorCell))
-                        .above(By.xpath(challengingDomForm.getLocatorCellRow7Column5()))
-                        .below(By.xpath(challengingDomForm.getLocatorCellRow3Column5()))
-                        .toRightOf(By.xpath(challengingDomForm.getLocatorCellRow5Column3()))
-                        .toLeftOf(By.xpath(challengingDomForm.getLocatorCellRow5Column7()))
-                        .above(By.xpath(challengingDomForm.getLocatorCellRow7Column5())));
+                getBrowser().getDriver().findElement(RelativeLocator.with(labelLocatorCell)
+                        .above(cellInRow6Column5.getLocator())
+                        .below(cellInRow3Column5.getLocator())
+                        .toRightOf(cellInRow5Column3.getLocator())
+                        .toLeftOf(cellInRow5Column7.getLocator())
+                        .above(cellInRow6Column5.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw5Column5GotWithAqualityElement.getText(),
@@ -224,84 +236,91 @@ public class LocatorTests extends BaseTest {
 
     @Test
     public void testNearWithDifferentNearParameterType() {
+        ILabel cellInRow1Column1 = challengingDomForm.getCell(1, 1);
+        ILabel cellInRow2Column1 = challengingDomForm.getCell(2, 1);
         ILabel actualCellRaw2Column1GotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).near(challengingDomForm.getCellInRow1Column1()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW2_COLUMN1);
+                elementFactory.getLabel(with(labelLocatorCell).near(cellInRow1Column1),
+                        cellInRow2Column1.getName());
 
         ILabel actualCellRaw2Column1GotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).near(challengingDomForm.getCellInRow1Column1().getElement()),
-                        ChallengingDomForm.ELEMENT_NAME_ROW2_COLUMN1);
+                elementFactory.getLabel(with(labelLocatorCell).near(cellInRow1Column1.getElement()),
+                        cellInRow2Column1.getName());
 
         ILabel actualCellRaw2Column1GotWithXpath =
-                elementFactory.getLabel(with(By.xpath(labelLocatorCell)).near(By.xpath(challengingDomForm.getLocatorCellRow1Column1())),
-                        ChallengingDomForm.ELEMENT_NAME_ROW2_COLUMN1);
+                elementFactory.getLabel(with(labelLocatorCell).near(cellInRow1Column1.getLocator()),
+                        cellInRow2Column1.getName());
 
 
         WebElement actualWebElementCellRaw2Column1GotBySeleniumRelative =
-                getBrowser().getDriver().findElement(RelativeLocator.with(By.xpath(labelLocatorCell))
-                        .near(By.xpath(challengingDomForm.getLocatorCellRow1Column1())));
+                getBrowser().getDriver().findElement(RelativeLocator.with(labelLocatorCell)
+                        .near(cellInRow1Column1.getLocator()));
 
         checkDifferentTypesWithSoftAssert(
                 actualCellRaw2Column1GotWithAqualityElement.getText(),
                 actualCellRaw2Column1GotWithWebElement.getText(),
                 actualCellRaw2Column1GotWithXpath.getText(),
                 actualWebElementCellRaw2Column1GotBySeleniumRelative.getText(),
-                challengingDomForm.getCellInRow2Column1().getText());
+                cellInRow2Column1.getText());
     }
 
     @Test
     public void testNearWithDistanceWithDifferentParametersType() {
+        ILabel cellInRow1Column1 = challengingDomForm.getCell(1, 1);
+        int distanceToFindElementWithPositiveResult = 300;
         ILabel actualHeaderNameGotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(challengingDomForm.getCellInRow1Column1(), distanceToFindElementWithPositiveResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1, distanceToFindElementWithPositiveResult),
+                        challengingDomForm.getName());
 
         ILabel actualHeaderNameGotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(challengingDomForm.getCellInRow1Column1().getElement(), distanceToFindElementWithPositiveResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1.getElement(), distanceToFindElementWithPositiveResult),
+                        challengingDomForm.getName());
 
         ILabel actualHeaderNameGotWithXpath =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(By.xpath(challengingDomForm.getLocatorCellRow1Column1()), distanceToFindElementWithPositiveResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1.getLocator(), distanceToFindElementWithPositiveResult),
+                        challengingDomForm.getName());
 
 
         WebElement actualWebElementHeaderNameGotBySeleniumRelative =
-                getBrowser().getDriver().findElement(RelativeLocator.with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                        .near(getBrowser().getDriver().findElement(By.xpath(challengingDomForm.getLocatorCellRow1Column1())), distanceToFindElementWithPositiveResult));
+                getBrowser().getDriver().findElement(RelativeLocator.with(challengingDomForm.getLocator())
+                        .near(getBrowser().getDriver().findElement(cellInRow1Column1.getLocator()), distanceToFindElementWithPositiveResult));
 
         checkDifferentTypesWithSoftAssert(
                 actualHeaderNameGotWithAqualityElement.getText(),
                 actualHeaderNameGotWithWebElement.getText(),
                 actualHeaderNameGotWithXpath.getText(),
                 actualWebElementHeaderNameGotBySeleniumRelative.getText(),
-                challengingDomForm.getHeaderName().getText());
+                challengingDomForm.getHeaderText());
     }
 
     @Test
     public void testNearWithDistanceNegativeWithDifferentParametersType() {
+        ILabel cellInRow1Column1 = challengingDomForm.getCell(1, 1);
+        int distanceToFindElementWithNegativeResult = 100;
         ILabel actualHeaderNameGotWithAqualityElement =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(challengingDomForm.getCellInRow1Column1(), distanceToFindElementWithNegativeResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1, distanceToFindElementWithNegativeResult),
+                        challengingDomForm.getName());
 
         ILabel actualHeaderNameGotWithWebElement =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(challengingDomForm.getCellInRow1Column1().getElement(), distanceToFindElementWithNegativeResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1.getElement(), distanceToFindElementWithNegativeResult),
+                        challengingDomForm.getName());
 
         ILabel actualHeaderNameGotWithXpath =
-                elementFactory.getLabel(with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                                .near(By.xpath(challengingDomForm.getLocatorCellRow1Column1()), distanceToFindElementWithNegativeResult),
-                        ChallengingDomForm.ELEMENT_NAME_HEADER_CHALLENGING_DOM);
+                elementFactory.getLabel(with(challengingDomForm.getLocator())
+                                .near(cellInRow1Column1.getLocator(), distanceToFindElementWithNegativeResult),
+                        challengingDomForm.getName());
 
 
         List<WebElement> actualWebElementsHeaderNameGotBySeleniumRelative =
-                getBrowser().getDriver().findElements(RelativeLocator.with(By.xpath(ChallengingDomForm.LOCATOR_CHALLENGING_DOM_FORM))
-                        .near(getBrowser().getDriver().findElement(By.xpath(challengingDomForm.getLocatorCellRow1Column1())), distanceToFindElementWithNegativeResult));
+                getBrowser().getDriver().findElements(RelativeLocator.with(challengingDomForm.getLocator())
+                        .near(getBrowser().getDriver().findElement(cellInRow1Column1.getLocator()), distanceToFindElementWithNegativeResult));
 
         SoftAssert softAssert = new SoftAssert();
+        String friendlyMessageElementFound = "Element with not reachable distance is exist";
         softAssert.assertFalse(actualHeaderNameGotWithAqualityElement.state().isExist(), friendlyMessageElementFound);
         softAssert.assertFalse(actualHeaderNameGotWithWebElement.state().isExist(), friendlyMessageElementFound);
         softAssert.assertFalse(actualHeaderNameGotWithXpath.state().isExist(), friendlyMessageElementFound);
@@ -311,6 +330,7 @@ public class LocatorTests extends BaseTest {
 
     private void checkDifferentTypesWithSoftAssert(String textAquality, String textWebElement, String textByXpath, String textSelenium, String expectedText) {
         SoftAssert softAssert = new SoftAssert();
+        String friendlyMessageEquallingText = "Actual cell text is not equal expected";
         softAssert.assertEquals(textAquality, expectedText, friendlyMessageEquallingText);
         softAssert.assertEquals(textByXpath, expectedText, friendlyMessageEquallingText);
         softAssert.assertEquals(textWebElement, expectedText, friendlyMessageEquallingText);
