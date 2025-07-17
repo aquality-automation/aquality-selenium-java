@@ -19,6 +19,7 @@
       "loggingPreferences": {
         "Performance": "All"
       },
+      "pageLoadStrategy": "eager",
       "startArguments": ["--disable-search-engine-choice-screen"],
       "excludedArguments": ["enable-automation"]
     },
