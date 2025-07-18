@@ -25,12 +25,6 @@ public abstract class ManyToolsForm<T extends ManyToolsForm<T>> extends Form {
     public T open() {
         AqualityServices.get(IActionRetrier.class).doWithRetry(() -> {
             AqualityServices.getBrowser().goTo(BASE_URL + getUrlPart());
-            AqualityServices.getBrowser().waitForPageToLoad();
-            if (btnAgree.state().isDisplayed())
-            {
-                btnAgree.click();
-                btnAgree.state().waitForNotDisplayed();
-            }
         }, Collections.singletonList(TimeoutException.class));
         return (T) this;
     }
