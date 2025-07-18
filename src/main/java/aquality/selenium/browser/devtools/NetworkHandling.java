@@ -8,7 +8,7 @@ import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v137.network.model.*;
+import org.openqa.selenium.devtools.v138.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
-import static org.openqa.selenium.devtools.v137.network.Network.*;
+import static org.openqa.selenium.devtools.v138.network.Network.*;
 
 /**
  * DevTools commands for version-independent network interception.
- * For more information, see {@link org.openqa.selenium.devtools.v137.network.Network} and {@link Network}.
+ * For more information, see {@link org.openqa.selenium.devtools.v138.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
     public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
@@ -129,7 +129,7 @@ public class NetworkHandling {
      */
     public void addRequestListener(Consumer<RequestWillBeSent> listener) {
         logger.info("loc.browser.network.event.requestsent.add");
-        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.addListener(requestWillBeSent(), listener);
     }
 
@@ -139,7 +139,7 @@ public class NetworkHandling {
      */
     public void addResponseListener(Consumer<ResponseReceived> listener) {
         logger.info("loc.browser.network.event.responsereceived.add");
-        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.addListener(responseReceived(), listener);
     }
 
@@ -179,7 +179,7 @@ public class NetworkHandling {
             if (loggingOptions.getRequestPostData().isEnabled() && request.getHasPostData().orElse(false)) {
                 logByLevel(loggingOptions.getRequestPostData().getLogLevel(),
                         "loc.browser.network.event.requestsent.log.data",
-                        request.getPostData().orElse(null));
+                        request.getPostDataEntries().orElse(null));
             }
         };
     }
@@ -199,7 +199,7 @@ public class NetworkHandling {
                         formatHeaders(response.getHeaders()));
             }
             if (loggingOptions.getResponseBody().isEnabled()) {
-                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v137.network.Network.getResponseBody(requestId)).getBody();
+                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v138.network.Network.getResponseBody(requestId)).getBody();
                 if (StringUtils.isNotEmpty(responseBody)) {
                     logByLevel(loggingOptions.getResponseBody().getLogLevel(),
                             "loc.browser.network.event.responsereceived.log.body",
@@ -322,7 +322,7 @@ public class NetworkHandling {
      * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
      */
     public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput) {
-        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty()));
     }
@@ -338,7 +338,7 @@ public class NetworkHandling {
      *                       "wifi", "wimax", "other".
      */
     public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput, String connectionType) {
-        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput,
                 Optional.of(ConnectionType.fromString(connectionType)), Optional.empty(), Optional.empty(), Optional.empty()));
     }

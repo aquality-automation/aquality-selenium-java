@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
-          server-id: ossrh
+          server-id: central
           server-username: MVN_CENTRAL_USERNAME
           server-password: MVN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
@@ -54,7 +54,12 @@ jobs:
 
       - name: Step 6 - Publish package
         run: |
-          mvn -Dmaven.test.skip=true -P release -Drevision=${{ steps.gitversion.outputs.semVer }} deploy
+          mvn -B --no-transfer-progress \
+              versions:set \
+              -DnewVersion=${{ steps.gitversion.outputs.semVer }} \
+              -DgenerateBackupPoms=false \
+              -DprocessAllModules
+          mvn -B --no-transfer-progress -Dmaven.test.skip=true deploy
         env:
           MVN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MVN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_TOKEN }}

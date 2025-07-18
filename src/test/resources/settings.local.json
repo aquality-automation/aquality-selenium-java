@@ -19,7 +19,9 @@
       "loggingPreferences": {
         "Performance": "All"
       },
-      "startArguments": []
+      "pageLoadStrategy": "normal",
+      "startArguments": ["--disable-search-engine-choice-screen"],
+      "excludedArguments": ["enable-automation"]
     },
     "firefox": {
       "capabilities": {
@@ -52,11 +54,11 @@
   },
   "timeouts": {
     "timeoutImplicit" : 0,
-    "timeoutCondition" : 30,
+    "timeoutCondition" : 45,
     "timeoutScript" : 10,
     "timeoutPageLoad" : 60,
     "timeoutPollingInterval": 300,
-    "timeoutCommand": 120
+    "timeoutCommand": 60
   },
   "retry": {
     "number": 2,

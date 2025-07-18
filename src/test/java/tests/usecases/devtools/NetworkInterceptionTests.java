@@ -5,6 +5,7 @@ import aquality.selenium.browser.devtools.NetworkHandling;
 import com.google.common.net.MediaType;
 import manytools.RequestHeadersForm;
 import org.openqa.selenium.devtools.NetworkInterceptor;
+import org.openqa.selenium.remote.http.Contents;
 import org.openqa.selenium.remote.http.HttpHandler;
 import org.openqa.selenium.remote.http.HttpRequest;
 import org.openqa.selenium.remote.http.HttpResponse;
@@ -15,7 +16,6 @@ import tests.BaseTest;
 import theinternet.TheInternetPage;
 import theinternet.forms.WelcomeForm;
 
-import java.io.ByteArrayInputStream;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
@@ -87,7 +87,7 @@ public class NetworkInterceptionTests extends BaseTest {
         final String somePhrase = "delicious cheese!";
         NetworkInterceptor networkInterceptor = network().addRequestHandler(request -> true, request -> {
             HttpResponse response = new HttpResponse();
-            response.setContent(() -> new ByteArrayInputStream(somePhrase.getBytes()));
+            response.setContent(Contents.utf8String(somePhrase));
             response.setStatus(200);
             return response;
         });
@@ -106,7 +106,7 @@ public class NetworkInterceptionTests extends BaseTest {
         final String somePhrase = "delicious cheese!";
         NetworkInterceptor networkInterceptor = network().addResponseHandler(response -> true, oldResponse -> {
             HttpResponse response = new HttpResponse();
-            response.setContent(() -> new ByteArrayInputStream(somePhrase.getBytes()));
+            response.setContent(Contents.utf8String(somePhrase));
             response.setStatus(200);
             return response;
         });
