@@ -27,11 +27,6 @@ public class EmulationTests extends BaseTest {
     }
 
     @Test
-    public void browserCanEmulateTest() {
-        Assert.assertTrue(emulation().canEmulate(), "Emulation should be supported in browser");
-    }
-
-    @Test
     public void setScriptExecutionDisabledAndEnableAgainTest() {
         AqualityServices.getBrowser().goTo(TheInternetPage.JAVASCRIPT_ALERTS.getAddress());
         JavaScriptAlertsForm alertsForm = new JavaScriptAlertsForm();

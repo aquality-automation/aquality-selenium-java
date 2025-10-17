@@ -2,10 +2,10 @@ package aquality.selenium.browser.devtools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.v138.dom.model.RGBA;
-import org.openqa.selenium.devtools.v138.emulation.Emulation;
-import org.openqa.selenium.devtools.v138.emulation.model.MediaFeature;
-import org.openqa.selenium.devtools.v138.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.v140.dom.model.RGBA;
+import org.openqa.selenium.devtools.v140.emulation.Emulation;
+import org.openqa.selenium.devtools.v140.emulation.model.MediaFeature;
+import org.openqa.selenium.devtools.v140.emulation.model.ScreenOrientation;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +24,7 @@ public class EmulationHandling {
 
     /**
      * Initializes a new instance of the {@link NetworkHandling} class.
+     *
      * @param tools Instance of {@link DevToolsHandling}.
      */
     public EmulationHandling(DevToolsHandling tools) {
@@ -32,17 +33,20 @@ public class EmulationHandling {
 
     /**
      * Tells whether emulation is supported.
+     *
      * @return true if the emulation is supported, false otherwise.
      */
+    @Deprecated
     public boolean canEmulate() {
         return tools.sendCommand(Emulation.canEmulate());
     }
 
     /**
      * Overrides the GeoLocation Position or Error. Omitting any of the parameters emulates position unavailable.
-     * @param latitude Latitude of location
+     *
+     * @param latitude  Latitude of location
      * @param longitude Longitude of location
-     * @param accuracy Accuracy of the location
+     * @param accuracy  Accuracy of the location
      */
     public void setGeolocationOverride(double latitude, double longitude, double accuracy) {
         setGeolocationOverride(Optional.of(latitude), Optional.of(longitude), Optional.of(accuracy), Optional.empty(),
@@ -52,7 +56,8 @@ public class EmulationHandling {
     /**
      * Overrides the GeoLocation Position. Accuracy of the geoLocation is set to 1 meaning 100% accuracy.
      * Omitting any of the parameters emulates position unavailable.
-     * @param latitude Latitude of location
+     *
+     * @param latitude  Latitude of location
      * @param longitude Longitude of location
      */
     public void setGeolocationOverride(double latitude, double longitude) {
@@ -61,9 +66,14 @@ public class EmulationHandling {
 
     /**
      * Overrides the GeoLocation Position or Error. Omitting any of the parameters emulates position unavailable.
-     * @param latitude Latitude of location
-     * @param longitude Longitude of location
-     * @param accuracy Accuracy of the location
+     *
+     * @param latitude         Latitude of location
+     * @param longitude        Longitude of location
+     * @param altitude         Altitude of location
+     * @param accuracy         Accuracy of the location
+     * @param altitudeAccuracy Altitude accuracy of the location
+     * @param heading          Heading of location
+     * @param speed            Speed of location
      */
     public void setGeolocationOverride(Optional<Number> latitude, Optional<Number> longitude, Optional<Number> accuracy,
                                        Optional<Number> altitude, Optional<Number> altitudeAccuracy, Optional<Number> heading,
@@ -80,6 +90,7 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of device screen dimensions.
+     *
      * @param params Version-specific set of parameters. For example, take a look at {@link Emulation#setDeviceMetricsOverride}
      */
     public void setDeviceMetricsOverride(Map<String, Object> params) {
@@ -88,10 +99,11 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of device screen dimensions.
-     * @param width Value to override window.screen.width
-     * @param height Value to override window.screen.height
+     *
+     * @param width             Value to override window.screen.width
+     * @param height            Value to override window.screen.height
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
-     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text auto-sizing and more.
+     * @param mobile            Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text auto-sizing and more.
      */
     public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile) {
         setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(), Optional.empty());
@@ -99,12 +111,13 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of device screen dimensions.
-     * @param width Value to override window.screen.width
-     * @param height Value to override window.screen.height
-     * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
-     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text auto-sizing and more.
-     * @param screenOrientationType Orientation type.
-     *                              Allowed Values (in any case): portraitPrimary, portraitSecondary, landscapePrimary, landscapeSecondary.
+     *
+     * @param width                  Value to override window.screen.width
+     * @param height                 Value to override window.screen.height
+     * @param deviceScaleFactor      Overriding device scale factor value. 0 disables the override.
+     * @param mobile                 Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text auto-sizing and more.
+     * @param screenOrientationType  Orientation type.
+     *                               Allowed Values (in any case): portraitPrimary, portraitSecondary, landscapePrimary, landscapeSecondary.
      * @param screenOrientationAngle Orientation angle. Set only if orientation type was set.
      */
     public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile,
@@ -130,6 +143,7 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of user agent.
+     *
      * @param params Version-specific set of parameters.
      *               For example, take a look at {@link Emulation#setUserAgentOverride}
      */
@@ -139,6 +153,7 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of user agent.
+     *
      * @param userAgent User agent to use.
      */
     public void setUserAgentOverride(String userAgent) {
@@ -147,9 +162,10 @@ public class EmulationHandling {
 
     /**
      * Overrides the values of user agent.
-     * @param userAgent User agent to use.
+     *
+     * @param userAgent      User agent to use.
      * @param acceptLanguage Browser language to emulate.
-     * @param platform The platform navigator.platform should return.
+     * @param platform       The platform navigator.platform should return.
      */
     public void setUserAgentOverride(String userAgent, Optional<String> acceptLanguage, Optional<String> platform) {
         tools.sendCommand(Emulation.setUserAgentOverride(userAgent, acceptLanguage, platform, Optional.empty()));
@@ -164,6 +180,7 @@ public class EmulationHandling {
 
     /**
      * Switches script execution in the page.
+     *
      * @param value Whether script execution should be disabled in the page.
      */
     public void setScriptExecutionDisabled(boolean value) {
@@ -179,6 +196,7 @@ public class EmulationHandling {
 
     /**
      * Enables touch on platforms which do not support them.
+     *
      * @param enabled Whether the touch event emulation should be enabled.
      */
     public void setTouchEmulationEnabled(boolean enabled) {
@@ -187,7 +205,8 @@ public class EmulationHandling {
 
     /**
      * Enables touch on platforms which do not support them.
-     * @param enabled Whether the touch event emulation should be enabled.
+     *
+     * @param enabled        Whether the touch event emulation should be enabled.
      * @param maxTouchPoints Maximum touch points supported. Defaults to one.
      */
     public void setTouchEmulationEnabled(boolean enabled, Optional<Integer> maxTouchPoints) {
@@ -196,6 +215,7 @@ public class EmulationHandling {
 
     /**
      * Emulates the given media type or media feature for CSS media queries.
+     *
      * @param params Version-specific set of parameters. For example, take a look at {@link Emulation#setEmulatedMedia}
      */
     public void setEmulatedMedia(Map<String, Object> params) {
@@ -204,8 +224,9 @@ public class EmulationHandling {
 
     /**
      * Emulates the given media type or media feature for CSS media queries.
-     * @param media Media type to emulate. Empty string disables the override.
-     *              Possible values: braille, embossed, handheld, print, projection, screen, speech, tty, tv.
+     *
+     * @param media         Media type to emulate. Empty string disables the override.
+     *                      Possible values: braille, embossed, handheld, print, projection, screen, speech, tty, tv.
      * @param mediaFeatures Media features to emulate.
      */
     public void setEmulatedMedia(String media, Map<String, String> mediaFeatures) {
@@ -214,8 +235,9 @@ public class EmulationHandling {
 
     /**
      * Emulates the given media type or media feature for CSS media queries.
-     * @param media Media type to emulate. Empty string disables the override.
-     *              Possible values: braille, embossed, handheld, print, projection, screen, speech, tty, tv.
+     *
+     * @param media         Media type to emulate. Empty string disables the override.
+     *                      Possible values: braille, embossed, handheld, print, projection, screen, speech, tty, tv.
      * @param mediaFeatures Media features to emulate.
      */
     public void setEmulatedMedia(Optional<String> media, Optional<Map<String, String>> mediaFeatures) {
@@ -233,9 +255,10 @@ public class EmulationHandling {
 
     /**
      * Sets an override of the default background color of the frame. This override is used if the content does not specify one.
-     * @param red The red component, in the [0-255] range.
+     *
+     * @param red   The red component, in the [0-255] range.
      * @param green The green component, in the [0-255] range.
-     * @param blue The blue component, in the [0-255] range.
+     * @param blue  The blue component, in the [0-255] range.
      */
     public void setDefaultBackgroundColorOverride(int red, int green, int blue) {
         setDefaultBackgroundColorOverride(red, green, blue, Optional.empty());
@@ -243,9 +266,10 @@ public class EmulationHandling {
 
     /**
      * Sets an override of the default background color of the frame. This override is used if the content does not specify one.
-     * @param red The red component, in the [0-255] range.
+     *
+     * @param red   The red component, in the [0-255] range.
      * @param green The green component, in the [0-255] range.
-     * @param blue The blue component, in the [0-255] range.
+     * @param blue  The blue component, in the [0-255] range.
      * @param alpha The alpha component, in the [0-1] range (default: 1).
      */
     public void setDefaultBackgroundColorOverride(int red, int green, int blue, Optional<Number> alpha) {

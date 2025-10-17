@@ -13,6 +13,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of general request info: Method, URL, Request ID.
+     *
      * @return request info logging parameters.
      */
     public LoggingParameters getRequestInfo() {
@@ -21,6 +22,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of general request info: Method, URL, Request ID.
+     *
+     * @param requestInfo request info logging parameters.
      */
     public void setRequestInfo(LoggingParameters requestInfo) {
         this.requestInfo = requestInfo;
@@ -28,6 +31,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of request headers.
+     *
      * @return logging parameters of request headers.
      */
     public LoggingParameters getRequestHeaders() {
@@ -36,6 +40,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of request headers.
+     *
+     * @param requestHeaders logging parameters of request headers.
      */
     public void setRequestHeaders(LoggingParameters requestHeaders) {
         this.requestHeaders = requestHeaders;
@@ -43,6 +49,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of request POST data.
+     *
      * @return logging parameters of request POST data.
      */
     public LoggingParameters getRequestPostData() {
@@ -51,6 +58,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of request POST data.
+     *
+     * @param requestPostData logging parameters of request POST data.
      */
     public void setRequestPostData(LoggingParameters requestPostData) {
         this.requestPostData = requestPostData;
@@ -58,6 +67,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of general response info: Status code, URL, Resource type, Request ID.
+     *
      * @return logging parameters of general response info.
      */
     public LoggingParameters getResponseInfo() {
@@ -66,6 +76,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of general response info: Status code, URL, Resource type, Request ID.
+     *
+     * @param responseInfo logging parameters of general response info.
      */
     public void setResponseInfo(LoggingParameters responseInfo) {
         this.responseInfo = responseInfo;
@@ -73,6 +85,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of response headers.
+     *
      * @return logging parameters of response headers.
      */
     public LoggingParameters getResponseHeaders() {
@@ -81,6 +94,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of response headers.
+     *
+     * @param responseHeaders logging parameters of response headers.
      */
     public void setResponseHeaders(LoggingParameters responseHeaders) {
         this.responseHeaders = responseHeaders;
@@ -88,6 +103,7 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Gets logging parameters of response body.
+     *
      * @return logging parameters of response body.
      */
     public LoggingParameters getResponseBody() {
@@ -96,6 +112,8 @@ public class HttpExchangeLoggingOptions {
 
     /**
      * Sets logging parameters of response body.
+     *
+     * @param responseBody logging parameters of response body.
      */
     public void setResponseBody(LoggingParameters responseBody) {
         this.responseBody = responseBody;

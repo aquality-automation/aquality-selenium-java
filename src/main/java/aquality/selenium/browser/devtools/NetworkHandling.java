@@ -8,7 +8,7 @@ import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v138.network.model.*;
+import org.openqa.selenium.devtools.v140.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
-import static org.openqa.selenium.devtools.v138.network.Network.*;
+import static org.openqa.selenium.devtools.v140.network.Network.*;
 
 /**
  * DevTools commands for version-independent network interception.
- * For more information, see {@link org.openqa.selenium.devtools.v138.network.Network} and {@link Network}.
+ * For more information, see {@link org.openqa.selenium.devtools.v140.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
     public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
@@ -80,6 +80,7 @@ public class NetworkHandling {
 
     /**
      * Add basic authentication handler.
+     * @param whenThisMatches URI matcher.
      * @param useTheseCredentials parameters, such as URI matcher and credentials.
      */
     public void addAuthHandler(Predicate<URI> whenThisMatches, Supplier<Credentials> useTheseCredentials) {
@@ -199,7 +200,7 @@ public class NetworkHandling {
                         formatHeaders(response.getHeaders()));
             }
             if (loggingOptions.getResponseBody().isEnabled()) {
-                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v138.network.Network.getResponseBody(requestId)).getBody();
+                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v140.network.Network.getResponseBody(requestId)).getBody();
                 if (StringUtils.isNotEmpty(responseBody)) {
                     logByLevel(loggingOptions.getResponseBody().getLogLevel(),
                             "loc.browser.network.event.responsereceived.log.body",

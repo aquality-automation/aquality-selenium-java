@@ -30,6 +30,9 @@ public abstract class Form extends aquality.selenium.core.forms.Form<IElement> {
 
     /**
      * Constructor with parameters
+     *
+     * @param locator Locator for specified form.
+     * @param name    Name of specified form.
      */
     protected Form(By locator, String name) {
         super(IElement.class);
@@ -58,6 +61,7 @@ public abstract class Form extends aquality.selenium.core.forms.Form<IElement> {
 
     /**
      * Provides ability to get form's state (whether it is displayed, exists or not) and respective waiting functions.
+     *
      * @return state provider of the current form.
      */
     public IElementStateProvider state() {
