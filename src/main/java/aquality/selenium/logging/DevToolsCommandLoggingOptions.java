@@ -17,6 +17,7 @@ public class DevToolsCommandLoggingOptions {
 
     /**
      * Sets logging parameters for command info: name and parameters (if any).
+     * @param command command info logging parameters.
      */
     public void setCommand(LoggingParameters command) {
         this.command = command;

@@ -35,7 +35,8 @@ public class JsActions implements IShadowRootExpander {
 
     /**
      * Setting attribute value.
-     * @param name Attribute name
+     *
+     * @param name  Attribute name
      * @param value Value to set
      */
     public void setAttribute(String name, String value) {
@@ -69,6 +70,8 @@ public class JsActions implements IShadowRootExpander {
 
     /**
      * Highlights the element.
+     *
+     * @param highlightState Highlight state
      */
     public void highlightElement(HighlightState highlightState) {
         if ((AqualityServices.getBrowserProfile().isElementHighlightEnabled() && !highlightState.equals(HighlightState.NOT_HIGHLIGHT))
@@ -186,7 +189,9 @@ public class JsActions implements IShadowRootExpander {
 
     /**
      * Executes pinned JavaScript against the element and gets result value.
+     *
      * @param pinnedScript Instance of script pinned with {@link Browser#javaScriptEngine()}
+     * @param args         Script arguments.
      * @return Script execution result.
      */
     public Object executeScript(ScriptKey pinnedScript, Object... args) {
@@ -209,7 +214,8 @@ public class JsActions implements IShadowRootExpander {
     /**
      * The implementation of a method for logging of Javascript actions
      *
-     * @param key key in localization resource of message to display in the log.
+     * @param key  key in localization resource of message to display in the log.
+     * @param args arguments for message formatting.
      */
     protected void logElementAction(String key, Object... args) {
         AqualityServices.getLocalizedLogger().infoElementAction(type, name, key, args);
