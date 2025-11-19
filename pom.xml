@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.github.aquality-automation</groupId>
             <artifactId>aquality-selenium-core</artifactId>
-            <version>4.9.0</version>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
