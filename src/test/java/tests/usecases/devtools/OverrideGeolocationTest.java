@@ -10,8 +10,8 @@ import static automationpractice.Constants.URL_MYLOCATIONORG;
 
 public class OverrideGeolocationTest extends BaseTest {
 
-    private static final double LAT_FOR_OVERRIDE = 53.90772672521578;
-    private static final double LNG_FOR_OVERRIDE = 27.458060411865375;
+    private static final double LAT_FOR_OVERRIDE = 53.907727;
+    private static final double LNG_FOR_OVERRIDE = 27.458060;
 
     @Test
     public void overrideGeolocationTest() {

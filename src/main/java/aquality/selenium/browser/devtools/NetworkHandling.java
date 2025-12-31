@@ -8,7 +8,7 @@ import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v142.network.model.*;
+import org.openqa.selenium.devtools.v143.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
-import static org.openqa.selenium.devtools.v142.network.Network.*;
+import static org.openqa.selenium.devtools.v143.network.Network.*;
 
 /**
  * DevTools commands for version-independent network interception.
- * For more information, see {@link org.openqa.selenium.devtools.v142.network.Network} and {@link Network}.
+ * For more information, see {@link org.openqa.selenium.devtools.v143.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
     public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
@@ -62,6 +62,7 @@ public class NetworkHandling {
 
     /**
      * Overrides the values of user agent.
+     *
      * @param userAgent User agent to use.
      */
     public void setUserAgent(String userAgent) {
@@ -71,6 +72,7 @@ public class NetworkHandling {
 
     /**
      * Overrides the values of user agent.
+     *
      * @param userAgent User agent to use.
      */
     public void setUserAgent(Network.UserAgent userAgent) {
@@ -80,7 +82,8 @@ public class NetworkHandling {
 
     /**
      * Add basic authentication handler.
-     * @param whenThisMatches URI matcher.
+     *
+     * @param whenThisMatches     URI matcher.
      * @param useTheseCredentials parameters, such as URI matcher and credentials.
      */
     public void addAuthHandler(Predicate<URI> whenThisMatches, Supplier<Credentials> useTheseCredentials) {
@@ -90,6 +93,7 @@ public class NetworkHandling {
 
     /**
      * Add basic authentication handler.
+     *
      * @param hostPart part of the host name for URI matcher.
      * @param username authentication username.
      * @param password authentication password.
@@ -117,6 +121,7 @@ public class NetworkHandling {
 
     /**
      * Starts traffic interception with specified filter.
+     *
      * @param filter HTTP filter.
      */
     public void interceptTrafficWith(Filter filter) {
@@ -126,6 +131,7 @@ public class NetworkHandling {
 
     /**
      * Adds listener to network request sent event.
+     *
      * @param listener a listener to add.
      */
     public void addRequestListener(Consumer<RequestWillBeSent> listener) {
@@ -136,6 +142,7 @@ public class NetworkHandling {
 
     /**
      * Adds listener to network response received event.
+     *
      * @param listener a listener to add.
      */
     public void addResponseListener(Consumer<ResponseReceived> listener) {
@@ -200,7 +207,7 @@ public class NetworkHandling {
                         formatHeaders(response.getHeaders()));
             }
             if (loggingOptions.getResponseBody().isEnabled()) {
-                String responseBody = tools.sendCommand(org.openqa.selenium.devtools.v142.network.Network.getResponseBody(requestId)).getBody();
+                String responseBody = tools.sendCommand(getResponseBody(requestId)).getBody();
                 if (StringUtils.isNotEmpty(responseBody)) {
                     logByLevel(loggingOptions.getResponseBody().getLogLevel(),
                             "loc.browser.network.event.responsereceived.log.body",
@@ -212,6 +219,7 @@ public class NetworkHandling {
 
     /**
      * Enables HTTP Request/Response logging.
+     *
      * @param loggingOptions logging parameters {@link HttpExchangeLoggingOptions}.
      */
     public void enableHttpExchangeLogging(HttpExchangeLoggingOptions loggingOptions) {
@@ -221,6 +229,7 @@ public class NetworkHandling {
 
     /**
      * Starts network interceptor.
+     *
      * @param httpHandler HTTP handler.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -231,6 +240,7 @@ public class NetworkHandling {
 
     /**
      * Starts network interceptor.
+     *
      * @param filter network filter.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -241,6 +251,7 @@ public class NetworkHandling {
 
     /**
      * Starts network interceptor.
+     *
      * @param routable a filter with matcher.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -251,8 +262,9 @@ public class NetworkHandling {
 
     /**
      * Starts network interceptor.
+     *
      * @param requestMatcher predicate to match the request.
-     * @param handler handler for matched requests.
+     * @param handler        handler for matched requests.
      * @return an instance of {@link NetworkInterceptor}.
      */
     public NetworkInterceptor startNetworkInterceptor(Predicate<HttpRequest> requestMatcher, Supplier<HttpHandler> handler) {
@@ -261,6 +273,7 @@ public class NetworkHandling {
 
     /**
      * Intercepts any request with predefined response.
+     *
      * @param response HTTP response.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -270,7 +283,8 @@ public class NetworkHandling {
 
     /**
      * Adds request transformer.
-     * @param requestMatcher predicate to match the request.
+     *
+     * @param requestMatcher     predicate to match the request.
      * @param requestTransformer function to transform the request.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -281,6 +295,7 @@ public class NetworkHandling {
 
     /**
      * Adds request handler.
+     *
      * @param requestMatcher predicate to match the request.
      * @param requestHandler handler for matched requests.
      * @return an instance of {@link NetworkInterceptor}.
@@ -292,7 +307,8 @@ public class NetworkHandling {
 
     /**
      * Adds response handler.
-     * @param responseMatcher predicate to match the response.
+     *
+     * @param responseMatcher     predicate to match the response.
      * @param responseTransformer function to transform the response.
      * @return an instance of {@link NetworkInterceptor}.
      */
@@ -309,7 +325,7 @@ public class NetworkHandling {
      * Currently, Selenium supports only a single network interceptor. Any new Network interceptor will override the previous one.
      * And on {@link NetworkInterceptor#close()} the NetworkInterceptor class just calls the {@link Network#resetNetworkFilter()}, so it's enough to call it.
      * If multiple network interceptors at the same time would be allowed, we may want to store all
-     *  {@link NetworkInterceptor} classes to call {@link NetworkInterceptor#close()} for each.
+     * {@link NetworkInterceptor} classes to call {@link NetworkInterceptor#close()} for each.
      */
     public void clearNetworkInterceptor() {
         resetNetworkFilter();
@@ -317,11 +333,15 @@ public class NetworkHandling {
 
     /**
      * Activates emulation of network conditions.
-     * @param offline True to emulate internet disconnection.
-     * @param latency Minimum latency from request sent to response headers received (ms).
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
      * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
-     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     * @deprecated This command is deprecated in favor of the {@link #emulateConditionsByRule(Boolean, List)}
+     * and {@link #overrideState} commands, which can be used together to the same effect.
      */
+    @Deprecated
     public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput) {
         tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput, Optional.empty(),
@@ -329,15 +349,59 @@ public class NetworkHandling {
     }
 
     /**
-     * Activates emulation of network conditions.
-     * @param offline True to emulate internet disconnection.
-     * @param latency Minimum latency from request sent to response headers received (ms).
-     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
-     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
-     * @param connectionType Connection type if known.
-     *                       Possible values: "none", "cellular2g", "cellular3g", "cellular4g", "bluetooth", "ethernet",
-     *                       "wifi", "wimax", "other".
+     * Activates emulation of network conditions for individual requests using URL match patterns.
+     * Unlike the deprecated Network.emulateNetworkConditions this method does not affect `navigator` state.
+     * Use Network.overrideNetworkState to explicitly modify `navigator` behavior.
+     *
+     * @param offline                  True to emulate internet disconnection.
+     * @param matchedNetworkConditions List of network conditions to apply.
      */
+    public void emulateConditionsByRule(Boolean offline, List<NetworkConditions> matchedNetworkConditions) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(emulateNetworkConditionsByRule(offline, matchedNetworkConditions));
+    }
+
+    /**
+     * Override the state of navigator.onLine and navigator.connection.
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     */
+    public void overrideState(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(overrideNetworkState(offline, latency, downloadThroughput, uploadThroughput, Optional.empty()));
+    }
+
+    /**
+     * Override the state of navigator.onLine and navigator.connection.
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     * @param connectionType     Connection type if known.
+     */
+    public void overrideState(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput, ConnectionType connectionType) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(overrideNetworkState(offline, latency, downloadThroughput, uploadThroughput, Optional.of(connectionType)));
+    }
+
+    /**
+     * Activates emulation of network conditions.
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec). -1 disables upload throttling.
+     * @param connectionType     Connection type if known.
+     *                           Possible values: "none", "cellular2g", "cellular3g", "cellular4g", "bluetooth", "ethernet",
+     *                           "wifi", "wimax", "other".
+     * @deprecated This command is deprecated in favor of the {@link #emulateConditionsByRule(Boolean, List)}
+     * and {@link #overrideState} commands, which can be used together to the same effect.
+     */
+    @Deprecated
     public void emulateConditions(Boolean offline, Number latency, Number downloadThroughput, Number uploadThroughput, String connectionType) {
         tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         tools.sendCommand(emulateNetworkConditions(offline, latency, downloadThroughput, uploadThroughput,
