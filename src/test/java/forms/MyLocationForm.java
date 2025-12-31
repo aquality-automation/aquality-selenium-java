@@ -7,12 +7,12 @@ import org.openqa.selenium.By;
 
 public class MyLocationForm extends Form {
 
-    private final ILabel lblLatitude = getElementFactory().getLabel(By.id("latitude"), "Latitude");
-    private final ILabel lblLongitude = getElementFactory().getLabel(By.id("longitude"), "Longitude");
-    private final IButton btnConsent = getElementFactory().getButton(By.xpath("//button[@aria-label='Consent']"), "Consent");
+    private final ILabel lblLatitude = getElementFactory().getLabel(By.xpath("//*[@id='latitude'] | (//td[contains(text(), 'Latitude')]/following-sibling::td)[1]"), "Latitude");
+    private final ILabel lblLongitude = getElementFactory().getLabel(By.xpath("//*[@id='longitude'] | (//td[contains(text(), 'Longitude')]/following-sibling::td)[1]"), "Longitude");
+    private final IButton btnConsent = getElementFactory().getButton(By.xpath("//button[@aria-label='Consent' or contains(@class,'fc-cta-consent')]"), "Consent");
 
     public MyLocationForm() {
-        super(By.xpath("//h1[contains(text(),'My Location')]"), "My Location");
+        super(By.xpath("//*[contains(text(),'Location')]"), "My Location");
     }
 
     public double getLatitude() {

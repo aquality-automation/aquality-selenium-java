@@ -3,6 +3,7 @@ package w3schools.forms;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.elements.interfaces.IButton;
+import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.elements.interfaces.IMultiChoiceBox;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
@@ -17,24 +18,30 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.browser.AqualityServices.getConfiguration;
 
 public class SelectMultipleForm extends Form {
 
     private final IMultiChoiceBox cbxCars = getElementFactory().getMultiChoiceBox(By.id("cars"), "Cars");
-    private final IButton btnSubmit = getElementFactory().getButton(By.cssSelector("input[type='submit']"), "Submit");
+    private final IButton btnSubmit = getElementFactory().getButton(By.cssSelector("input[type=submit]"), "Submit");
     private final ITextBox txbResult = getElementFactory().getTextBox(By.cssSelector(".w3-large"), "Result");
-    private final IButton btnAcceptCookies = getElementFactory().getButton(By.id("accept-choices"), "Accept cookies");
+    private final IButton btnAcceptCookies = getElementFactory().getButton(By.cssSelector("span.fast-cmp-home-accept button"), "Accept cookies");
+    private final ILabel frameCmpContainer = getElementFactory().getLabel(By.id("fast-cmp-iframe"), "Cookies iframe");
 
     public SelectMultipleForm() {
         super(By.id("iframe"), "Select Multiple");
     }
 
     public void acceptCookies() {
+        if (frameCmpContainer.state().waitForExist()) {
+            getBrowser().getDriver().switchTo().frame(frameCmpContainer.getElement());
+        }
         if (btnAcceptCookies.state().waitForDisplayed(getConfiguration().getTimeoutConfiguration().getScript())) {
             btnAcceptCookies.click();
-            btnAcceptCookies.state().waitForNotDisplayed();
         }
+        getBrowser().getDriver().switchTo().defaultContent();
+        frameCmpContainer.state().waitForNotDisplayed();
     }
 
     public void switchToResultFrame() {
