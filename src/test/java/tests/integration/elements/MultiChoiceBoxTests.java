@@ -19,6 +19,7 @@ public class MultiChoiceBoxTests extends BaseTest {
     @Override
     public void beforeMethod() {
         getBrowser().goTo(W3SchoolsPage.SELECT_MULTIPLE.getAddress());
+        getBrowser().waitForPageToLoad();
         getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
         selectMultipleForm.acceptCookies();
         selectMultipleForm.switchToResultFrame();
