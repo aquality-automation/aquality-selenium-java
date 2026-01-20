@@ -8,7 +8,7 @@ import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v143.network.model.*;
+import org.openqa.selenium.devtools.v144.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
-import static org.openqa.selenium.devtools.v143.network.Network.*;
+import static org.openqa.selenium.devtools.v144.network.Network.*;
 
 /**
  * DevTools commands for version-independent network interception.
- * For more information, see {@link org.openqa.selenium.devtools.v143.network.Network} and {@link Network}.
+ * For more information, see {@link org.openqa.selenium.devtools.v144.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
     public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
