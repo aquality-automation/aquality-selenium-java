@@ -16,9 +16,10 @@ public class MyLocationForm extends Form {
     }
 
     public double getLatitude() {
-        if (!lblLatitude.state().isDisplayed() && btnConsent.state().isDisplayed()) {
+        if (!lblLatitude.state().isDisplayed() && btnConsent.state().waitForDisplayed()) {
             clickConsent();
         }
+        lblLatitude.state().waitForDisplayed();
         return Double.parseDouble(lblLatitude.getText());
     }
 

@@ -7,8 +7,6 @@ import aquality.selenium.core.utilities.ISettingsFile;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.chromium.ChromiumOptions;
-import org.openqa.selenium.logging.LoggingPreferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,9 +57,13 @@ abstract class DriverSettings implements IDriverSettings {
         return loggingPreferences;
     }
 
+    protected Map<String, Object> getMapOrEmpty(String path) {
+        return getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+    }
+
     private Map<String, Object> getMapOrEmpty(CapabilityType capabilityType) {
         String path = getDriverSettingsPath(capabilityType);
-        Map<String, Object> map = getSettingsFile().isValuePresent(path) ? getSettingsFile().getMap(path) : Collections.emptyMap();
+        Map<String, Object> map = getMapOrEmpty(path);
         logCollection("loc.browser.".concat(capabilityType.getKey()), map);
         return map;
     }
@@ -138,18 +140,6 @@ abstract class DriverSettings implements IDriverSettings {
         getBrowserCapabilities().forEach(options::setCapability);
     }
 
-    <T extends ChromiumOptions<T>> void setExcludedArguments(T chromiumOptions) {
-        chromiumOptions.setExperimentalOption("excludeSwitches", getExcludedArguments());
-    }
-
-    void setLoggingPreferences(MutableCapabilities options, String capabilityKey) {
-        if (!getLoggingPreferences().isEmpty()) {
-            LoggingPreferences logs = new LoggingPreferences();
-            getLoggingPreferences().forEach(logs::enable);
-            options.setCapability(capabilityKey, logs);
-        }
-    }
-
     @Override
     public String getDownloadDir() {
         Map<String, Object> browserOptions = getBrowserOptions();
@@ -162,7 +152,7 @@ abstract class DriverSettings implements IDriverSettings {
         throw new IllegalArgumentException(String.format("failed to find %s profiles option for %s", key, getBrowserName()));
     }
 
-    private enum CapabilityType {
+    protected enum CapabilityType {
         CAPABILITIES("capabilities"),
         OPTIONS("options"),
         START_ARGS("startArguments"),

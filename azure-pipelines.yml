@@ -61,3 +61,21 @@ jobs:
       mavenAuthenticateFeed: false
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
+
+  - task: CopyFiles@2
+    displayName: 'Copy failure screenshots and test logs'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/target'
+      Contents: |
+        surefire-reports/failure_screenshots/*.png
+        log/*.log
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish copied artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+    condition: succeededOrFailed()
