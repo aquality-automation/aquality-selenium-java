@@ -14,7 +14,7 @@ public abstract class ChromiumSettings extends DriverSettings {
     private static final String DEVICE_METRICS_CAPABILITY_KEY = "deviceMetrics";
     private static final String CLIENT_HINTS_CAPABILITY_KEY = "clientHints";
 
-    public ChromiumSettings(ISettingsFile settingsFile){
+    protected ChromiumSettings(ISettingsFile settingsFile){
         super(settingsFile);
     }
 
