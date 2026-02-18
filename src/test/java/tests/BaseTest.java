@@ -6,12 +6,15 @@ import aquality.selenium.elements.interfaces.IElementFactory;
 import org.openqa.selenium.Dimension;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import testreport.ScreenshotListener;
 import theinternet.TheInternetPage;
 
 import java.io.IOException;
 
 import static utils.FileUtil.getResourceFileByName;
 
+@Listeners(ScreenshotListener.class)
 public abstract class BaseTest {
     private static final String DEFAULT_URL = TheInternetPage.LOGIN.getAddress();
 

@@ -96,6 +96,10 @@ It is also possible to set mobile emulation capabilities (for chromium-based bro
             "width": 660,
             "height": 1040,
             "pixelRatio": 3.0
+          },
+          "clientHints": {
+            "platform": "Android",
+            "mobile": true
           }
         },
         "unhandledPromptBehavior": "ignore"
