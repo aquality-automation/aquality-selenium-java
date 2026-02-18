@@ -10,15 +10,13 @@ import org.testng.TestListenerAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ScreenshotListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult result) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
-        String dateString = formatter.format(calendar.getTime());
+        String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm_ss"));
         String methodName = result.getName();
         if (AqualityServices.isBrowserStarted()) {
             try {
