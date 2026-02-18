@@ -75,6 +75,79 @@ browser.devTools().emulation().setGeolocationOverride(latitude, longitude, accur
 ```
 See more DevTools use cases [here](./src/test/java/tests/usecases/devtools)
 
+It is also possible to set mobile emulation capabilities (for chromium-based browsers) in resources/settings.json file, as well as to configure other arguments and options there:
+```json
+{
+  "browserName": "chrome",
+  "isRemote": false,
+  "remoteConnectionUrl": "http://qa-auto-nexus:4444/wd/hub",
+  "isElementHighlightEnabled": true,
+
+  "driverSettings": {
+    "chrome": {
+      "capabilities": {
+        "selenoid:options": 
+        { 
+            "enableVNC": true 
+        },
+        "mobileEmulation": {
+          "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19",
+          "deviceMetrics": {
+            "width": 660,
+            "height": 1040,
+            "pixelRatio": 3.0
+          }
+        },
+        "unhandledPromptBehavior": "ignore"
+      },
+      "options": {
+        "download.prompt_for_download": "false",
+        "download.default_directory": "./downloads"
+      },
+      "loggingPreferences": {
+          "Performance": "All"
+      },
+      "excludedArguments": [ "enable-automation" ],
+      "startArguments": [ "--disable-search-engine-choice-screen" ],
+      "pageLoadStrategy": "normal"
+    },
+    "safari": {
+      "options": {
+        "safari.options.dataDir": "/Users/username/Downloads"
+      }
+    }
+  },
+  "timeouts": {
+    "timeoutImplicit": 0,
+    "timeoutCondition": 30,
+    "timeoutScript": 10,
+    "timeoutPageLoad": 60,
+    "timeoutPollingInterval": 300,
+    "timeoutCommand": 60
+  },
+  "retry": {
+    "number": 2,
+    "pollingInterval": 300
+  },
+  "logger": {
+    "language": "en",
+    "logPageSource": true
+  },
+  "elementCache": {
+    "isEnabled": false
+  },
+  "visualization": {
+    "imageExtension": "png",
+    "maxFullFileNameLength": 255,
+    "defaultThreshold": 0.012,
+    "comparisonWidth": 16,
+    "comparisonHeight": 16,
+    "pathToDumps": "./src/test/resources/visualDumps/"
+  }
+}
+```
+
+
 8. Quit browser at the end
 ```java
 browser.quit();
