@@ -15,11 +15,13 @@ public class MyLocationForm extends Form {
         super(By.xpath("//*[contains(text(),'Location')]"), "My Location");
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         if (!lblLatitude.state().isDisplayed() && btnConsent.state().waitForDisplayed()) {
             clickConsent();
         }
-        lblLatitude.state().waitForDisplayed();
+        if (!lblLatitude.state().waitForDisplayed()) {
+            return null;
+        }
         return Double.parseDouble(lblLatitude.getText());
     }
 

@@ -347,6 +347,7 @@ public interface IShadowRootExpander {
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
      * @param state    Visibility state of shadowed elements.
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
      * @return List of shadowed elements.
      */
     default <T extends IElement> List<T> findElementsInShadowRoot(By locator, String name, IElementSupplier<T> supplier, ElementState state, ElementsCount count) {
