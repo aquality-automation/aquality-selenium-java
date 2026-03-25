@@ -3,6 +3,7 @@ package tests.usecases.devtools;
 import aquality.selenium.browser.AqualityServices;
 import forms.MyLocationForm;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 
@@ -19,7 +20,10 @@ public class OverrideGeolocationTest extends BaseTest {
         AqualityServices.getBrowser().goTo(URL_MYLOCATIONORG);
         MyLocationForm form = new MyLocationForm();
         Assert.assertTrue(form.state().waitForDisplayed());
-        double latDefault = form.getLatitude();
+        Double latDefault = form.getLatitude();
+        if (latDefault == null) {
+            throw new SkipException("Geolocation access is disabled");
+        }
         double lngDefault = form.getLongitude();
 
         AqualityServices.getBrowser().devTools().emulation().setGeolocationOverride(LAT_FOR_OVERRIDE, LNG_FOR_OVERRIDE);

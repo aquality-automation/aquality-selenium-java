@@ -2,10 +2,10 @@ package aquality.selenium.browser.devtools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.v144.dom.model.RGBA;
-import org.openqa.selenium.devtools.v144.emulation.Emulation;
-import org.openqa.selenium.devtools.v144.emulation.model.MediaFeature;
-import org.openqa.selenium.devtools.v144.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.v145.dom.model.RGBA;
+import org.openqa.selenium.devtools.v145.emulation.Emulation;
+import org.openqa.selenium.devtools.v145.emulation.model.MediaFeature;
+import org.openqa.selenium.devtools.v145.emulation.model.ScreenOrientation;
 
 import java.util.Collections;
 import java.util.List;

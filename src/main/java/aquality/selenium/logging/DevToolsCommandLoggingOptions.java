@@ -33,6 +33,7 @@ public class DevToolsCommandLoggingOptions {
 
     /**
      * Sets logging parameters for command result (when it's present).
+     * @param result command result logging parameters.
      */
     public void setResult(LoggingParameters result) {
         this.result = result;

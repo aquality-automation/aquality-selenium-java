@@ -346,6 +346,7 @@ public interface IShadowRootExpander {
      * @param locator  Locator of shadowed elements relative to shadow root.
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
      * @param state    Visibility state of shadowed elements.
      * @return List of shadowed elements.
      */
