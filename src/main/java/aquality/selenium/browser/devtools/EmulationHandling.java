@@ -2,10 +2,13 @@ package aquality.selenium.browser.devtools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.v145.dom.model.RGBA;
-import org.openqa.selenium.devtools.v145.emulation.Emulation;
-import org.openqa.selenium.devtools.v145.emulation.model.MediaFeature;
-import org.openqa.selenium.devtools.v145.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.v147.dom.model.RGBA;
+import org.openqa.selenium.devtools.v147.emulation.Emulation;
+import org.openqa.selenium.devtools.v147.emulation.model.DevicePosture;
+import org.openqa.selenium.devtools.v147.emulation.model.DisplayFeature;
+import org.openqa.selenium.devtools.v147.emulation.model.MediaFeature;
+import org.openqa.selenium.devtools.v147.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.v147.page.model.Viewport;
 
 import java.util.Collections;
 import java.util.List;
@@ -130,8 +133,36 @@ public class EmulationHandling {
             }
             screenOrientation = Optional.of(new ScreenOrientation(ScreenOrientation.Type.fromString(screenOrientationType.get()), angle));
         }
-        tools.sendCommand(Emulation.setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), screenOrientation, Optional.empty(), Optional.empty(), Optional.empty()));
+        setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), screenOrientation, Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    /**
+     * Overrides the values of device screen dimensions.
+     *
+     * @param width                          Value to override window.screen.width
+     * @param height                         Value to override window.screen.height
+     * @param deviceScaleFactor              Overriding device scale factor value. 0 disables the override.
+     * @param mobile                         Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text auto-sizing and more.
+     * @param scale                          Scale to apply to resulting view image. Ignored if |dontSetVisibleSize| is set.
+     * @param screenWidth                    Value to override window.screen.width. Ignored if |dontSetVisibleSize| is set.
+     * @param screenHeight                   Value to override window.screen.height. Ignored if |dontSetVisibleSize| is set.
+     * @param positionX                      Overriding view X position on screen in device independent pixels (dip). Ignored if |dontSetVisibleSize| is set.
+     * @param positionY                      Overriding view Y position on screen in device independent pixels (dip). Ignored if |dontSetVisibleSize| is set.
+     * @param dontSetVisibleSize             Whether to not set visible view size, rely upon explicit setVisibleSize call. Ignored if |scale| is set.
+     * @param screenOrientation              Orientation of the screen. Ignored if |dontSetVisibleSize| is set.
+     * @param viewport                       If set, the visible area of the overridden device screen, not affecting the reported screen size. Ignored if |dontSetVisibleSize| is set.
+     * @param displayFeature                 Configuration of the display when the system is in unified mode (e.g., foldable devices).
+     * @param devicePosture                  The posture of the device (e.g., foldable devices).
+     * @param scrollbarType                  The type of the scrollbars to render (e.g., mobile vs desktop). Ignored if |dontSetVisibleSize| is set.
+     * @param screenOrientationLockEmulation Enables screen orientation lock emulation that intercepts calls to screen.orientation.lock().
+     */
+    public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile, Optional<Number> scale, Optional<Integer> screenWidth, Optional<Integer> screenHeight, Optional<Integer> positionX, Optional<Integer> positionY, Optional<Boolean> dontSetVisibleSize, Optional<ScreenOrientation> screenOrientation, Optional<Viewport> viewport, Optional<DisplayFeature> displayFeature, Optional<DevicePosture> devicePosture, Optional<Emulation.SetDeviceMetricsOverrideScrollbarType> scrollbarType, Optional<Boolean> screenOrientationLockEmulation) {
+        tools.sendCommand(Emulation.setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, scale, screenWidth,
+                screenHeight, positionX, positionY, dontSetVisibleSize, screenOrientation, viewport, displayFeature,
+                devicePosture, scrollbarType, screenOrientationLockEmulation));
     }
 
     /**
