@@ -3,8 +3,8 @@ package tests.usecases.devtools;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.devtools.NetworkHandling;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.devtools.v148.network.model.ConnectionType;
-import org.openqa.selenium.devtools.v148.network.model.NetworkConditions;
+import org.openqa.selenium.devtools.v150.network.model.ConnectionType;
+import org.openqa.selenium.devtools.v150.network.model.NetworkConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -30,11 +30,11 @@ public class NetworkSpeedEmulationTest extends BaseTest {
 
     private List<NetworkConditions> getNetworkConditions(int downloadThroughput, int uploadThroughput, ConnectionType connectionType) {
         return Collections.singletonList(new NetworkConditions(welcomeForm.getUrl(), LATENCY, downloadThroughput, uploadThroughput,
-                Optional.of(connectionType), Optional.empty(), Optional.empty(), Optional.empty()));
+                Optional.of(connectionType), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
     }
     private List<NetworkConditions> getNetworkConditions(int downloadThroughput, int uploadThroughput) {
         return Collections.singletonList(new NetworkConditions(welcomeForm.getUrl(), LATENCY, downloadThroughput, uploadThroughput,
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class NetworkSpeedEmulationTest extends BaseTest {
         getBrowser().goTo(welcomeForm.getUrl());
         Assert.assertTrue(welcomeForm.state().waitForDisplayed(), "Form must be opened");
         boolean isOffline = true;
-        network().emulateConditionsByRule(isOffline, getNetworkConditions(-1, -1));
+        network().emulateConditionsByRule(isOffline, isOffline, getNetworkConditions(-1, -1));
         network().overrideState(isOffline, LATENCY, -1, -1);
         getBrowser().refresh();
         getBrowser().waitForPageToLoad();
