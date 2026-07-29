@@ -8,7 +8,7 @@ import org.openqa.selenium.Credentials;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.devtools.NetworkInterceptor;
 import org.openqa.selenium.devtools.idealized.Network;
-import org.openqa.selenium.devtools.v148.network.model.*;
+import org.openqa.selenium.devtools.v150.network.model.*;
 import org.openqa.selenium.remote.http.*;
 
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 
 import static aquality.selenium.browser.AqualityServices.getBrowser;
 import static aquality.selenium.logging.LocalizedLoggerUtility.logByLevel;
-import static org.openqa.selenium.devtools.v148.network.Network.*;
+import static org.openqa.selenium.devtools.v150.network.Network.*;
 
 /**
  * DevTools commands for version-independent network interception.
- * For more information, see {@link org.openqa.selenium.devtools.v148.network.Network} and {@link Network}.
+ * For more information, see {@link org.openqa.selenium.devtools.v150.network.Network} and {@link Network}.
  */
 public class NetworkHandling {
     public static final String LOC_NETWORK_INTERCEPTOR_START = "loc.browser.network.interceptor.start";
@@ -358,7 +358,21 @@ public class NetworkHandling {
      */
     public void emulateConditionsByRule(Boolean offline, List<NetworkConditions> matchedNetworkConditions) {
         tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
-        tools.sendCommand(emulateNetworkConditionsByRule(offline, matchedNetworkConditions));
+        tools.sendCommand(emulateNetworkConditionsByRule(Optional.of(offline), Optional.empty(), matchedNetworkConditions));
+    }
+
+    /**
+     * Activates emulation of network conditions for individual requests using URL match patterns.
+     * Unlike the deprecated Network.emulateNetworkConditions this method does not affect `navigator` state.
+     * Use Network.overrideNetworkState to explicitly modify `navigator` behavior.
+     *
+     * @param offline                  True to emulate internet disconnection.
+     * @param emulateOfflineServiceWorker                  True to emulate offline service worker.
+     * @param matchedNetworkConditions List of network conditions to apply.
+     */
+    public void emulateConditionsByRule(Boolean offline, Boolean emulateOfflineServiceWorker, List<NetworkConditions> matchedNetworkConditions) {
+        tools.sendCommand(enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        tools.sendCommand(emulateNetworkConditionsByRule(Optional.of(offline), Optional.of(emulateOfflineServiceWorker), matchedNetworkConditions));
     }
 
     /**

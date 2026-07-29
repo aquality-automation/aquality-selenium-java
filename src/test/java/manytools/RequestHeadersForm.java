@@ -23,7 +23,7 @@ public class RequestHeadersForm extends ManyToolsForm<RequestHeadersForm> {
     }
 
     public String getNullableValue(String headerName) {
-        getFormLabel().state().waitForDisplayed();
+        getHeaderValueLabel.apply("Accept").state().waitForDisplayed();
         ILabel valueLabel = getHeaderValueLabel.apply(headerName);
         return valueLabel.state().isDisplayed() ? valueLabel.getText() : null;
     }
