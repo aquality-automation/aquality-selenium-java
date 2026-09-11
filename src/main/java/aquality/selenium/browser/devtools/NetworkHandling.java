@@ -290,7 +290,7 @@ public class NetworkHandling {
      */
     public NetworkInterceptor addRequestTransformer(Predicate<HttpRequest> requestMatcher, Function<HttpRequest, HttpRequest> requestTransformer) {
         return startNetworkInterceptor((Filter) next -> req ->
-                requestMatcher.test(req) ? next.execute(requestTransformer.apply(req)) : next.execute(req));
+                next.execute(requestMatcher.test(req) ? requestTransformer.apply(req) : req));
     }
 
     /**
