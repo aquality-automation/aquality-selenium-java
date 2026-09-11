@@ -9,8 +9,8 @@ import org.openqa.selenium.devtools.Command;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.Event;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v151.performance.Performance;
-import org.openqa.selenium.devtools.v151.performance.model.Metric;
+import org.openqa.selenium.devtools.v152.performance.Performance;
+import org.openqa.selenium.devtools.v152.performance.model.Metric;
 
 import java.util.List;
 import java.util.Map;
