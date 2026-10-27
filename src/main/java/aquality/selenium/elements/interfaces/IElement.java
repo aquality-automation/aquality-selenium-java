@@ -8,10 +8,31 @@ import aquality.selenium.elements.actions.JsActions;
 import aquality.selenium.elements.actions.MouseActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.time.Duration;
 import java.util.List;
 
 public interface IElement extends aquality.selenium.core.elements.interfaces.IElement, IShadowRootExpander {
+    /**
+     * Gets current element by specified {@link #getLocator()}
+     * Default timeout is provided in {@link aquality.selenium.core.configurations.ITimeoutConfiguration}
+     * {@link org.openqa.selenium.NoSuchElementException} throws if element not found
+     *
+     * @return instance of {@link RemoteWebElement} if found.
+     */
+    default RemoteWebElement getElement() {
+        return getElement(null);
+    }
+
+    /**
+     * Gets current element by specified {@link #getLocator()}
+     * {@link org.openqa.selenium.NoSuchElementException} throws if element not found
+     *
+     * @param timeout Timeout for waiting
+     * @return instance of {@link RemoteWebElement} if found.
+     */
+    RemoteWebElement getElement(Duration timeout);
 
     /**
      * Send keys.

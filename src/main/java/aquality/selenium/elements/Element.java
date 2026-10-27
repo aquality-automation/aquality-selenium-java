@@ -98,7 +98,7 @@ public abstract class Element extends aquality.selenium.core.elements.Element im
     @Override
     public RemoteWebElement getElement(Duration timeout) {
         try {
-            return super.getElement(timeout);
+            return (RemoteWebElement) super.getElement(timeout);
         } catch (NoSuchElementException e) {
             getLogger().error(e.getMessage());
             long timeoutInSeconds = timeout == null

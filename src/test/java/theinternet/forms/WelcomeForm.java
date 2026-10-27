@@ -10,6 +10,8 @@ public class WelcomeForm extends TheInternetForm {
     private static final String EXAMPLE_LINK_XPATH_TEMPLATE = "//a[contains(@href,'%s')]";
     private final ILabel lblSubtitle = getElementFactory().getLabel(By.xpath("//h2"), "Sub title");
 
+    private final ILink lnkElementalSelenium = getElementFactory().getLink(By.xpath("//a[contains(@href,'elementalselenium')]"), "Elemental Selenium");
+
     public WelcomeForm() {
         super(By.xpath("//h1[contains(.,'Welcome to the-internet')]"), "Welcome to the-internet");
     }
@@ -30,6 +32,10 @@ public class WelcomeForm extends TheInternetForm {
 
     public Point getFormPointInViewPort(){
         return getElementFactory().getLabel(getLocator(), getName()).getJsActions().getViewPortCoordinates();
+    }
+
+    public void clickElementalSelenium() {
+        lnkElementalSelenium.click();
     }
 
     public enum AvailableExample {
