@@ -169,7 +169,7 @@ public class ByImage extends By {
                 : AqualityServices.getBrowser().getScreenshot();
         boolean isBrowserScreenshot = context instanceof WebDriver || !(context instanceof TakesScreenshot);
         Mat source = Imgcodecs.imdecode(new MatOfByte(screenshotBytes), Imgcodecs.IMREAD_UNCHANGED);
-        long devicePixelRatio = (long) AqualityServices.getBrowser().executeScript(JavaScript.GET_DEVICE_PIXEL_RATIO);
+        double devicePixelRatio = (double) AqualityServices.getBrowser().executeScript(JavaScript.GET_DEVICE_PIXEL_RATIO);
         if (devicePixelRatio != 1 && isBrowserScreenshot) {
             int scaledWidth = (int) (source.width() / devicePixelRatio);
             int scaledHeight = (int) (source.height() / devicePixelRatio);
