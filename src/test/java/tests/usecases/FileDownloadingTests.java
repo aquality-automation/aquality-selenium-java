@@ -32,7 +32,7 @@ public class FileDownloadingTests extends BaseTest {
         List<String> tabs = new ArrayList<>(AqualityServices.getBrowser().getDriver().getWindowHandles());
 
         AqualityServices.getBrowser().getDriver().switchTo().window(tabs.get(1));
-        AqualityServices.getBrowser().goTo(TheInternetPage.DOWNLOAD.getAddress());
+        downloaderForm.open();
         downloaderForm.getLnkDownload(fileName).getJsActions().clickAndWait();
 
         AqualityServices.getBrowser().getDriver().switchTo().window(tabs.get(0));
