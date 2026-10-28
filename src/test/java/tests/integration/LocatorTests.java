@@ -1,6 +1,8 @@
 package tests.integration;
 
 import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.elements.ElementState;
+import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.elements.interfaces.ByImage;
 import aquality.selenium.elements.interfaces.ILabel;
 import automationpractice.forms.ChallengingDomForm;
@@ -43,7 +45,8 @@ public class LocatorTests extends BaseTest {
         Assert.assertTrue(docLabels.size() > 1, "List of elements should be possible to find by image");
         Assert.assertEquals(docLabels.size(), childLabels.size(), "Should be possible to find child elements by image with the same count");
 
-        ILabel imgByTag = AqualityServices.getElementFactory().getLabel(By.tagName("img"), "img by tag");
+        ILabel imgByTag = AqualityServices.getElementFactory()
+                .findElements(By.tagName("img"), "img by tag", ILabel.class, ElementsCount.MORE_THAN_ZERO, ElementState.DISPLAYED).get(1);
         float fullThreshold = 1;
         AtomicReference<ILabel> documentByImageContainer = new AtomicReference<>();
         boolean isFound = AqualityServices.getConditionalWait().waitFor(browser -> {
