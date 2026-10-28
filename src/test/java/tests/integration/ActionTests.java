@@ -32,7 +32,7 @@ public class ActionTests extends BaseTest {
         final int accuracy = 1;
         WelcomeForm welcomeForm = new WelcomeForm();
         getBrowser().goTo(welcomeForm.getUrl());
-        ILink link = welcomeForm.getExampleLink(WelcomeForm.AvailableExample.HOVERS);
+        ILink link = welcomeForm.getExampleLink(WelcomeForm.AvailableExample.CHECKBOXES);
         link.getJsActions().scrollToTheCenter();
 
         Long windowHeight = getScriptResultOrDefault("getWindowSize.js", 10L);
