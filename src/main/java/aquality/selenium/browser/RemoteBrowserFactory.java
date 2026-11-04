@@ -4,7 +4,6 @@ import aquality.selenium.configuration.IBrowserProfile;
 import aquality.selenium.configuration.ITimeoutConfiguration;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
-import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -13,10 +12,8 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.remote.http.HttpClient;
-import org.openqa.selenium.remote.http.HttpClient.Factory;
 
 import java.net.URL;
-import java.time.Duration;
 
 
 public class RemoteBrowserFactory extends BrowserFactory {
@@ -36,13 +33,12 @@ public class RemoteBrowserFactory extends BrowserFactory {
     @Override
     protected RemoteWebDriver getDriver() {
         Capabilities capabilities = browserProfile.getDriverSettings().getDriverOptions();
+        URL url = browserProfile.getRemoteConnectionUrl();
         localizedLogger.info("loc.browser.grid");
+        ClientConfig config = ClientConfig.defaultConfig().baseUrl(url).readTimeout(timeoutConfiguration.getCommand());
 
-        ClientFactory clientFactory = new ClientFactory();
-        CommandExecutor commandExecutor = new HttpCommandExecutor(
-                ImmutableMap.of(),
-                browserProfile.getRemoteConnectionUrl(),
-                clientFactory);
+        HttpClient.Factory clientFactory = HttpClient.Factory.createDefault();
+        CommandExecutor commandExecutor = new HttpCommandExecutor(clientFactory.createClient(config), url);
 
         try {
             RemoteWebDriver driver = new RemoteWebDriver(commandExecutor, capabilities);
@@ -54,25 +50,5 @@ public class RemoteBrowserFactory extends BrowserFactory {
             throw e;
         }
 
-    }
-
-    class ClientFactory implements Factory {
-        private final Factory defaultClientFactory = Factory.createDefault();
-        private final Duration timeoutCommand = timeoutConfiguration.getCommand();
-
-        public HttpClient createClient(URL url) {
-            return defaultClientFactory.createClient(ClientConfig.defaultConfig().baseUrl(url).readTimeout(timeoutCommand));
-        }
-
-        @Override
-        public HttpClient createClient(ClientConfig clientConfig) {
-            clientConfig.readTimeout(timeoutCommand);
-            return defaultClientFactory.createClient(clientConfig);
-        }
-
-        @Override
-        public void cleanupIdleClients() {
-            defaultClientFactory.cleanupIdleClients();
-        }
     }
 }
