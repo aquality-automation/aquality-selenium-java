@@ -2,13 +2,13 @@ package aquality.selenium.browser.devtools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.devtools.Command;
-import org.openqa.selenium.devtools.v154.dom.model.RGBA;
-import org.openqa.selenium.devtools.v154.emulation.Emulation;
-import org.openqa.selenium.devtools.v154.emulation.model.DevicePosture;
-import org.openqa.selenium.devtools.v154.emulation.model.DisplayFeature;
-import org.openqa.selenium.devtools.v154.emulation.model.MediaFeature;
-import org.openqa.selenium.devtools.v154.emulation.model.ScreenOrientation;
-import org.openqa.selenium.devtools.v154.page.model.Viewport;
+import org.openqa.selenium.devtools.latest.dom.model.RGBA;
+import org.openqa.selenium.devtools.latest.emulation.Emulation;
+import org.openqa.selenium.devtools.latest.emulation.model.DevicePosture;
+import org.openqa.selenium.devtools.latest.emulation.model.DisplayFeature;
+import org.openqa.selenium.devtools.latest.emulation.model.MediaFeature;
+import org.openqa.selenium.devtools.latest.emulation.model.ScreenOrientation;
+import org.openqa.selenium.devtools.latest.page.model.Viewport;
 
 import java.util.Collections;
 import java.util.List;
@@ -136,7 +136,7 @@ public class EmulationHandling {
         setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), screenOrientation, Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     /**
@@ -159,10 +159,17 @@ public class EmulationHandling {
      * @param scrollbarType                  The type of the scrollbars to render (e.g., mobile vs desktop). Ignored if |dontSetVisibleSize| is set.
      * @param screenOrientationLockEmulation Enables screen orientation lock emulation that intercepts calls to screen.orientation.lock().
      */
-    public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile, Optional<Number> scale, Optional<Integer> screenWidth, Optional<Integer> screenHeight, Optional<Integer> positionX, Optional<Integer> positionY, Optional<Boolean> dontSetVisibleSize, Optional<ScreenOrientation> screenOrientation, Optional<Viewport> viewport, Optional<DisplayFeature> displayFeature, Optional<DevicePosture> devicePosture, Optional<Emulation.SetDeviceMetricsOverrideScrollbarType> scrollbarType, Optional<Boolean> screenOrientationLockEmulation) {
+    public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile,
+                                         Optional<Number> scale, Optional<Integer> screenWidth, Optional<Integer> screenHeight,
+                                         Optional<Integer> positionX, Optional<Integer> positionY, Optional<Boolean> dontSetVisibleSize,
+                                         Optional<ScreenOrientation> screenOrientation, Optional<Viewport> viewport,
+                                         Optional<DisplayFeature> displayFeature, Optional<DevicePosture> devicePosture,
+                                         Optional<Emulation.SetDeviceMetricsOverrideScrollbarType> scrollbarType,
+                                         Optional<Boolean> screenOrientationLockEmulation,
+                                         Optional<Emulation.SetDeviceMetricsOverrideViewportMeta> setDeviceMetricsOverrideViewportMeta) {
         tools.sendCommand(Emulation.setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, scale, screenWidth,
                 screenHeight, positionX, positionY, dontSetVisibleSize, screenOrientation, viewport, displayFeature,
-                devicePosture, scrollbarType, screenOrientationLockEmulation));
+                devicePosture, scrollbarType, screenOrientationLockEmulation, setDeviceMetricsOverrideViewportMeta));
     }
 
     /**
