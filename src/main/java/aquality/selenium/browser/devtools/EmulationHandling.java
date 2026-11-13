@@ -136,7 +136,7 @@ public class EmulationHandling {
         setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), screenOrientation, Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     /**
@@ -158,6 +158,8 @@ public class EmulationHandling {
      * @param devicePosture                  The posture of the device (e.g., foldable devices).
      * @param scrollbarType                  The type of the scrollbars to render (e.g., mobile vs desktop). Ignored if |dontSetVisibleSize| is set.
      * @param screenOrientationLockEmulation Enables screen orientation lock emulation that intercepts calls to screen.orientation.lock().
+     * @param viewportMeta                   Enables viewport-meta handling. Use "enable" to handle the page's viewport meta tag, or "default" for the default behavior. If the mobile parameter is true, this is enabled by default.
+     * @param textLayoutMode                 The text layout mode to use. Use "mobile" to enable mobile-style text autosizing, or "default" for the default layout. If the mobile parameter is true, this is set to mobile by default.
      */
     public void setDeviceMetricsOverride(Integer width, Integer height, Number deviceScaleFactor, Boolean mobile,
                                          Optional<Number> scale, Optional<Integer> screenWidth, Optional<Integer> screenHeight,
@@ -166,10 +168,11 @@ public class EmulationHandling {
                                          Optional<DisplayFeature> displayFeature, Optional<DevicePosture> devicePosture,
                                          Optional<Emulation.SetDeviceMetricsOverrideScrollbarType> scrollbarType,
                                          Optional<Boolean> screenOrientationLockEmulation,
-                                         Optional<Emulation.SetDeviceMetricsOverrideViewportMeta> setDeviceMetricsOverrideViewportMeta) {
+                                         Optional<Emulation.SetDeviceMetricsOverrideViewportMeta> viewportMeta,
+                                         Optional<Emulation.SetDeviceMetricsOverrideTextLayoutMode> textLayoutMode) {
         tools.sendCommand(Emulation.setDeviceMetricsOverride(width, height, deviceScaleFactor, mobile, scale, screenWidth,
                 screenHeight, positionX, positionY, dontSetVisibleSize, screenOrientation, viewport, displayFeature,
-                devicePosture, scrollbarType, screenOrientationLockEmulation, setDeviceMetricsOverrideViewportMeta));
+                devicePosture, scrollbarType, screenOrientationLockEmulation, viewportMeta, textLayoutMode));
     }
 
     /**
